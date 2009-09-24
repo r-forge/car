@@ -19,7 +19,7 @@ scatterplot(x, ...)
 \method{scatterplot}{default}(x, y, smooth=TRUE, spread=!by.groups, span=.5, 
 	reg.line=lm, boxplots="xy", xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), 
 	las=par("las"), lwd=1, lwd.smooth=lwd, 
-	identify=c("auto", TRUE, FALSE), labels, 
+	identify=c("auto", TRUE, FALSE), cutoff=.99, labels, 
 	log="", jitter=list(), xlim=NULL, ylim=NULL,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
 	cex.main=par("cex.main"), cex.sub=par("cex.sub"),
@@ -41,7 +41,7 @@ sp(...)
   \item{smooth}{if \code{TRUE} (the default) a loess nonparametric regression line is
     drawn on the plot.}
   \item{spread}{if \code{TRUE} (the default when there are no groups), a smoother is applied to
-  	the root-mean-square positive and negative residuals to display conditional spread and
+  	the root-mean-square positive and negative residuals from the loess line to display conditional spread and
   	asymmetry.}
   \item{span}{span for the loess smoother.}
   \item{reg.line}{function to draw a regression line on the plot
@@ -58,6 +58,9 @@ sp(...)
   \item{identify}{if \code{"auto"} (the default), outlying points are identified automatically;
   	if \code{TRUE}, points are identified interactive by left-clicking near them; right-click
   	to exit from interactive-point-identification mode.}
+  \item{cutoff}{outliers are automatically identified by comparing to the contours of a
+  	robustly estimated bivariate normal distribution; points beyond the contour given by
+  	\code{cutoff} (default, \code{.99}) are flagged.}
   \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
   	labels, and, failing that, will use observation numbers.}
   \item{log}{same as the \code{log} argument to \code{\link{plot}}, to produce log axes.}
@@ -99,14 +102,14 @@ sp(...)
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 
-\seealso{\code{\link[graphics]{graphics}}, \code{\link[graphics]{boxplot}},
+\seealso{\code{\link[graphics]{boxplot}},
   \code{\link[base]{jitter}} 
   \code{\link{scatterplotMatrix}}, \code{\link{dataEllipse}},
   \code{\link[graphics]{par}}, \code{\link[MASS]{cov.trob}}.}
 
 \examples{
 
-scatterplot(prestige ~ income, data=Prestige, ellipse=TRUE)
+scatterplot(prestige ~ income, data=Prestige, ellipse=TRUE, levels=.99)
 
 scatterplot(prestige ~ income|type, data=Prestige, span=1)
 

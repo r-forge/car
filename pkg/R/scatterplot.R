@@ -47,7 +47,7 @@ scatterplot.formula <- function (x, data, subset, xlab, ylab, legend.title, iden
 
 scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, reg.line=lm, boxplots="xy",
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
-	lwd=1, lwd.smooth=lwd, identify=c("auto", TRUE, FALSE), labels, log="", jitter=list(), xlim=NULL, ylim=NULL,
+	lwd=1, lwd.smooth=lwd, identify=c("auto", TRUE, FALSE), cutoff=.99, labels, log="", jitter=list(), xlim=NULL, ylim=NULL,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
 	cex.main=par("cex.main"), cex.sub=par("cex.sub"),
 	groups, by.groups=!missing(groups), legend.title=deparse(substitute(groups)), 
@@ -168,10 +168,10 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 		lines(c(.5, .5), c(Q3, UW))
 		if (!is.null(res$out)) points(rep(.5, length(res$out)), res$out, cex=cex)
 	}
-	label.outliers <- function(x, y, labels, col){
+	label.outliers <- function(x, y, cutoff, labels, col){
 		if (logged("x")) x <- log(x)
 		if (logged("y")) y <- log(y)
-		cutoff <- 2*qf(.95, 2, length(x) - 1)
+		cutoff <- 2*qf(cutoff, 2, length(x) - 1)
 		X <- na.omit(data.frame(x, y, labels, stringsAsFactors=FALSE))
 		res <- cov.trob(X[, c("x", "y")])
 		d <- mahalanobis(X[, c("x", "y")], res$center, res$cov)
@@ -256,7 +256,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			}
 		}
 		if (identify == "auto") 
-			indices <- c(indices, label.outliers(.x[subs], .y[subs], labels[subs], col=col[i + 1]))
+			indices <- c(indices, label.outliers(.x[subs], .y[subs], cutoff, labels[subs], col=col[i + 1]))
 	}
 	if (!by.groups){
 		if (smooth) lowess.line(.x, .y, col=col[1], span=span)
@@ -268,7 +268,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			with(X, dataEllipse(x, y, plot.points=FALSE, log=log, levels=levels, col=col[1],
 				robust=robust))
 		}
-		if (identify == "auto") indices <- label.outliers(.x, .y, labels, col=col[1])
+		if (identify == "auto") indices <- label.outliers(.x, .y, cutoff, labels, col=col[1])
 	}
 	if(legend.plot) {
 		xpd <- par(xpd=TRUE)
