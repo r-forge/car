@@ -1,4 +1,4 @@
-# last modified 16 January 2009 by J. Fox
+# last modified 24 September 2009 by J. Fox
 
 export(Anova,
     Ask,
@@ -13,7 +13,7 @@ export(Anova,
     box.tidwell,
     ceres.plot,
     ceres.plots,
-    confidence.ellipse,
+    confidenceEllipse,
     contr.Helmert,
     contr.Sum,
     contr.Treatment,
@@ -21,7 +21,7 @@ export(Anova,
     cr.plot,
     cr.plots,
     crp,
-    data.ellipse,
+    dataEllipse,
     df.terms,
     durbin.watson,
     ellipse,
@@ -54,7 +54,7 @@ export(Anova,
     response,
     responseName,
     scatterplot,
-    scatterplot.matrix,
+    scatterplotMatrix,
     slp,
     some,
     sp,
@@ -82,8 +82,8 @@ S3method(box.tidwell, default)
 S3method(box.tidwell, formula)       
 S3method(ceres.plot, glm)            
 S3method(ceres.plot, lm)            
-S3method(confidence.ellipse, glm)    
-S3method(confidence.ellipse, lm)     
+S3method(confidenceEllipse, glm)    
+S3method(confidenceEllipse, lm)     
 S3method(cr.plot, glm)               
 S3method(cr.plot, lm)     
 S3method(df.terms, default)          
@@ -125,8 +125,8 @@ S3method(response, default)
 S3method(responseName, default)      
 S3method(scatterplot, default)       
 S3method(scatterplot, formula)       
-S3method(scatterplot.matrix, default)
-S3method(scatterplot.matrix, formula)
+S3method(scatterplotMatrix, default)
+S3method(scatterplotMatrix, formula)
 S3method(some, data.frame)           
 S3method(some, default)              
 S3method(some, matrix)      

@@ -1,21 +1,21 @@
-\name{scatterplot.matrix}
-\alias{scatterplot.matrix}
-\alias{scatterplot.matrix.formula}
-\alias{scatterplot.matrix.default}
+\name{scatterplotMatrix}
+\alias{scatterplotMatrix}
+\alias{scatterplotMatrix.formula}
+\alias{scatterplotMatrix.default}
 \alias{spm}
 \title{Scatterplot Matrices}
 \description{
   Scatterplot matrices with univariate displays down the diagonal;
-  \code{spm} is an abbreviation for \code{scatterplot.matrix}.
+  \code{spm} is an abbreviation for \code{scatterplotMatrix}.
   This function just sets up a call to \code{pairs}.
 }
 \usage{
 
-scatterplot.matrix(x, ...)
+scatterplotMatrix(x, ...)
 
-\method{scatterplot.matrix}{formula}(formula, data=NULL, subset, ...)
+\method{scatterplotMatrix}{formula}(formula, data=NULL, subset, ...)
 
-\method{scatterplot.matrix}{default}(x, labels=colnames(x), 
+\method{scatterplotMatrix}{default}(x, labels=colnames(x), 
     diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), 
     adjust=1, nclass, plot.points=TRUE, smooth=TRUE, span=0.5, reg.line=lm, 
     transform=FALSE, ellipse=FALSE, levels=c(.5, .9), robust=FALSE,
@@ -33,7 +33,7 @@ spm(x, ...)
   \item{formula}{a one-side ``model'' formula, of the form 
     \code{ ~ x1 + x2 + ... + xk} or \code{ ~ x1 + x2 + ... + xk | z} where \code{z}
     evaluates to a factor or other variable to divide the data into groups.}
-  \item{data}{for \code{scatterplot.matrix.formula},
+  \item{data}{for \code{scatterplotMatrix.formula},
     a data frame within which to evaluate the formula.}
   \item{subset}{expression defining a subset of observations.}
   \item{labels}{variable labels (for the diagonal of the plot).}
@@ -84,12 +84,12 @@ spm(x, ...)
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \seealso{\code{\link[graphics]{pairs}}, \code{\link{scatterplot}},
-  \code{\link{data.ellipse}}, \code{\link{box.cox.powers}}, 
+  \code{\link{dataEllipse}}, \code{\link{box.cox.powers}}, 
   \code{\link{box.cox}}, \code{\link[MASS]{cov.trob}}.}
 
 \examples{
-scatterplot.matrix(~income + education + prestige | type, data=Duncan)
-scatterplot.matrix(~income + education + prestige, 
+scatterplotMatrix(~income + education + prestige | type, data=Duncan)
+scatterplotMatrix(~income + education + prestige, 
     transform=TRUE, data=Duncan)
 }
 

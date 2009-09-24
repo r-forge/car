@@ -289,5 +289,11 @@ Changes to Version 1.2-14
 Changes to Version 1.2-15
 
     o  Small changes.
+    
+Changes to Version 2.0-0
 
-
+	o  Function renamed to camel case.
+	
+	o  scatterplot() reworked.
+	
+	o  Small changes.

@@ -1,12 +1,12 @@
 # fancy scatterplot matrices (J. Fox)
 
-# last modified: 24 August 2009 by J. Fox
+# last modified: 24 September 2009 by J. Fox
 
-scatterplot.matrix<-function(x, ...){
-    UseMethod("scatterplot.matrix")
+scatterplotMatrix<-function(x, ...){
+    UseMethod("scatterplotMatrix")
     }
 
-scatterplot.matrix.formula<-function (formula, data=NULL, subset,  ...) {
+scatterplotMatrix.formula<-function (formula, data=NULL, subset,  ...) {
     # last modified 1 Feb 2001 by J. Fox
     m <- match.call(expand.dots = FALSE)
     if (is.matrix(eval(m$data, sys.frame(sys.parent())))) 
@@ -27,14 +27,14 @@ scatterplot.matrix.formula<-function (formula, data=NULL, subset,  ...) {
         }
     m$formula<-formula
     X <- eval(m, sys.frame(sys.parent()))
-    if (!groups) scatterplot.matrix(X, ...)
+    if (!groups) scatterplotMatrix(X, ...)
         else{
         ncol<-ncol(X)
-        scatterplot.matrix.default(X[,-ncol], groups=X[,ncol], ...)
+        scatterplotMatrix.default(X[,-ncol], groups=X[,ncol], ...)
         }
     }
 
-scatterplot.matrix.default<-function(x, labels=colnames(x), 
+scatterplotMatrix.default<-function(x, labels=colnames(x), 
     diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
     plot.points=TRUE, smooth=TRUE, span=.5, reg.line=lm, transform=FALSE,
     ellipse=FALSE, levels=c(.5, .9), robust=FALSE,
@@ -108,13 +108,13 @@ scatterplot.matrix.default<-function(x, labels=colnames(x),
                 if (plot.points) points(x[subs], y[subs], pch=pch[i], col=col[i+1], cex=cex)
                 if (smooth & by.groups) lines(lowess(x[subs], y[subs]), col=col[i+1], lwd=lwd.smooth)
                 if (is.function(reg.line) & by.groups) reg(x[subs], y[subs], col=col[i+1])
-                if (ellipse  & by.groups) data.ellipse(x[subs], y[subs], plot.points=FALSE, 
+                if (ellipse  & by.groups) dataEllipse(x[subs], y[subs], plot.points=FALSE, 
                     levels=levels, col=col[i+1], robust=robust, lwd=1)
                 }
             if (!by.groups){
                 if (is.function(reg.line)) abline(reg.line(y~x),lty=2, lwd=lwd, col=col[1])
                 if (smooth) lines(lowess(x,y, f=span), lwd=lwd.smooth, col=col[1])
-                if (ellipse) data.ellipse(x, y, plot.points=FALSE, levels=levels, col=col[1],
+                if (ellipse) dataEllipse(x, y, plot.points=FALSE, levels=levels, col=col[1],
                     robust=robust, lwd=1)
                 }
             }, ...
@@ -128,5 +128,5 @@ scatterplot.matrix.default<-function(x, labels=colnames(x),
     }
 
 spm<-function(x, ...){
-    scatterplot.matrix(x, ...)
+    scatterplotMatrix(x, ...)
     }            
