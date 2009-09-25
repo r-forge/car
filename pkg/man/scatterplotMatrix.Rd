@@ -13,24 +13,23 @@
 
 scatterplotMatrix(x, ...)
 
-\method{scatterplotMatrix}{formula}(formula, data=NULL, subset, ...)
+\method{scatterplotMatrix}{formula}(x, data=NULL, subset, ...)
 
 \method{scatterplotMatrix}{default}(x, labels=colnames(x), 
-    diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), 
-    adjust=1, nclass, plot.points=TRUE, smooth=TRUE, span=0.5, reg.line=lm, 
-    transform=FALSE, ellipse=FALSE, levels=c(.5, .9), robust=FALSE,
-    groups=FALSE, by.groups=FALSE, col=palette(), 
-    pch=1:n.groups, lwd=1, lwd.smooth=lwd,
-    cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
-    cex.main=par("cex.main"),
-    legend.plot=length(levels(groups)) > 1, ...)
+	diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
+	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, reg.line=lm, transform=FALSE,
+	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
+	groups, by.groups=FALSE,
+	col=rep(palette(), length.out=n.groups + 1), pch=1:n.groups, lwd=1, lwd.smooth=lwd,
+	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
+	cex.main=par("cex.main"),
+	legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...)
 
 spm(x, ...)
 }
 
 \arguments{
-  \item{x}{a data matrix, numeric data frame, or formula.}
-  \item{formula}{a one-side ``model'' formula, of the form 
+  \item{x}{a data matrix, numeric data frame, or a one-side ``model'' formula, of the form 
     \code{ ~ x1 + x2 + ... + xk} or \code{ ~ x1 + x2 + ... + xk | z} where \code{z}
     evaluates to a factor or other variable to divide the data into groups.}
   \item{data}{for \code{scatterplotMatrix.formula},
@@ -46,6 +45,9 @@ spm(x, ...)
     off-diagonal panel.}
   \item{smooth}{if \code{TRUE} a lowess smooth is plotted in each
     off-diagonal panel.}
+  \item{spread}{if \code{TRUE} (the default when not smoothing by groups), a smoother is applied to
+  	the root-mean-square positive and negative residuals from the loess line to display conditional spread and
+  	asymmetry.}
   \item{span}{span for lowess smoother.}
   \item{reg.line}{if not \code{FALSE} a line is plotted using the
     function given by this argument; e.g., using \code{rlm} in
@@ -73,6 +75,8 @@ spm(x, ...)
     (see \code{\link[graphics]{par}}).}
   \item{legend.plot}{if \code{TRUE} then a legend for the groups is plotted
     in the bottom-right cell.}
+  \item{row1attop}{If \code{TRUE} (the default) the first row is at the top, as in a matrix, as
+  	opposed to at the bottom, as in graph.}
   \item{...}{arguments to pass down.}
 }
 
