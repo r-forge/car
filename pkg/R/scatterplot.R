@@ -1,6 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 24 September 2009
+# last modified 25 September 2009
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -49,7 +49,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
 	lwd=1, lwd.smooth=lwd, identify=c("auto", TRUE, FALSE), cutoff=.99, labels, log="", jitter=list(), xlim=NULL, ylim=NULL,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
-	cex.main=par("cex.main"), cex.sub=par("cex.sub"),
+	cex.main=par("cex.main"), cex.sub=par("cex.sub"), cex.identify=cex,
 	groups, by.groups=!missing(groups), legend.title=deparse(substitute(groups)), 
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	col=rep(palette(), length.out=n.groups + 1), pch=1:n.groups, 
@@ -82,10 +82,10 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			if (logged("x")) x <- exp(x)
 			y <- if (logged("y")) exp(fitted(fit)) else fitted(fit) 
 			lines(x, y, lwd=lwd.smooth, col=col)
-			y.pos <-if (logged("y")) exp(fitted(fit)[pos] + sqrt(fitted(pos.fit)))  
+			y.pos <- if (logged("y")) exp(fitted(fit)[pos] + sqrt(fitted(pos.fit)))  
 				else fitted(fit)[pos] + sqrt(fitted(pos.fit))
 			lines(x[pos], y.pos, lwd=lwd.smooth, lty=3, col=col)
-			y.neg <-if (logged("y")) exp(fitted(fit)[!pos] - sqrt(fitted(neg.fit)))
+			y.neg <- if (logged("y")) exp(fitted(fit)[!pos] - sqrt(fitted(neg.fit)))
 				else fitted(fit)[!pos] - sqrt(fitted(neg.fit))
 			lines(x[!pos], y.neg, lwd=lwd.smooth, lty=3, col=col)
 		}
@@ -182,7 +182,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 		pos <- ifelse(x[which] <= mean(range(X$x)), 4, 2)
 		if (logged("x")) x <- exp(x)
 		if (logged("y")) y <- exp(y)
-		text(x[which], y[which], labels[which], pos=pos, col=col)
+		text(x[which], y[which], labels[which], pos=pos, col=col, cex=cex.identify)
 		labels[which]
 	}
 	# force evaluation of some arguments
@@ -237,7 +237,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 	plot(.x, .y, xlab=xlab, ylab=ylab, las=las, log=log, cex=cex, cex.axis=cex.axis, cex.lab=cex.lab,
 		cex.main=cex.main, cex.sub=cex.sub, type="n", xlim=xlim, ylim=ylim, ...)
 	n.groups <- length(levels(groups))
-	if (n.groups >= length(col)) stop("number of groups exceeds number of available colors")
+	if (n.groups > length(col) - 1) stop("number of groups exceeds number of available colors")
 	indices <- NULL
 	for (i in 1:n.groups){
 		subs <- groups == levels(groups)[i]

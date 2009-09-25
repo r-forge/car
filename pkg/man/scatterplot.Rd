@@ -22,7 +22,7 @@ scatterplot(x, ...)
 	identify=c("auto", TRUE, FALSE), cutoff=.99, labels, 
 	log="", jitter=list(), xlim=NULL, ylim=NULL,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
-	cex.main=par("cex.main"), cex.sub=par("cex.sub"),
+	cex.main=par("cex.main"), cex.sub=par("cex.sub"), cex.identify=cex,
 	groups, by.groups=!missing(groups), legend.title=deparse(substitute(groups)), 
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	col=rep(palette(), length.out=n.groups + 1), pch=1:n.groups, 
@@ -48,7 +48,8 @@ sp(...)
     or \code{FALSE} not to plot a regression line.}
   \item{boxplots}{if \code{"x"} a boxplot for \code{x} is drawn above the plot;
     if \code{"y"} a boxplot for \code{y} is drawn to the right of the plot;
-    if \code{"xy"} both boxplots are drawn.}
+    if \code{"xy"} both boxplots are drawn; set to \code{""} or \code{FALSE} to
+    suppress both boxplots.}
   \item{xlab}{label for horizontal axis.}
   \item{ylab}{label for vertical axis.}
   \item{las}{if \code{0}, ticks labels are drawn parallel to the
@@ -87,6 +88,7 @@ sp(...)
     order (see \code{\link[graphics]{par}}).}
   \item{cex, cex.axis, cex.lab, cex.main, cex.sub}{set sizes of various graphical elements; 
     (see \code{\link[graphics]{par}}).}
+  \item{cex.identify}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
   \item{legend.plot}{if \code{TRUE} then a legend for the groups is plotted in the upper margin.}
   \item{reset.par}{if \code{TRUE} then plotting parameters are reset to their previous values
     when \code{scatterplot} exits; if \code{FALSE} then the \code{mar} and \code{mfcol} parameters are
