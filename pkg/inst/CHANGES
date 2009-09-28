@@ -292,13 +292,13 @@ Changes to Version 1.2-15
     
 Changes to Version 2.0-0
 
-	o  Function renamed to camel case.
+	o  Functions renamed to camel case.
 	
 	o  scatterplot() reworked.
 	
 	o  scatterplotMatrix() reworked.
 	
-	o  Moved to art package: Anova(), hccm(), influencePlot(), leveneTest(), linearHypothesis().
+	o  Moved to art package (some renamed): Anova(), durbinWatsonTest(), hccm(), influencePlot(), leveneTest(), linearHypothesis(), ncvTest(), outlierTest(), vif().
 	
 	o  Removed: Ask(), box.cox.powers(), box.cox(), cookd(), n.bins().
 	

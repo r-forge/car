@@ -5,7 +5,6 @@
 \alias{term.names.default}
 \alias{predictor.names}
 \alias{predictor.names.default}
-\alias{print.chisq.test}
 \alias{responseName}
 \alias{responseName.default}
 \alias{response}
@@ -37,7 +36,6 @@ nice(x, direction=c("round", "down", "up"))
 predictor.names(model, ...)
 \method{predictor.names}{default}(model, ...)
 responseName(model, ...)
-\method{print}{chisq.test}(x, ...) 
 \method{responseName}{default}(model, ...)
 response(model, ...)
 \method{response}{default}(model, ...)

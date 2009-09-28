@@ -90,7 +90,7 @@ slp(x, ...)
 }
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link[art]{hccm}}, \code{\link{ncv.test}} }
+\seealso{\code{\link[art]{hccm}}, \code{\link[art]{ncvTest}} }
 
 \examples{
 spread.level.plot(interlocks+1~nation, data=Ornstein)

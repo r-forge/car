@@ -21,7 +21,7 @@ na.exclude.
 \tabular{ll}{
 Package: \tab car\cr
 Version: \tab 2.0-0\cr
-Date: \tab 2009/09/26\cr
+Date: \tab 2009/09/28\cr
 Depends: \tab R (>= 2.1.1), stats, graphics\cr
 Suggests: \tab MASS, nnet, leaps\cr
 License: \tab GPL (>= 2)\cr
@@ -80,14 +80,11 @@ box.cox.var             Constructed Variable for Box-Cox Transformation
 box.tidwell             Box-Tidwell Transformations
 ceres.plots             Ceres Plots
 cr.plots                Component+Residual (Partial Residual) Plots
-durbin.watson           Durbin-Watson Test for Autocorrelated Errors
 ellipse                 Ellipses, Data Ellipses, and Confidence
                         Ellipses
 levene.test             Levene's Test
 leverage.plots          Regression Leverage Plots
 logit                   Logit Transformation
-ncv.test                Score Test for Non-Constant Error Variance
-outlier.test            Bonferroni Outlier Test
 panel.car               Panel Function Coplots
 power.axis              Axes for Transformed Variables
 qq.plot                 Quantile-Comparison Plots
@@ -100,7 +97,6 @@ spread.level.plot       Spread-Level Plots
 subsets                 Plot Output from regsubsets Function in leaps
                         package
 symbox                  Boxplots for transformations to symmetry
-vif                     Variance Inflation Factors
 which.names             Position of Row Names
 }
 }

@@ -1,4 +1,4 @@
-# last modified 27 September 2009 by J. Fox
+# last modified 28 September 2009 by J. Fox
 
 export(
     av.plot,
@@ -17,14 +17,11 @@ export(
     cr.plots,
     crp,
     dataEllipse,
-    durbin.watson,
     ellipse,
     leverage.plot,
     leverage.plots,
     logit,
-    ncv.test,
     nice,
-    outlier.test,
     panel.car,
     power.axis,
     prob.axis,
@@ -41,7 +38,6 @@ export(
     spread.level.plot,
     subsets,
     symbox,
-    vif,
     which.names)    
 S3method(av.plot, glm)              
 S3method(av.plot, lm)       
@@ -52,19 +48,10 @@ S3method(ceres.plot, lm)
 S3method(confidenceEllipse, glm)    
 S3method(confidenceEllipse, lm)     
 S3method(cr.plot, glm)               
-S3method(cr.plot, lm)     
-S3method(durbin.watson, default)     
-S3method(durbin.watson, lm)         
+S3method(cr.plot, lm)      
 S3method(leverage.plot, glm)         
 S3method(leverage.plot, lm)     
-S3method(ncv.test, glm)              
-S3method(ncv.test, lm)    
-S3method(outlier.test, glm)          
-S3method(outlier.test, lm)   
 S3method(print, box.tidwell)         
-S3method(print, chisq.test)          
-S3method(print, durbin.watson)
-S3method(print, outlier.test)        
 S3method(print, spread.level.plot)   
 S3method(qq.plot, default)           
 S3method(qq.plot, glm)               
@@ -80,5 +67,4 @@ S3method(spread.level.plot, default)
 S3method(spread.level.plot, formula) 
 S3method(spread.level.plot, lm)     
 S3method(subsets, regsubsets)        
-S3method(vif, lm)                    
         
