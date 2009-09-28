@@ -68,7 +68,7 @@ prob.axis(at, side=c("right", "above", "left", "below"), grid=FALSE, grid.lty=3,
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{ \code{\link{box.cox}}, \code{\link{logit}}}
+\seealso{ \code{\link[art]{bcpower}}, \code{\link{logit}}}
 
 \examples{
 UN<-na.omit(UN)
@@ -81,7 +81,7 @@ power.axis(0, base=10, side="above",
 power.axis(0, base=10, side="right",
   at=c(5,10,20,50,100), grid=TRUE, axis.title="infant mortality rate per 1000")
 
-plot(box.cox(gdp, 0), box.cox(infant.mortality, 0))
+plot(bcpower(gdp, 0), bcpower(infant.mortality, 0))
 box.cox.axis(0, side="above", 
   grid=TRUE, axis.title="GDP per capita")
 box.cox.axis(0, side="right",

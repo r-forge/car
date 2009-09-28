@@ -5,24 +5,25 @@
 \alias{spm}
 \title{Scatterplot Matrices}
 \description{
-  Scatterplot matrices with univariate displays down the diagonal;
+  Enhanced scatterplot matrices with univariate displays down the diagonal;
   \code{spm} is an abbreviation for \code{scatterplotMatrix}.
-  This function just sets up a call to \code{pairs}.
+  This function just sets up a call to \code{pairs} with custom panel functions.
 }
 \usage{
 
 scatterplotMatrix(x, ...)
 
-\method{scatterplotMatrix}{formula}(x, data=NULL, subset, ...)
+\method{scatterplotMatrix}{formula}(x, data=NULL, subset, identify=TRUE, labels, ...)
 
-\method{scatterplotMatrix}{default}(x, labels=colnames(x), 
+\method{scatterplotMatrix}{default}(x, var.labels=colnames(x), 
 	diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
-	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, reg.line=lm, transform=FALSE,
+	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, reg.line=lm, 
+	transform=FALSE, family=c("bcpower", "yjpower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	groups, by.groups=FALSE,
+	groups, by.groups=FALSE, identify=TRUE, labels, cutoff=.99,
 	col=rep(palette(), length.out=n.groups + 1), pch=1:n.groups, lwd=1, lwd.smooth=lwd,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
-	cex.main=par("cex.main"),
+	cex.main=par("cex.main"), cex.identify=cex,
 	legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...)
 
 spm(x, ...)
@@ -35,7 +36,13 @@ spm(x, ...)
   \item{data}{for \code{scatterplotMatrix.formula},
     a data frame within which to evaluate the formula.}
   \item{subset}{expression defining a subset of observations.}
-  \item{labels}{variable labels (for the diagonal of the plot).}
+  \item{identify}{if \code{TRUE} (the default), outlying points in each panel are identified automatically.}
+  \item{cutoff}{outliers are automatically identified by comparing to the contours of a
+  	robustly estimated bivariate normal distribution; points beyond the contour given by
+  	\code{cutoff} (default, \code{.99}) are flagged.}
+  \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
+  	labels, and, failing that, will use observation numbers.}
+  \item{var.labels}{variable labels (for the diagonal of the plot).}
   \item{diagonal}{contents of the diagonal panels of the plot.}
   \item{adjust}{relative bandwidth for density estimate, passed to 
     \code{density} function.}
@@ -52,9 +59,13 @@ spm(x, ...)
   \item{reg.line}{if not \code{FALSE} a line is plotted using the
     function given by this argument; e.g., using \code{rlm} in
     package \code{MASS} plots a robust-regression line.}
-  \item{transform}{if \code{TRUE}, multivariate normalizing Box-Cox transformations
-    are computed and plotted; if a vector of powers, one for each variable, these are applied
-    as Box-Cox power transformations prior to plotting.}
+  \item{transform}{if \code{TRUE}, multivariate normalizing power transformations
+    are computed \code{\link[art]{powerTransform}}, rounding the estimated powers to `nice' values for plotting; 
+    if a vector of powers, one for each variable, these are applied prior to plotting. If  there are \code{groups}
+    and \code{by.groups} is \code{TRUE}, then the transformations are estimated \emph{conditional} on the
+    \code{groups} factor.}
+  \item{family}{family of transformations to estimate: \code{"bcpower"} for the Box-Cox family or 
+    \code{"yjpower"} for the Yeo-Johnson family (see \code{\link[art]{powerTransform}}).}
   \item{ellipse}{if \code{TRUE} data-concentration ellipses are plotted in
     the off-diagonal panels.}
   \item{levels}{levels or levels at which concentration ellipses are plotted;
@@ -73,8 +84,9 @@ spm(x, ...)
   \item{lwd.smooth}{width for smooth regression lines (default is the same as \code{lwd}).}
   \item{cex, cex.axis, cex.labels, cex.main}{set sizes of various graphical elements; 
     (see \code{\link[graphics]{par}}).}
+  \item{cex.identify}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
   \item{legend.plot}{if \code{TRUE} then a legend for the groups is plotted
-    in the bottom-right cell.}
+    in the first diagonal cell.}
   \item{row1attop}{If \code{TRUE} (the default) the first row is at the top, as in a matrix, as
   	opposed to at the bottom, as in graph.}
   \item{...}{arguments to pass down.}
@@ -88,13 +100,15 @@ spm(x, ...)
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \seealso{\code{\link[graphics]{pairs}}, \code{\link{scatterplot}},
-  \code{\link{dataEllipse}}, \code{\link{box.cox.powers}}, 
-  \code{\link{box.cox}}, \code{\link[MASS]{cov.trob}}.}
+  \code{\link{dataEllipse}}, \code{\link[art]{powerTransform}}, 
+  \code{\link[art]{bcpower}}, \code{\link[art]{yjpower}}, \code{\link[MASS]{cov.trob}}.}
 
 \examples{
-scatterplotMatrix(~income + education + prestige | type, data=Duncan)
-scatterplotMatrix(~income + education + prestige, 
+scatterplotMatrix(~ income + education + prestige | type, data=Duncan)
+scatterplotMatrix(~ income + education + prestige, 
     transform=TRUE, data=Duncan)
+scatterplotMatrix(~ income + education + prestige | type, smooth=FALSE, 
+	by.group=TRUE, transform=TRUE, data=Duncan)
 }
 
 \keyword{hplot}

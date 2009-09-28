@@ -21,7 +21,7 @@ na.exclude.
 \tabular{ll}{
 Package: \tab car\cr
 Version: \tab 2.0-0\cr
-Date: \tab 2009/09/25\cr
+Date: \tab 2009/09/26\cr
 Depends: \tab R (>= 2.1.1), stats, graphics\cr
 Suggests: \tab MASS, nnet, leaps\cr
 License: \tab GPL (>= 2)\cr
@@ -32,9 +32,7 @@ Index:
 \preformatted{
 Adler                   Experimenter Expectations
 Angell                  Moral Integration of American Cities
-Anova                   Anova Tables for Various Statistical Models
 Anscombe                U. S. State Public-School Expenditures
-Ask                     Change Argument to a Function Interactively
 Baumann                 Methods of Teaching Reading Comprehension
 Bfox                    Canadian Women's Labour-Force Participation
 Blackmoor               Exercise Histories of Eating-Disordered and
@@ -75,31 +73,19 @@ States                  Education and Related Statistics for the U.S.
                         States
 UN                      GDP and Infant Mortality
 US.pop                  Population of the United States
-Var                     Variance-Covariance Matrices (deprecated)
 Vocab                   Vocabulary and Education
 Womenlf                 Canadian Women's Labour-Force Participation
 av.plots                Added-Variable Plots
-box.cox                 Box-Cox Family of Transformations
-box.cox.powers          Multivariate Unconditional Box-Cox
-                        Transformations
 box.cox.var             Constructed Variable for Box-Cox Transformation
 box.tidwell             Box-Tidwell Transformations
 ceres.plots             Ceres Plots
-cookd                   Cook's Distances for Linear and Generalized
-                        Linear Models
 cr.plots                Component+Residual (Partial Residual) Plots
 durbin.watson           Durbin-Watson Test for Autocorrelated Errors
 ellipse                 Ellipses, Data Ellipses, and Confidence
                         Ellipses
-hccm                    Heteroscedasticity-Corrected Covariance
-                        Matrices
-influencePlot           Regression Influence Plot
-inv                     Internal car functions
 levene.test             Levene's Test
 leverage.plots          Regression Leverage Plots
-linear.hypothesis       Test Linear Hypothesis
 logit                   Logit Transformation
-n.bins                  Number of Bins for Histogram
 ncv.test                Score Test for Non-Constant Error Variance
 outlier.test            Bonferroni Outlier Test
 panel.car               Panel Function Coplots

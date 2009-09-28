@@ -296,4 +296,14 @@ Changes to Version 2.0-0
 	
 	o  scatterplot() reworked.
 	
+	o  scatterplotMatrix() reworked.
+	
+	o  Moved to art package: Anova(), hccm(), influencePlot(), leveneTest(), linearHypothesis().
+	
+	o  Removed: Ask(), box.cox.powers(), box.cox(), cookd(), n.bins().
+	
+	o  Utility functions no longer exported; some removed.
+	
 	o  Small changes.
+	
+	

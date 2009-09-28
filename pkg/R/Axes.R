@@ -1,6 +1,6 @@
 # Axes for transformations (J. Fox)
 
-# last modified 2 April 02 by J. Fox
+# last modified 27 September 2009 by J. Fox
 
 # function to find "nice" numbers
 
@@ -57,7 +57,7 @@ box.cox.axis<-function(power, side=c("right", "above", "left", "below"),
     ticks.x <- if (missing(at)) ticks.x
         else at
     ticks.text <- as.character(ticks.x)
-    ticks.trans<-box.cox(ticks.x,power)
+    ticks.trans<-bcpower(ticks.x,power)
     axis(side, labels = ticks.text, at = ticks.trans, las=las)
     if (grid & (side %% 2 == 0)) abline(h=ticks.trans, lty=grid.lty, col=grid.col)
     if (grid & (side %% 2 == 1)) abline(v=ticks.trans, lty=grid.lty, col=grid.col)

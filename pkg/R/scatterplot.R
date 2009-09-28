@@ -1,6 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 25 September 2009
+# last modified 26 September 2009
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -176,6 +176,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 		res <- cov.trob(X[, c("x", "y")])
 		d <- mahalanobis(X[, c("x", "y")], res$center, res$cov)
 		which <- which(d > cutoff)
+		if (length(which) == 0) return(NULL)
 		x <- X$x
 		y <- X$y
 		labels <- X$labels
@@ -251,7 +252,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 				X <- na.omit(data.frame(x=.x[subs], y=.y[subs]))
 				if (logged("x")) X$x <- log(x)
 				if (logged("y")) X$y <- log(y)
-				with(X, dataEllipse(x, y, plot.points=FALSE, log=log,
+				with(X, dataEllipse(x, y, plot.points=FALSE, lwd=1, log=log,
 					levels=levels, col=col[i + 1], robust=robust))
 			}
 		}
@@ -265,7 +266,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			X <- na.omit(data.frame(x=.x, y=.y))
 			if (logged("x")) X$x <- log(X$x)
 			if (logged("y")) X$y <- log(X$y)
-			with(X, dataEllipse(x, y, plot.points=FALSE, log=log, levels=levels, col=col[1],
+			with(X, dataEllipse(x, y, plot.points=FALSE, lwd=1, log=log, levels=levels, col=col[1],
 				robust=robust))
 		}
 		if (identify == "auto") indices <- label.outliers(.x, .y, cutoff, labels, col=col[1])

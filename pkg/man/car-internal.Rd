@@ -1,5 +1,4 @@
 \name{car-internal}
-\alias{inv}
 \alias{has.intercept}
 \alias{has.intercept.default}
 \alias{term.names}
@@ -18,7 +17,6 @@
 \alias{ df.terms.polr}
 \alias{mfrow}
 \alias{nice}
-\alias{relatives}
 
 \title{Internal car functions}
 
@@ -33,13 +31,11 @@ df.terms(model, term, ...)
 \method{df.terms}{polr}(model, term, ...)
 has.intercept(model, ...)
 \method{has.intercept}{default}(model, ...)
-inv(x)
 is.aliased(model)
 mfrow(n, max.plots=0)
 nice(x, direction=c("round", "down", "up"))
 predictor.names(model, ...)
 \method{predictor.names}{default}(model, ...)
-relatives(term, names, factors)
 responseName(model, ...)
 \method{print}{chisq.test}(x, ...) 
 \method{responseName}{default}(model, ...)

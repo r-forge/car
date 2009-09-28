@@ -1,9 +1,8 @@
 # Leverage plots (J. Fox)
 
-# last modified 31 Jan 04 by J. Fox
+# last modified 27 September 2009 by J. Fox
 
 leverage.plots<-function(model, term.name, ask=missing(term.name), ...){
-    # last modified 19 Dec 2000 by J. Fox
     if (!missing(term.name)){
         var<-if (is.character(term.name) & 1==length(term.name)) term.name
             else deparse(substitute(term.name))
@@ -33,7 +32,6 @@ leverage.plot<-function (model, ...) {
 leverage.plot.lm<-function(model, term.name, 
     labels=names(residuals(model)[!is.na(residuals(model))]), 
     identify.points=TRUE, las=par("las"), col=palette()[2], pch=1, lwd=2, main="Leverage Plot", ...){
-    # last modified 19 Sept 2002
     term.name<-if (is.character(term.name) & 1==length(term.name)) term.name
         else deparse(substitute(term.name))
     b<-coefficients(model)
@@ -54,7 +52,7 @@ leverage.plot.lm<-function(model, term.name,
     hypothesis.matrix<-I.p[subs,]
     L<-if (is.null(dim(hypothesis.matrix))) t(hypothesis.matrix)
         else hypothesis.matrix
-    u<-inv(L %*% V %*% t(L)) %*% L %*% b
+    u<-solve(L %*% V %*% t(L)) %*% L %*% b
     v.x<-X %*% V %*% t(L) %*% u
     v.y<-v.x + e
     plot(v.x, v.y, xlab=paste(term.names[term],"| others"), 
@@ -65,7 +63,6 @@ leverage.plot.lm<-function(model, term.name,
     }
 
 leverage.plot.glm<-function(model, ...){
-    # last modified 14 Dec 2000
     stop("leverage plot requires lm object")
     }
   

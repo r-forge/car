@@ -44,8 +44,7 @@ box.cox.var(y)
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link[MASS]{boxcox}}, \code{\link{box.cox}}, \code{\link{box.cox.powers}}, 
-  \code{\link{box.cox.axis}}, \code{\link{av.plots}}}
+\seealso{\code{\link[MASS]{boxcox}}, \code{\link{box.cox.axis}}, \code{\link{av.plots}}}
 
 \examples{
 mod <- lm(interlocks + 1 ~ assets, data=Ornstein)

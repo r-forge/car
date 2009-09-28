@@ -1,9 +1,7 @@
 
 # Utility functions (J. Fox)
 
-    # last modified 19 Nov 04 by J. Fox
-
-inv<-function(x) solve(x)
+    # last modified 27 September 2009 by J. Fox
 
 
 has.intercept<-function (model, ...) {

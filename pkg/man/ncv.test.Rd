@@ -55,7 +55,7 @@ ncv.test(model, ...)
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link{hccm}}, \code{\link{spread.level.plot}} }
+\seealso{\code{\link[art]{hccm}}, \code{\link{spread.level.plot}} }
 
 \examples{
 ncv.test(lm(interlocks~assets+sector+nation, data=Ornstein))

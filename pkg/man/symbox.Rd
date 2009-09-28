@@ -30,7 +30,7 @@
     \emph{SAS System for Statistical Graphics, 2nd Edition.} 
     SAS Institute (In preparation).}
     
-\seealso{\code{\link[graphics]{boxplot}}, \code{\link[MASS]{boxcox}}, \code{\link{box.cox}}}
+\seealso{\code{\link[graphics]{boxplot}}, \code{\link[MASS]{boxcox}}, \code{\link[art]{bcpower}}}
 
 \examples{
 symbox(Prestige$income)

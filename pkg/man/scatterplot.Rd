@@ -6,8 +6,8 @@
 
 \title{Scatterplots with Boxplots}
 \description{
-  Makes fancy scatterplots, with boxplots in the margins, a lowess
-  smooth, and a regression line; \code{sp} is an abbreviation for
+  Makes enhanced scatterplots, with boxplots in the margins, a lowess
+  smooth, smoothed conditional spread, outlier identification, and a regression line; \code{sp} is an abbreviation for
   \code{scatterplot}.
 }
 \usage{
