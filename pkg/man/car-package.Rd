@@ -21,7 +21,7 @@ na.exclude.
 \tabular{ll}{
 Package: \tab car\cr
 Version: \tab 2.0-0\cr
-Date: \tab 2009/09/28\cr
+Date: \tab 2009/09/29\cr
 Depends: \tab R (>= 2.1.1), stats, graphics\cr
 Suggests: \tab MASS, nnet, leaps\cr
 License: \tab GPL (>= 2)\cr
@@ -76,8 +76,6 @@ US.pop                  Population of the United States
 Vocab                   Vocabulary and Education
 Womenlf                 Canadian Women's Labour-Force Participation
 av.plots                Added-Variable Plots
-box.cox.var             Constructed Variable for Box-Cox Transformation
-box.tidwell             Box-Tidwell Transformations
 ceres.plots             Ceres Plots
 cr.plots                Component+Residual (Partial Residual) Plots
 ellipse                 Ellipses, Data Ellipses, and Confidence

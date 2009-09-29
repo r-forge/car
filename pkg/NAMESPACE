@@ -1,12 +1,10 @@
-# last modified 28 September 2009 by J. Fox
+# last modified 29 September 2009 by J. Fox
 
 export(
     av.plot,
     av.plots,
     avp,
     box.cox.axis,
-    box.cox.var,
-    box.tidwell,
     ceres.plot,
     ceres.plots,
     confidenceEllipse,
@@ -41,8 +39,6 @@ export(
     which.names)    
 S3method(av.plot, glm)              
 S3method(av.plot, lm)       
-S3method(box.tidwell, default)       
-S3method(box.tidwell, formula)       
 S3method(ceres.plot, glm)            
 S3method(ceres.plot, lm)            
 S3method(confidenceEllipse, glm)    
@@ -51,7 +47,6 @@ S3method(cr.plot, glm)
 S3method(cr.plot, lm)      
 S3method(leverage.plot, glm)         
 S3method(leverage.plot, lm)     
-S3method(print, box.tidwell)         
 S3method(print, spread.level.plot)   
 S3method(qq.plot, default)           
 S3method(qq.plot, glm)               

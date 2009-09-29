@@ -298,7 +298,7 @@ Changes to Version 2.0-0
 	
 	o  scatterplotMatrix() reworked.
 	
-	o  Moved to art package (some renamed): Anova(), durbinWatsonTest(), hccm(), influencePlot(), leveneTest(), linearHypothesis(), ncvTest(), outlierTest(), vif().
+	o  Moved to art package (some renamed): Anova(), boxCoxVariable(), boxTidwell(), durbinWatsonTest(), hccm(), influencePlot(), leveneTest(), linearHypothesis(), ncvTest(), outlierTest(), vif().
 	
 	o  Removed: Ask(), box.cox.powers(), box.cox(), cookd(), n.bins().
 	
