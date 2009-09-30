@@ -31,7 +31,7 @@ logit(p, percents=max(p, na.rm = TRUE) > 1, adjust)
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link{prob.axis}}}
+\seealso{\code{\link{probabilityAxis}}}
 
 \examples{
 options(digits=4)

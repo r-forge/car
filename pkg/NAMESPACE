@@ -1,10 +1,11 @@
-# last modified 29 September 2009 by J. Fox
+# last modified 30 September 2009 by J. Fox
 
 export(
     av.plot,
     av.plots,
     avp,
-    box.cox.axis,
+    basicpowerAxis,
+    bcpowerAxis,
     ceres.plot,
     ceres.plots,
     confidenceEllipse,
@@ -19,10 +20,8 @@ export(
     leverage.plot,
     leverage.plots,
     logit,
-    nice,
     panel.car,
-    power.axis,
-    prob.axis,
+    probabilityAxis,
     qq.plot,
     qqp,
     recode,
@@ -36,7 +35,8 @@ export(
     spread.level.plot,
     subsets,
     symbox,
-    which.names)    
+    which.names,
+    yjpowerAxis)    
 S3method(av.plot, glm)              
 S3method(av.plot, lm)       
 S3method(ceres.plot, glm)            
