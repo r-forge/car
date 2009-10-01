@@ -1,11 +1,11 @@
-# last modified 30 September 2009 by J. Fox
+# last modified 1 October 2009 by J. Fox
 
 export(
     av.plot,
     av.plots,
     avp,
-    basicpowerAxis,
-    bcpowerAxis,
+    basicPowerAxis,
+    bcPowerAxis,
     ceres.plot,
     ceres.plots,
     confidenceEllipse,
@@ -32,11 +32,10 @@ export(
     some,
     sp,
     spm,
-    spread.level.plot,
-    subsets,
+    spreadLevelPlot,
     symbox,
     which.names,
-    yjpowerAxis)    
+    yjPowerAxis)    
 S3method(av.plot, glm)              
 S3method(av.plot, lm)       
 S3method(ceres.plot, glm)            
@@ -47,7 +46,7 @@ S3method(cr.plot, glm)
 S3method(cr.plot, lm)      
 S3method(leverage.plot, glm)         
 S3method(leverage.plot, lm)     
-S3method(print, spread.level.plot)   
+S3method(print, spreadLevelPlot)   
 S3method(qqPlot, default)           
 S3method(qqPlot, glm)               
 S3method(qqPlot, lm)    
@@ -58,8 +57,8 @@ S3method(scatterplotMatrix, formula)
 S3method(some, data.frame)           
 S3method(some, default)              
 S3method(some, matrix)      
-S3method(spread.level.plot, default) 
-S3method(spread.level.plot, formula) 
-S3method(spread.level.plot, lm)     
+S3method(spreadLevelPlot, default) 
+S3method(spreadLevelPlot, formula) 
+S3method(spreadLevelPlot, lm)     
 S3method(subsets, regsubsets)        
         

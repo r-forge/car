@@ -18,7 +18,7 @@ scatterplotMatrix(x, ...)
 \method{scatterplotMatrix}{default}(x, var.labels=colnames(x), 
 	diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
 	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, reg.line=lm, 
-	transform=FALSE, family=c("bcpower", "yjpower"),
+	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	groups, by.groups=FALSE, identify=TRUE, labels, cutoff=.99,
 	col=rep(palette(), length.out=n.groups + 1), pch=1:n.groups, lwd=1, lwd.smooth=lwd,
@@ -64,8 +64,8 @@ spm(x, ...)
     if a vector of powers, one for each variable, these are applied prior to plotting. If  there are \code{groups}
     and \code{by.groups} is \code{TRUE}, then the transformations are estimated \emph{conditional} on the
     \code{groups} factor.}
-  \item{family}{family of transformations to estimate: \code{"bcpower"} for the Box-Cox family or 
-    \code{"yjpower"} for the Yeo-Johnson family (see \code{\link[art]{powerTransform}}).}
+  \item{family}{family of transformations to estimate: \code{"bcPower"} for the Box-Cox family or 
+    \code{"yjPower"} for the Yeo-Johnson family (see \code{\link[art]{powerTransform}}).}
   \item{ellipse}{if \code{TRUE} data-concentration ellipses are plotted in
     the off-diagonal panels.}
   \item{levels}{levels or levels at which concentration ellipses are plotted;
@@ -101,7 +101,7 @@ spm(x, ...)
 
 \seealso{\code{\link[graphics]{pairs}}, \code{\link{scatterplot}},
   \code{\link{dataEllipse}}, \code{\link[art]{powerTransform}}, 
-  \code{\link[art]{bcpower}}, \code{\link[art]{yjpower}}, \code{\link[MASS]{cov.trob}}.}
+  \code{\link[art]{bcPower}}, \code{\link[art]{yjPower}}, \code{\link[MASS]{cov.trob}}.}
 
 \examples{
 scatterplotMatrix(~ income + education + prestige | type, data=Duncan)

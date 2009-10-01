@@ -1,10 +1,10 @@
-\name{spread.level.plot}
-\alias{spread.level.plot}
+\name{spreadLevelPlot}
+\alias{spreadLevelPlot}
 \alias{slp}
-\alias{spread.level.plot.formula}
-\alias{spread.level.plot.default}
-\alias{spread.level.plot.lm}
-\alias{print.spread.level.plot}
+\alias{spreadLevelPlot.formula}
+\alias{spreadLevelPlot.default}
+\alias{spreadLevelPlot.lm}
+\alias{print.spreadLevelPlot}
 
 \title{Spread-Level Plots}
 \description{
@@ -13,37 +13,34 @@
   from linear models.
 }
 \usage{
-spread.level.plot(x, ...)
+spreadLevelPlot(x, ...)
 
-slp(x, ...)
+slp(...)
 
-\method{spread.level.plot}{formula}(formula, data=NULL, subset, na.action, 
+\method{spreadLevelPlot}{formula}(x, data=NULL, subset, na.action, 
     main=paste("Spread-Level Plot for", varnames[response], 
     "by", varnames[-response]), ...)
 
-\method{spread.level.plot}{default}(x, by, 
-  robust.line=any("MASS"==.packages(all=TRUE)), 
-  start=0, xlab="Median", ylab="Hinge-Spread", point.labels=TRUE, las=par("las"),
-  main=paste("Spread-Level Plot for", deparse(substitute(x)), 
-  "by", deparse(substitute(by))), col=palette()[2], pch=1, lwd=2, ...)
+\method{spreadLevelPlot}{default}(x, by, robust.line=TRUE, 
+	start=0, xlab="Median", ylab="Hinge-Spread", point.labels=TRUE, las=par("las"),
+	main=paste("Spread-Level Plot for", deparse(substitute(x)), 
+		"by", deparse(substitute(by))), col=palette()[2], pch=1, lwd=2, ...)
 
-\method{spread.level.plot}{lm}(x, start=0, 
-  robust.line=any("MASS"==.packages(all=TRUE)), 
-  xlab="Fitted Values",
-  ylab="Absolute Studentized Residuals", las=par("las"),
-  main=paste("Spread-Level Plot for", deparse(substitute(x))),
-  pch=1, col=palette()[2], lwd=2, ...)
-  
-\method{print}{spread.level.plot}(x, ...)
+\method{spreadLevelPlot}{lm}(x, start=0, robust.line=TRUE, 
+	xlab="Fitted Values",
+	ylab="Absolute Studentized Residuals", las=par("las"),
+	main=paste("Spread-Level Plot for\n", deparse(substitute(x))),
+	pch=1, col=palette()[2], lwd=2, ...)
+	  
+\method{print}{spreadLevelPlot}(x, ...)
 }
 
 \arguments{
-  \item{x}{a formula or an \code{lm} object to be plotted; alternatively a numeric vector.}
-  \item{formula}{a formula of the form \code{y~x}, where \code{y} is a numeric vector
-    and \code{x} is a factor.}
+  \item{x}{a formula of the form \code{y ~ x}, where \code{y} is a numeric vector
+    and \code{x} is a factor, or an \code{lm} object to be plotted; alternatively a numeric vector.}
   \item{data}{an optional data frame containing the variables to be plotted. 
     By default the variables are taken from the environment from which 
-    \code{spread.level.plot} is called.}
+    \code{spreadLevelPlot} is called.}
   \item{subset}{an optional vector specifying a subset of observations to be used.}
   \item{na.action}{a function that indicates what should happen when the data contain \code{NA}s. 
     The default is set by the \code{na.action} setting of \code{options}.}
@@ -63,7 +60,7 @@ slp(x, ...)
   \item{pch}{plotting character for points; default is \code{1} 
     (a circle, see \code{\link[graphics]{par}}).}
   \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).}
-  \item{...}{arguments passed to plotting functions.}
+  \item{\dots}{arguments passed to plotting functions.}
 }
 \details{
   Except for linear models, computes the statistics for, and plots, a Tukey spread-level plot
@@ -72,18 +69,18 @@ slp(x, ...)
   
   For linear models, plots log(abs(studentized residuals) vs. log(fitted values).
   
-  The function \code{slp} is an abbreviation for \code{spread.level.plot}.
+  The function \code{slp} is an abbreviation for \code{spreadLevelPlot}.
 }
 \value{
-  A list containing:
+  An object of class \code{spreadLevelPlot} containing:
   \item{Statistics}{a matrix with the lower-hinge, median, upper-hinge, and hinge-spread
     for each group. (Not for an \code{lm} object.)}
-  \item{PowerTransformation}{spread-stabilizing power transformation, calculated as 1 -- slope
+  \item{PowerTransformation}{spread-stabilizing power transformation, calculated as \eqn{1 - slope}
     of the line fit to the plot.}
 }
 \references{ 
-  Fox, J. (1997)
-  \emph{Applied Regression, Linear Models, and Related Methods.} Sage.
+  Fox, J. (2008)
+  \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage.
   
   Hoaglin, D. C., Mosteller, F. and Tukey, J. W. (Eds.) (1983)
   \emph{Understanding Robust and Exploratory Data Analysis.} Wiley.
@@ -93,20 +90,8 @@ slp(x, ...)
 \seealso{\code{\link[art]{hccm}}, \code{\link[art]{ncvTest}} }
 
 \examples{
-spread.level.plot(interlocks+1~nation, data=Ornstein)
-## Loading required package: MASS
-##     LowerHinge Median UpperHinge Hinge-Spread
-## US           2    6.0         13           11
-## UK           4    9.0         14           10
-## CAN          6   13.0         30           24
-## OTH          4   15.5         24           20
-##
-## Suggested power transformation:  0.1534487 
-
+spreadLevelPlot(interlocks+1~nation, data=Ornstein)
 slp(lm(interlocks ~ assets + sector + nation, data=Ornstein))
-## Suggested power transformation:  0.3222165 
-## Warning message:
-## Start =  3 added to fitted values to avoid 0 or negative values. in: spread.level.plot.lm(x, ...) 
 }
 
 \keyword{hplot}

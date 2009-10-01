@@ -1,6 +1,6 @@
 # fancy scatterplot matrices (J. Fox)
 
-# last modified: 27 September 2009 by J. Fox
+# last modified: 1 October 2009 by J. Fox
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
@@ -43,7 +43,7 @@ scatterplotMatrix.formula <- function (x, data=NULL, subset, identify=TRUE, labe
 scatterplotMatrix.default <- function(x, var.labels=colnames(x), 
 	diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
 	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, reg.line=lm, 
-	transform=FALSE, family=c("bcpower", "yjpower"),
+	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	groups=NULL, by.groups=FALSE, identify=TRUE, labels, cutoff=.99,
 	col=rep(palette(), length.out=n.groups + 1), pch=1:n.groups, lwd=1, lwd.smooth=lwd,
@@ -168,9 +168,9 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 						else coef(powerTransform(x, family=family), round=TRUE)
 			}
 		for (i in 1:ncol(x)){
-			x[, i] <- if (family == "bcpower") 
-						bcpower(x[, i], transform[i])
-					else yjpower(x[, i], transform[i])
+			x[, i] <- if (family == "bcPower") 
+						bcPower(x[, i], transform[i])
+					else yjPower(x[, i], transform[i])
 			var.labels[i] <- paste(var.labels[i], "^(", round(transform[i],2), ")", sep="")
 		}
 	}

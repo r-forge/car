@@ -1,7 +1,7 @@
 \name{TransformationAxes}
-\alias{basicpowerAxis}
-\alias{bcpowerAxis}
-\alias{yjpowerAxis}
+\alias{basicPowerAxis}
+\alias{bcPowerAxis}
+\alias{yjPowerAxis}
 \alias{probabilityAxis}
 
 \title{Axes for Transformed Variables}
@@ -14,15 +14,15 @@
   the left of the plot as well.
 }
 \usage{
-basicpowerAxis(power, base=exp(1), side=c("right", "above", "left", "below"), 
+basicPowerAxis(power, base=exp(1), side=c("right", "above", "left", "below"), 
     at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
     axis.title="Untransformed Data", cex=1, las=par("las"))
 
-bcpowerAxis(power, side=c("right", "above", "left", "below"), 
+bcPowerAxis(power, side=c("right", "above", "left", "below"), 
     at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
     axis.title="Untransformed Data", cex=1, las=par("las"))
     
-yjpowerAxis(power, side=c("right", "above", "left", "below"), 
+yjPowerAxis(power, side=c("right", "above", "left", "below"), 
 	at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
 	axis.title="Untransformed Data", cex=1, las=par("las"))
 
@@ -63,14 +63,14 @@ probabilityAxis(scale=c("logit", "probit"),
 \details{
   The transformations corresponding to the three functions are as follows:
   \describe{
-    \item{\code{basicpowerAxis}:}{Simple power transformation, 
+    \item{\code{basicPowerAxis}:}{Simple power transformation, 
       \eqn{x^{\prime }=x^{p}}{x' = x^p} for \eqn{p\neq 0}{p != 0}
       and \eqn{x^{\prime }=\log x}{x' = log x} for \eqn{p=0}{p = 0}.}
-    \item{\code{bcpowerAxis}:}{Box-Cox power transformation,
+    \item{\code{bcPowerAxis}:}{Box-Cox power transformation,
       \eqn{x^{\prime }=(x^{\lambda }-1)/\lambda}{x' = (x^p - 1)/p} 
       for \eqn{\lambda \neq 0}{x != 0} and \eqn{x^{\prime }=\log x}{x' = log(x)} 
       for \eqn{\lambda =0}{p = 0}.}
-    \item{\code{yjpowerAxis}:}{Yeo-Johnson power transformation, 
+    \item{\code{yjPowerAxis}:}{Yeo-Johnson power transformation, 
       for non-negative \eqn{x}{x}, the Box-Cox transformation of
       \eqn{x + 1}{x + 1}; for negative \eqn{x}{x}, the Box-Cox transformation of
       \eqn{|x| + 1}{|x| + 1} with power \eqn{2 - p}{2 - p}.}
@@ -90,7 +90,7 @@ probabilityAxis(scale=c("logit", "probit"),
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link[art]{basicpower}}, \code{\link[art]{bcpower}}, \code{\link[art]{yjpower}}, 
+\seealso{\code{\link[art]{basicPower}}, \code{\link[art]{bcPower}}, \code{\link[art]{yjPower}}, 
 	\code{\link{logit}}.}
 
 \examples{
@@ -98,17 +98,17 @@ UN <- na.omit(UN)
 par(mar=c(5, 4, 4, 4) + 0.1) # leave space on right
 
 with(UN, plot(log(gdp, 10), log(infant.mortality, 10)))
-basicpowerAxis(0, base=10, side="above", 
+basicPowerAxis(0, base=10, side="above", 
   at=c(50, 200, 500, 2000, 5000, 20000), grid=TRUE, 
   axis.title="GDP per capita")
-basicpowerAxis(0, base=10, side="right",
+basicPowerAxis(0, base=10, side="right",
   at=c(5, 10, 20, 50, 100), grid=TRUE, 
   axis.title="infant mortality rate per 1000")
 
-with(UN, plot(bcpower(gdp, 0), bcpower(infant.mortality, 0)))
-bcpowerAxis(0, side="above", 
+with(UN, plot(bcPower(gdp, 0), bcPower(infant.mortality, 0)))
+bcPowerAxis(0, side="above", 
   grid=TRUE, axis.title="GDP per capita")
-bcpowerAxis(0, side="right",
+bcPowerAxis(0, side="right",
   grid=TRUE, axis.title="infant mortality rate per 1000")
 
 with(UN, qqPlot(logit(infant.mortality/1000), identify=FALSE))

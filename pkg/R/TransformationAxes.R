@@ -1,27 +1,11 @@
 # Axes for transformations (J. Fox)
 
-# last modified 29 September 2009 by J. Fox
-
-# function to find "nice" numbers
-
-nice <- function(x, direction=c("round", "down", "up"), lead.digits=1){
-    direction <- match.arg(direction)
-    if (length(x) > 1) return(sapply(x, nice, direction=direction, lead.digits=lead.digits))
-    if (x == 0) return(0)
-    power.10 <- floor(log(abs(x),10))
-	if (lead.digits > 1) power.10 <- power.10 - lead.digits + 1
-    lead.digit <- switch(direction,
-        round=round(abs(x)/10^power.10),
-        down=floor(abs(x)/10^power.10),
-        up=ceiling(abs(x)/10^power.10))
-    sign(x)*lead.digit*10^power.10
-    }
-
+# last modified 1 October 2009 by J. Fox
 
 # functions to add untransformed axis to right or top of a plot
 #  for power, Box-Cox,  or Yeo-Johnson transformations
 
-basicpowerAxis <- function(power, base=exp(1), side=c("right", "above", "left", "below"), 
+basicPowerAxis <- function(power, base=exp(1), side=c("right", "above", "left", "below"), 
     at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
     axis.title="Untransformed Data", cex=1, las=par("las")) {
     side <- if(is.numeric(side)) side 
@@ -41,7 +25,7 @@ basicpowerAxis <- function(power, base=exp(1), side=c("right", "above", "left", 
     mtext(axis.title, side=side, line=3, cex=cex)
     }
 
-bcpowerAxis <- function(power, side=c("right", "above", "left", "below"), 
+bcPowerAxis <- function(power, side=c("right", "above", "left", "below"), 
     at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
     axis.title="Untransformed Data", cex=1, las=par("las")) {
 	inverse.power <- function(x, p){
@@ -58,14 +42,14 @@ bcpowerAxis <- function(power, side=c("right", "above", "left", "below"),
     ticks.x <- if (missing(at)) ticks.x
         else at
     ticks.text <- as.character(ticks.x)
-    ticks.trans <- bcpower(ticks.x, power)
+    ticks.trans <- bcPower(ticks.x, power)
     axis(side, labels=ticks.text, at=ticks.trans, las=las)
     if (grid && (side %% 2 == 0)) abline(h=ticks.trans, lty=grid.lty, col=grid.col)
     if (grid && (side %% 2 == 1)) abline(v=ticks.trans, lty=grid.lty, col=grid.col)
     mtext(axis.title, side=side, line=3, cex=cex)
     }
 	
-yjpowerAxis <- function(power, side=c("right", "above", "left", "below"), 
+yjPowerAxis <- function(power, side=c("right", "above", "left", "below"), 
 	at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
 	axis.title="Untransformed Data", cex=1, las=par("las")) {
 	inverse.bc <- function(x,p){
@@ -84,7 +68,7 @@ yjpowerAxis <- function(power, side=c("right", "above", "left", "below"),
 	ticks.x <- if (missing(at)) ticks.x
 		else at
 	ticks.text <- as.character(ticks.x)
-	ticks.trans <- yjpower(ticks.x, power)
+	ticks.trans <- yjPower(ticks.x, power)
 	axis(side, labels=ticks.text, at=ticks.trans, las=las)
 	if (grid && (side %% 2 == 0)) abline(h=ticks.trans, lty=grid.lty, col=grid.col)
 	if (grid && (side %% 2 == 1)) abline(v=ticks.trans, lty=grid.lty, col=grid.col)
