@@ -294,11 +294,7 @@ Changes to Version 2.0-0
 
 	o  Functions renamed to camel case.
 	
-	o  scatterplot() reworked.
-	
-	o  scatterplotMatrix() reworked.
-	
-	o  transformation-axis function reworked.
+	o  Reworked: qqPlot(), scatterplot(), scatterplotMatrix(), transformation-axis functions.
 	
 	o  Moved to art package (some renamed): Anova(), boxCoxVariable(), boxTidwell(), durbinWatsonTest(), hccm(), influencePlot(), leveneTest(), linearHypothesis(), ncvTest(), outlierTest(), vif().
 	

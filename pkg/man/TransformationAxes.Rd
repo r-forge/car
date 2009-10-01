@@ -95,10 +95,9 @@ probabilityAxis(scale=c("logit", "probit"),
 
 \examples{
 UN <- na.omit(UN)
-attach(UN)
 par(mar=c(5, 4, 4, 4) + 0.1) # leave space on right
 
-plot(log(gdp, 10), log(infant.mortality, 10))
+with(UN, plot(log(gdp, 10), log(infant.mortality, 10)))
 basicpowerAxis(0, base=10, side="above", 
   at=c(50, 200, 500, 2000, 5000, 20000), grid=TRUE, 
   axis.title="GDP per capita")
@@ -106,16 +105,16 @@ basicpowerAxis(0, base=10, side="right",
   at=c(5, 10, 20, 50, 100), grid=TRUE, 
   axis.title="infant mortality rate per 1000")
 
-plot(bcpower(gdp, 0), bcpower(infant.mortality, 0))
+with(UN, plot(bcpower(gdp, 0), bcpower(infant.mortality, 0)))
 bcpowerAxis(0, side="above", 
   grid=TRUE, axis.title="GDP per capita")
 bcpowerAxis(0, side="right",
   grid=TRUE, axis.title="infant mortality rate per 1000")
 
-qq.plot(logit(infant.mortality/1000))
+with(UN, qqPlot(logit(infant.mortality/1000), identify=FALSE))
 probabilityAxis()
 
-qq.plot(logit(infant.mortality/1000))
-probabilityAxis(at=c(.005, .01, .02, .04, .08, .16))
+with(UN, qqPlot(qnorm(infant.mortality/1000), identify=FALSE))
+probabilityAxis(at=c(.005, .01, .02, .04, .08, .16), scale="probit")
 }
 \keyword{aplot}

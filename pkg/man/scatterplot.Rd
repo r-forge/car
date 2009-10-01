@@ -57,7 +57,7 @@ sp(...)
   \item{lwd}{width of linear-regression lines (default \code{1}).}
   \item{lwd.smooth}{width for smooth regression lines (default is the same as \code{lwd}).}
   \item{identify}{if \code{"auto"} (the default), outlying points are identified automatically;
-  	if \code{TRUE}, points are identified interactive by left-clicking near them; right-click
+  	if \code{TRUE}, points are identified interactively by left-clicking near them; right-click
   	to exit from interactive-point-identification mode.}
   \item{cutoff}{outliers are automatically identified by comparing to the contours of a
   	robustly estimated bivariate normal distribution; points beyond the contour given by

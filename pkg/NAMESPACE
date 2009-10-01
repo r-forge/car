@@ -22,7 +22,7 @@ export(
     logit,
     panel.car,
     probabilityAxis,
-    qq.plot,
+    qqPlot,
     qqp,
     recode,
     reg.line,
@@ -48,9 +48,9 @@ S3method(cr.plot, lm)
 S3method(leverage.plot, glm)         
 S3method(leverage.plot, lm)     
 S3method(print, spread.level.plot)   
-S3method(qq.plot, default)           
-S3method(qq.plot, glm)               
-S3method(qq.plot, lm)    
+S3method(qqPlot, default)           
+S3method(qqPlot, glm)               
+S3method(qqPlot, lm)    
 S3method(scatterplot, default)       
 S3method(scatterplot, formula)       
 S3method(scatterplotMatrix, default)

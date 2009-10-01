@@ -1,9 +1,9 @@
-\name{qq.plot}
-\alias{qq.plot}
+\name{qqPlot}
+\alias{qqPlot}
 \alias{qqp}
-\alias{qq.plot.default}
-\alias{qq.plot.lm}
-\alias{qq.plot.glm}
+\alias{qqPlot.default}
+\alias{qqPlot.lm}
+\alias{qqPlot.glm}
 
 \title{Quantile-Comparison Plots}
 \description{
@@ -11,22 +11,23 @@
  a linear model, against theoretical quantiles of a comparison distribution.
 }
 \usage{
-qq.plot(x, ...)
+qqPlot(x, ...)
 
 qqp(...)
 
-\method{qq.plot}{default}(x, distribution="norm", ylab=deparse(substitute(x)),
-        xlab=paste(distribution, "quantiles"), main=NULL, las=par("las"),
-        envelope=.95, labels=FALSE, col=palette()[2], lwd=2, pch=1, cex=1,
-        line=c("quartiles", "robust", "none"), ...)
+\method{qqPlot}{default}(x, distribution="norm", ylab=deparse(substitute(x)),
+	xlab=paste(distribution, "quantiles"), main=NULL, las=par("las"),
+	envelope=.95, identify=c("auto", TRUE, FALSE), labels, col=palette()[2], 
+	lwd=2, pch=1, cex=par("cex"), cex.identify=cex,
+	line=c("quartiles", "robust", "none"), ...)
 
-\method{qq.plot}{lm}(x, main=NULL, xlab=paste(distribution, "Quantiles"), 
-  ylab=paste("Studentized Residuals(", deparse(substitute(x)), ")",
-    sep = ""), 
-  distribution=c("t", "norm"), line=c("quartiles", "robust", "none"), 
-  las=par('las'), simulate=FALSE, envelope=0.95, labels=names(rstudent), 
-  reps=100, col=palette()[2], lwd=2, pch=1, cex=1, ...)
+\method{qqPlot}{lm}(x, xlab=paste(distribution, "Quantiles"),
+	ylab=paste("Studentized Residuals(", deparse(substitute(x)), ")", sep=""), main=NULL, 
+	distribution=c("t", "norm"), line=c("robust", "quartiles", "none"), las=par("las"),
+	simulate=TRUE, envelope=.95, identify=c("auto", TRUE, FALSE), labels=names(rstudent), reps=1000, 
+	col=palette()[2], lwd=2, pch=1, cex=par("cex"), cex.identify=cex, ...)
 }
+
 \arguments{
   \item{x}{vector of numeric values or \code{lm} object.}
   \item{distribution}{root name of comparison distribution -- e.g., \code{norm} for the
@@ -36,8 +37,11 @@ qqp(...)
   \item{main}{label for plot.}
   \item{envelope}{confidence level for point-wise confidence envelope, or 
     \code{FALSE} for no envelope.}
-  \item{labels}{vector of point labels for interactive point identification,
-    or \code{FALSE} for no labels.}
+  \item{identify}{if \code{"auto"} (the default), outlying points are identified automatically;
+  	if \code{TRUE}, points are identified interactively by left-clicking near them; right-click
+  	to exit from interactive-point-identification mode.}
+  \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
+  	labels, and, failing that, will use observation numbers.}
   \item{las}{if \code{0}, ticks labels are drawn parallel to the
     axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).}
   \item{col}{color for points and lines; the default is the \emph{second} entry
@@ -47,8 +51,8 @@ qqp(...)
     (a circle, see \code{\link[graphics]{par}}).}
   \item{cex}{factor for expanding the size of plotted symbols; the default is
     \code{1}.}
-  \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).
-    Confidence envelopes are drawn at half this line width.}
+  \item{cex.identify}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
+  \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).}
   \item{line}{\code{"quartiles"} to pass a line through the quartile-pairs, or
     \code{"robust"} for a robust-regression line; the latter uses the \code{rlm}
     function in the \code{MASS} package. Specifying \code{line = "none"} suppresses the line.}
@@ -65,17 +69,16 @@ qqp(...)
   
   Any distribution for which quantile and
   density functions exist in R (with prefixes \code{q} and \code{d}, respectively) may be used. 
-  Studentized residuals are plotted against the
-  appropriate t-distribution.
+  Studentized residuals from linear models are plotted against the appropriate t-distribution.
   
-  The function \code{qqp} is an abbreviation for \code{qq.plot}.
+  The function \code{qqp} is an abbreviation for \code{qqPlot}.
 }
 \value{
-  \code{NULL}. These functions are used only for their side effect (to make a graph).
+  These functions return the labels of identified points.
 }
 \references{
-  Fox, J. (1997)
-  \emph{Applied Regression, Linear Models, and Related Methods.} Sage.
+  Fox, J. (2008)
+  \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage.
 
   Atkinson, A. C. (1985)
   \emph{Plots, Transformations, and Regression.} Oxford.
@@ -87,10 +90,10 @@ qqp(...)
 
 \examples{
 x<-rchisq(100, df=2)
-qq.plot(x)
-qq.plot(x, dist="chisq", df=2)
+qqPlot(x)
+qqPlot(x, dist="chisq", df=2)
 
-qq.plot(lm(interlocks~assets+sector+nation, data=Ornstein), sim=TRUE)
+qqPlot(lm(prestige ~ income + education + type, data=Duncan), simulate=TRUE, envelope=.99)
 }
 
 \keyword{distribution}

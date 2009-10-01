@@ -1,6 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 26 September 2009
+# last modified 30 September 2009
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -195,7 +195,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 	identify <- match.arg(identify, c("auto", TRUE, FALSE))
 	if (identify != "FALSE" && missing(labels)){
 		labels <- if (is.null(names(y)))
-				as.character(seq(along=y))
+				seq(along=y)
 			else names(y)
 	}
 	mar <- par("mar")
@@ -279,7 +279,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			pch=pch, col=col[2:(n.groups+1)], pt.cex=cex, cex=cex.lab, title=legend.title)
 	}
 	if (identify == "TRUE") indices <- labels[identify(.x, .y, labels)]
-	if (is.null(indices)) invisible(indices) else indices
+	if (is.null(indices)) invisible(indices) else if (is.numeric(indices)) sort(indices) else indices
 }
 
 sp <- function(...) scatterplot(...)
