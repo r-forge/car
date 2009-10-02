@@ -69,7 +69,7 @@ leverage.plot(model, ...)
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link{av.plots}}}
+%%\seealso{\code{\link{avPlots}}}
 
 \examples{
   \dontrun{

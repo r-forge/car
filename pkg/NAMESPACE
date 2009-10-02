@@ -1,9 +1,6 @@
-# last modified 1 October 2009 by J. Fox
+# last modified 2 October 2009 by J. Fox
 
 export(
-    av.plot,
-    av.plots,
-    avp,
     basicPowerAxis,
     bcPowerAxis,
     ceres.plot,
@@ -25,7 +22,7 @@ export(
     qqPlot,
     qqp,
     recode,
-    reg.line,
+    regLine,
     scatterplot,
     scatterplotMatrix,
     slp,
@@ -36,8 +33,6 @@ export(
     symbox,
     which.names,
     yjPowerAxis)    
-S3method(av.plot, glm)              
-S3method(av.plot, lm)       
 S3method(ceres.plot, glm)            
 S3method(ceres.plot, lm)            
 S3method(confidenceEllipse, glm)    

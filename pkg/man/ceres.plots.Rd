@@ -73,7 +73,7 @@ ceres.plot(model, ...)
 }
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link{cr.plots}}, \code{\link{av.plots}}}
+%%\seealso{\code{\link{cr.plots}}, \code{\link{avPlots}}}
 
 \examples{
   \dontrun{

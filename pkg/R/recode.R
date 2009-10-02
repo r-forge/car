@@ -1,7 +1,7 @@
 # recode function (J. Fox)
 # last modified 2 April 2009
 
-recode<-function(var, recodes, as.factor.result, levels){
+recode <- function(var, recodes, as.factor.result, levels){
 	recode.list <- rev(strsplit(recodes, ";")[[1]])
 	is.fac <- is.factor(var)
 	if (missing(as.factor.result)) as.factor.result <- is.fac

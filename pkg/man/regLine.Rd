@@ -1,5 +1,5 @@
-\name{reg.line}
-\alias{reg.line}
+\name{regLine}
+\alias{regLine}
 
 \title{Plot Regression Line}
 \description{
@@ -7,7 +7,7 @@
   between the minimum and maximum x-values.
 }
 \usage{
-reg.line(mod, col=palette()[2], lwd=2, lty=1,...)
+regLine(mod, col=palette()[2], lwd=2, lty=1,...)
 }
 
 \arguments{
@@ -41,8 +41,8 @@ reg.line(mod, col=palette()[2], lwd=2, lty=1,...)
 
 \examples{
 plot(repwt ~ weight, pch=c(1,2)[sex], data=Davis)
-reg.line(lm(repwt~weight, subset=sex=="M", data=Davis))
-reg.line(lm(repwt~weight, subset=sex=="F", data=Davis), lty=2)
+regLine(lm(repwt~weight, subset=sex=="M", data=Davis))
+regLine(lm(repwt~weight, subset=sex=="F", data=Davis), lty=2)
 }
 
 \keyword{aplot}

@@ -74,7 +74,7 @@ cr.plot(model, ...)
 }
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link{ceres.plots}}, \code{\link{av.plots}}}
+%%\seealso{\code{\link{ceres.plots}}, \code{\link{avPlots}}}
 
 \examples{
 cr.plots(lm(prestige~income+education, data=Prestige), 
