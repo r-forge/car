@@ -13,14 +13,14 @@
 
 scatterplotMatrix(x, ...)
 
-\method{scatterplotMatrix}{formula}(x, data=NULL, subset, identify=TRUE, labels, ...)
+\method{scatterplotMatrix}{formula}(x, data=NULL, subset, identify.points="mahal", labels, ...)
 
 \method{scatterplotMatrix}{default}(x, var.labels=colnames(x), 
 	diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
 	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, reg.line=lm, 
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	groups, by.groups=FALSE, identify=TRUE, labels, cutoff=.99,
+	groups=NULL, by.groups=FALSE, identify.points="mahal", id.n=3, labels,
 	col=rep(palette(), length.out=n.groups + 1), pch=1:n.groups, lwd=1, lwd.smooth=lwd,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
 	cex.main=par("cex.main"), cex.identify=cex,
@@ -36,10 +36,11 @@ spm(x, ...)
   \item{data}{for \code{scatterplotMatrix.formula},
     a data frame within which to evaluate the formula.}
   \item{subset}{expression defining a subset of observations.}
-  \item{identify}{if \code{TRUE} (the default), outlying points in each panel are identified automatically.}
-  \item{cutoff}{outliers are automatically identified by comparing to the contours of a
-  	robustly estimated bivariate normal distribution; points beyond the contour given by
-  	\code{cutoff} (default, \code{.99}) are flagged.}
+  \item{identify.points}{if \code{"mahal"} (the default), relatively extreme points in each panel are identified automatically
+  	according to their Mahalanobis distances from the centroid (point of means);
+  	if \code{FALSE}, no point identification.
+  	See \code{\link[art]{showExtremes}} for details (but interactive point identification is not permitted.}
+  \item{id.n}{Number of relatively extreme points to identify automatically in each panel (default, \code{3}).}
   \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
   	labels, and, failing that, will use observation numbers.}
   \item{var.labels}{variable labels (for the diagonal of the plot).}
@@ -101,7 +102,8 @@ spm(x, ...)
 
 \seealso{\code{\link[graphics]{pairs}}, \code{\link{scatterplot}},
   \code{\link{dataEllipse}}, \code{\link[art]{powerTransform}}, 
-  \code{\link[art]{bcPower}}, \code{\link[art]{yjPower}}, \code{\link[MASS]{cov.trob}}.}
+  \code{\link[art]{bcPower}}, \code{\link[art]{yjPower}}, \code{\link[MASS]{cov.trob}},
+  \code{\link[art]{showExtremes}}.}
 
 \examples{
 scatterplotMatrix(~ income + education + prestige | type, data=Duncan)

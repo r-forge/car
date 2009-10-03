@@ -1,12 +1,12 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 30 September 2009
+# last modified 2 October 2009
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
 }
 
-scatterplot.formula <- function (x, data, subset, xlab, ylab, legend.title, identify=c("auto", TRUE, FALSE), labels, ...) {
+scatterplot.formula <- function (x, data, subset, xlab, ylab, legend.title, identify.points="mahal", labels, ...) {
 	na.save <- options(na.action=na.omit)
 	on.exit(options(na.save))
 	na.pass <- function(dframe) dframe
@@ -14,40 +14,38 @@ scatterplot.formula <- function (x, data, subset, xlab, ylab, legend.title, iden
 	if (is.matrix(eval(m$data, sys.frame(sys.parent())))) 
 		m$data <- as.data.frame(data)
 	m$na.action <- na.pass
-	m$legend.title <- m$labels <- m$identify <- m$xlab <- m$ylab <- m$... <- NULL
+	m$legend.title <- m$labels <- m$identify.points <- m$xlab <- m$ylab <- m$... <- NULL
 	m[[1]] <- as.name("model.frame")
 	if (!inherits(x, "formula") | length(x) != 3) 
 		stop("invalid formula")    
 	x <- as.character(c(x))
 	x <- as.formula(sub("\\|", "+", x))
 	m$formula <- x
-	identify <- as.character(identify[1])
-	identify <- match.arg(identify, c("auto", TRUE, FALSE))
 	if (missing(data)){ 
 		X <- na.omit(eval(m, parent.frame()))
-		if (identify != "FALSE" && missing(labels)) labels <- labels[as.numeric(gsub("X", "", row.names(X)))]
+		if (identify.points != FALSE && missing(labels)) labels <- labels[as.numeric(gsub("X", "", row.names(X)))]
 	}
 	else{
-		if (identify != "FALSE" && !missing(labels)) row.names(data) <- labels
+		if (identify.points != FALSE && !missing(labels)) row.names(data) <- labels
 		X <- eval(m, parent.frame())
-		if (identify != "FALSE") labels <- row.names(X)
+		if (identify.points != FALSE) labels <- row.names(X)
 	}
 	names <- names(X)
 	if (missing(xlab)) xlab <- names[2]
 	if (missing(ylab)) ylab <- names[1]
 	if (ncol(X) == 2) scatterplot(X[,2], X[,1], xlab=xlab, ylab=ylab, 
-			labels=labels, identify=identify, ...)
+			labels=labels, identify.points=identify.points, ...)
 	else {
 		if (missing(legend.title)) legend.title <- names[3]
 		scatterplot(X[,2], X[,1], groups=X[,3], xlab=xlab, ylab=ylab,  
-			legend.title=legend.title, labels=labels, identify=identify, ...)
+			legend.title=legend.title, labels=labels, identify.points=identify.points, ...)
 	}
 }
 
 
 scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, reg.line=lm, boxplots="xy",
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
-	lwd=1, lwd.smooth=lwd, identify=c("auto", TRUE, FALSE), cutoff=.99, labels, log="", jitter=list(), xlim=NULL, ylim=NULL,
+	lwd=1, lwd.smooth=lwd, identify.points="mahal", id.n=3, labels, log="", jitter=list(), xlim=NULL, ylim=NULL,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
 	cex.main=par("cex.main"), cex.sub=par("cex.sub"), cex.identify=cex,
 	groups, by.groups=!missing(groups), legend.title=deparse(substitute(groups)), 
@@ -106,7 +104,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			x1 <- exp(x[min])
 			x2 <- exp(x[max])
 		}
-		if (!logged("x")){
+		if (!logged("y")){
 			y1 <- y.hat[min]
 			y2 <- y.hat[max]
 		}
@@ -168,32 +166,30 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 		lines(c(.5, .5), c(Q3, UW))
 		if (!is.null(res$out)) points(rep(.5, length(res$out)), res$out, cex=cex)
 	}
-	label.outliers <- function(x, y, cutoff, labels, col){
-		if (logged("x")) x <- log(x)
-		if (logged("y")) y <- log(y)
-		cutoff <- 2*qf(cutoff, 2, length(x) - 1)
-		X <- na.omit(data.frame(x, y, labels, stringsAsFactors=FALSE))
-		res <- cov.trob(X[, c("x", "y")])
-		d <- mahalanobis(X[, c("x", "y")], res$center, res$cov)
-		which <- which(d > cutoff)
-		if (length(which) == 0) return(NULL)
-		x <- X$x
-		y <- X$y
-		labels <- X$labels
-		pos <- ifelse(x[which] <= mean(range(X$x)), 4, 2)
-		if (logged("x")) x <- exp(x)
-		if (logged("y")) y <- exp(y)
-		text(x[which], y[which], labels[which], pos=pos, col=col, cex=cex.identify)
-		labels[which]
-	}
+#	label.outliers <- function(x, y, cutoff, labels, col){
+#		if (logged("x")) x <- log(x)
+#		if (logged("y")) y <- log(y)
+#		cutoff <- 2*qf(cutoff, 2, length(x) - 1)
+#		X <- na.omit(data.frame(x, y, labels, stringsAsFactors=FALSE))
+#		res <- cov.trob(X[, c("x", "y")])
+#		d <- mahalanobis(X[, c("x", "y")], res$center, res$cov)
+#		which <- which(d > cutoff)
+#		if (length(which) == 0) return(NULL)
+#		x <- X$x
+#		y <- X$y
+#		labels <- X$labels
+#		pos <- ifelse(x[which] <= mean(range(X$x)), 4, 2)
+#		if (logged("x")) x <- exp(x)
+#		if (logged("y")) y <- exp(y)
+#		text(x[which], y[which], labels[which], pos=pos, col=col, cex=cex.identify)
+#		labels[which]
+#	}
 	# force evaluation of some arguments
 	by.groups
 	legend.plot
 	legend.title
 	spread 
-	identify <- as.character(identify[1])
-	identify <- match.arg(identify, c("auto", TRUE, FALSE))
-	if (identify != "FALSE" && missing(labels)){
+	if (identify.points != FALSE && missing(labels)){
 		labels <- if (is.null(names(y)))
 				seq(along=y)
 			else names(y)
@@ -201,10 +197,10 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 	mar <- par("mar")
 	mfcol <- par("mfcol")
 	if (reset.par) on.exit(par(mar=mar, mfcol=mfcol))
-	if(FALSE == boxplots) boxplots <- ""
+	if( FALSE == boxplots) boxplots <- ""
 	if (!missing(groups)){
-		if (identify != "FALSE"){
-			data <- na.omit(data.frame(groups, x, y, labels))
+		if (identify.points != FALSE){
+			data <- na.omit(data.frame(groups, x, y, labels, stringsAsFactors=FALSE))
 			groups <- data[,1]
 			.x <- data[,2]
 			.y <- data[,3]
@@ -240,6 +236,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 	n.groups <- length(levels(groups))
 	if (n.groups > length(col) - 1) stop("number of groups exceeds number of available colors")
 	indices <- NULL
+	range.x <- if (logged("x")) range(log(.x)) else range(.x)
 	for (i in 1:n.groups){
 		subs <- groups == levels(groups)[i]
 		points(if (is.null(jitter$x) || jitter$x == 0) .x[subs] else jitter(.x[subs], factor=jitter$x), 
@@ -256,8 +253,12 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 					levels=levels, col=col[i + 1], robust=robust))
 			}
 		}
-		if (identify == "auto") 
-			indices <- c(indices, label.outliers(.x[subs], .y[subs], cutoff, labels[subs], col=col[i + 1]))
+		if (!is.logical(identify.points)) 
+			indices <- c(indices, showExtremes(
+					.x[subs], 
+					.y[subs], 
+					labels=labels[subs], ids=identify.points, log=log, id.n=id.n, cex.id=cex.identify, col=col[i + 1],
+					range.x=range.x))
 	}
 	if (!by.groups){
 		if (smooth) lowess.line(.x, .y, col=col[1], span=span)
@@ -269,16 +270,19 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			with(X, dataEllipse(x, y, plot.points=FALSE, lwd=1, log=log, levels=levels, col=col[1],
 				robust=robust))
 		}
-		if (identify == "auto") indices <- label.outliers(.x, .y, cutoff, labels, col=col[1])
+		if (!is.logical(identify.points)) indices <- showExtremes(
+				.x, 
+				.y,
+				labels=labels, ids=identify.points, log=log, id.n=id.n, cex.id=cex.identify, col=col[1])
 	}
-	if(legend.plot) {
+	if (legend.plot) {
 		xpd <- par(xpd=TRUE)
 		on.exit(par(xpd=xpd), add=TRUE)
 		usr <- par("usr")
 		legend(usr[1], usr[4] + 1.2*top*strheight("x"), legend=levels(groups), 
 			pch=pch, col=col[2:(n.groups+1)], pt.cex=cex, cex=cex.lab, title=legend.title)
 	}
-	if (identify == "TRUE") indices <- labels[identify(.x, .y, labels)]
+	if (identify.points == TRUE) indices <- labels[identify(.x, .y, labels)]
 	if (is.null(indices)) invisible(indices) else if (is.numeric(indices)) sort(indices) else indices
 }
 

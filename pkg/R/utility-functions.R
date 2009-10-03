@@ -1,7 +1,7 @@
 
 # Utility functions (J. Fox)
 
-# last modified 1 October 2009 by J. Fox
+# last modified 2 October 2009 by J. Fox
 
 # function to find "nice" numbers
 
@@ -140,4 +140,39 @@ mfrow <- function(n, max.plots=0){
 }
 
 
+# ------------ temporary ------------
+
+showExtremes <- function(x, y, labels = NULL,
+	ids = "xy", log="", cex.id=.75, id.n=3, col=palette()[1], 
+	res=.y - mean(.y, na.rm=TRUE), range.x=range(.x)) {
+	if(id.n > 0L) {
+		if (is.null(labels))
+			labels <- as.character(seq(along=res))
+		getPoints <- function(z) {
+			names(z) <- labels
+			iid <- seq(length=id.n)
+			zs <- z[order(-z)[iid]]
+			match(names(zs), labels)
+		}
+		logged <- function(axis=c("x", "y")){
+			axis <- match.arg(axis)
+			0 != length(grep(axis, log))
+		}
+		.x <- if (logged("x")) log(x) else x
+		.y <- if (logged("y")) log(y) else y
+		ind <- if (!is.character(ids)) {
+				if (length(ids) == length(x)) getPoints(ids) else
+					stop("identify.points argument is of wrong length")} else
+				switch(ids,
+					x= getPoints(abs(.x - mean(.x, na.rm=TRUE))),
+					y= getPoints(abs(res)),
+					xy= c(getPoints(abs(x - mean(.x, na.rm=TRUE))),
+						getPoints(abs(res))),
+					mahal= getPoints(rowSums(qr.Q(qr(cbind(1, .x, .y))) ^ 2)))
+		labpos <- c(4, 2)[1 + as.numeric(.x > mean(range.x))]
+		text(x[ind], y[ind], labels[ind], cex = cex.id, xpd = TRUE,
+			pos = labpos[ind], offset = 0.25, col=col)
+		return(labels[ind])
+	} 
+}
 

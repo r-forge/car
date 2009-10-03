@@ -14,13 +14,13 @@
 scatterplot(x, ...)
 
 \method{scatterplot}{formula}(x, data, subset, xlab, ylab, legend.title, 
-	identify=c("auto", TRUE, FALSE), labels, ...)
+	identify.points="mahal", labels, ...)
 
-\method{scatterplot}{default}(x, y, smooth=TRUE, spread=!by.groups, span=.5, 
-	reg.line=lm, boxplots="xy", xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), 
-	las=par("las"), lwd=1, lwd.smooth=lwd, 
-	identify=c("auto", TRUE, FALSE), cutoff=.99, labels, 
-	log="", jitter=list(), xlim=NULL, ylim=NULL,
+\method{scatterplot}{default}(x, y, smooth=TRUE, spread=!by.groups, 
+	span=.5, reg.line=lm, boxplots="xy",
+	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
+	lwd=1, lwd.smooth=lwd, identify.points="mahal", id.n=3, labels, log="", 
+	jitter=list(), xlim=NULL, ylim=NULL,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
 	cex.main=par("cex.main"), cex.sub=par("cex.sub"), cex.identify=cex,
 	groups, by.groups=!missing(groups), legend.title=deparse(substitute(groups)), 
@@ -35,7 +35,7 @@ sp(...)
   \item{x}{vector of horizontal coordinates, or a ``model'' formula, of the form \code{y ~ x} or 
     (to plot by groups) \code{y ~ x | z}, where \code{z} evaluates to a factor 
     or other variable dividing the data into groups..}
-  \item{y}{vector of verical coordinates.}
+  \item{y}{vector of vertical coordinates.}
   \item{data}{data frame within which to evaluate the formula.}
   \item{subset}{expression defining a subset of observations.}
   \item{smooth}{if \code{TRUE} (the default) a loess nonparametric regression line is
@@ -56,12 +56,12 @@ sp(...)
     axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).}
   \item{lwd}{width of linear-regression lines (default \code{1}).}
   \item{lwd.smooth}{width for smooth regression lines (default is the same as \code{lwd}).}
-  \item{identify}{if \code{"auto"} (the default), outlying points are identified automatically;
+  \item{identify.points}{if \code{"mahal"} (the default), relatively extreme points are identified automatically
+  	according to their Mahalanobis distances from the centroid (point of means);
   	if \code{TRUE}, points are identified interactively by left-clicking near them; right-click
-  	to exit from interactive-point-identification mode.}
-  \item{cutoff}{outliers are automatically identified by comparing to the contours of a
-  	robustly estimated bivariate normal distribution; points beyond the contour given by
-  	\code{cutoff} (default, \code{.99}) are flagged.}
+  	to exit from interactive-point-identification mode; if \code{FALSE}, no point identification.
+  	See \code{\link[art]{showExtremes}} for details.}
+  \item{id.n}{Number of relatively extreme points to identify automatically (default, \code{3}).}
   \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
   	labels, and, failing that, will use observation numbers.}
   \item{log}{same as the \code{log} argument to \code{\link{plot}}, to produce log axes.}
@@ -107,21 +107,22 @@ sp(...)
 \seealso{\code{\link[graphics]{boxplot}},
   \code{\link[base]{jitter}} 
   \code{\link{scatterplotMatrix}}, \code{\link{dataEllipse}},
-  \code{\link[graphics]{par}}, \code{\link[MASS]{cov.trob}}.}
+  \code{\link[graphics]{par}}, \code{\link[MASS]{cov.trob}},
+  \code{\link[art]{showExtremes}}.}
 
 \examples{
 
-scatterplot(prestige ~ income, data=Prestige, ellipse=TRUE, levels=.99)
+scatterplot(prestige ~ income, data=Prestige, ellipse=TRUE)
 
 scatterplot(prestige ~ income|type, data=Prestige, span=1)
 
 scatterplot(vocabulary ~ education, jitter=list(x=1, y=1), 
-	data=Vocab, identify=FALSE, smooth=FALSE)
+	data=Vocab, identify.points=FALSE, smooth=FALSE)
 
   \dontrun{
-scatterplot(infant.mortality ~ gdp, identify=TRUE, data=UN)
+scatterplot(infant.mortality ~ gdp, identify.points=TRUE, data=UN)
 
-scatterplot(infant.mortality ~ gdp, log="xy", identify=TRUE, data=UN)
+scatterplot(infant.mortality ~ gdp, log="xy", identify.points=TRUE, data=UN)
   }
 }
 

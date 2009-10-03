@@ -1,16 +1,16 @@
 # fancy scatterplot matrices (J. Fox)
 
-# last modified: 1 October 2009 by J. Fox
+# last modified: 2 October 2009 by J. Fox
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
 }
 
-scatterplotMatrix.formula <- function (x, data=NULL, subset, identify=TRUE, labels, ...) {
+scatterplotMatrix.formula <- function (x, data=NULL, subset, identify.points="mahal", labels=NULL, ...) {
 	m <- match.call(expand.dots = FALSE)
 	if (is.matrix(eval(m$data, sys.frame(sys.parent())))) 
 		m$data <- as.data.frame(data)
-	m$identify <- m$labels <- m$formula <- m$... <- NULL
+	m$identify.points <- m$labels <- m$formula <- m$... <- NULL
 	m[[1]] <- as.name("model.frame")
 	if (!inherits(x, "formula") | length(x) != 2) 
 		stop("invalid formula")
@@ -26,17 +26,18 @@ scatterplotMatrix.formula <- function (x, data=NULL, subset, identify=TRUE, labe
 	m$formula <-x
 	if (missing(data)){ 
 		X <- na.omit(eval(m, parent.frame()))
-		if (identify && missing(labels)) labels <- labels[as.numeric(gsub("X", "", row.names(X)))]
+		if (identify.points != FALSE && missing(labels)) labels <- labels[as.numeric(gsub("X", "", row.names(X)))]
 	}
 	else{
-		if (identify && !missing(labels)) row.names(data) <- labels
+		if (identify.points != FALSE && !missing(labels)) row.names(data) <- labels
 		X <- eval(m, parent.frame())
-		if (identify) labels <- row.names(X)
+		labels <-if (identify.points != FALSE) row.names(X)
+			else NULL
 	}
-	if (!groups) scatterplotMatrix(X, labels=labels, ...)
+	if (!groups) scatterplotMatrix(X, identify.points=identify.points, labels=labels, ...)
 	else{
 		ncol<-ncol(X)
-		scatterplotMatrix.default(X[, -ncol], groups=X[, ncol], labels=labels, ...)
+		scatterplotMatrix.default(X[, -ncol], groups=X[, ncol], identify.points=identify.points, labels=labels, ...)
 	}
 }
 
@@ -45,12 +46,13 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, reg.line=lm, 
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	groups=NULL, by.groups=FALSE, identify=TRUE, labels, cutoff=.99,
+	groups=NULL, by.groups=FALSE, identify.points="mahal", id.n=3, labels,
 	col=rep(palette(), length.out=n.groups + 1), pch=1:n.groups, lwd=1, lwd.smooth=lwd,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
 	cex.main=par("cex.main"), cex.identify=cex,
 	legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...){
 	spread # force evaluation
+	if (identify.points == TRUE) stop("interactive point identification not permitted")
 	family <- match.arg(family)
 	lowess.line <- function(x, y, col, span) {
 		valid <- complete.cases(x, y)
@@ -76,20 +78,20 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 			lines(x[!pos], y.neg, lwd=lwd.smooth, lty=3, col=col)
 		}
 	}
-	label.outliers <- function(x, y, cutoff, labels, col){
-		cutoff <- 2*qf(cutoff, 2, length(x) - 1)
-		X <- na.omit(data.frame(x, y, labels, stringsAsFactors=FALSE))
-		res <- cov.trob(X[, c("x", "y")])
-		d <- mahalanobis(X[, c("x", "y")], res$center, res$cov)
-		which <- which(d > cutoff)
-		if (length(which) == 0) return()
-		x <- X$x
-		y <- X$y
-		labels <- X$labels
-		pos <- ifelse(x[which] <= mean(range(X$x)), 4, 2)
-		text(x[which], y[which], labels[which], pos=pos, col=col, cex=cex.identify)
-	}
-	if (identify && missing(labels)){
+#	label.outliers <- function(x, y, cutoff, labels, col){
+#		cutoff <- 2*qf(cutoff, 2, length(x) - 1)
+#		X <- na.omit(data.frame(x, y, labels, stringsAsFactors=FALSE))
+#		res <- cov.trob(X[, c("x", "y")])
+#		d <- mahalanobis(X[, c("x", "y")], res$center, res$cov)
+#		which <- which(d > cutoff)
+#		if (length(which) == 0) return()
+#		x <- X$x
+#		y <- X$y
+#		labels <- X$labels
+#		pos <- ifelse(x[which] <= mean(range(X$x)), 4, 2)
+#		text(x[which], y[which], labels[which], pos=pos, col=col, cex=cex.identify)
+#	}
+	if (identify.points != FALSE && missing(labels)){
 		labels <- rownames(x)
 		if (is.null(labels)) labels <- as.character(seq(length.out=nrow(x)))
 	}
@@ -102,7 +104,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	else x <- na.omit(x)
 	if (missing(nclass)) nclass <- "FD"
 	reg <- function(x, y, col){
-		mod<-reg.line(y~x)
+		mod<-reg.line(y ~ x)
 		y.hat <- fitted.values(mod)
 		x <- model.matrix(mod)[,2]
 		min <- which.min(x)
@@ -187,8 +189,9 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 					if (is.function(reg.line)) reg(x[subs], y[subs], col=col[i + 1])
 					if (ellipse) dataEllipse(x[subs], y[subs], plot.points=FALSE, 
 								levels=levels, col=col[i + 1], robust=robust, lwd=1)
-					if (identify) 
-						label.outliers(x[subs], y[subs], cutoff, labs[subs], col=col[i + 1])
+					if (identify.points != FALSE) 
+						showExtremes(x[subs], y[subs], labs[subs], ids=identify.points,
+							id.n=id.n, col=col[i + 1])
 				}
 			}
 			if (!by.groups){
@@ -196,7 +199,8 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 				if (smooth) lowess.line(x, y, col=col[1], span)
 				if (ellipse) dataEllipse(x, y, plot.points=FALSE, levels=levels, col=col[1],
 						robust=robust, lwd=1)
-				if (identify) label.outliers(x, y, cutoff, labs, col=col[1])
+				if (identify.points != FALSE) showExtremes(x, y, ids=identify.points, 
+						id.n=id.n, labs, col=col[1])
 			}
 		}, ...
 	)
