@@ -25,7 +25,32 @@ export(
     spreadLevelPlot,
     symbox,
     which.names,
-    yjPowerAxis)        
+    yjPowerAxis,
+    
+    # deprecated functions
+    av.plot,
+    av.plots,
+    box.cox,
+    bc,
+    box.cox.powers,
+    box.cox.var,
+    box.tidwell,
+    cookd,
+    ceres.plot,
+    ceres.plots,
+    cr.plot,
+    cr.plots,
+    durbin.watson,
+    levene.test,
+    leverage.plot,
+    leverage.plots,
+    qq.plot,
+    scatterplot.matrix,
+    spread.level.plot
+)    
+
+# methods
+    
 S3method(confidenceEllipse, glm)    
 S3method(confidenceEllipse, lm)     
 S3method(print, spreadLevelPlot)   
