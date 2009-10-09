@@ -1,11 +1,11 @@
-\name{US.pop}
-\alias{US.pop}
+\name{USPop}
+\alias{USPop}
 \docType{data}
 
 \title{Population of the United States}
 
 \description{
-  The \code{US.pop} data frame has 21 rows and 1 columns.
+  The \code{USPop} data frame has 21 rows and 1 columns.
   This is a decennial time-series, from 1790 to 1990.
 }
 
@@ -33,7 +33,7 @@
 }
 
 \usage{
-US.pop
+USPop
 }
 
 \keyword{datasets}

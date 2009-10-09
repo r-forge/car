@@ -6,24 +6,15 @@
 Companion to Applied Regression
 }
 \description{
-This package accompanies J. Fox, An R and S-PLUS Companion
-to Applied Regression, Sage, 2002. The package contains mostly
-functions for applied regression, linear models, and
-generalized linear models, with an emphasis on regression
-diagnostics, particularly graphical diagnostic methods. There
-are also some utility functions. With some exceptions, I have
-tried not to duplicate capabilities in the basic distribution
-of R, nor in widely used packages. Where relevant, the
-functions in car are consistent with na.action = na.omit or
-na.exclude.
+This package accompanies J. Fox and S. Weisberg, An R Companion to Applied Regression,
+Second Edition, Sage, forthcoming.
 }
 \details{
 \tabular{ll}{
 Package: \tab car\cr
 Version: \tab 2.0-0\cr
-Date: \tab 2009/10/02\cr
-Depends: \tab R (>= 2.1.1), stats, graphics\cr
-Suggests: \tab MASS, nnet, leaps\cr
+Date: \tab 2009/10/09\cr
+Depends: \tab R (>= 2.1.1), stats, graphics, MASS, nnet, leaps, survival, art\cr
 License: \tab GPL (>= 2)\cr
 URL: \tab http://www.r-project.org, http://socserv.socsci.mcmaster.ca/jfox/\cr
 }
@@ -34,8 +25,7 @@ URL: \tab http://www.r-project.org, http://socserv.socsci.mcmaster.ca/jfox/\cr
 John Fox <jfox@mcmaster.ca> and Sanford Weisberg. We are grateful to Douglas Bates,
 David Firth, Michael Friendly, Gregor Gorjanc, Spencer Graves, 
 Richard Heiberger, Georges Monette, Henric Nilsson, Brian Ripley, 
-Sanford Weisberg, and Achim Zeleis for various suggestions and
-contributions.
+and Achim Zeleis for various suggestions and contributions.
 
 Maintainer: John Fox <jfox@mcmaster.ca>
 }

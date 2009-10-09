@@ -1,21 +1,14 @@
-# last modified 2 October 2009 by J. Fox
+# last modified 9 October 2009 by J. Fox
 
 export(
     basicPowerAxis,
     bcPowerAxis,
-    ceres.plot,
-    ceres.plots,
     confidenceEllipse,
     contr.Helmert,
     contr.Sum,
     contr.Treatment,
-    cr.plot,
-    cr.plots,
-    crp,
     dataEllipse,
     ellipse,
-    leverage.plot,
-    leverage.plots,
     logit,
     panel.car,
     probabilityAxis,
@@ -32,15 +25,9 @@ export(
     spreadLevelPlot,
     symbox,
     which.names,
-    yjPowerAxis)    
-S3method(ceres.plot, glm)            
-S3method(ceres.plot, lm)            
+    yjPowerAxis)        
 S3method(confidenceEllipse, glm)    
 S3method(confidenceEllipse, lm)     
-S3method(cr.plot, glm)               
-S3method(cr.plot, lm)      
-S3method(leverage.plot, glm)         
-S3method(leverage.plot, lm)     
 S3method(print, spreadLevelPlot)   
 S3method(qqPlot, default)           
 S3method(qqPlot, glm)               

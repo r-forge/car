@@ -1,11 +1,11 @@
-\name{Can.pop}
-\alias{Can.pop}
+\name{CanPop}
+\alias{CanPop}
 \docType{data}
 
 \title{Canadian Population Data}
 
 \description{
-The \code{Can.pop} data frame has 15 rows and 1 columns.
+The \code{CanPop} data frame has 15 rows and 1 columns.
 Decennial time-series of Canadian population, 1851--1991.
 
 }
@@ -36,6 +36,6 @@ Decennial time-series of Canadian population, 1851--1991.
 }
 
 \usage{
-Can.pop
+CanPop
 }
 \keyword{datasets}
