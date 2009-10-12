@@ -236,7 +236,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 	n.groups <- length(levels(groups))
 	if (n.groups > length(col) - 1) stop("number of groups exceeds number of available colors")
 	indices <- NULL
-	range.x <- if (logged("x")) range(log(.x)) else range(.x)
+	range.x <- if (logged("x")) range(log(.x)) else range(.x, na.rm=TRUE)
 	for (i in 1:n.groups){
 		subs <- groups == levels(groups)[i]
 		points(if (is.null(jitter$x) || jitter$x == 0) .x[subs] else jitter(.x[subs], factor=jitter$x), 

@@ -1,7 +1,7 @@
 
 # Utility functions (J. Fox)
 
-# last modified 2 October 2009 by J. Fox
+# last modified 12 October 2009 by J. Fox
 
 # function to find "nice" numbers
 
@@ -142,12 +142,12 @@ mfrow <- function(n, max.plots=0){
 
 # ------------ temporary ------------
 
-showExtremes <- function(x, y, labels = NULL,
+showExtremes <- function(x, y, labels,
 	ids = "xy", log="", cex.id=.75, id.n=3, col=palette()[1], 
-	res=.y - mean(.y, na.rm=TRUE), range.x=range(.x)) {
+	res=.y - mean(.y), range.x=range(.x)) {
 	if(id.n > 0L) {
-		if (is.null(labels))
-			labels <- as.character(seq(along=res))
+		if (missing(labels))
+			labels <- as.character(seq(along=x))
 		getPoints <- function(z) {
 			names(z) <- labels
 			iid <- seq(length=id.n)
@@ -158,15 +158,19 @@ showExtremes <- function(x, y, labels = NULL,
 			axis <- match.arg(axis)
 			0 != length(grep(axis, log))
 		}
+		valid <- complete.cases(x, y)
+		x <- x[valid]
+		y <- y[valid]
+		labels <- labels[valid]
 		.x <- if (logged("x")) log(x) else x
 		.y <- if (logged("y")) log(y) else y
 		ind <- if (!is.character(ids)) {
 				if (length(ids) == length(x)) getPoints(ids) else
 					stop("identify.points argument is of wrong length")} else
 				switch(ids,
-					x= getPoints(abs(.x - mean(.x, na.rm=TRUE))),
-					y= getPoints(abs(res)),
-					xy= c(getPoints(abs(x - mean(.x, na.rm=TRUE))),
+					x = getPoints(abs(.x - mean(.x))),
+					y = getPoints(abs(res)),
+					xy = union(getPoints(abs(.x - mean(.x))),
 						getPoints(abs(res))),
 					mahal= getPoints(rowSums(qr.Q(qr(cbind(1, .x, .y))) ^ 2)))
 		labpos <- c(4, 2)[1 + as.numeric(.x > mean(range.x))]
@@ -175,4 +179,6 @@ showExtremes <- function(x, y, labels = NULL,
 		return(labels[ind])
 	} 
 }
+
+
 
