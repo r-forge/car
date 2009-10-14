@@ -80,6 +80,11 @@ leverage.plots <- function (...) {
 	leveragePlots(...)
 }
 
+linear.hypothesis <- function (...) {
+	.Deprecated("linearHypothesis", package="car")
+	linearHypothesis(...)
+}
+
 qq.plot <- function (...) {
 	.Deprecated("qqPlot", package="car")
 	qqPlot(...)

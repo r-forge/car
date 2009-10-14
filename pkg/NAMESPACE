@@ -1,4 +1,4 @@
-# last modified 9 October 2009 by J. Fox
+# last modified 14 October 2009 by J. Fox
 
 export(
     basicPowerAxis,
@@ -44,6 +44,7 @@ export(
     levene.test,
     leverage.plot,
     leverage.plots,
+    linear.hypothesis,
     qq.plot,
     scatterplot.matrix,
     spread.level.plot

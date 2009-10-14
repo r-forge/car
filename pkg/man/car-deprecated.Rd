@@ -16,6 +16,7 @@
 \alias{levene.test}
 \alias{leverage.plot}
 \alias{leverage.plots}
+\alias{linear.hypothesis}
 \alias{qq.plot}
 \alias{scatterplot.matrix}
 \alias{spread.level.plot}
@@ -43,6 +44,7 @@ durbin.watson(...)
 levene.test(...)
 leverage.plot(...)
 leverage.plots(...)
+linear.hypothesis(...)
 qq.plot(...)
 scatterplot.matrix(...)
 spread.level.plot(...)
@@ -76,6 +78,8 @@ functions in the \pkg{art} package.
 
 \code{leverage.plot} and \code{leverage.plots} are now synonyms for the \code{\link[art:leveragePlots]{leveragePlot}} and \code{\link[art]{leveragePlots}} 
 functions in the \pkg{art} package.
+
+\code{linear.hypothesis} is now a synonym for the \code{\link[art]{linearHypothesis}} function in the \pkg{art} package.
 
 \code{qq.plot} is now a synonym for \code{\link{qqPlot}}.
 
