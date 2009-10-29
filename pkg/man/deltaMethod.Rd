@@ -17,11 +17,11 @@ with known or estimated covariance matrix.
 \usage{
 deltaMethod(object, ...)
 
-\method{deltaMethod}{default}(object, g ,var, func=g, ...)
-\method{deltaMethod}{lm} (object, g, var=vcov,parameterPrefix="b",...)
-\method{deltaMethod}{nls}(object, g, var=vcov,...)
-\method{deltaMethod}{multinom} (object, g, var=vcov,parameterPrefix="b",...)
-\method{deltaMethod}{polr} (object, g, var=vcov,...)
+\method{deltaMethod}{default}(object, g, vcov., func=g, ...)
+\method{deltaMethod}{lm} (object, g, vcov.=vcov, parameterPrefix="b", ...)
+\method{deltaMethod}{nls}(object, g, vcov.=vcov, ...)
+\method{deltaMethod}{multinom} (object, g, vcov.=vcov, parameterPrefix="b", ...)
+\method{deltaMethod}{polr} (object, g, vcov.=vcov, ...)
 
 }
 \arguments{
@@ -33,7 +33,7 @@ deltaMethod(object, ...)
   estimates.}
   \item{g}{A quoted string that is the function of the parameter estimates to be
   evaluated; see the details below. }
-  \item{var}{The (estimated) covariance matrix of the coefficient
+  \item{vcov.}{The (estimated) covariance matrix of the coefficient
   estimates.  For the default method, this argument is required.  For all
   other methods, this argument must either provide the estimated covariance
   matrix or a function that when applied
@@ -58,7 +58,7 @@ returns both \eqn{g(x)} and its standard error, the square root of the estimated
 variance.
 
 The default method requires that you provide \eqn{x} in the argument
-\code{object}, \eqn{C} in the argument \code{var}, and a text expression
+\code{object}, \eqn{C} in the argument \code{vcov.}, and a text expression
 in argument \code{g} that when evaluated gives the function \eqn{g}.  
 
 Since
