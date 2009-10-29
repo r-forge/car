@@ -1,3 +1,19 @@
+Changes to Version 2.0-0
+
+	o  Functions renamed to camel case.
+	
+	o  New functions: bootCase(), deltaMethod(), inverseResponsePlot(), invTranPlot(), various transformation functions
+	
+	o  Reworked (or renamed): Anova(), avPlots(), boxCoxVariable(), boxTidwell(), ceresPlots(), crPlots(), durbinWatsonTest(), hccm(), influencePlot(), leveneTest(), leveragePlots(), linearHypothesis(), ncvTest(), outlierTest(), qqPlot(), regLine(), scatterplot(), scatterplotMatrix(), spreadLevelPlot(), transformation-axis functions, vif().
+	
+	o  Removed: Ask(), box.cox.powers(), box.cox(), cookd(), n.bins().
+	
+	o  Utility functions no longer exported; some removed.
+	
+	o  Most moved, renamed, removed functions retained as deprecated functions.
+	
+	o  Small changes.
+
 Changes to Version 1.0-0
 
    o Added functions for effects plots [see help(effect)].
@@ -290,20 +306,6 @@ Changes to Version 1.2-15
 
     o  Small changes.
     
-Changes to Version 2.0-0
 
-	o  Functions renamed to camel case.
-	
-	o  Reworked (or renamed): qqPlot(), regLine(), scatterplot(), scatterplotMatrix(), spreadLevelPlot(), transformation-axis functions.
-	
-	o  Moved to art package (some renamed): Anova(), avPlots(), boxCoxVariable(), boxTidwell(), ceresPlots(), crPlots(), durbinWatsonTest(), hccm(), influencePlot(), leveneTest(), leveragePlots(), linearHypothesis(), ncvTest(), outlierTest(), vif().
-	
-	o  Removed: Ask(), box.cox.powers(), box.cox(), cookd(), n.bins().
-	
-	o  Utility functions no longer exported; some removed.
-	
-	o  Most moved, renamed, removed functions retained as deprecated functions.
-	
-	o  Small changes.
 	
 	

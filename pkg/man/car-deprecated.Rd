@@ -55,31 +55,31 @@ spread.level.plot(...)
 }
 
 \details{
-\code{av.plot} and \code{av.plots} are now synonyms for the \code{\link[art:avPlots]{avPlot}} and \code{\link[art]{avPlots}} functions in the \pkg{art} package.
+\code{av.plot} and \code{av.plots} are now synonyms for the \code{\link{avPlot}} and \code{\link{avPlots}} functions.
 
-\code{box.cox} and \code{bc} are now synonyms for \code{\link[art]{bcPower}} in the \pkg{art} package.
+\code{box.cox} and \code{bc} are now synonyms for \code{\link{bcPower}}.
 
-\code{box.cox.powers} is now a synonym for \code{\link[art]{powerTransform}} in the \pkg{art} package.
+\code{box.cox.powers} is now a synonym for \code{\link{powerTransform}}.
 
-\code{box.cox.var} is now a synonym for \code{\link[art]{boxCoxVariable}}.
+\code{box.cox.var} is now a synonym for \code{\link{boxCoxVariable}}.
 
-\code{box.tidwell} is now a synonym for \code{\link[art]{boxTidwell}} in the \pkg{art} package.
+\code{box.tidwell} is now a synonym for \code{\link{boxTidwell}}.
 
 \code{cookd} is now a synonym for \code{\link[stats:influence.measures]{cooks.distance}} in the \pkg{stats} package.
 
-\code{ceres.plot} and \code{ceres.plots} are now synonyms for the \code{\link[art:ceresPlots]{ceresPlot}} and \code{\link[art]{ceresPlots}} 
-functions in the \pkg{art} package.
+\code{ceres.plot} and \code{ceres.plots} are now synonyms for the \code{\link{ceresPlot}} and \code{\link{ceresPlots}} 
+functions.
 
-\code{cr.plot} and \code{cr.plots} are now synonyms for the \code{\link[art:crPlots]{crPlot}} and \code{\link[art]{crPlots}} functions in the \pkg{art} package.
+\code{cr.plot} and \code{cr.plots} are now synonyms for the \code{\link{crPlot}} and \code{\link{crPlots}} functions.
 
-\code{durbin.watson} is now a synonym for \code{\link[art]{durbinWatsonTest}} in the \pkg{art} package.
+\code{durbin.watson} is now a synonym for \code{\link{durbinWatsonTest}}.
 
-\code{levene.test} is now a synonym for \code{\link[art]{leveneTest}} in the \pkg{art} package.
+\code{levene.test} is now a synonym for \code{\link{leveneTest}} function.
 
-\code{leverage.plot} and \code{leverage.plots} are now synonyms for the \code{\link[art:leveragePlots]{leveragePlot}} and \code{\link[art]{leveragePlots}} 
-functions in the \pkg{art} package.
+\code{leverage.plot} and \code{leverage.plots} are now synonyms for the \code{\link{leveragePlot}} and \code{\link{leveragePlots}} 
+functions.
 
-\code{linear.hypothesis} is now a synonym for the \code{\link[art]{linearHypothesis}} function in the \pkg{art} package.
+\code{linear.hypothesis} is now a synonym for the \code{\link{linearHypothesis}} function.
 
 \code{qq.plot} is now a synonym for \code{\link{qqPlot}}.
 

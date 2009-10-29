@@ -1,6 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 2 October 2009
+# last modified 29 November 2009
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -236,7 +236,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 	n.groups <- length(levels(groups))
 	if (n.groups > length(col) - 1) stop("number of groups exceeds number of available colors")
 	indices <- NULL
-	range.x <- if (logged("x")) range(log(.x)) else range(.x, na.rm=TRUE)
+	range.x <- if (logged("x")) range(log(.x), na.rm=TRUE) else range(.x, na.rm=TRUE)
 	for (i in 1:n.groups){
 		subs <- groups == levels(groups)[i]
 		points(if (is.null(jitter$x) || jitter$x == 0) .x[subs] else jitter(.x[subs], factor=jitter$x), 
@@ -254,7 +254,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			}
 		}
 		if (!is.logical(identify.points)) 
-			indices <- c(indices, showExtremes(
+			indices <- c(indices, showExtremesScatter(
 					.x[subs], 
 					.y[subs], 
 					labels=labels[subs], ids=identify.points, log=log, id.n=id.n, cex.id=cex.identify, col=col[i + 1],
@@ -270,7 +270,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			with(X, dataEllipse(x, y, plot.points=FALSE, lwd=1, log=log, levels=levels, col=col[1],
 				robust=robust))
 		}
-		if (!is.logical(identify.points)) indices <- showExtremes(
+		if (!is.logical(identify.points)) indices <- showExtremesScatter(
 				.x, 
 				.y,
 				labels=labels, ids=identify.points, log=log, id.n=id.n, cex.id=cex.identify, col=col[1])

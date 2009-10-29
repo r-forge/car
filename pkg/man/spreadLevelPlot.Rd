@@ -87,7 +87,7 @@ slp(...)
 }
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link[art]{hccm}}, \code{\link[art]{ncvTest}} }
+\seealso{\code{\link{hccm}}, \code{\link{ncvTest}} }
 
 \examples{
 spreadLevelPlot(interlocks+1~nation, data=Ornstein)

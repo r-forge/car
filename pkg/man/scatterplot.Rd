@@ -60,7 +60,7 @@ sp(...)
   	according to their Mahalanobis distances from the centroid (point of means);
   	if \code{TRUE}, points are identified interactively by left-clicking near them; right-click
   	to exit from interactive-point-identification mode; if \code{FALSE}, no point identification.
-  	See \code{\link[art]{showExtremes}} for details.}
+  	See \code{\link{showExtremes}} for details.}
   \item{id.n}{Number of relatively extreme points to identify automatically (default, \code{3}).}
   \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
   	labels, and, failing that, will use observation numbers.}
@@ -108,7 +108,7 @@ sp(...)
   \code{\link[base]{jitter}} 
   \code{\link{scatterplotMatrix}}, \code{\link{dataEllipse}},
   \code{\link[graphics]{par}}, \code{\link[MASS]{cov.trob}},
-  \code{\link[art]{showExtremes}}.}
+  \code{\link{showExtremes}}.}
 
 \examples{
 
@@ -118,11 +118,11 @@ scatterplot(prestige ~ income|type, data=Prestige, span=1)
 
 scatterplot(vocabulary ~ education, jitter=list(x=1, y=1), 
 	data=Vocab, identify.points=FALSE, smooth=FALSE)
+	
+scatterplot(infant.mortality ~ gdp, log="xy", data=UN)
 
   \dontrun{
 scatterplot(infant.mortality ~ gdp, identify.points=TRUE, data=UN)
-
-scatterplot(infant.mortality ~ gdp, log="xy", identify.points=TRUE, data=UN)
   }
 }
 

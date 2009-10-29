@@ -39,7 +39,7 @@ spm(x, ...)
   \item{identify.points}{if \code{"mahal"} (the default), relatively extreme points in each panel are identified automatically
   	according to their Mahalanobis distances from the centroid (point of means);
   	if \code{FALSE}, no point identification.
-  	See \code{\link[art]{showExtremes}} for details (but interactive point identification is not permitted.}
+  	See \code{\link{showExtremes}} for details (but interactive point identification is not permitted.}
   \item{id.n}{Number of relatively extreme points to identify automatically in each panel (default, \code{3}).}
   \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
   	labels, and, failing that, will use observation numbers.}
@@ -61,12 +61,12 @@ spm(x, ...)
     function given by this argument; e.g., using \code{rlm} in
     package \code{MASS} plots a robust-regression line.}
   \item{transform}{if \code{TRUE}, multivariate normalizing power transformations
-    are computed \code{\link[art]{powerTransform}}, rounding the estimated powers to `nice' values for plotting; 
+    are computed \code{\link{powerTransform}}, rounding the estimated powers to `nice' values for plotting; 
     if a vector of powers, one for each variable, these are applied prior to plotting. If  there are \code{groups}
     and \code{by.groups} is \code{TRUE}, then the transformations are estimated \emph{conditional} on the
     \code{groups} factor.}
   \item{family}{family of transformations to estimate: \code{"bcPower"} for the Box-Cox family or 
-    \code{"yjPower"} for the Yeo-Johnson family (see \code{\link[art]{powerTransform}}).}
+    \code{"yjPower"} for the Yeo-Johnson family (see \code{\link{powerTransform}}).}
   \item{ellipse}{if \code{TRUE} data-concentration ellipses are plotted in
     the off-diagonal panels.}
   \item{levels}{levels or levels at which concentration ellipses are plotted;
@@ -101,9 +101,9 @@ spm(x, ...)
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \seealso{\code{\link[graphics]{pairs}}, \code{\link{scatterplot}},
-  \code{\link{dataEllipse}}, \code{\link[art]{powerTransform}}, 
-  \code{\link[art]{bcPower}}, \code{\link[art]{yjPower}}, \code{\link[MASS]{cov.trob}},
-  \code{\link[art]{showExtremes}}.}
+  \code{\link{dataEllipse}}, \code{\link{powerTransform}}, 
+  \code{\link{bcPower}}, \code{\link{yjPower}}, \code{\link[MASS]{cov.trob}},
+  \code{\link{showExtremes}}.}
 
 \examples{
 scatterplotMatrix(~ income + education + prestige | type, data=Duncan)

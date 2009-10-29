@@ -1,6 +1,6 @@
 # fancy scatterplot matrices (J. Fox)
 
-# last modified: 2 October 2009 by J. Fox
+# last modified: 29 October 2009 by J. Fox
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
@@ -190,7 +190,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 					if (ellipse) dataEllipse(x[subs], y[subs], plot.points=FALSE, 
 								levels=levels, col=col[i + 1], robust=robust, lwd=1)
 					if (identify.points != FALSE) 
-						showExtremes(x[subs], y[subs], labs[subs], ids=identify.points,
+						showExtremesScatter(x[subs], y[subs], labs[subs], ids=identify.points,
 							id.n=id.n, col=col[i + 1])
 				}
 			}
@@ -199,7 +199,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 				if (smooth) lowess.line(x, y, col=col[1], span)
 				if (ellipse) dataEllipse(x, y, plot.points=FALSE, levels=levels, col=col[1],
 						robust=robust, lwd=1)
-				if (identify.points != FALSE) showExtremes(x, y, ids=identify.points, 
+				if (identify.points != FALSE) showExtremesScatter(x, y, ids=identify.points, 
 						id.n=id.n, labs, col=col[1])
 			}
 		}, ...

@@ -1,7 +1,7 @@
 
 # Utility functions (J. Fox)
 
-# last modified 12 October 2009 by J. Fox
+# last modified 29 October 2009 by J. Fox
 
 # function to find "nice" numbers
 
@@ -18,77 +18,69 @@ nice <- function(x, direction=c("round", "down", "up"), lead.digits=1){
 	sign(x)*lead.digit*10^power.10
 }
 
-has.intercept<-function (model, ...) {
+has.intercept <- function (model, ...) {
 	UseMethod("has.intercept")
 }
 
-has.intercept.default<-function(model, ...) any(names(coefficients(model))=="(Intercept)")
+has.intercept.default <- function(model, ...) any(names(coefficients(model))=="(Intercept)")
 
-
-
-term.names<-function (model, ...) {
+term.names <- function (model, ...) {
 	UseMethod("term.names")
 }
 
-term.names.default<-function (model, ...) {
-	term.names<-labels(terms(model))
+term.names.default <- function (model, ...) {
+	term.names <- labels(terms(model))
 	if (has.intercept(model)) c("(Intercept)", term.names)
 	else term.names
 }
 
-
-
-predictor.names<-function(model, ...) {
+predictor.names <- function(model, ...) {
 	UseMethod("predictor.names")
 }
 
-predictor.names.default<-function(model, ...){
-	predictors<-attr(terms(model),"variables")
+predictor.names.default <- function(model, ...){
+	predictors <- attr(terms(model), "variables")
 	as.character(predictors[3:length(predictors)])
 }
 
-
-
-responseName<-function (model, ...) {
+responseName <- function (model, ...) {
 	UseMethod("responseName")
 }
 
-responseName.default<-function (model, ...) deparse(attr(terms(model), "variables")[[2]])
+responseName.default <- function (model, ...) deparse(attr(terms(model), "variables")[[2]])
 
-response<-function(model, ...) {
+response <- function(model, ...) {
 	UseMethod("response")
 }
 
-response.default<-function (model, ...) model.response(model.frame(model))
+response.default <- function (model, ...) model.response(model.frame(model))
 
-is.aliased<-function(model){
+is.aliased <- function(model){
 	!is.null(alias(model)$Complete)
 }
 
-df.terms<-function(model, term, ...){
+df.terms <- function(model, term, ...){
 	UseMethod("df.terms")
 }
 
-
-df.terms.default<-function(model, term, ...){
+df.terms.default <- function(model, term, ...){
 	if (is.aliased(model)) stop("Model has aliased term(s); df ambiguous.")
-	if (!missing(term) && 1==length(term)){
-		assign<-attr(model.matrix(model),"assign")
-		which.term<-which(term==labels(terms(model)))
-		if (0==length(which.term)) stop(paste(term, "is not in the model."))
-		sum(assign==which.term)
+	if (!missing(term) && 1 == length(term)){
+		assign <- attr(model.matrix(model), "assign")
+		which.term <- which(term == labels(terms(model)))
+		if (0 == length(which.term)) stop(paste(term, "is not in the model."))
+		sum(assign == which.term)
 	}
 	else {
-		terms<-if (missing(term)) labels(terms(model)) else term
-		result<-numeric(0)
-		for (term in terms) result<-c(result, Recall(model, term))
-		names(result)<-terms
+		terms <- if (missing(term)) labels(terms(model)) else term
+		result <- numeric(0)
+		for (term in terms) result <- c(result, Recall(model, term))
+		names(result) <- terms
 		result
 	}
 }
 
-df.terms.multinom <- function (model, term, ...)
-{
+df.terms.multinom <- function (model, term, ...){
 	nlev <- length(model$lev)
 	if (!missing(term) && 1 == length(term)) {
 		assign <- attr(model.matrix(model), "assign")
@@ -109,8 +101,7 @@ df.terms.multinom <- function (model, term, ...)
 	}
 }
 
-df.terms.polr <- function (model, term, ...)
-{
+df.terms.polr <- function (model, term, ...){
 	if (!missing(term) && 1 == length(term)) {
 		assign <- attr(model.matrix(model), "assign")
 		which.term <- which(term == labels(terms(model)))
@@ -132,19 +123,38 @@ df.terms.polr <- function (model, term, ...)
 
 mfrow <- function(n, max.plots=0){
 	# number of rows and columns for array of n plots
-	if (max.plots != 0 & n > max.plots)
+	if (max.plots != 0 && n > max.plots)
 		stop(paste("number of plots =",n," exceeds maximum =", max.plots))
 	rows <- round(sqrt(n))
 	cols <- ceiling(n/rows)
 	c(rows, cols)
 }
 
+inv <- function(x) solve(x)
+
+coefnames2bs <- function(g, para.names, parameterPrefix="b"){
+	metas <- c("(", ")", "[", "]", "{", "}", ".", "*", "+", "^", "$", ":", "|")
+	metas2 <- paste("\\", metas, sep="")
+	metas3 <- paste("\\\\", metas, sep="")
+	for (i in seq(along=metas))
+		para.names <- gsub(metas2[i], metas3[i], para.names) # fix up metacharacters
+	para.order <- order(nchar(para.names), decreasing=TRUE) 
+	para.names <- para.names[para.order] # avoid partial-name substitution
+	std.names <- if ("(Intercept)" %in% para.names)
+				paste(parameterPrefix, 0:(length(para.names) - 1), sep = "")
+			else paste(parameterPrefix, 1:length(para.names), sep = "")
+	std.names.ordered <- std.names[para.order]
+	for (i in seq(along=para.names)){
+		g <- gsub(para.names[i], std.names.ordered[i], g) 
+	}
+	list(g=g, std.names=std.names)
+}
 
 # ------------ temporary ------------
 
-showExtremes <- function(x, y, labels,
-	ids = "xy", log="", cex.id=.75, id.n=3, col=palette()[1], 
-	res=.y - mean(.y), range.x=range(.x)) {
+showExtremesScatter <- function(x, y, labels,
+		ids = "xy", log="", cex.id=.75, id.n=3, col=palette()[1], 
+		res=.y - mean(.y), range.x=range(.x)) {
 	if(id.n > 0L) {
 		if (missing(labels))
 			labels <- as.character(seq(along=x))
@@ -165,20 +175,18 @@ showExtremes <- function(x, y, labels,
 		.x <- if (logged("x")) log(x) else x
 		.y <- if (logged("y")) log(y) else y
 		ind <- if (!is.character(ids)) {
-				if (length(ids) == length(x)) getPoints(ids) else
-					stop("identify.points argument is of wrong length")} else
-				switch(ids,
-					x = getPoints(abs(.x - mean(.x))),
-					y = getPoints(abs(res)),
-					xy = union(getPoints(abs(.x - mean(.x))),
-						getPoints(abs(res))),
-					mahal= getPoints(rowSums(qr.Q(qr(cbind(1, .x, .y))) ^ 2)))
+					if (length(ids) == length(x)) getPoints(ids) else
+						stop("identify.points argument is of wrong length")} else
+					switch(ids,
+							x = getPoints(abs(.x - mean(.x))),
+							y = getPoints(abs(res)),
+							xy = union(getPoints(abs(.x - mean(.x))),
+									getPoints(abs(res))),
+							mahal= getPoints(rowSums(qr.Q(qr(cbind(1, .x, .y))) ^ 2)))
 		labpos <- c(4, 2)[1 + as.numeric(.x > mean(range.x))]
 		text(x[ind], y[ind], labels[ind], cex = cex.id, xpd = TRUE,
-			pos = labpos[ind], offset = 0.25, col=col)
+				pos = labpos[ind], offset = 0.25, col=col)
 		return(labels[ind])
 	} 
 }
-
-
 

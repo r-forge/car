@@ -90,7 +90,7 @@ probabilityAxis(scale=c("logit", "probit"),
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link[art]{basicPower}}, \code{\link[art]{bcPower}}, \code{\link[art]{yjPower}}, 
+\seealso{\code{\link{basicPower}}, \code{\link{bcPower}}, \code{\link{yjPower}}, 
 	\code{\link{logit}}.}
 
 \examples{
