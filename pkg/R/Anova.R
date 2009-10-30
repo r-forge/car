@@ -3,6 +3,7 @@
 # 2009-01-05: bug fix in Anova.II.lm(). J. Fox
 # 2009-01-16: Cox models with clusters now handled. J. Fox
 # 2009-09-16: reworked glm and lm methods to handle aliased parameters. J. Fox
+# 2009-09-30: renamed "Anova" to "Analysis of Deviance" in output for some methods. J. Fox
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -243,7 +244,7 @@ Anova.III.LR.glm <- function(mod, singular.ok=FALSE, ...){
 	row.names(result) <- Source
 	names(result) <- c("LR Chisq", "Df", "Pr(>Chisq)")
 	class(result) <- c("anova","data.frame")
-	attr(result, "heading") <- c("Anova Table (Type III tests)\n", paste("Response:", responseName(mod)))
+	attr(result, "heading") <- c("Analysis of Deviance Table (Type III tests)\n", paste("Response:", responseName(mod)))
 	result
 }
 
@@ -281,7 +282,7 @@ Anova.III.F.glm <- function(mod, error, error.estimate, singular.ok=FALSE, ...){
 	row.names(result) <- c(Source, "Residuals")
 	names(result) <- c("SS", "Df", "F", "Pr(>F)")
 	class(result) <- c("anova","data.frame")
-	attr(result, "heading") <- c("Anova Table (Type III tests)\n", paste("Response:", responseName(mod)))
+	attr(result, "heading") <- c("Analysis of Deviance Table (Type III tests)\n", paste("Response:", responseName(mod)))
 	result
 }
 
@@ -331,7 +332,7 @@ Anova.II.LR.glm <- function(mod, singular.ok=TRUE, ...){
 	names(result) <- c("LR Chisq", "Df", "Pr(>Chisq)")
 	class(result) <- c("anova", "data.frame")
 	attr(result, "heading") <- 
-			c("Anova Table (Type II tests)\n", paste("Response:", responseName(mod)))
+			c("Analysis of Deviance Table (Type II tests)\n", paste("Response:", responseName(mod)))
 	result
 }
 
@@ -392,7 +393,7 @@ Anova.II.F.glm <- function(mod, error, error.estimate, singular.ok=TRUE, ...){
 	row.names(result) <- c(names, "Residuals")
 	names(result) <- c("SS", "Df", "F", "Pr(>F)")
 	class(result) <- c("anova", "data.frame")
-	attr(result, "heading") <- c("Anova Table (Type II tests)\n", 
+	attr(result, "heading") <- c("Analysis of Deviance Table (Type II tests)\n", 
 			paste("Response:", responseName(mod)))
 	result
 }
@@ -450,7 +451,7 @@ Anova.II.multinom <- function (mod, ...)
 	row.names(result) <- names
 	names(result) <- c("LR Chisq", "Df", "Pr(>Chisq)")
 	class(result) <- c("anova", "data.frame")
-	attr(result, "heading") <- c("Anova Table (Type II tests)\n",
+	attr(result, "heading") <- c("Analysis of Deviance Table (Type II tests)\n",
 			paste("Response:", responseName(mod)))
 	result
 }
@@ -476,7 +477,7 @@ Anova.III.multinom <- function (mod, ...)
 	row.names(result) <- names
 	names(result) <- c("LR Chisq", "Df", "Pr(>Chisq)")
 	class(result) <- c("anova", "data.frame")
-	attr(result, "heading") <- c("Anova Table (Type III tests)\n",
+	attr(result, "heading") <- c("Analysis of Deviance Table (Type III tests)\n",
 			paste("Response:", responseName(mod)))
 	result
 }
@@ -533,7 +534,7 @@ Anova.II.polr <- function (mod, ...)
 	row.names(result) <- names
 	names(result) <- c("LR Chisq", "Df", "Pr(>Chisq)")
 	class(result) <- c("anova", "data.frame")
-	attr(result, "heading") <- c("Anova Table (Type II tests)\n",
+	attr(result, "heading") <- c("Analysis of Deviance Table (Type II tests)\n",
 			paste("Response:", responseName(mod)))
 	result
 }
@@ -558,7 +559,7 @@ Anova.III.polr <- function (mod, ...)
 	row.names(result) <- names
 	names(result) <- c("LR Chisq", "Df", "Pr(>Chisq)")
 	class(result) <- c("anova", "data.frame")
-	attr(result, "heading") <- c("Anova Table (Type III tests)\n",
+	attr(result, "heading") <- c("Analysis of Deviance Table (Type III tests)\n",
 			paste("Response:", responseName(mod)))
 	result
 }
@@ -980,7 +981,7 @@ Anova.II.LR.coxph <- function(mod, ...){
 	row.names(result) <- names
 	names(result) <- c("LR Chisq", "Df", "Pr(>Chisq)")
 	class(result) <- c("anova", "data.frame")
-	attr(result, "heading") <- "Anova Table (Type II tests)"
+	attr(result, "heading") <- "Analysis of Deviance Table (Type II tests)"
 	result
 }
 
@@ -1006,7 +1007,7 @@ Anova.III.LR.coxph <- function(mod, ...){
 	row.names(result) <- names
 	names(result) <- c("LR Chisq", "Df","Pr(>Chisq)")
 	class(result) <- c("anova", "data.frame")
-	attr(result,"heading") <- "Anova Table (Type III tests)"
+	attr(result,"heading") <- "Analysis of Deviance Table (Type III tests)"
 	result
 }
 
@@ -1077,7 +1078,7 @@ Anova.II.LR.survreg <- function(mod, ...){
 	row.names(result) <- names
 	names(result) <- c("LR Chisq", "Df", "Pr(>Chisq)")
 	class(result) <- c("anova", "data.frame")
-	attr(result, "heading") <- "Anova Table (Type II tests)"
+	attr(result, "heading") <- "Analysis of Deviance Table (Type II tests)"
 	result
 }
 
@@ -1108,7 +1109,7 @@ Anova.III.LR.survreg <- function(mod, ...){
 	row.names(result) <- names
 	names(result) <- c("LR Chisq", "Df","Pr(>Chisq)")
 	class(result) <- c("anova", "data.frame")
-	attr(result,"heading") <- "Anova Table (Type III tests)"
+	attr(result,"heading") <- "Analysis of Deviance Table (Type III tests)"
 	result
 }
 
@@ -1200,7 +1201,7 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
 	names(result) <- c ("Df", test, if (test == "Chisq") "Pr(>Chisq)" 
 					else "Pr(>F)")
 	class(result) <- c("anova", "data.frame")
-	attr(result, "heading") <- c("Anova Table (Type II tests)\n", 
+	attr(result, "heading") <- c("Analysis of Deviance Table (Type II tests)\n", 
 			paste("Response:", responseName(mod)))
 	result
 }
@@ -1254,7 +1255,7 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
 	names(result) <- c ("Df", test, if (test == "Chisq") "Pr(>Chisq)" 
 					else "Pr(>F)")
 	class(result) <- c("anova", "data.frame")
-	attr(result, "heading") <- c("Anova Table (Type III tests)\n", 
+	attr(result, "heading") <- c("Analysis of Deviance Table (Type III tests)\n", 
 			paste("Response:", responseName(mod)))
 	result
 }
