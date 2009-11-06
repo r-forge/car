@@ -1,6 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 29 November 2009
+# last modified 03 November 2009
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -23,7 +23,7 @@ scatterplot.formula <- function (x, data, subset, xlab, ylab, legend.title, iden
 	m$formula <- x
 	if (missing(data)){ 
 		X <- na.omit(eval(m, parent.frame()))
-		if (identify.points != FALSE && missing(labels)) labels <- labels[as.numeric(gsub("X", "", row.names(X)))]
+		if (identify.points != FALSE && missing(labels)) labels <- gsub("X", "", row.names(X)) 
 	}
 	else{
 		if (identify.points != FALSE && !missing(labels)) row.names(data) <- labels

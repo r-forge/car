@@ -1,12 +1,12 @@
 # fancy scatterplot matrices (J. Fox)
 
-# last modified: 29 October 2009 by J. Fox
+# last modified: 3 November 2009 by J. Fox
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
 }
 
-scatterplotMatrix.formula <- function (x, data=NULL, subset, identify.points="mahal", labels=NULL, ...) {
+scatterplotMatrix.formula <- function (x, data=NULL, subset, identify.points="mahal", labels, ...) {
 	m <- match.call(expand.dots = FALSE)
 	if (is.matrix(eval(m$data, sys.frame(sys.parent())))) 
 		m$data <- as.data.frame(data)
@@ -26,7 +26,7 @@ scatterplotMatrix.formula <- function (x, data=NULL, subset, identify.points="ma
 	m$formula <-x
 	if (missing(data)){ 
 		X <- na.omit(eval(m, parent.frame()))
-		if (identify.points != FALSE && missing(labels)) labels <- labels[as.numeric(gsub("X", "", row.names(X)))]
+		if (identify.points != FALSE && missing(labels)) labels <- gsub("X", "", row.names(X))
 	}
 	else{
 		if (identify.points != FALSE && !missing(labels)) row.names(data) <- labels

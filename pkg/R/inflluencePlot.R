@@ -1,4 +1,4 @@
-# last modified 26 September 2009 by J. Fox
+# last modified 03 November 2009 by J. Fox
 
 # moved from Rcmdr 5 December 2006
 
@@ -30,6 +30,7 @@ influencePlot.lm <- function(model, scale=10, col=c(1,2), identify=c("auto", TRU
 	}
 	else if (identify == "auto"){
 		noteworthy <- cooks | hatval > 2*p/n | abs(rstud) > 2
+		noteworthy[is.na(noteworthy)] <- FALSE
 		pos <- ifelse((hatval - sum(rev(range(hatval)))/2) <= 0, 4, 2)
 		text(hatval[noteworthy], rstud[noteworthy], labels[noteworthy],  pos=pos[noteworthy],
 				cex=cex.identify, col=col.identify)
