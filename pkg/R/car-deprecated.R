@@ -95,6 +95,16 @@ linear.hypothesis <- function (...) {
 	linearHypothesis(...)
 }
 
+outlier.test <- function (...) {
+	.Deprecated("outlierTest", package="car")
+	outlierTest(...)
+}
+
+ncv.test <- function (...) {
+	.Deprecated("ncvTest", package="car")
+	ncvTest(...)
+}
+
 qq.plot <- function (...) {
 	.Deprecated("qqPlot", package="car")
 	qqPlot(...)

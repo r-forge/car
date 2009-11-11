@@ -75,6 +75,8 @@ export(
     leverage.plot,
     leverage.plots,
     linear.hypothesis,
+    outlier.test,
+    ncv.test,
     qq.plot,
     scatterplot.matrix,
     spread.level.plot

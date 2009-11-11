@@ -19,6 +19,8 @@
 \alias{leverage.plot}
 \alias{leverage.plots}
 \alias{linear.hypothesis}
+\alias{outlier.test}
+\alias{ncv.test}
 \alias{qq.plot}
 \alias{scatterplot.matrix}
 \alias{spread.level.plot}
@@ -49,6 +51,8 @@ levene.test(...)
 leverage.plot(...)
 leverage.plots(...)
 linear.hypothesis(...)
+ncv.test(...)
+outlier.test(...)
 qq.plot(...)
 scatterplot.matrix(...)
 spread.level.plot(...)
