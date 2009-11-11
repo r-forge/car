@@ -1,4 +1,4 @@
-# last modified 29 October 2009 by J. Fox
+# last modified 11 November 2009 by J. Fox
 
 export(
     basicPowerAxis,
@@ -64,10 +64,12 @@ export(
     box.cox.var,
     box.tidwell,
     cookd,
+    confidence.ellipse,
     ceres.plot,
     ceres.plots,
     cr.plot,
     cr.plots,
+    data.ellipse,
     durbin.watson,
     levene.test,
     leverage.plot,

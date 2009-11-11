@@ -1,4 +1,4 @@
-# last modified 2009-10-09 by J. Fox
+# last modified 2009-11-11 by J. Fox
 
 av.plot <- function (...) {
 	.Deprecated("avPlot", package="car")
@@ -45,6 +45,11 @@ ceres.plots <- function (...) {
 	ceresPlots(...)
 }
 
+confidence.ellipse <- function (...) {
+	.Deprecated("confidenceEllipse", package="car")
+	confidenceEllipse(...)
+}
+
 cookd <- function (...) {
 	.Deprecated("cooks.distance", package="stats")
 	cooks.distance(...)
@@ -58,6 +63,11 @@ cr.plot <- function (...) {
 cr.plots <- function (...) {
 	.Deprecated("crPlots", package="car")
 	crPlots(...)
+}
+
+data.ellipse <- function (...) {
+	.Deprecated("dataEllipse", package="car")
+	dataEllipse(...)
 }
 
 durbin.watson <- function (...) {

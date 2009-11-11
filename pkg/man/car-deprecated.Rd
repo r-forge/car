@@ -8,10 +8,12 @@
 \alias{box.cox.var}
 \alias{box.tidwell}
 \alias{cookd}
+\alias{confidence.ellipse}
 \alias{ceres.plot}
 \alias{ceres.plots}
 \alias{cr.plot}
 \alias{cr.plots}
+\alias{data.ellipse}
 \alias{durbin.watson}
 \alias{levene.test}
 \alias{leverage.plot}
@@ -36,10 +38,12 @@ box.cox.powers(...)
 box.cox.var(...)
 box.tidwell(...)
 cookd(...)
+confidence.ellipse(...)
 ceres.plot(...)
 ceres.plots(...)
 cr.plot(...)
 cr.plots(...)
+data.ellipse(...)
 durbin.watson(...)
 levene.test(...)
 leverage.plot(...)
@@ -67,10 +71,14 @@ spread.level.plot(...)
 
 \code{cookd} is now a synonym for \code{\link[stats:influence.measures]{cooks.distance}} in the \pkg{stats} package.
 
+\code{confidence.ellipse} is now a synonym for \code{\link{confidenceEllipse}}.
+
 \code{ceres.plot} and \code{ceres.plots} are now synonyms for the \code{\link{ceresPlot}} and \code{\link{ceresPlots}} 
 functions.
 
 \code{cr.plot} and \code{cr.plots} are now synonyms for the \code{\link{crPlot}} and \code{\link{crPlots}} functions.
+
+\code{data.ellipse} is now a synonym for \code{\link{dataEllipse}}.
 
 \code{durbin.watson} is now a synonym for \code{\link{durbinWatsonTest}}.
 
