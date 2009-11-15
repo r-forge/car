@@ -1,5 +1,9 @@
+# Modified Nov. 12, 2009 by S. Weisberg to use showLabels
+# rather than showExtremes
+
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
-residualPlots.lm <- function(model,vars=~.,
+
+residualPlots.lm <- function(model, vars= ~.,
      layout=NULL, ask, main="Residual Plots", 
      fitted=TRUE, plot=TRUE, ...){
   mf <- attr(model.frame(model), "terms")
@@ -47,13 +51,15 @@ residualPlots.glm <- function(model, ...) {
  invisible(residualPlots.lm(model,...))
  }
 
-residualPlot <- function(model,variable="fitted",type="pearson",
-    plot=TRUE,add.quadratic=TRUE,
-    identify.points = "xy",
-    labels = names(residuals(model)[!is.na(residuals(model))]),
-    id.n = 3, cex.identify=0.75, 
-    col = palette()[2], col.lines = col[1],
-    xlab, ylab, pch = 1, lwd = 2, ...){
+residualPlot <- function(model, variable = "fitted", type = "pearson", 
+                 plot = TRUE,     
+                 add.quadratic = TRUE, 
+                 id.var = NULL, 
+                 labels = names(residuals(model)[!is.na(residuals(model))]),
+                 id.method = "xy",
+                 id.n = 3, id.cex = .75,
+                 col = palette()[2], col.lines = col[1], 
+                 xlab, ylab, pch = 1, lwd = 2, ...) {
  curvature <- class(model)[1] == "lm"
  string.capitalize <- function(string) {
      paste(toupper(substring(string,1,1)),substring(string,2),sep="")}
@@ -81,11 +87,9 @@ residualPlot <- function(model,variable="fitted",type="pearson",
         lm2 <- lm(residuals(model,type=type)~poly(horiz,2))
         lines(new,predict(lm2,list(horiz=new)),lty=3,lwd=2)
         }}}
-  if (!is.factor(horiz)) {
-     if (!is.logical(identify.points))
-       showExtremes(horiz,residuals(model,type=type), labels=labels, ids=identify.points, 
-         id.n=id.n, cex.id=cex.identify,res=residuals(model,type=type)) else 
-         if (identify.points) identify(horiz,residuals(model,type=type), labels, cex=cex.identify)
+  if (!is.factor(horiz)) {  
+        showLabels(horiz, residuals(model, type=type), labels=labels, 
+            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex)
      }
   ans}
  

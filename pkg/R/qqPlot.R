@@ -1,6 +1,7 @@
 # Quantile-comparison plots (J. Fox)
 
 # last modified 30 September 2009 by J. Fox
+# November 2009 by S. Weisberg -- changed to use showLabels for point identification
 
 qqp <- function(...) qqPlot(...)
 
@@ -10,20 +11,17 @@ qqPlot<-function(x, ...) {
 
 qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
 	xlab=paste(distribution, "quantiles"), main=NULL, las=par("las"),
-	envelope=.95, identify=c("auto", TRUE, FALSE), labels, col=palette()[2], 
-	lwd=2, pch=1, cex=par("cex"), cex.identify=cex,
-	line=c("quartiles", "robust", "none"), ...){
-	identify <- as.character(identify[1])
-	identify <- match.arg(identify, c("auto", TRUE, FALSE))
-	if (identify != "FALSE" && missing(labels)){
-		labels <- if (is.null(names(x)))
-				seq(along=x)
-			else names(x)
-	}
+	envelope=.95,  
+  col=palette()[2], lwd=2, pch=1, cex=par("cex"), 
+	line=c("quartiles", "robust", "none"), 
+  labels = if(!is.null(names(x))) names(x) else seq(along=x),
+  id.method = "x", id.n = 3, id.cex = .75, ...)
+  {
 	line <- match.arg(line)
 	good <- !is.na(x)
 	ord <- order(x[good])
 	ord.x <- x[good][ord]
+	ord.lab <- labels[good][ord]
 	q.function <- eval(parse(text=paste("q", distribution, sep="")))
 	d.function <- eval(parse(text=paste("d", distribution, sep="")))
 	n <- length(ord.x)
@@ -54,37 +52,22 @@ qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
 		lines(z, upper, lty=2, lwd=lwd, col=col)
 		lines(z, lower, lty=2, lwd=lwd, col=col)
 	}
-	result <- NULL
-	if (identify != "FALSE") labels <- labels[good][ord]
-	if (identify == "TRUE") {
-		selected <- identify(z, ord.x, labels)
-		result <- labels[selected]
-	}
-	else if (identify == "auto"){
-		which <- ord.x < lower | ord.x > upper
-		pos <- ifelse(z[which] <= mean(range(z)), 4, 2)
-		if (any(which)) text(z[which], ord.x[which], labels[which], pos=pos, cex=cex.identify)
-		result <- labels[which]
-	}
-	if (length(result) == 0) invisible(result) else if (is.numeric(result)) sort(result) else result
+	showLabels(z, ord.x, labels=ord.lab, id.var=NULL,
+     id.method = id.method, id.n = id.n, id.cex = id.cex)
 }
 
 qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 	ylab=paste("Studentized Residuals(", deparse(substitute(x)), ")", sep=""), main=NULL,
 	distribution=c("t", "norm"), line=c("robust", "quartiles", "none"), las=par("las"),
-	simulate=TRUE, envelope=.95, identify=c("auto", TRUE, FALSE), labels=names(rstudent), reps=1000, 
-	col=palette()[2], lwd=2, pch=1, cex=par("cex"), cex.identify=cex, ...){
+	simulate=TRUE, envelope=.95,  
+  reps=1000, 
+	col=palette()[2], lwd=2, pch=1, cex=par("cex"),
+  labels=names(rstudent), id.method = "x", id.n = 3, id.cex = .75,
+   ...){
 	result <- NULL
 	distribution <- match.arg(distribution)
 	line <- match.arg(line)
 	rstudent <- rstudent(x)
-	identify <- as.character(identify[1])
-	identify <- match.arg(identify, c("auto", TRUE, FALSE))
-	if (identify != "FALSE" && missing(labels)){
-		labels <- if (is.null(names(rstudent)))
-				seq(along=rstudent)
-			else names(rstudent)
-	}
 	good <- !is.na(rstudent)
 	rstudent <- rstudent[good]
 	labels <- labels[good]
@@ -92,12 +75,15 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 	res.df <- sumry$df[2]
 	if(!simulate)
 		result <- qqPlot(rstudent, distribution=if (distribution == "t") "t" else "norm", df=res.df-1, line=line,
-			main=main, xlab=xlab, ylab=ylab, las=las, envelope=envelope, identify=identify, labels=labels, 
-			col=col, lwd=lwd, pch=pch, cex=cex, cex.identify=cex.identify, ...)
+			main=main, xlab=xlab, ylab=ylab, las=las, envelope=envelope, 
+      col=col, lwd=lwd, pch=pch, cex=cex,
+      labels=labels, id.method=id.method, id.n=id.n, id.cex=id.cex,
+	    ...)
 	else {
 		n <- length(rstudent)        
 		ord <- order(rstudent)
 		ord.x <- rstudent[ord]
+		ord.lab <- labels[ord]
 		P <- ppoints(n)
 		z <- if (distribution == 't') qt(P, df=res.df-1) else qnorm(P)
 		plot(z, ord.x, xlab=xlab, ylab=ylab, main=main, las=las, pch=pch, col=col, cex=cex)
@@ -123,17 +109,8 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 			b <- coef[2]
 			abline(a, b, col=col, lwd=lwd)
 		}
-		labels <- labels[ord]
-		if (identify == "TRUE") {
-			selected <- identify(z, ord.x, )
-			result <- labels[selected]
-		}
-		else if (identify == "auto"){
-			which <- ord.x < lower | ord.x > upper
-			pos <- ifelse(z[which] <= mean(range(z)), 4, 2)
-			if (any(which)) text(z[which], ord.x[which], labels[which], pos=pos, cex=cex.identify)
-			result <- labels[which]
-		}
+    showLabels(z, ord.x,labels=ord.lab, id.var=NULL, 
+       id.method = id.method, id.n = id.n, id.cex = id.cex)
 	}
 	if (length(result) == 0) invisible(result) else if (is.numeric(result)) sort(result) else result
 }

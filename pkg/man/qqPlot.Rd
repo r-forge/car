@@ -17,9 +17,11 @@ qqp(...)
 
 \method{qqPlot}{default}(x, distribution="norm", ylab=deparse(substitute(x)),
 	xlab=paste(distribution, "quantiles"), main=NULL, las=par("las"),
-	envelope=.95, identify=c("auto", TRUE, FALSE), labels, col=palette()[2], 
-	lwd=2, pch=1, cex=par("cex"), cex.identify=cex,
-	line=c("quartiles", "robust", "none"), ...)
+	envelope=.95,  
+  col=palette()[2], lwd=2, pch=1, cex=par("cex"), 
+	line=c("quartiles", "robust", "none"),  
+  labels = if(!is.null(names(x))) names(x) else seq(along=x),
+  id.method = "y", id.n = 3, id.cex = .75, ...)
 
 \method{qqPlot}{lm}(x, xlab=paste(distribution, "Quantiles"),
 	ylab=paste("Studentized Residuals(", deparse(substitute(x)), ")", sep=""), main=NULL, 
@@ -37,11 +39,6 @@ qqp(...)
   \item{main}{label for plot.}
   \item{envelope}{confidence level for point-wise confidence envelope, or 
     \code{FALSE} for no envelope.}
-  \item{identify}{if \code{"auto"} (the default), outlying points are identified automatically;
-  	if \code{TRUE}, points are identified interactively by left-clicking near them; right-click
-  	to exit from interactive-point-identification mode.}
-  \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
-  	labels, and, failing that, will use observation numbers.}
   \item{las}{if \code{0}, ticks labels are drawn parallel to the
     axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).}
   \item{col}{color for points and lines; the default is the \emph{second} entry
@@ -51,7 +48,14 @@ qqp(...)
     (a circle, see \code{\link[graphics]{par}}).}
   \item{cex}{factor for expanding the size of plotted symbols; the default is
     \code{1}.}
-  \item{cex.identify}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
+  \item{labels}{vector of text strings to be used to identify points, defaults to
+    \code{names(x)} or observation numbers if \code{names(x)} is NULL.}
+  \item{id.method} {point identification method.  The default \code{id.method="y"}
+    will identify the \code{id.n} points with the largest value of 
+    \code{abs(y-mean(y))}.  See \code{\link{showLabels}} for other options.}
+  \item{id.n}{number of points labeled.  Default is 3.  if \code{id.n=0} no
+    point identification.} 
+  \item{id.cex}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
   \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).}
   \item{line}{\code{"quartiles"} to pass a line through the quartile-pairs, or
     \code{"robust"} for a robust-regression line; the latter uses the \code{rlm}
@@ -86,7 +90,7 @@ qqp(...)
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \seealso{\code{\link[stats]{qqplot}}, \code{\link[stats]{qqnorm}},
- \code{\link[stats]{qqline}}}
+ \code{\link[stats]{qqline}}, \code{\link{showLabels}}}
 
 \examples{
 x<-rchisq(100, df=2)
