@@ -1,6 +1,6 @@
-\name{showExtremes}
+\name{showLabels}
 \Rdversion{1.1}
-\alias{showExtremes}
+\alias{showLabels}
 \title{
 Utility function to identify and mark extreme points in a 2D plot.
 }
@@ -11,9 +11,8 @@ to call this function directly, the documentation below applies to all
 these other functions.
 }
 \usage{
-function(x, y,
+showLabels(x, y, id.var = NULL, 
      labels = if(is.null(id.var)) NULL else names(id.var),
-     id.var = NULL,  
      id.method = if(is.null(id.var)) "xy" else "none",
      id.n = 3, id.cex = .75, show=TRUE, ...)
 }
@@ -25,18 +24,17 @@ Plotted horizontal coordinates.
   \item{y}{
 Plotted vertical coordinates.
 }
-  \item{labels}{
-Plotting labels.  If NULL, case numbers will be used.  If labels are long, the
-\code{\link{substr}} function can be used to shorten them.
-}  
-   \item{id.var}{
+  \item{id.var}{
 Either a vector of the length of x to determine which points are to
 be labeled, or a list of less than length(x) labels or observation
 numbers of the points to be labeled, or NULL indicating that 
 \code{id.method} will be used to determine the labeling method.  See
 the details below.
 }
-
+  \item{labels}{
+Plotting labels.  If NULL, case numbers will be used.  If labels are long, the
+\code{\link{substr}} function can be used to shorten them.
+}
   \item{id.method}{
 How points are to be identified if \code{id.var} is not explicitly
 provided.  See Details below.

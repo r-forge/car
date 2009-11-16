@@ -4,9 +4,8 @@
 #   'xy' both 'x' and 'y'
 #   'mahal' rowSums( qr.Q(qr(cbind(1,x,y))) ^ 2
 
-showLabels <- function(x, y,  
+showLabels <- function(x, y, id.var = NULL, 
      labels = if(is.null(id.var)) NULL else names(id.var),
-     id.var = NULL,
      id.method = if(is.null(id.var)) "xy" else "none",
      id.n = 3, id.cex = .75, show=TRUE, ...) {
   if (id.n <= 0L ) 
@@ -15,14 +14,14 @@ showLabels <- function(x, y,
      labels <- paste(seq_along(x))
   all.inds <- NULL
   if (!is.null(id.var)) {
-     all.inds <- showLabels(x, y, labels, NULL, id.method, id.n, id.cex, show)
+     all.inds <- showLabels(x, y, NULL, labels, id.method, id.n, id.cex, show)
      if (length(id.var) == length(x))
         ind <- order(-abs(id.var))[1L:id.n] else
         ind <- if(is.character(id.var)) match(id.var, labels) else id.var
      } else { 
      if (id.method == "xy") { return(c(
-        showLabels(x, y, labels, NULL, id.method="x", id.n, id.cex),
-        showLabels(x, y, labels, NULL, id.method="y", id.n, id.cex)))} else {
+        showLabels(x, y, NULL, labels, id.method="x", id.n, id.cex),
+        showLabels(x, y, NULL, labels, id.method="y", id.n, id.cex)))} else {
      id.var <- switch(id.method,
         none = return(),
         identify = return(identify(x, y, labels, cex=id.cex, ...)),

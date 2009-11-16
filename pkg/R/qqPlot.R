@@ -15,7 +15,7 @@ qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
   col=palette()[2], lwd=2, pch=1, cex=par("cex"), 
 	line=c("quartiles", "robust", "none"), 
   labels = if(!is.null(names(x))) names(x) else seq(along=x),
-  id.method = "x", id.n = 3, id.cex = .75, ...)
+  id.method = "y", id.n = 3, id.cex = .75, ...)
   {
 	line <- match.arg(line)
 	good <- !is.na(x)
@@ -60,10 +60,10 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 	ylab=paste("Studentized Residuals(", deparse(substitute(x)), ")", sep=""), main=NULL,
 	distribution=c("t", "norm"), line=c("robust", "quartiles", "none"), las=par("las"),
 	simulate=TRUE, envelope=.95,  
-  reps=1000, 
+        reps=1000, 
 	col=palette()[2], lwd=2, pch=1, cex=par("cex"),
-  labels=names(rstudent), id.method = "x", id.n = 3, id.cex = .75,
-   ...){
+        labels=names(rstudent), id.method = "y", id.n = 3, id.cex = .75,
+        ...){
 	result <- NULL
 	distribution <- match.arg(distribution)
 	line <- match.arg(line)

@@ -24,69 +24,111 @@ residualPlots (model, ...)
 
 ### The following are three related functions:    
 
-residualPlot(model, variable = "fitted", type = "pearson", plot = TRUE,     
-                 add.quadratic = TRUE, identify.points = "xy", labels =        
-                 names(residuals(model)[!is.na(residuals(model))]), id.n = 3,          
-                 cex.identify = 0.75, col = palette()[2], col.lines =          
-                 col[1], xlab, ylab, pch = 1, lwd = 2, ...)      
+residualPlot(model, variable = "fitted", type = "pearson", 
+                 plot = TRUE,     
+                 add.quadratic = TRUE, 
+                 id.var = NULL, 
+                 labels = names(residuals(model)[!is.na(residuals(model))]),
+                 id.method = "xy",
+                 id.n = 3, id.cex = .75,
+                 col = palette()[2], col.lines = col[1], 
+                 xlab, ylab, pch = 1, lwd = 2, ...)      
                     
 residCurvTest(model,variable)
 
 tukeyNonaddTest(model)
 }
 \arguments{
-  \item{model}{ A regression object }
-  \item{vars}{ A one-sided formula that specifies a subset of the predictors. 
-One
-  residual plot is drawn for each specified.  The default
-  \code{~.} is to plot against all predictors.  For example, the
-  specification \code{vars = ~.-X3} would plot against all predictors
-  except for \code{X3}.  Some nonstandard predictors, such as B-splines, are 
-  skipped.}
-  \item{layout}{ If set to a value like \code{c(1,1)} or \code{c(4,3)}, the
-layout
-  of the graph will have this many rows and columns.  If not set, the program
-will
-  select an appropriate layout.  If the number of graphs exceed nine, you must 
-  select the layout yourself, or you will get a maximum of nine per page.}
-  \item{ask}{If TRUE, ask the user before drawing the next plot; FALSE if don't
-ask.}
-  \item{main}{Main title for the graphs.  Sue \code{main=""} for no title.}
-  \item{fitted}{If TRUE, the default, include the plot against fitted values.}
-  \item{plot}{If TRUE, draw the plot(s).}
-  \item{...}{Additional arguments passed to \code{residualPlot} and then the
-\code{plot}.}
-  \item{variable}{Quoted variable name for the horizontal axis, or 
-  \code{"fitted"} to the plot versus fitted values.}
-  \item{type}{Type of residuals to be used.  Pearson residuals are 
-  appropriate for \code{lm} objects since there are equivalent to ordinary residuals
-  with ols and correctly weighted residuals with wls.  Any quoted string that
+  \item{model}{ 
+A regression object 
+}
+  \item{vars}{
+A one-sided formula that specifies a subset of the predictors. One
+residual plot is drawn for each specified.  The default
+\code{~.} is to plot against all predictors.  For example, the
+specification \code{vars = ~.-X3} would plot against all predictors
+except for \code{X3}.  Some nonstandard predictors, such as B-splines, are 
+skipped.
+}
+  \item{layout}{ 
+If set to a value like \code{c(1,1)} or \code{c(4,3)}, the layout
+of the graph will have this many rows and columns.  If not set, the program
+will select an appropriate layout.  If the number of graphs exceed nine, you 
+must select the layout yourself, or you will get a maximum of nine per page.
+}
+  \item{ask}{
+If TRUE, ask the user before drawing the next plot; FALSE if don't
+ask.
+}
+  \item{main}{
+Main title for the graphs.  Sue \code{main=""} for no title.
+}
+  \item{fitted}{
+If TRUE, the default, include the plot against fitted values.
+}
+  \item{plot}{
+If TRUE, draw the plot(s).
+}
+  \item{...}{
+Additional arguments passed to \code{residualPlot} and then the
+\code{plot}.
+}
+  \item{variable}{
+Quoted variable name for the horizontal axis, or 
+\code{"fitted"} to the plot versus fitted values.
+}
+  \item{type}{
+Type of residuals to be used.  Pearson residuals are 
+appropriate for \code{lm} objects since there are equivalent to ordinary residuals
+with ols and correctly weighted residuals with wls.  Any quoted string that
 is an appropriate value of the \code{type} argument to
-\code{\link{residuals.lm}}.}
-  \item{add.quadratic}{if TRUE, fits the quadratic regression of the
-  vertical axis on the horizontal axis.  Ignored for glms.}
-  \item{identify.points}{if set to \code{FALSE}, no point identification is
-used.  If set to \code{TRUE}, then the \code{\link{identify}} function
-is called to allow for interaction identification of points.  Other values of
-this argument will allow for automatic identification of points.
-The default of \code{"xy"} will identify the most
-extreme points in both the horizontal and vertical directions; \code{y} uses the
-vertical-direction only, and \code{"x"} the horizontal-direction only.  Other
-options for this argument are given as values of the argument \code{ids} in
-\code{\link{showExtremes}}.} 
-\item{labels}{Values to use to label points.  The default is to use the
-row names from the data or the row numbers.}
-\item{id.n}{Number of points to identify.  If \code{identify.points="xy"} then
-up to \code{id.n} points will be identified in each direction.}     
-\item{cex.identify}{character expansion for labels}
-\item{col}{default color for points}
-\item{col.lines}{default color for lines}
-\item{xlab}{X-axis label.  If not specified, a useful label is constructed by
-the function.}
-\item{ylab}{Y-axis label.  If not specified, a useful label is constructed by
-the function.}
-\item{pch}{plotting character.}
-\item{lwd}{line width for lines.}
+\code{\link{residuals.lm}}.
+}
+  \item{add.quadratic}{
+if TRUE, fits the quadratic regression of the
+vertical axis on the horizontal axis.  Ignored for glms.
+}
+  \item{id.var}{
+if not NULL, the values of this variable are used to find the
+observations to label.  See \code{\link{showLabels}} for details.
+} 
+  \item{labels}{
+Values to use to label points.  The default is to use the
+row names from the data or the row numbers.
+}
+  \item{id.method}{
+selects how points are to be selected for labeling.  See \code{\link{showLabels}}
+for details.
+}
+  \item{id.n}{
+Number of points to identify.  If \code{id.method="xy"} then
+up to \code{id.n} points will be identified in each direction for both
+extreme horizontal and vertical points.   To turn off point labeling either set
+\code{id.n=0} or \code{id.method="none"}.
+}     
+  \item{id.cex}{
+character expansion factor for point labels.
+}
+  \item{col}{
+default color for points
+}
+  \item{col.lines}{
+default color for lines
+}
+  \item{xlab}{
+X-axis label.  If not specified, a useful label is constructed by
+the function.
+}
+  \item{ylab}{
+Y-axis label.  If not specified, a useful label is constructed by
+the function.
+}
+  \item{pch}{
+plotting character.
+}
+  \item{lwd}{
+line width for lines.
+}
   }
 \details{
 \code{residualPlots} draws all residuals plots, versus

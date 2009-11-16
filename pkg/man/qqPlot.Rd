@@ -18,16 +18,19 @@ qqp(...)
 \method{qqPlot}{default}(x, distribution="norm", ylab=deparse(substitute(x)),
 	xlab=paste(distribution, "quantiles"), main=NULL, las=par("las"),
 	envelope=.95,  
-  col=palette()[2], lwd=2, pch=1, cex=par("cex"), 
+        col=palette()[2], lwd=2, pch=1, cex=par("cex"), 
 	line=c("quartiles", "robust", "none"),  
-  labels = if(!is.null(names(x))) names(x) else seq(along=x),
-  id.method = "y", id.n = 3, id.cex = .75, ...)
+        labels = if(!is.null(names(x))) names(x) else seq(along=x),
+        id.method = "y", id.n = 3, id.cex = .75, ...)
 
 \method{qqPlot}{lm}(x, xlab=paste(distribution, "Quantiles"),
-	ylab=paste("Studentized Residuals(", deparse(substitute(x)), ")", sep=""), main=NULL, 
-	distribution=c("t", "norm"), line=c("robust", "quartiles", "none"), las=par("las"),
-	simulate=TRUE, envelope=.95, identify=c("auto", TRUE, FALSE), labels=names(rstudent), reps=1000, 
-	col=palette()[2], lwd=2, pch=1, cex=par("cex"), cex.identify=cex, ...)
+        ylab=paste("Studentized Residuals(", deparse(substitute(x)), ")",
+sep=""), main=NULL,
+        distribution=c("t", "norm"), line=c("robust", "quartiles", "none"),
+        las=par("las"), simulate=TRUE, envelope=.95,  
+        reps=1000, col=palette()[2], lwd=2, pch=1, cex=par("cex"),
+        labels=names(rstudent), id.method = "y", id.n = 3, id.cex = .75,
+        ...)
 }
 
 \arguments{
@@ -50,7 +53,8 @@ qqp(...)
     \code{1}.}
   \item{labels}{vector of text strings to be used to identify points, defaults to
     \code{names(x)} or observation numbers if \code{names(x)} is NULL.}
-  \item{id.method} {point identification method.  The default \code{id.method="y"}
+  \item{id.method}{point identification method.  The default
+\code{id.method="y"}
     will identify the \code{id.n} points with the largest value of 
     \code{abs(y-mean(y))}.  See \code{\link{showLabels}} for other options.}
   \item{id.n}{number of points labeled.  Default is 3.  if \code{id.n=0} no

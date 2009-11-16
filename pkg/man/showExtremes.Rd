@@ -5,7 +5,7 @@
 Utility function to identify and mark extreme points in a 2D plot.
 }
 \description{
-This function is called by several graphical functions in the \code{art}
+This function is called by several graphical functions in the \code{car}
 package to mark extreme points in a 2D plot.  Although the user is unlikely
 to call this function directly, the documentation below applies to all
 these other functions.
@@ -66,9 +66,12 @@ A utility function used for its side-effect of drawing labels on a plot.
   \emph{Applied Regression, Linear Models, and Related Methods.},
   2nd Edition, Sage.
   
+  Fox, J. and Weisberg, S. (in press).  \emph{Companion to Applied Regression},
+    2nd Edition, Sage.
+  
   Weisberg, S. (2005). \emph{Applied Linear Regression}, 3rd Edition, Wiley.
 }
-\author{John Fox \email{jfox@mcmaster.ca}, Sanford Weiberg \email{sandy@umn.edu}}
+\author{John Fox \email{jfox@mcmaster.ca}, Sanford Weisberg \email{sandy@umn.edu}}
 
 \seealso{\code{\link{avPlots}}, \code{\link{residualPlots}},
 %\code{\link{mmPlots}}, 

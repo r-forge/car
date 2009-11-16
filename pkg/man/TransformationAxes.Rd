@@ -111,10 +111,10 @@ bcPowerAxis(0, side="above",
 bcPowerAxis(0, side="right",
   grid=TRUE, axis.title="infant mortality rate per 1000")
 
-with(UN, qqPlot(logit(infant.mortality/1000), identify=FALSE))
+with(UN, qqPlot(logit(infant.mortality/1000), id.n=0))
 probabilityAxis()
 
-with(UN, qqPlot(qnorm(infant.mortality/1000), identify=FALSE))
+with(UN, qqPlot(qnorm(infant.mortality/1000), id.n=0))
 probabilityAxis(at=c(.005, .01, .02, .04, .08, .16), scale="probit")
 }
 \keyword{aplot}
