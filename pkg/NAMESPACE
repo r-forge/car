@@ -24,7 +24,7 @@ export(
     spm,
     spreadLevelPlot,
     symbox,
-    which.names,
+    which.names, whichNames,
     yjPowerAxis,
     
     Anova,
