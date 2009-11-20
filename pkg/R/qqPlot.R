@@ -108,7 +108,7 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 			a <- coef[1]
 			b <- coef[2]
 			abline(a, b, col=col, lwd=lwd)
-		}
+		}                   
     showLabels(z, ord.x,labels=ord.lab, id.var=NULL, 
        id.method = id.method, id.n = id.n, id.cex = id.cex)
 	}

@@ -7,7 +7,7 @@
 showLabels <- function(x, y, id.var = NULL, 
      labels = if(is.null(id.var)) NULL else names(id.var),
      id.method = if(is.null(id.var)) "xy" else "none",
-     id.n = 3, id.cex = .75, show=TRUE, ...) {
+     id.n = 3, id.cex = .75, show=TRUE, ...) {  
   if (id.n <= 0L ) 
      return()
   if (is.null(labels))
