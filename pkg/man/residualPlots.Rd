@@ -3,6 +3,7 @@
 \alias{residualPlots.lm}
 \alias{residualPlots.glm}
 \alias{residualPlot}
+\alias{residualPlot.lm}
 \alias{residCurvTest}
 \alias{tukeyNonaddTest}
 \title{Residual plots and curvature tests for linear model fits}
@@ -22,15 +23,17 @@ residualPlots (model, ...)
 
 \S3method{residualPlots}{glm}(model, ...)
 
-### The following are three related functions:    
+### The following are three related functions:  
 
-residualPlot(model, variable = "fitted", type = "pearson", 
+residualPlot(model, ...)  
+
+\S3method{residualPlot}{lm}(model, variable = "fitted", type = "pearson", 
                  plot = TRUE,     
                  add.quadratic = TRUE, 
                  id.var = NULL, 
-                 labels = names(residuals(model)[!is.na(residuals(model))]),
+                 labels,
                  id.method = "xy",
-                 id.n = 3, id.cex = .75,
+                 id.n = 3, id.cex=1, id.col=NULL,
                  col = palette()[2], col.lines = col[1], 
                  xlab, ylab, pch = 1, lwd = 2, ...)      
                     
@@ -93,8 +96,8 @@ if not NULL, the values of this variable are used to find the
 observations to label.  See \code{\link{showLabels}} for details.
 } 
   \item{labels}{
-Values to use to label points.  The default is to use the
-row names from the data or the row numbers.
+Values to use to label points.  If not set, residuals are found from
+\code{names(residuals(model))}
 }
   \item{id.method}{
 selects how points are to be selected for labeling.  See \code{\link{showLabels}}
@@ -109,12 +112,16 @@ extreme horizontal and vertical points.   To turn off point labeling either set
   \item{id.cex}{
 character expansion factor for point labels.
 }
+  \item{id.col}{
+color for labels
+}
   \item{col}{
 default color for points
 }
   \item{col.lines}{
 default color for lines
 }
+
   \item{xlab}{
 X-axis label.  If not specified, a useful label is constructed by
 the function.

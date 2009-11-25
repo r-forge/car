@@ -1,3 +1,5 @@
+# Modified 25 Nov 2009 for point marking
+
 invTranPlot <- function(x,...) UseMethod("invTranPlot")
 
 invTranPlot.formula <- function(x, data, subset, na.action, ...) {
@@ -24,7 +26,11 @@ invTranPlot.formula <- function(x, data, subset, na.action, ...) {
 invTranPlot.default<- function(x,y,lambda=c(-1,0,1),lty.lines=1:(1+length(lambda)),
         lwd.lines=2, col.lines=rainbow(length(lambda)+1,start=.7,end=.1),
         xlab=deparse(substitute(x)),ylab=deparse(substitute(y)),
-        family="bcPower",optimal=TRUE,key="topleft",...){
+        family="bcPower",optimal=TRUE,key="topleft",
+        id.var = residuals(lm(y~x)),
+        id.method = "none", labels, id.n = 0, id.cex=1, id.col=NULL,
+        ...){
+ if (missing(labels)) labels <- seq(length(x))
  if (is.factor(x)) stop("Predictor variable may not be a factor")
  if (is.factor(y)) stop("Response variable may not be a factor")
  if (optimal){opt <- invTranEstimate(x,y,family=family,confidence=FALSE)
@@ -38,6 +44,9 @@ invTranPlot.default<- function(x,y,lambda=c(-1,0,1),lty.lines=1:(1+length(lambda
      rss <- c(rss,deviance(m1))
      lines(new,predict(m1,data.frame(x=new)),lty=lty.lines[j],col=col.lines[j],
       lwd=lwd.lines)}
+ showLabels(x, y, labels=labels, 
+          id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
+          id.col=id.col)
  if (class(key) == "logical") {
     if (key == TRUE) {
       print("Click mouse on plot to locate the key, or press Escape")

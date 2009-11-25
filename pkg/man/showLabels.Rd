@@ -11,10 +11,9 @@ to call this function directly, the documentation below applies to all
 these other functions.
 }
 \usage{
-showLabels(x, y, id.var = NULL, 
-     labels = if(is.null(id.var)) NULL else names(id.var),
+showLabels(x, y, labels=NULL, id.var = NULL, 
      id.method = if(is.null(id.var)) "xy" else "none",
-     id.n = 3, id.cex = .75, show=TRUE, ...)
+     id.n = 3, id.cex=1, id.col=NULL, show=TRUE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -24,16 +23,16 @@ Plotted horizontal coordinates.
   \item{y}{
 Plotted vertical coordinates.
 }
+  \item{labels}{
+Plotting labels.  If NULL, case numbers will be used.  If labels are long, the
+\code{\link{substr}} function can be used to shorten them.
+}
   \item{id.var}{
 Either a vector of the length of x to determine which points are to
 be labeled, or a list of less than length(x) labels or observation
 numbers of the points to be labeled, or NULL indicating that 
 \code{id.method} will be used to determine the labeling method.  See
 the details below.
-}
-  \item{labels}{
-Plotting labels.  If NULL, case numbers will be used.  If labels are long, the
-\code{\link{substr}} function can be used to shorten them.
 }
   \item{id.method}{
 How points are to be identified if \code{id.var} is not explicitly
@@ -44,6 +43,9 @@ Number of points to be identified.  If set to zero, no points are identified.
 }
   \item{id.cex}{
 Controls the size of the plotted labels.  The default is 0.75.
+}
+  \item{id.col}{
+Controls the color of the plotted labels.  The default is the default color.
 }
   \item{show}{If TRUE, labels are drawn on the plot.  If FALSE, then the labels 
 are returned but not shown on the plot.}

@@ -3,6 +3,7 @@
 export(
     basicPowerAxis,
     bcPowerAxis,
+    carWeb,
     confidenceEllipse,
     contr.Helmert,
     contr.Sum,

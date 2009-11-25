@@ -1,4 +1,4 @@
-# Modified Nov. 12, 2009 by S. Weisberg to use showLabels
+# Modified Nov. 24, 2009 by S. Weisberg to use showLabels
 # rather than showExtremes
 
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
@@ -43,26 +43,29 @@ residualPlots.lm <- function(model, vars= ~.,
    ans <- rbind(ans,residualPlot(model,"fitted",plot=plot,...))
    row.names(ans)[nr+1] <- "Tukey test"
    ans[nr+1,2] <- 2*pnorm(abs(ans[nr+1,1]),lower.tail=FALSE)}
-  mtext(side=3,outer=TRUE,main, cex=1.4)
+  mtext(side=3,outer=TRUE,main, cex=1.2)
   dimnames(ans)[[2]] <- c("Test stat", "Pr(>|t|)")
   ans}
   
 residualPlots.glm <- function(model, ...) {
  invisible(residualPlots.lm(model,...))
  }
+ 
+residualPlot <- function(model, ...) UseMethod("residualPlot")
 
-residualPlot <- function(model, variable = "fitted", type = "pearson", 
+residualPlot.lm <- function(model, variable = "fitted", type = "pearson", 
                  plot = TRUE,     
                  add.quadratic = TRUE, 
                  id.var = NULL, 
-                 labels = names(residuals(model)[!is.na(residuals(model))]),
+                 labels,
                  id.method = "xy",
-                 id.n = 3, id.cex = .75,
+                 id.n = 3, id.cex=1, id.col=NULL, 
                  col = palette()[2], col.lines = col[1], 
                  xlab, ylab, pch = 1, lwd = 2, ...) {
  curvature <- class(model)[1] == "lm"
  string.capitalize <- function(string) {
      paste(toupper(substring(string,1,1)),substring(string,2),sep="")}
+ if(missing(labels)) labels <-  names(residuals(model)[!is.na(residuals(model))])
  ylab <- paste(string.capitalize(type),"residuals")
  col <- match(variable,names(model$model))
  if(is.na(col) && variable != "fitted")
@@ -89,7 +92,8 @@ residualPlot <- function(model, variable = "fitted", type = "pearson",
         }}}
   if (!is.factor(horiz)) {  
         showLabels(horiz, residuals(model, type=type), labels=labels, 
-            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex)
+            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
+            id.col=id.col)
      }
   ans}
  

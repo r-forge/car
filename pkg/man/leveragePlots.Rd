@@ -6,42 +6,70 @@
 
 \title{Regression Leverage Plots}
 \description{
-  These functions display a generalization, due to Sall (1990), 
+  These functions display a generalization, due to Sall (1990) and
+  Cook and Weisberg (1991), 
   of added-variable plots to multiple-df terms in a linear model. 
   When a term has just 1 df, the leverage plot is a rescaled version
   of the usual added-variable (partial-regression) plot.
 }
 \usage{
-leveragePlots(model, term.name, ask=missing(term.name), ...)
+leveragePlots(model, vars = ~., layout = NULL, ask, 
+    main = "Leverage Plot", ...)
 
 leveragePlot(model, ...)
 
 \method{leveragePlot}{lm}(model, term.name, 
-  labels=names(residuals(model)[!is.na(residuals(model))]),  
-  identify.points=TRUE, las=par('las'), col=palette()[2], pch=1, lwd=2, 
-  main="Leverage Plot", ...)
+    id.var = residuals(model, type = "pearson"), 
+    id.method = "x", labels, id.n = 2, id.cex=1, id.col = NULL, 
+    las = par("las"), col = palette()[2], pch = 1, lwd = 2, 
+    main = "Leverage Plot", ...)
 
 \method{leveragePlot}{glm}(model, ...)
 }
 
 \arguments{
-  \item{model}{model object produced by \code{lm}}.
-  \item{term.name}{name of term in the model to be plotted; this argument is usually
-    omitted for \code{leveragePlots}.}
-  \item{ask}{if \code{TRUE}, a menu is provided in the R Console for the
-    user to select the term(s) to plot.}
-  \item{labels}{observation names.}
-  \item{identify.points}{if \code{TRUE}, then identify points interactively.}
-  \item{las}{if \code{0}, ticks labels are drawn parallel to the
-    axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).}
-  \item{col}{color for points and lines; the default is the \emph{second} entry
-    in the current color palette (see \code{\link[grDevices]{palette}}
-    and \code{\link[graphics]{par}}).}
-  \item{pch}{plotting character for points; default is \code{1} 
-    (a circle, see \code{\link[graphics]{par}}).}
-  \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).}
-  \item{main}{title for plot.}
+  \item{model}{model object produced by \code{lm}
+}
+  \item{vars}{ A one-sided formula that specifies a subset of the predictors. 
+One added-variable plot is drawn for each term.  The default
+\code{~.} is to plot against all numeric predictors.  For example, the
+specification \code{vars = ~.-X3} would plot against all predictors
+except for \code{X3}.  Factors and nonstandard predictors such as B-splines are 
+skipped.  If this argument is a quoted name of one of the predictors, the 
+added-variable plot is drawn for that predictor only.
+}
+  \item{layout}{ If set to a value like \code{c(1,1)} or \code{c(4,3)}, the layout
+of the graph will have this many rows and columns.  If not set, the program will
+select an appropriate layout.  If the number of graphs exceed nine, you must 
+select the layout yourself, or you will get a maximum of nine per page.
+}
+    \item{ask}{if \code{TRUE}, a menu is provided in the R Console for the
+user to select the term(s) to plot.
+}   
+  \item{main}{title for plot.
+}
   \item{\dots}{arguments passed down to method functions.}
+  \item{term.name}{Quoted name of term in the model to be plotted; this argument 
+is omitted for \code{leveragePlots}.}
+  \item{id.var, id.method, labels, id.n, id.cex, id.col}{Arguments to control
+point labelling that can be used with either \code{leveragePlot} or with
+\code{LeveragePlots}.  The defaults are to label the \code{id.n} points with the
+most extreme value on the horizontal axis, and the \code{id.n} points with the 
+largest residuals in absolute value.  Setting \code{id.n=0} suppresses point
+labeling.  See \code{\link{showLabels}} for the usage of these arguements.
+}
+\item{las}{if \code{0}, ticks labels are drawn parallel to the
+    axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).
+}
+\item{col}{color for points and lines; the default is the \emph{second} entry
+    in the current color palette (see \code{\link[grDevices]{palette}}
+    and \code{\link[graphics]{par}}).
+}
+\item{pch}{plotting character for points; default is \code{1} 
+    (a circle, see \code{\link[graphics]{par}}).
+}
+\item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).
+}
 }
 \details{
   The function intended for direct use is \code{leveragePlots}. By default, this
@@ -59,8 +87,18 @@ leveragePlot(model, ...)
 }
 
 \references{
-  Fox, J. (1997)
-  \emph{Applied Regression, Linear Models, and Related Methods.} Sage.
+  Cook, R. D. and Weisberg, S. (1991).
+Added Variable Plots in Linear
+Regression. In Stahel, W. and Weisberg, S. (eds.),
+\emph{Directions in Robust Statistics and Diagnostics}.
+Springer, 47-60.
+
+  Fox, J. (2008)
+  \emph{Applied Regression, Linear Models, and Related Methods},
+  Second edition. Sage.
+  
+  Fox, J. and Weisberg, S. (2011).  \emph{A R Companion to Applied
+  Regression}, second edition.  Sage.
   
   Sall, J. (1990)
   Leverage plots for general linear hypotheses.
@@ -73,8 +111,7 @@ leveragePlot(model, ...)
 
 \examples{
 data(Duncan, package="car")
-leveragePlots(lm(prestige~(income+education)*type, data=Duncan), 
-	ask=FALSE, identify.points=FALSE)
+leveragePlots(lm(prestige~(income+education)*type, data=Duncan))
 }
 
 \keyword{hplot}

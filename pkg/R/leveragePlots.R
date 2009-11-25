@@ -1,42 +1,45 @@
 # Leverage plots (J. Fox)
 
 # last modified 9 October 2009 by J. Fox
+# modified 25 November for layout and marking points only
 
 # these functions to be rewritten; simply renamed for now
 
-
-leveragePlots<-function(model, term.name, ask=missing(term.name), ...){
-	if (!missing(term.name)){
-		var<-if (is.character(term.name) & 1==length(term.name)) term.name
-			else deparse(substitute(term.name))
-		leveragePlot(model, term.name, ...)
-	}
-	else {
-		term.names<-term.names(model)
-		if (ask) {
-			repeat{
-				selection<-menu(term.names)
-				if (selection==0) break
-				else term.name<-term.names[selection]
-				leveragePlot(model, term.name, ...)
-			}
-		}
-		else {
-			for (term.name in term.names) leveragePlot(model, term.name, ...)
-		}
-	}
-}
-
+leveragePlots <- function(model, vars=~., layout=NULL, ask, 
+           main="Leverage Plot", ...){
+  vars <- if(is.character(vars)) paste("~",vars) else vars
+  vform <- update(formula(model),vars)
+  terms.model <- attr(attr(model.frame(model), "terms"), "term.labels")
+  terms.vform <- attr(terms(vform), "term.labels")
+  good <- terms.model[match(terms.vform, terms.model)]
+  nt <- length(good)
+  if (nt == 0) stop("No plots specified")
+  if(is.null(layout)){
+   layout <- switch(min(nt,9), c(1,1), c(1,2), c(2,2), c(2,2),
+                    c(3,2), c(3,2), c(3,3), c(3,3), c(3,3))}
+  nr <- 0
+  ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
+  op<-par(no.readonly=TRUE, oma=c(0, 0, 1.5, 0), 
+          mar=c(5, 4, 1, 2) + .1, mfrow=layout, ask=ask)
+  on.exit(par(op))
+  for (term in good) leveragePlot(model, term, main="", ...)
+  mtext(side=3,outer=TRUE,main, cex=1.2)
+  invisible(0)
+ }
 
 leveragePlot<-function (model, ...) {
 	UseMethod("leveragePlot")
 }
 
-leveragePlot.lm<-function(model, term.name, 
-	labels=names(residuals(model)[!is.na(residuals(model))]), 
-	identify.points=TRUE, las=par("las"), col=palette()[2], pch=1, lwd=2, main="Leverage Plot", ...){
+leveragePlot.lm<-function(model, term.name,
+    id.var = residuals(model, type="pearson"),
+    id.method = "x",
+    labels, 
+    id.n = 2, id.cex=1, id.col=NULL, 
+	  las=par("las"), col=palette()[2], pch=1, lwd=2, main="Leverage Plot", ...){
 	term.name<-if (is.character(term.name) & 1==length(term.name)) term.name
 		else deparse(substitute(term.name))
+	labels <- if(missing(labels)) labels <- names(residuals(model))
 	b<-coefficients(model)
 	e<-na.omit(residuals(model))
 	p<-length(b)
@@ -59,13 +62,15 @@ leveragePlot.lm<-function(model, term.name,
 	v.x<-X %*% V %*% t(L) %*% u
 	v.y<-v.x + e
 	plot(v.x, v.y, xlab=paste(term.names[term],"| others"), 
-		ylab=paste(responseName," | others"), main=main,
+		ylab=paste(responseName," | others"), 
 		las=las, col=col, pch=pch)
 	abline(lsfit(v.x, v.y, wt=wt), col=col, lwd=lwd)
-	if (identify.points) identify(v.x, v.y, labels)
+  showLabels(v.x, v.y, labels=labels, 
+          id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
+          id.col=id.col)
 }
 
 leveragePlot.glm<-function(model, ...){
-	stop("leverage plot requires lm object")
+	stop("Leverage plot requires lm object")
 }
 

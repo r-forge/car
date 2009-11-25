@@ -19,10 +19,12 @@ invTranPlot(x, ...)
 
 \S3method{invTranPlot}{formula}(x,data,subset,na.action,...)
 
-\S3method{invTranPlot}{default}(x,y,lambda=c(-1,0,1),lty.lines=1:(1+length(lambda)),
-        lwd.lines=2, col.lines=rainbow(length(lambda)+1,start=.7,end=.1),
-        xlab=deparse(substitute(x)),ylab=deparse(substitute(y)),
-        family="bcPower",optimal=TRUE,key="topleft",...)
+\S3method{invTranPlot}{default}(x,y,lambda=c(-1,0,1), lty.lines=1:(1 + length(lambda)),
+        lwd.lines=2, col.lines=rainbow(length(lambda)+1, start=.7, end=.1),
+        xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
+        family="bcPower", optimal=TRUE, key="topleft",
+        id.var = residuals(lm(y~x)), id.method = "none", labels, id.n = 0, id.cex=1, 
+        id.col = NULL,...)
 
 invTranEstimate(x,y,family="bcPower",confidence=0.95)
 }
@@ -52,7 +54,10 @@ key interactively by clicking on the plot.}
   \item{xlab}{Label for the horizontal axis.}
 
   \item{ylab}{Label for the vertical axis.}
-
+  \item{id.var,id.method,labels,id.n,id.cex,id.col}{Arguments for labeling
+points.  The default \code{id.n=0} suppresses labeling, and setting this
+argument greater than zero will include labeling.  See
+\code{\link{showLabels}} for these arguments.}
   \item{\dots}{ Additional arguments passed to the plot method.}
 }
 \value{

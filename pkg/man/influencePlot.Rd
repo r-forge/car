@@ -19,39 +19,47 @@
 \usage{
 influencePlot(model, ...)
 
-\method{influencePlot}{lm}(model, scale=10, col=c(1,2), identify=c("auto", TRUE, FALSE),
-		labels=names(rstud), cex.identify=par("cex"), col.identify=par("col"), ...)
+\method{influencePlot}{lm}(model, scale = 10,  
+    id.var = cooks.distance(model), 
+    labels, id.method = "none", id.n = 3, id.cex=1, id.col = NULL, 
+    ...)
 }
 
 \arguments{
-  \item{model}{a linear or generalized-linear model.}
-  \item{scale}{a factor to adjust the size of the circles.}
-  \item{col}{colors for plotting points that do not and do have noteworthy Cook's distances.}
-  \item{identify}{identify points; if \code{"auto"} (the default), then noteworthy points 
-  	distances will automatically be identified; if \code{TRUE}, identify points interactively.}
-  \item{labels}{a vector of observation labels.}
-  \item{cex.identify, col.identify}{for point labels.}
-  \item{\dots}{arguments to pass to the \code{plot} function.}
+  \item{model}{a linear or generalized-linear model.
+  }
+  \item{scale}{a factor to adjust the size of the circles.
+  }
+  \item{id.var, labels, id.method, id.n, id.cex, id.col}{settings for labeling
+points; see \code{link{showLabels}} for details.  To omit point labeling, set
+\code{id.n=0}.  The default is to label according to Cook's Distance.
+}
+  \item{\dots}{arguments to pass to the \code{plot} function.
+  }
 }
 
 \value{
-  Returns the indices of identified points.
+  If points are identified, returns a data frame with the hat values, 
+Studentized residuals and Cook's distance of the identified points.  If
+no points are identified, nothing is returned.  This function is primarily
+used for its side-effect of drawing a plot.
 }
 
 \references{
-    J. Fox (2002) 
-    \emph{An R and S-PLUS Companion to Applied Regression}. Sage.
+    J. Fox and S. Weisberg (2011). 
+    \emph{An R and S-PLUS Companion to Applied Regression}, second
+edition. Sage.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 
-\seealso{\code{\link[stats]{cooks.distance}}, \code{\link[stats]{rstudent}}, \code{\link[stats]{hatvalues}}}
+\seealso{\code{\link[stats]{cooks.distance}}, \code{\link[stats]{rstudent}}, 
+\code{\link[stats]{hatvalues}}}
 
 \examples{
     data(Duncan, package="car")
-    influencePlot(lm(prestige ~ income + education, data=Duncan), 
-    	identify="auto")
+    influencePlot(lm(prestige ~ income + education, data=Duncan))
 }
 
 \keyword{regression}

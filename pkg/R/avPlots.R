@@ -1,6 +1,6 @@
 # October 23, 2009  avPlots by S. Weisberg.  avPlot by John Fox
 avPlots <- function(model, vars=~., layout=NULL, ask, 
-           main="Added Variable Plot", ...){
+           main="Added-variable Plot", ...){
   vars <- if(is.character(vars)) paste("~",vars) else vars
   vform <- update(formula(model),vars)
   if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
@@ -22,8 +22,8 @@ avPlots <- function(model, vars=~., layout=NULL, ask,
   op<-par(no.readonly=TRUE, oma=c(0, 0, 1.5, 0), 
           mar=c(5, 4, 1, 2) + .1, mfrow=layout, ask=ask)
   on.exit(par(op))
-  for (term in good) avPlot(model, term,...)
-  mtext(side=3,outer=TRUE,main, cex=1.4)
+  for (term in good) avPlot(model, term, main="", ...)
+  mtext(side=3,outer=TRUE,main, cex=1.2)
   invisible(0)
  }
  
@@ -33,14 +33,17 @@ avPlot <-  function(model, ...) UseMethod("avPlot")
 
 avPlot.lm <-
 function (model, variable,
-    identify.points = "xy",
-    labels = names(residuals(model)[!is.na(residuals(model))]),
-    id.n = 3, cex.identify=0.75, 
+    id.var = residuals(model, type="pearson"),
+    id.method = "x",
+    labels, 
+    id.n = 2, id.cex=1, id.col=NULL,
     col = palette()[2], col.lines = col[1],
-    xlab, ylab, pch = 1, lwd = 2,  ...)
+    xlab, ylab, pch = 1, lwd = 2, main="Added-variable Plot", ...)
 {
     variable <- if (is.character(variable) & 1 == length(variable))
         variable
+    if(missing(labels)) 
+        labels <- names(residuals(model)[!is.na(residuals(model))])
     else deparse(substitute(variable))
     mod.mat <- model.matrix(model)
     var.names <- colnames(mod.mat)
@@ -60,20 +63,22 @@ function (model, variable,
         ylab = ylab,
         col = col, pch = pch, ...)
     abline(lsfit(res[, 1], res[, 2], wt = wt), col = col.lines, lwd = lwd)
-    if (!is.logical(identify.points))
-      showExtremes(res[, 1],res[, 2], labels=labels, ids=identify.points, 
-          id.n=id.n, cex.id=cex.identify,res=residuals(model)) else 
-      if (identify.points) identify(res[, 1], res[, 2], labels, cex=cex.identify)
+    showLabels(res[, 1],res[, 2], labels=labels, 
+          id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
+          id.col=id.col)  
 }
 
 avPlot.glm<-function(model, variable, 
-    identify.points = "xy",
-    labels = names(residuals(model)[!is.na(residuals(model))]),
-    id.n = 3, cex.identify=0.75, 
+    id.var = residuals(model, type="pearson"),
+    id.method = "x",
+    labels,
+    id.n = 2, id.cex=1, id.col=NULL, 
     col = palette()[2], col.lines = col[1],
-    xlab, ylab, pch = 1, lwd = 2,  type=c("Wang", "Weisberg"), ...){
+    xlab, ylab, pch = 1, lwd = 2,  type=c("Wang", "Weisberg"), 
+    main="Added-variable Plot", ...){
     #last modified 20 Feb 2002 by J. Fox
     type<-match.arg(type)
+    if(missing(labels)) labels <- names(residuals(model)[!is.na(residuals(model))])
     variable<-if (is.character(variable) & 1==length(variable)) variable
         else deparse(substitute(variable))
     mod.mat<-model.matrix(model)
@@ -91,13 +96,11 @@ avPlot.glm<-function(model, variable,
     xlab <- if(missing(xlab)) paste(var.names[var], "| others") else xlab
     ylab <- if(missing(ylab)) paste(responseName, " | others") else ylab
     plot(res.x, res.y, xlab=xlab, 
-        ylab=ylab, col=col, pch=pch,...)
+        ylab=ylab, col=col, pch=pch, main=main, ...)
     abline(lsfit(res.x, res.y, wt=wt), col=col.lines, lwd=lwd)
-
-    if (!is.logical(identify.points))
-      showExtremes(res.x,res.y, labels=labels, ids=identify.points, 
-          id.n=id.n, cex.id=cex.identify,res=residuals(model)) else
-      if (identify.points) identify(res.x, res.y, labels, cex=cex.identify)
+    showLabels(res.x,res.y, labels=labels, 
+          id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
+          id.col=id.col)  
     }
 
   

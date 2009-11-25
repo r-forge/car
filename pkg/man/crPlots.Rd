@@ -11,30 +11,58 @@
   partial-residual plots) for linear and generalized linear models.
 }
 \usage{
-crPlots(model, variable, ask=missing(variable), one.page=!ask, 
-  span=0.5, ...)
+crPlots(model, vars = ~., layout = NULL, ask, main = "Component + Residual Plots", 
+    ...)
 
 crp(...)
 
 crPlot(model, ...)
 
-\method{crPlot}{lm}(model, variable, order=1, line=TRUE, smooth=TRUE, iter, 
-  span=0.5, las=par('las'), col=palette()[2], pch=1, lwd=2,
-  main="Component+Residual Plot", ...)
+\method{crPlot}{lm}(model, variable, id.var = residuals(model, type = "pearson"), 
+    id.method = "x", labels, id.n = 3, id.cex=1, id.col = NULL, 
+    order = 1, line = TRUE, smooth = TRUE, iter, span = 0.5, 
+    las = par("las"), col = palette()[2], pch = 1, lwd = 2, ...)
 
 \method{crPlot}{glm}(model, ...)
 }
 
 \arguments{
   \item{model}{model object produced by \code{lm} or \code{glm}.}
-  \item{variable}{variable (if it exists in the search path) or
-    name of variable. This argument usually is omitted for \code{crp}
-    or \code{crPlots}.}
-  \item{ask}{if \code{TRUE}, a menu is provided in the R Console for the
-    user to select the variable(s) to plot, and to modify the span for the smoother
-    used to draw a nonparametric-regression line on the plot.}
-  \item{one.page}{if \code{TRUE} (and \code{ask=FALSE}), put all plots on one
-    graph.}
+  \item{vars}{ A one-sided formula that specifies a subset of the predictors. 
+One component-plus-residual plot is drawn for each term.  The default
+\code{~.} is to plot against all numeric predictors.  For example, the
+specification \code{vars = ~.-X3} would plot against all predictors
+except for \code{X3}.  Factors and nonstandard predictors such as B-splines are 
+skipped.  If this argument is a quoted name of one of the predictors, the 
+component-plus-residual plot is drawn for that predictor only.
+}
+  \item{layout}{ If set to a value like \code{c(1,1)} or \code{c(4,3)}, the layout
+of the graph will have this many rows and columns.  If not set, the program will
+select an appropriate layout.  If the number of graphs exceed nine, you must 
+select the layout yourself, or you will get a maximum of nine per page.}
+  \item{ask}{If TRUE, ask the user before drawing the next plot; FALSE if don't ask.
+This is relevant only if not all the graphs can be drawn in one window.}
+  \item{main}{The title of the plot.
+}
+  \item{\dots}{\code{crPlots} passes these arguments to \code{crPlot}.  
+\code{crPlot} passes them to \code{plot}. 
+}
+  \item{variable}{A quoted string giving the name of a variable for the horizontal
+axis
+}
+  \item{id.var}{values to be used to identify points.  By default, the Pearson
+residuals from the model are used.  See \code{\link{showLabels}} for details.
+}
+  \item{id.method}{Additional methods to identify points, see 
+\code{\link{showLabels}}  for details.
+}
+  \item{labels}{observation names}
+  \item{id.n}{Number of points to identify.  Set \code{id.n=0} for no
+point identification.}
+  \item{id.cex}{Character expansion for point labels.
+}
+  \item{id.col}{Color for point labels.
+}
   \item{order}{order of polynomial regression performed for predictor to be plotted.}
   \item{line}{\code{TRUE} to plot least-squares line.}
   \item{smooth}{\code{TRUE} to plot nonparametric-regression (lowess) line.}
@@ -49,28 +77,29 @@ crPlot(model, ...)
   \item{pch}{plotting character for points; default is \code{1} 
     (a circle, see \code{\link[graphics]{par}}).}
   \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).}
-  \item{main}{title for plot.}
-  \item{\dots}{pass arguments down.}
 }
 \details{
-  The function intended for direct use is \code{crPlots} (for which \code{crp}
-  is an abbreviation). By default, these functions are used interactively
-  through a text menu.
+  The function intended for direct use is \code{crPlots}, for which \code{crp}
+  is an abbreviation. 
   
   The model cannot contain interactions, but can contain factors. 
   Parallel boxplots of the partial residuals are drawn for the levels
   of a factor.
 }
 \value{
-  \code{NULL}. These functions are used for their side effect: producing
+  \code{NULL}. These functions are used for their side effect of producing
   plots.
 }
 \references{ 
   Cook, R. D. and Weisberg, S. (1999)
   \emph{Applied Regression, Including Computing and Graphics.} Wiley.
 
-  Fox, J. (1997)
-  \emph{Applied Regression, Linear Models, and Related Methods.} Sage.
+  Fox, J. (2008)
+  \emph{Applied Regression, Linear Models, and Related Methods,} second edition.
+   Sage.
+  
+  Weisberg, S. (2005) 
+  \emph{Applied Linear Regression}, third edition. Wiley.
 }
 \author{John Fox \email{jfox@mcmaster.ca}}
 
@@ -78,12 +107,13 @@ crPlot(model, ...)
 
 \examples{
 data(Prestige, package="car")
-crPlots(lm(prestige~income+education, data=Prestige), 
-  variable="income")
+crPlots(m<-lm(prestige~income+education, data=Prestige)) 
+# get only one plot and suppress point marking
+crPlots(m, ~.-education, id.n=0)
 
 data(Womenlf, package="car")
 crPlots(glm(partic != "not.work" ~ hincome + children, 
-  data=Womenlf, family=binomial), ask=FALSE)
+  data=Womenlf, family=binomial))
 }
 
 \keyword{hplot}

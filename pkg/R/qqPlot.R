@@ -15,7 +15,7 @@ qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
   col=palette()[2], lwd=2, pch=1, cex=par("cex"), 
 	line=c("quartiles", "robust", "none"), 
   labels = if(!is.null(names(x))) names(x) else seq(along=x),
-  id.method = "y", id.n = 3, id.cex = .75, ...)
+  id.method = "y", id.n = 3, id.cex=1, id.col=NULL, ...)
   {
 	line <- match.arg(line)
 	good <- !is.na(x)
@@ -53,7 +53,7 @@ qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
 		lines(z, lower, lty=2, lwd=lwd, col=col)
 	}
 	showLabels(z, ord.x, labels=ord.lab, id.var=NULL,
-     id.method = id.method, id.n = id.n, id.cex = id.cex)
+     id.method = id.method, id.n = id.n, id.cex=id.cex, id.col=id.col)
 }
 
 qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
@@ -62,12 +62,13 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 	simulate=TRUE, envelope=.95,  
         reps=1000, 
 	col=palette()[2], lwd=2, pch=1, cex=par("cex"),
-        labels=names(rstudent), id.method = "y", id.n = 3, id.cex = .75,
-        ...){
+        labels, id.method = "y", id.n = 3, id.cex=1, 
+        id.col=NULL, ...){
 	result <- NULL
 	distribution <- match.arg(distribution)
 	line <- match.arg(line)
 	rstudent <- rstudent(x)
+	if (missing(labels)) labels <- names(rstudent)
 	good <- !is.na(rstudent)
 	rstudent <- rstudent[good]
 	labels <- labels[good]
@@ -78,7 +79,7 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 			main=main, xlab=xlab, ylab=ylab, las=las, envelope=envelope, 
       col=col, lwd=lwd, pch=pch, cex=cex,
       labels=labels, id.method=id.method, id.n=id.n, id.cex=id.cex,
-	    ...)
+	    id.col=id.col, ...)
 	else {
 		n <- length(rstudent)        
 		ord <- order(rstudent)
@@ -110,7 +111,7 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 			abline(a, b, col=col, lwd=lwd)
 		}                   
     showLabels(z, ord.x,labels=ord.lab, id.var=NULL, 
-       id.method = id.method, id.n = id.n, id.cex = id.cex)
+       id.method = id.method, id.n = id.n, id.cex=id.cex, id.col=id.col)
 	}
 	if (length(result) == 0) invisible(result) else if (is.numeric(result)) sort(result) else result
 }

@@ -1,59 +1,55 @@
 # Component + Residual Plots (J. Fox)
 
-# last modified 9 October 2009 by J. Fox
+# modified 9 October 2009 by J. Fox
+# modified 25 November 2009 by S. Weisberg to change 
+#   variable specification, layout and point marking
 
 # these functions to be rewritten; simply renamed for now
 
 crp<-function(...) crPlots(...)
 
-crPlots<-function(model, variable, ask=missing(variable), one.page=!ask, span=.5, ...){
+crPlots<-function(model, vars=~., layout=NULL, ask, main="Component + Residual Plots", ...){
+  vars <- if(is.character(vars)) paste("~",vars) else vars
+  vform <- update(formula(model),vars)
+  if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
+     stop("Only predictors in the formula can be plotted.")
+  mf <- attr(model.frame(model), "terms")
+  terms <- attr(mf, "term.labels") # this is a list
+  vterms <- attr(terms(vform), "term.labels")
+	if (any(attr(terms(model),"order")>1)) {
+		stop("C+R plots not available for models with interactions.")}
+  nt <- length(vterms)
+  if (nt == 0) stop("No plots specified")
+  if(is.null(layout)){
+   layout <- switch(min(nt,9), c(1,1), c(1,2), c(2,2), c(2,2),
+                               c(3,2), c(3,2), c(3,3), c(3,3), c(3,3))}
+  ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
+  op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
+            oma=c(0, 0, 1.5, 0), mar=c(5, 4, 1, 2) + .1)
+  on.exit(par(op))
 	if(!is.null(class(model$na.action)) && 
 		class(model$na.action) == 'exclude') class(model$na.action) <- 'omit'
-	if (!missing(variable)){
-		var<-if (is.character(variable) & 1==length(variable)) variable
-			else deparse(substitute(variable))
-		crPlot(model, var, span=span, ...)
+  for(term in vterms) 
+		crPlot(model, term, ...)
+	mtext(side=3, outer=TRUE, main, cex=1.2)
+	invisible(0)
 	}
-	else {
-		vars<-predictor.names(model)
-		if (0==length(vars)) stop("No covariates to plot.")
-		else if (ask) {
-			repeat{
-				selection<-menu(c(paste("Change span = ",span),vars))
-				if (selection==0) break
-				if (selection==1) {
-					span<-eval(parse(text=readline(prompt="span: ")))
-					if ((!is.numeric(span)) || length(span)>1 || span<0
-						|| span>1) stop("Span must be between 0 and 1")
-				}
-				else {
-					var<-vars[selection-1]
-					crPlot(model, var, span=span, ...)
-				}
-			}
-		}
-		else {
-			if (one.page){
-				save.mfrow <- par(mfrow=mfrow(length(vars)))
-				on.exit(par(mfrow=save.mfrow))
-			}
-			for (var in vars){ 
-				crPlot(model, var, span=span, ...)
-			}
-		}
-	}
-}
 
-
+	
 crPlot<-function (model, ...) {
 	UseMethod("crPlot")
 }
 
-
-crPlot.lm<-function(model, variable, order=1, line=TRUE, smooth=TRUE,
+crPlot.lm<-function(model, variable, 
+  id.var = residuals(model, type="pearson"),
+  id.method = "x",
+  labels, 
+  id.n = 3, id.cex=1, id.col=NULL,
+  order=1, line=TRUE, smooth=TRUE,
 	iter, span=.5, las=par("las"), col=palette()[2], pch=1, lwd=2,
-	main="Component+Residual Plot", ...) {
+	...) { 
 	# method also works for glm objects
+	if(missing(labels)) labels <- names(residuals(model))
 	if(!is.null(class(model$na.action)) && 
 		class(model$na.action) == 'exclude') class(model$na.action) <- 'omit'
 	var<-if (is.character(variable) & 1==length(variable)) variable
@@ -67,8 +63,7 @@ crPlot.lm<-function(model, variable, order=1, line=TRUE, smooth=TRUE,
 		partial.res<-residuals.glm(model,"partial")
 		.x<-model.frame(model)[,var]
 		boxplot(partial.res[,var]~.x, xlab=var,
-			ylab=paste("Component+Residual(", responseName(model),")", sep=""),
-			main=main)
+			ylab=paste("Component+Residual(", responseName(model),")", sep=""))
 		return(invisible())
 	}
 	if (missing(iter)){
@@ -83,11 +78,14 @@ crPlot.lm<-function(model, variable, order=1, line=TRUE, smooth=TRUE,
 		partial.res<-residuals.glm(model,"partial")
 		plot(.x, partial.res[,var], xlab=var, 
 			ylab=paste("Component+Residual(", responseName(model),")", sep=""),
-			las=las, col=col, pch=pch, main=main)
+			las=las, col=col, pch=pch)
 		if (line) abline(lm(partial.res[,var]~.x), lty=2, lwd=lwd, col=col)
 		if (smooth) {
 			lines(lowess(.x, partial.res[,var], iter=iter, f=span), lwd=lwd, col=col)
 		}
+		showLabels(.x, partial.res[,var], labels=labels, 
+            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
+            id.col=id.col)
 	}
 	else {
 		if (df.terms(model, var)>1) 
@@ -98,14 +96,17 @@ crPlot.lm<-function(model, variable, order=1, line=TRUE, smooth=TRUE,
 		last<-ncol(partial.res)
 		plot(.x, partial.res[,last], xlab=var, 
 			ylab=paste("Component+Residual(", responseName(model),")", sep=""),
-			las=las, col=col, pch=pch, main=main)
+			las=las, col=col, pch=pch)
 		if (line) abline(lm(partial.res[,last]~.x), lty=2, lwd=lwd, col=col)
 		if (smooth) {
 			lines(lowess(.x, partial.res[,last], iter=iter, f=span), lwd=lwd, col=col)
 		}
+		showLabels(.x, partial.res[,last], labels=labels, 
+            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
+            id.col=id.col)
 	}          
 }
 
 crPlot.glm<-function(model, ...){
 	crPlot.lm(model, ...)
-}
+	}

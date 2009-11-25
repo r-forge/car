@@ -2,9 +2,10 @@
 \alias{invResPlot}
 \alias{inverseResponsePlot}
 \alias{inverseResponsePlot.lm}
+
 \title{Inverse response plots to transform the response}
 \description{
-For a \code{lm} object, draws an inverse.response plot with the response \eqn{Y}{Y} on the
+For a \code{lm} model, draws an inverse.response plot with the response \eqn{Y}{Y} on the
 vertical axis and the fitted values \eqn{\hat{Y}}{Yhat}
 on the horizontal axis.  Uses \code{nls} to
 estimate  \eqn{\lambda}{lambda} in the function 
@@ -12,21 +13,26 @@ estimate  \eqn{\lambda}{lambda} in the function
 Adds the fitted curve to the plot. 
 invResPlot is an alias for inverseResponsePlot.
 }
+
 \usage{
-inverseResponsePlot(object, lambda=c(-1,0,1),xlab=NULL,...)
+inverseResponsePlot(model, lambda=c(-1,0,1), xlab=NULL, ...)
 
-\S3method{inverseResponsePlot}{lm}(object, lambda=c(-1,0,1),xlab=NULL,...)
+\S3method{inverseResponsePlot}{lm}(model, lambda=c(-1,0,1), xlab=NULL,
+   labels=names(residuals(model)), ...)
 
-invResPlot(object, ...)
+invResPlot(model, ...)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{object}{A \code{lm} regression object}
+  \item{model}{A \code{lm} regression object}
   \item{lambda}{A vector of values for lambda.  A plot will be produced 
   with curves corresponding to these lambdas and to the least squares 
   estimate of lambda}
   \item{xlab}{The horizontal axis label.  If NULL, it is constructed by the function.}
-  \item{\dots}{Other arguments passed to \code{inv.tran.plot} and then to \code{plot}.}
+  \item{labels}{Case labels if labeling is turned on; see
+\code{\link{invTranPlot}} and \code{\link{showLabels}} for arguments.}
+  \item{\dots}{Other arguments passed to \code{invTranPlot} and then to
+\code{plot}.}
 }
 
 \value{
@@ -41,10 +47,12 @@ Numeric output is a list with elements
   \item{lambda}{Estimate of transformation parameter for the response}
   \item{RSS}{The residual sum of squares at the minimum}
 }
-\seealso{\code{\link{invTranPlot}}, \code{\link{powerTransform}}}
+\seealso{\code{\link{invTranPlot}}, \code{\link{powerTransform}}, 
+\code{\link{showLabels}}}
 
 \references{S. Weisberg (2005), \emph{Applied
 Linear Regression}, third edition, Wiley, Chapter 7}
+
 \author{Sanford Weisberg, \code{sandy@stat.umn.edu}}
 
 \examples{
