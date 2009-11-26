@@ -16,9 +16,10 @@ ceresPlots(model, vars = ~., layout = NULL, ask, main = "Ceres Plots",
 ceresPlot(model, ...)
 
 \method{ceresPlot}{lm}(model, variable, id.var = residuals(model, type = "pearson"), 
-    id.method = "x", labels, id.n = 3, id.cex=1, id.col = NULL, 
-    order = 1, line = TRUE, smooth = TRUE, iter, span = 0.5, 
-    las = par("las"), col = palette()[2], pch = 1, lwd = 2, ...)
+    id.method = "x", labels, id.n = 3, id.cex = 1, id.col = NULL, 
+    line = TRUE, smooth = TRUE, span = 0.5, iter, las = par("las"), 
+    col = palette()[2], pch = 1, lwd = 2, main = "Ceres Plot", 
+    ...)
 
 \method{ceresPlot}{glm}(model, ...)
 }
@@ -59,17 +60,14 @@ point identification.}
 }
   \item{id.col}{Color for point labels.
 }
-  \item{ask}{If TRUE, ask the user before drawing the next plot; FALSE if don't ask.
-This is relevant only if not all the graphs can be drawn in one window.
+  \item{line}{\code{TRUE} to plot least-squares line.
+}
+  \item{smooth}{\code{TRUE} to plot nonparametric-regression (lowess) line.
 }
   \item{span}{span for lowess smoother.
 }
   \item{iter}{number of robustness iterations for nonparametric-regression smooth;
     defaults to 3 for a linear model and to 0 for a non-Gaussian glm.
-}
-  \item{line}{\code{TRUE} to plot least-squares line.
-}
-  \item{smooth}{\code{TRUE} to plot nonparametric-regression (lowess) line.
 }
   \item{las}{if \code{0}, ticks labels are drawn parallel to the
     axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).
@@ -107,7 +105,7 @@ This is relevant only if not all the graphs can be drawn in one window.
   \emph{Applied Regression, Linear Models, and Related Methods},
   second ed. Sage.
   
-  Fox, J. and Weisberg, S. (2011)  \emph{An R Companion to Applied Regression),
+  Fox, J. and Weisberg, S. (2011)  \emph{An R Companion to Applied Regression},
   second ed. Sage.
   
   Weisberg, S. (2005)  \emph{Applied Linear Regression}, third ed. Wiley.
