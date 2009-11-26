@@ -7,45 +7,82 @@
 \title{Ceres Plots}
 \description{
   These functions calculate Ceres plots for linear and generalized
-  linear model.
+  linear models.
 }
 \usage{
-ceresPlots(model, variable, ask=missing(variable), one.page=!ask, 
-  span=0.5, ...)
+ceresPlots(model, vars = ~., layout = NULL, ask, main = "Ceres Plots", 
+    ...)
 
 ceresPlot(model, ...)
 
-\method{ceresPlot}{lm}(model, variable, line=TRUE, smooth=TRUE, span=0.5, iter,
-  las=par('las'), col=palette()[2], pch=1, lwd=2, main="Ceres Plot", ...)
+\method{ceresPlot}{lm}(model, variable, id.var = residuals(model, type = "pearson"), 
+    id.method = "x", labels, id.n = 3, id.cex=1, id.col = NULL, 
+    order = 1, line = TRUE, smooth = TRUE, iter, span = 0.5, 
+    las = par("las"), col = palette()[2], pch = 1, lwd = 2, ...)
 
 \method{ceresPlot}{glm}(model, ...)
 }
 
 \arguments{
   \item{model}{model object produced by \code{lm} or \code{glm}.}
-  \item{variable}{variable (if it exists in the search path) or
-    name of variable. This argument usually is omitted for
-    \code{ceresPlots}.}
-  \item{ask}{if \code{TRUE}, a menu is provided in the R Console for the
-    user to select the variable(s) to plot, and to modify the span for the smoother
-    used to draw a nonparametric-regression line on the plot.}
-  \item{one.page}{if \code{TRUE} (and \code{ask=FALSE}), put all plots on one
-    graph.}
-  \item{span}{span for lowess smoother.}
+  \item{vars}{ A one-sided formula that specifies a subset of the predictors. 
+One component-plus-residual plot is drawn for each term.  The default
+\code{~.} is to plot against all numeric predictors.  For example, the
+specification \code{vars = ~.-X3} would plot against all predictors
+except for \code{X3}.  Factors and nonstandard predictors such as B-splines are 
+skipped.  If this argument is a quoted name of one of the predictors, the 
+component-plus-residual plot is drawn for that predictor only.
+}
+  \item{layout}{ If set to a value like \code{c(1,1)} or \code{c(4,3)}, the layout
+of the graph will have this many rows and columns.  If not set, the program will
+select an appropriate layout.  If the number of graphs exceed nine, you must 
+select the layout yourself, or you will get a maximum of nine per page.}
+  \item{ask}{If TRUE, ask the user before drawing the next plot; FALSE if don't ask.
+This is relevant only if not all the graphs can be drawn in one window.}
+  \item{main}{The title of the plot.
+}
+  \item{\dots}{\code{ceresPlots} passes these arguments to \code{ceresPlot}.  
+\code{ceresPlot} passes them to \code{plot}. 
+}  
+  \item{variable}{A quoted string giving the name of a variable for the horizontal
+axis}
+  \item{id.var}{values to be used to identify points.  By default, the Pearson
+residuals from the model are used.  See \code{\link{showLabels}} for details.
+}
+  \item{id.method}{Additional methods to identify points, see 
+\code{\link{showLabels}}  for details.
+}
+  \item{labels}{observation names}
+  \item{id.n}{Number of points to identify.  Set \code{id.n=0} for no
+point identification.}
+  \item{id.cex}{Character expansion for point labels.
+}
+  \item{id.col}{Color for point labels.
+}
+  \item{ask}{If TRUE, ask the user before drawing the next plot; FALSE if don't ask.
+This is relevant only if not all the graphs can be drawn in one window.
+}
+  \item{span}{span for lowess smoother.
+}
   \item{iter}{number of robustness iterations for nonparametric-regression smooth;
-    defaults to 3 for a linear model and to 0 for a non-Gaussian glm.}
-  \item{line}{\code{TRUE} to plot least-squares line.}
-  \item{smooth}{\code{TRUE} to plot nonparametric-regression (lowess) line.}
+    defaults to 3 for a linear model and to 0 for a non-Gaussian glm.
+}
+  \item{line}{\code{TRUE} to plot least-squares line.
+}
+  \item{smooth}{\code{TRUE} to plot nonparametric-regression (lowess) line.
+}
   \item{las}{if \code{0}, ticks labels are drawn parallel to the
-    axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).}
+    axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).
+}
   \item{col}{color for points and lines; the default is the \emph{second} entry
     in the current color palette (see \code{\link[grDevices]{palette}}
-    and \code{\link[graphics]{par}}).}
+    and \code{\link[graphics]{par}}).
+}
   \item{pch}{plotting character for points; default is \code{1} 
-    (a circle, see \code{\link[graphics]{par}}).}
-  \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).}
-  \item{main}{title for plot.}
-  \item{\dots}{pass arguments down.}
+    (a circle, see \code{\link[graphics]{par}}).
+}
+  \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).
+}
 }
 \details{
   Ceres plots are a generalization of component+residual (partial
@@ -53,8 +90,6 @@ ceresPlot(model, ...)
   among the predictors.
   
   The function intended for direct use is \code{ceresPlots}. 
-  By default, this function is used interactively
-  through a text menu.
   
   The model cannot contain interactions, but can contain factors. 
   Factors may be present in the model, but Ceres plots cannot be drawn
@@ -68,16 +103,21 @@ ceresPlot(model, ...)
   Cook, R. D. and Weisberg, S. (1999)
   \emph{Applied Regression, Including Computing and Graphics.} Wiley.
 
-  Fox, J. (1997)
-  \emph{Applied Regression, Linear Models, and Related Methods.} Sage.
+  Fox, J. (2008)
+  \emph{Applied Regression, Linear Models, and Related Methods},
+  second ed. Sage.
+  
+  Fox, J. and Weisberg, S. (2011)  \emph{An R Companion to Applied Regression),
+  second ed. Sage.
+  
+  Weisberg, S. (2005)  \emph{Applied Linear Regression}, third ed. Wiley.
 }
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link{crPlots}}, \code{\link{avPlots}}}
+\seealso{\code{\link{crPlots}}, \code{\link{avPlots}}, \code{\link{showLabels}}}
 
 \examples{
-data(Prestige, package="car")
-ceresPlots(lm(prestige~income+education+type, data=Prestige), ask=FALSE)
+ceresPlots(lm(prestige~income+education+type, data=Prestige), ~.-type)
 }
 
 \keyword{hplot}

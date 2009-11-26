@@ -1,60 +1,68 @@
 # CERES plots (J. Fox)
 
 # last modified 9 October 2009 by J. Fox
+# modified  26 Nov 2009 by S. Weisberg
+#   changed layout and point marking.
+# WARNING:  the following fails:
+#  ceresPlots(lm(longley))
+# The error occurs in the following line in ceresPlot.lm
+# 			rval <- eval(call("model.frame", ff, data = data, subset = subset, 
+#				na.action = I), envir)
+# In this case the the data argument in the call that created the object is
+# null because the data are in the formula argument.
+# 'envir' does not contain the data, and hence an error.  This is not a new
+# bug. 
 
 # these functions to be rewritten; simply renamed for now
 
-ceresPlots<-function(model, variable, ask=missing(variable), one.page=!ask, span=.5, ...){
+ceresPlots<-function(model, vars=~., layout=NULL, ask, main="Ceres Plots", ...){
+  vars <- if(is.character(vars)) paste("~",vars) else vars
+  vform <- update(formula(model),vars)
+  if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
+     stop("Only predictors in the formula can be plotted.")
+  mf <- attr(model.frame(model), "terms")
+  terms <- attr(mf, "term.labels") # this is a list
+  vterms <- attr(terms(vform), "term.labels")
+  good <- NULL
+	if (any(attr(terms(model),"order")>1)) {
+		stop("CERES plots not available for models with interactions.")}  
+  for (term in vterms) if(
+      inherits(model$model[[term]], "numeric") |
+      inherits(model$model[[term]], "integer")) good <- c(good,term)
+  nt <- length(good)
+  if(length(good) < length(vterms))
+    warning("Factors skipped in drawing CERES plots.")
+  vterms <- good
+  if (nt == 0) stop("No plots specified")
+  if(is.null(layout)){
+   layout <- switch(min(nt,9), c(1,1), c(1,2), c(2,2), c(2,2),
+                               c(3,2), c(3,2), c(3,3), c(3,3), c(3,3))}
+  ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
+  op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
+            oma=c(0, 0, 1.5, 0), mar=c(5, 4, 1, 2) + .1)
+  on.exit(par(op))
 	if(!is.null(class(model$na.action)) && 
 		class(model$na.action) == 'exclude') class(model$na.action) <- 'omit'
-	if (!missing(variable)){
-		var<-if (is.character(variable) & 1==length(variable)) variable
-			else deparse(substitute(variable))
-		ceresPlot(model, var, ...)
+  for(term in vterms) 
+		ceresPlot(model, term, main="", ...)
+	mtext(side=3, outer=TRUE, main, cex=1.2)
+	invisible(0)
 	}
-	else {
-		vars<-predictor.names(model)
-		vars<-if (is.null(model$contrasts)) vars
-			else vars[sapply(model$contrasts[vars], is.null)]
-		if (0==length(vars)) stop("No covariates to plot.")
-		if (any(attr(terms(model),"order")>1)) {
-			stop("ceres plots not available for models with interactions.")
-		}
-		if (ask) {
-			repeat{
-				selection<-menu(c(paste("Change span = ",span),vars))
-				if (selection==0) break
-				if (selection==1) {
-					span<-eval(parse(text=readline(prompt="span: ")))
-					if ((!is.numeric(span)) || length(span)>1 || span<0
-						|| span>1) stop("Span must be between 0 and 1")
-				}
-				else {
-					var<-vars[selection-1]
-					ceresPlot(model, var, span=span)
-				}
-			}
-		}
-		else {
-			if (one.page){
-				save.mfrow <- par(mfrow=mfrow(length(vars)))
-				on.exit(par(mfrow=save.mfrow))
-			}
-			for (var in vars){ 
-				ceresPlot(model, var, span=span, ...)
-			}
-		}
-	}
-}
 
 
 ceresPlot<-function (model, ...) {
 	UseMethod("ceresPlot")
 }
 
-ceresPlot.lm<-function(model, variable, line=TRUE, smooth=TRUE, span=.5, iter, 
+ceresPlot.lm<-function(model, variable, 
+  id.var = residuals(model, type="pearson"),
+  id.method = "x",
+  labels, 
+  id.n = 3, id.cex=1, id.col=NULL,
+  line=TRUE, smooth=TRUE, span=.5, iter, 
 	las=par("las"), col=palette()[2], pch=1, lwd=2, main="Ceres Plot", ...){
 	# the lm method works with glm's too
+	if(missing(labels)) labels <- names(residuals(model))	
 	expand.model.frame <- function (model, extras, envir = environment(formula(model)),
 		na.expand = FALSE){  # modified version of R base function
 		f <- formula(model)
@@ -130,6 +138,9 @@ ceresPlot.lm<-function(model, variable, line=TRUE, smooth=TRUE, span=.5, iter,
 	plot(mod.mat[,var], partial.res, xlab=var, col=col, pch=pch,
 		ylab=paste("CERES Residual(",responseName(model),")", sep=""),
 		main=main, las=las)
+	showLabels(mod.mat[,var], partial.res, labels=labels, 
+            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
+            id.col=id.col)
 	if (line) abline(lm(partial.res~mod.mat[,var]), lty=2, lwd=lwd, col=col)
 	if (smooth) {
 		lines(lowess(mod.mat[,var], partial.res, iter=iter, f=span), lwd=lwd, col=col)
