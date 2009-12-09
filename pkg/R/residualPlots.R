@@ -82,16 +82,18 @@ residualPlot.lm <- function(model, variable = "fitted", type = "pearson",
    else  c(NA,NA)
 # ans <- if (class(horiz) != "factor")  else c(NA,NA)
  if(plot==TRUE){
-  plot(horiz,residuals(model,type=type),xlab=lab,ylab=ylab,...)
+  vert <- switch(type, "rstudent"=rstudent(model), 
+       "rstandard"=rstandard(model),residuals(model,type=type))
+  plot(horiz, vert, xlab=lab, ylab=ylab, ...)
   abline(h=0,lty=2)
   if(class(horiz) != "factor") {
     if(add.quadratic==TRUE & curvature==TRUE){
         new <- seq(min(horiz),max(horiz),length=200)
-        lm2 <- lm(residuals(model,type=type)~poly(horiz,2))
+        lm2 <- lm(residuals(model,type="pearson")~poly(horiz,2))
         lines(new,predict(lm2,list(horiz=new)),lty=3,lwd=2)
         }}}
   if (!is.factor(horiz)) {  
-        showLabels(horiz, residuals(model, type=type), labels=labels, 
+        showLabels(horiz, vert, labels=labels, 
             id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
             id.col=id.col)
      }

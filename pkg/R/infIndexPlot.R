@@ -1,0 +1,35 @@
+# influence index plot  written 9 Dec 09 by S. Weisberg
+
+infIndexPlot <- function(model, ...)
+         {UseMethod("infIndexPlot")}
+
+infIndexPlot.lm <- function(model, main="Diagnostic Plots",
+     id.var=NULL, labels, id.method = "y", id.n = 0, id.cex=1,
+     id.col=NULL, ...) {
+   names <- c("Cook's distance", "Studentized residuals",
+           "Bonferroni p-value", "Leverage")
+# check for row.names, and use them if they are numeric.
+   if(missing(labels)) labels <-  row.names(model$model)
+   op <- par(mfrow=c(4,1),mar=c(1,4,0,2)+.0,mgp=c(2,1,0), oma=c(6,0,6,0))
+   oldwarn <- options()$warn
+   options(warn=-1)
+   xaxis <- as.numeric(row.names(model$model))
+   options(warn=oldwarn)
+   if (any (is.na(xaxis))) xaxis <- 1:length(xaxis)
+   on.exit(par(op))
+   outlier.t.test <- pmin(outlierTest(model, order=FALSE, n.max=length(xaxis),
+      cutoff=length(xaxis))$bonf.p, 1)
+   for (j in 1:4){
+    y <- switch(j,cooks.distance(model),rstudent(model),
+             outlier.t.test, hatvalues(model))
+    xa <- if(j==4) "s" else "s"
+    plot(xaxis,y,type="b", ylab=names[j], xlab="", xaxt="n", tck=0.1, ...)
+    axis(1, labels= ifelse(j<4,FALSE,TRUE))
+    showLabels(xaxis, y, labels=labels,
+            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
+            id.col=id.col)
+    }
+    mtext(side=3,outer=TRUE,main, cex=1.2, line=1)
+    mtext(side=1, outer=TRUE, "Index", line=3)
+   invisible()
+}

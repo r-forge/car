@@ -97,6 +97,9 @@ point identification.}
   Fox, J. (2008)
   \emph{Applied Regression, Linear Models, and Related Methods,} second edition.
    Sage.
+   
+  Fox, J. and Weisberg, S. (in press).  \emph{An R Companion to Applied 
+  Regression}, second edition.  Sage.
   
   Weisberg, S. (2005) 
   \emph{Applied Linear Regression}, third edition. Wiley.

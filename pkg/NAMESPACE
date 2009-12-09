@@ -42,6 +42,7 @@ export(
 	durbinWatsonTest,
 	estimateTransform, testTransform,	
 	hccm,
+	infIndexPlot,
 	influencePlot,
 	invResPlot, inverseResponsePlot, invTranPlot, invTranEstimate,
 	leveneTest,
@@ -140,6 +141,7 @@ S3method(influencePlot, lm)
 S3method(inverseResponsePlot, lm)
 S3method(invTranPlot, formula)
 S3method(invTranPlot, default)
+S3method(infIndexPlot, lm)
 S3method(powerTransform, formula)
 S3method(hccm, default)
 S3method(hccm, lm)

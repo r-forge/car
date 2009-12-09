@@ -85,7 +85,8 @@ Type of residuals to be used.  Pearson residuals are
 appropriate for \code{lm} objects since there are equivalent to ordinary residuals
 with ols and correctly weighted residuals with wls.  Any quoted string that
 is an appropriate value of the \code{type} argument to
-\code{\link{residuals.lm}}.
+\code{\link{residuals.lm} or \dQuote{rstudent} or \dQuote{rstandard} for 
+Studentized or standardized residuals}.
 }
   \item{add.quadratic}{
 if TRUE, fits the quadratic regression of the

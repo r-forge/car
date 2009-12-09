@@ -110,7 +110,7 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 			b <- coef[2]
 			abline(a, b, col=col, lwd=lwd)
 		}                   
-    showLabels(z, ord.x,labels=ord.lab, id.var=NULL, 
+    result <- showLabels(z, ord.x,labels=ord.lab, id.var=NULL, 
        id.method = id.method, id.n = id.n, id.cex=id.cex, id.col=id.col)
 	}
 	if (length(result) == 0) invisible(result) else if (is.numeric(result)) sort(result) else result
