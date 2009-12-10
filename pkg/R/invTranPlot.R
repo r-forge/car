@@ -23,8 +23,9 @@ invTranPlot.formula <- function(x, data, subset, na.action, ...) {
          invTranPlot(vx,vy,...)
   }   
 
-invTranPlot.default<- function(x,y,lambda=c(-1,0,1),lty.lines=1:(1+length(lambda)),
-        lwd.lines=2, col.lines=rainbow(length(lambda)+1,start=.7,end=.1),
+invTranPlot.default<- function(x, y, lambda=c(-1, 0, 1), 
+        lty.lines=1:(1+length(lambda)),
+        lwd.lines=2, col.lines=palette(),
         xlab=deparse(substitute(x)),ylab=deparse(substitute(y)),
         family="bcPower",optimal=TRUE,key="topleft",
         id.var = residuals(lm(y~x)),

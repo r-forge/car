@@ -20,7 +20,7 @@ invTranPlot(x, ...)
 \S3method{invTranPlot}{formula}(x,data,subset,na.action,...)
 
 \S3method{invTranPlot}{default}(x,y,lambda=c(-1,0,1), lty.lines=1:(1 + length(lambda)),
-        lwd.lines=2, col.lines=rainbow(length(lambda)+1, start=.7, end=.1),
+        lwd.lines=2, col.lines=carPalette(),
         xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
         family="bcPower", optimal=TRUE, key="topleft",
         id.var = residuals(lm(y~x)), id.method = "none", labels, id.n = 0, id.cex=1, 
@@ -45,7 +45,8 @@ transformation with this confidence level.  If FALSE, no interval is returned.}
   \item{optimal}{Include the optimal value of lambda?}
   \item{lty.lines}{line types corresponding to the powers}
   \item{lwd.lines}{the width of the plotted lines, defaults to 2 times the standard}
-  \item{col.lines}{color of the fitted lines corresponding to the powers}
+  \item{col.lines}{color of the fitted lines corresponding to the powers.  The
+  default is to use the colors returned by  \code{\link{palette}}}
   \item{key}{The default is \code{"topleft"}, in which case a legend is added to
 the top left corner of the plot; other choices include \code{"bottomright"}.
 If \code{key} is a vector of two coordinates, the legend is drawn at the coordinates
