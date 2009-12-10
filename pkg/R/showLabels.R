@@ -9,10 +9,23 @@ showLabels <- function(x, y, labels=NULL,
      id.n = 3, id.cex=1, id.col=NULL, show=TRUE, ...) {  
   if (id.n <= 0L | show == FALSE ) 
      return()
+  if (is.null(id.col))
+     id.col <- palette()[1]
   if (is.null(labels))
      if(!is.null(id.var)) labels <- names(id.var)
   if (is.null(labels))
-     labels <- paste(seq_along(x))
+     labels <- paste(seq_along(x))           
+# missing values
+  ismissing <- is.na(x) | is.na(y) | is.na(labels)
+  if( length(id.method) == length(x) ) 
+     ismissing <- ismissing | is.na(labels)
+  if( any(ismissing) ) {
+     x <- x[!ismissing]
+     y <- y[!ismissing]
+     labels <- labels[!ismissing]
+     if (length(id.var) == length(ismissing)) 
+         id.var <- id.var[!ismissing]
+     }
   all.inds <- NULL
   if (!is.null(id.var)) {
      all.inds <- showLabels(x, y, labels, NULL, id.method, id.n, id.cex, 
@@ -26,7 +39,7 @@ showLabels <- function(x, y, labels=NULL,
         showLabels(x, y, labels, NULL, id.method="y", id.n, id.cex, id.col, show)))} else {
      id.var <- switch(id.method,
         none = return(),
-        identify = return(identify(x, y, labels, cex=id.cex, col=id.col, ...)),
+        identify = return(labels[identify(x, y, labels, cex=id.cex, col=id.col, ...)]),
         x = x - mean(x, na.rm = TRUE),
         y = y - mean(y, na.rm = TRUE),
         mahal = rowSums( qr.Q( qr(cbind(1, x, y) ) )^2))}

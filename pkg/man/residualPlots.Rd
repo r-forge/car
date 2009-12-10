@@ -156,7 +156,13 @@ the curvature test statistic, and a second column for the corresponding
 p-value.  This function is used primarily for its side effect of drawing
 residual plots. 
 }
-\references{S. Weisberg (2005), \emph{Applied
+\references{
+
+Fox, J. and Weisberg, S. (in press).
+\emph{An R Companion to Applied Regression}, second edition.  Sage.
+
+
+Weisberg, S. (2005), \emph{Applied
 Linear Regression}, third edition, Wiley, Chapter 8}
 \author{Sanford Weisberg, \email{sandy@stat.umn.edu}}
 
