@@ -12,6 +12,8 @@ Changes to Version 2.0-0
 	
 	o  Most moved, renamed, removed functions retained as deprecated functions.
 	
+	o  Improvements to linearHypothesis(), thanks to Achim Zeileis.
+	
 	o  Small changes.
 
 Changes to Version 1.0-0
