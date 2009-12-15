@@ -7,7 +7,7 @@ infIndexPlot.lm <- function(model, main="Diagnostic Plots",
      id.var=NULL, labels, id.method = "y", id.n = 0, id.cex=1,
      id.col=NULL, ...) {
    names <- c("Cook's distance", "Studentized residuals",
-           "Bonferroni p-value", "Leverage")
+           "Bonferroni p-value", "hat-values")
 # check for row.names, and use them if they are numeric.
    if(missing(labels)) labels <-  row.names(model$model)
    op <- par(mfrow=c(4,1),mar=c(1,4,0,2)+.0,mgp=c(2,1,0), oma=c(6,0,6,0))
