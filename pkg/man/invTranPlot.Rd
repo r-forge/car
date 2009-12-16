@@ -20,7 +20,7 @@ invTranPlot(x, ...)
 \S3method{invTranPlot}{formula}(x,data,subset,na.action,...)
 
 \S3method{invTranPlot}{default}(x,y,lambda=c(-1,0,1), lty.lines=1:(1 + length(lambda)),
-        lwd.lines=2, col.lines=Palette(),
+        lwd.lines=2, col.lines=palette(),
         xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
         family="bcPower", optimal=TRUE, key="topleft",
         id.var = residuals(lm(y~x)), id.method = "none", labels, id.n = 0, id.cex=1, 
