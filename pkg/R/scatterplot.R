@@ -1,6 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 03 November 2009
+# last modified 17 December 2009
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -51,7 +51,9 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 	cex.main=par("cex.main"), cex.sub=par("cex.sub"), cex.identify=cex,
 	groups, by.groups=!missing(groups), legend.title=deparse(substitute(groups)), 
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	col=rep(palette(), length.out=n.groups + 1), pch=1:n.groups, 
+	#col=rep(palette(), length.out=n.groups + 1), 
+	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
+	pch=1:n.groups, 
 	legend.plot=!missing(groups), reset.par=TRUE, ...){
 	logged <- function(axis=c("x", "y")){
 		axis <- match.arg(axis)
@@ -235,30 +237,30 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 	plot(.x, .y, xlab=xlab, ylab=ylab, las=las, log=log, cex=cex, cex.axis=cex.axis, cex.lab=cex.lab,
 		cex.main=cex.main, cex.sub=cex.sub, type="n", xlim=xlim, ylim=ylim, ...)
 	n.groups <- length(levels(groups))
-	if (n.groups > length(col) - 1) stop("number of groups exceeds number of available colors")
+	if (n.groups > length(col)) stop("number of groups exceeds number of available colors")
 	indices <- NULL
 	range.x <- if (logged("x")) range(log(.x), na.rm=TRUE) else range(.x, na.rm=TRUE)
 	for (i in 1:n.groups){
 		subs <- groups == levels(groups)[i]
 		points(if (is.null(jitter$x) || jitter$x == 0) .x[subs] else jitter(.x[subs], factor=jitter$x), 
 			if (is.null(jitter$y) || jitter$y == 0) .y[subs] else jitter(.y[subs], factor=jitter$y), 
-			pch=pch[i], col=col[i + 1], cex=cex)
+			pch=pch[i], col=col[if (n.groups == 1) 2 else i], cex=cex)
 		if (by.groups){
-			if (smooth) lowess.line(.x[subs], .y[subs], col=col[i + 1], span=span)
-			if (is.function(reg.line)) reg(.x[subs], .y[subs], col=col[i + 1])
+			if (smooth) lowess.line(.x[subs], .y[subs], col=col[i], span=span)
+			if (is.function(reg.line)) reg(.x[subs], .y[subs], col=col[i])
 			if (ellipse) {
 				X <- na.omit(data.frame(x=.x[subs], y=.y[subs]))
 				if (logged("x")) X$x <- log(x)
 				if (logged("y")) X$y <- log(y)
 				with(X, dataEllipse(x, y, plot.points=FALSE, lwd=1, log=log,
-					levels=levels, col=col[i + 1], robust=robust))
+					levels=levels, col=col[i], robust=robust))
 			}
 		}
 		if (!is.logical(identify.points)) 
 			indices <- c(indices, showExtremesScatter(
 					.x[subs], 
 					.y[subs], 
-					labels=labels[subs], ids=identify.points, log=log, id.n=id.n, cex.id=cex.identify, col=col[i + 1],
+					labels=labels[subs], ids=identify.points, log=log, id.n=id.n, cex.id=cex.identify, col=col[i],
 					range.x=range.x))
 	}
 	if (!by.groups){
@@ -281,7 +283,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 		on.exit(par(xpd=xpd), add=TRUE)
 		usr <- par("usr")
 		legend(usr[1], usr[4] + 1.2*top*strheight("x"), legend=levels(groups), 
-			pch=pch, col=col[2:(n.groups+1)], pt.cex=cex, cex=cex.lab, title=legend.title)
+			pch=pch, col=col[1:n.groups], pt.cex=cex, cex=cex.lab, title=legend.title)
 	}
 	if (identify.points == TRUE) indices <- labels[identify(.x, .y, labels)]
 	if (is.null(indices)) invisible(indices) else if (is.numeric(indices)) sort(indices) else indices

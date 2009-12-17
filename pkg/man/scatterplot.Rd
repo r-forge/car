@@ -25,8 +25,8 @@ scatterplot(x, ...)
 	cex.main=par("cex.main"), cex.sub=par("cex.sub"), cex.identify=cex,
 	groups, by.groups=!missing(groups), legend.title=deparse(substitute(groups)), 
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	col=rep(palette(), length.out=n.groups + 1), pch=1:n.groups, 
-	legend.plot=!missing(groups), reset.par=TRUE, ...)
+	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
+	pch=1:n.groups, legend.plot=!missing(groups), reset.par=TRUE, ...)
   
 sp(...)
 }
@@ -80,10 +80,10 @@ sp(...)
     the default is \code{c(.5, .95)}.}
   \item{robust}{if \code{TRUE} (the default) use the \code{cov.trob} function in the \code{MASS} package
     to calculate the center and covariance matrix for the data ellipse.}
-  \item{col}{colors for points and lines; the default is the
-    current color palette, starting at the \emph{second} entry and with the colors
-    repeated if necessary.
-    (see \code{\link[grDevices]{palette}} and \code{\link[graphics]{par}}).}
+  \item{col}{colors for points and lines; the default is to use the color palette defined by the
+  	\code{\link{rainbow_hcl}} function in the \pkg{colorspace} package when plotting by groups, 
+  	and \code{c("black", "red")} otherwise, in which case the first color is used for lines and the
+  	second for points.}
   \item{pch}{plotting characters for points; default is the plotting characters in
     order (see \code{\link[graphics]{par}}).}
   \item{cex, cex.axis, cex.lab, cex.main, cex.sub}{set sizes of various graphical elements; 
@@ -107,7 +107,7 @@ sp(...)
 \seealso{\code{\link[graphics]{boxplot}},
   \code{\link[base]{jitter}} 
   \code{\link{scatterplotMatrix}}, \code{\link{dataEllipse}},
-  \code{\link[graphics]{par}}, \code{\link[MASS]{cov.trob}},
+  \code{\link[MASS]{cov.trob}},
   \code{\link{showExtremes}}.}
 
 \examples{

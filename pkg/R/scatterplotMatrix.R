@@ -1,6 +1,6 @@
 # fancy scatterplot matrices (J. Fox)
 
-# last modified: 3 November 2009 by J. Fox
+# last modified: 17 December 2009 by J. Fox
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
@@ -47,7 +47,9 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	groups=NULL, by.groups=FALSE, identify.points="mahal", id.n=3, labels,
-	col=rep(palette(), length.out=n.groups + 1), pch=1:n.groups, lwd=1, lwd.smooth=lwd,
+#	col=rep(palette(), length.out=n.groups + 1),
+	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
+	pch=1:n.groups, lwd=1, lwd.smooth=lwd,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
 	cex.main=par("cex.main"), cex.identify=cex,
 	legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...){
@@ -114,7 +116,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	legendPlot <- function(){
 		usr <- par("usr")
 		legend("bottomleft", bg="white",
-				legend=levels(groups), pch=pch, col=col[2:(n.groups+1)],
+				legend=levels(groups), pch=pch, col=col[1:n.groups],
 				cex=cex)
 	}	
 	do.legend <- legend.plot	
@@ -163,7 +165,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	diag <- list(panel.density, panel.boxplot, panel.histogram, panel.oned, panel.qqplot, panel.blank)[[which.fn]]
 	groups <- as.factor(if(missing(groups)) rep(1, length(x[, 1])) else groups)
 	n.groups <- length(levels(groups))
-	if (n.groups > length(col) - 1) stop("number of groups exceeds number of available colors")
+	if (n.groups > length(col)) stop("number of groups exceeds number of available colors")
 	if (transform != FALSE | length(transform) == ncol(x)){
 		if (transform == TRUE & length(transform) == 1){
 			transform <- if (by.groups) coef(powerTransform(as.matrix(x) ~ groups, family=family), round=TRUE)
@@ -183,15 +185,15 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 		panel=function(x, y, ...){ 
 			for (i in 1:n.groups){
 				subs <- groups == levels(groups)[i]
-				if (plot.points) points(x[subs], y[subs], pch=pch[i], col=col[i + 1], cex=cex)
+				if (plot.points) points(x[subs], y[subs], pch=pch[i], col=col[if (n.groups == 1) 2 else i], cex=cex)
 				if (by.groups){
-					if (smooth) lowess.line(x[subs], y[subs], col=col[i + 1], span)
-					if (is.function(reg.line)) reg(x[subs], y[subs], col=col[i + 1])
+					if (smooth) lowess.line(x[subs], y[subs], col=col[i], span)
+					if (is.function(reg.line)) reg(x[subs], y[subs], col=col[i])
 					if (ellipse) dataEllipse(x[subs], y[subs], plot.points=FALSE, 
-								levels=levels, col=col[i + 1], robust=robust, lwd=1)
+								levels=levels, col=col[i], robust=robust, lwd=1)
 					if (identify.points != FALSE) 
 						showExtremesScatter(x[subs], y[subs], labs[subs], ids=identify.points,
-							id.n=id.n, col=col[i + 1])
+							id.n=id.n, col=col[i])
 				}
 			}
 			if (!by.groups){

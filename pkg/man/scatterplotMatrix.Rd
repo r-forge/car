@@ -21,7 +21,8 @@ scatterplotMatrix(x, ...)
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	groups=NULL, by.groups=FALSE, identify.points="mahal", id.n=3, labels,
-	col=rep(palette(), length.out=n.groups + 1), pch=1:n.groups, lwd=1, lwd.smooth=lwd,
+	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
+	pch=1:n.groups, lwd=1, lwd.smooth=lwd,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
 	cex.main=par("cex.main"), cex.identify=cex,
 	legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...)
@@ -78,9 +79,10 @@ spm(x, ...)
   \item{by.groups}{if \code{TRUE}, regression lines are fit by groups.}
   \item{pch}{plotting characters for points; default is the plotting characters in
     order (see \code{\link[graphics]{par}}).}
-  \item{col}{colors for points and lines; the default is the
-    in the current color palette, starting at the \emph{second} entry
-    (see \code{\link[grDevices]{palette}} and \code{\link[graphics]{par}}).}
+  \item{col}{colors for points and lines; the default is to use the color palette defined by the
+  	\code{\link{rainbow_hcl}} function in the \pkg{colorspace} package when plotting by groups, 
+  	and \code{c("black", "red")} otherwise, in which case the first color is used for lines and the
+  	second for points.}
   \item{lwd}{width of linear-regression lines (default \code{1}).}
   \item{lwd.smooth}{width for smooth regression lines (default is the same as \code{lwd}).}
   \item{cex, cex.axis, cex.labels, cex.main}{set sizes of various graphical elements; 
