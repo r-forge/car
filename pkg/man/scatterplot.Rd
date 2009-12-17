@@ -17,7 +17,7 @@ scatterplot(x, ...)
 	identify.points="mahal", labels, ...)
 
 \method{scatterplot}{default}(x, y, smooth=TRUE, spread=!by.groups, 
-	span=.5, reg.line=lm, boxplots="xy",
+	span=.5, reg.line=lm, boxplots=if (by.groups) "" else "xy",
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
 	lwd=1, lwd.smooth=lwd, identify.points="mahal", id.n=3, labels, log="", 
 	jitter=list(), xlim=NULL, ylim=NULL,

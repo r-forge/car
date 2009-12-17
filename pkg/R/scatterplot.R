@@ -43,7 +43,8 @@ scatterplot.formula <- function (x, data, subset, xlab, ylab, legend.title, iden
 }
 
 
-scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, reg.line=lm, boxplots="xy",
+scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, reg.line=lm, 
+	boxplots=if (by.groups) "" else "xy",
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
 	lwd=1, lwd.smooth=lwd, identify.points="mahal", id.n=3, labels, log="", jitter=list(), xlim=NULL, ylim=NULL,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
