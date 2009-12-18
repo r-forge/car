@@ -98,7 +98,7 @@ power transformations to improve normality or symmetry.
 \author{ Sanford Weisberg, sandy@stat.umn.edu }
 
 \seealso{
-\code{\link{boxcox}}, \code{\link{yjPower}}, \code{\link{bcPower}},
+\code{\link{boxcox}}, \code{\link{yjPower}}, \code{\line{bcPower}},
 \code{\link{powerTransform}}
 }
 \examples{
