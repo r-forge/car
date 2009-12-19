@@ -4,7 +4,7 @@ Boxplot <- function(y, ...){
 	UseMethod("Boxplot")
 }
 
-Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"), xlab, ylab, ...){
+Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"), id.n=3, xlab, ylab, ...){
 	id.method <- match.arg(id.method)
 	if (missing(ylab)) ylab <- deparse(substitute(y))
 	if (missing(labels)) labels <- seq(along=y)
@@ -20,8 +20,26 @@ Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"), 
 		}
 		else if (length(b$out) > 0){
 			sel <- y %in% b$out
+			yy <- y[sel]
 			labs <- labels[sel]
-			text(1, y[sel], labs, pos=2)
+			which.low <- yy < b$stats[1, 1]
+			y.low <- yy[which.low]
+			labs.low <- labs[which.low]
+			if (length(y.low) > id.n) {
+				ord.low <- order(y.low)[1:id.n]
+				y.low <- y.low[ord.low]
+				labs.low <- labs.low[ord.low]
+			}
+			which.high <- yy > b$stats[5, 1]
+			y.high <- yy[which.high]
+			labs.high <- labs[which.high]
+			if (length(y.high) > id.n) {
+				ord.high <- order(y.high, decreasing=TRUE)[1:id.n]
+				y.high <- y.high[ord.high]
+				labs.high <- labs.high[ord.high]
+			}
+			labs <- c(labs.low, labs.high)
+			text(1, c(y.low, y.high), labs, pos=2)
 			return(if(length(labs) == 0) invisible(NULL) else labs)
 		} 
 		else return(invisible(NULL))
@@ -46,13 +64,30 @@ Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"), 
 				groups <- unique(b$group)
 				for (group in groups){
 					grp <- g == group
-					xx <- y[grp]
+					yy <- y[grp]
 					labs <- labels[grp]
-					sel <- xx %in% b$out[b$group == group]
+					sel <- yy %in% b$out[b$group == group]
+					yy <- yy[sel]
+					glabs <- labs[sel]                   
+					which.low <- yy < b$stats[1, group]
+					y.low <- yy[which.low]
+					labs.low <- glabs[which.low]
+					if (length(y.low) > id.n) {
+						ord.low <- order(y.low)[1:id.n]
+						y.low <- y.low[ord.low]
+						labs.low <- labs.low[ord.low]
+					}
+					which.high <- yy > b$stats[5, group]
+					y.high <- yy[which.high]
+					labs.high <- glabs[which.high]
+					if (length(y.high) > id.n) {
+						ord.high <- order(y.high, decreasing=TRUE)[1:id.n]
+						y.high <- y.high[ord.high]
+						labs.high <- labs.high[ord.high]
+					}
 					pos <- if (group < midx) 4 else 2
-					glabs <- labs[sel]
-					text(group, xx[sel], glabs, pos=pos)
-					identified <- c(identified, glabs)
+					text(group, c(y.low, y.high), c(labs.low, labs.high), pos=pos)
+					identified <- c(identified, c(labs.low, labs.high))
 				}
 			}
 			return(if(length(identified) == 0) invisible(NULL) else identified)

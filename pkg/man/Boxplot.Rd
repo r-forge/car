@@ -16,7 +16,7 @@ axis labels, and a formula interface for boxplots without a grouping variable.
 Boxplot(y, ...)
 
 \method{Boxplot}{default}(y, g, labels, id.method = c("y", "identify", "none"), 
-    xlab, ylab, ...)
+    id.n=3, xlab, ylab, ...)
 
 \method{Boxplot}{formula}(formula, data = NULL, subset, na.action = NULL, labels., 
     id.method = c("y", "identify", "none"), xlab, ylab, ...)
@@ -29,6 +29,7 @@ Boxplot(y, ...)
     argument, if one is given, or observation numbers.}
   \item{id.method}{if \code{"y"} (the default), all outlying points are labeled; if \code{"identify"}, points
     may be labeled interactive; if \code{"none"}, no point identification is performed.}
+  \item{id.n}{up to \code{id.n} high outliers and low outliers will be identified in each group, (default, 3).}
   \item{xlab, ylab}{text labels for the horizontal and vertical axes; if missing, \code{Boxplot} will use the
     variable names.}
   \item{formula}{a `model' formula, of the form \code{~ y} to produce a boxplot for the variable \code{y}, or
@@ -45,7 +46,7 @@ Boxplot(y, ...)
 }
 
 \examples{
-Boxplot(~income, data=Prestige)
+Boxplot(~income, data=Prestige, id.n=Inf) # identify all outliers
 Boxplot(income ~ type, data=Prestige)
 with(Prestige, Boxplot(income, labels=rownames(Prestige)))
 with(Prestige, Boxplot(income, type, labels=rownames(Prestige)))
