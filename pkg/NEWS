@@ -2,7 +2,7 @@ Changes to Version 2.0-0
 
 	o  Functions renamed to camel case.
 	
-	o  New functions: bootCase(), deltaMethod(), inverseResponsePlot(), invTranPlot(), various transformation functions
+	o  New functions: bootCase(), Boxplot(), deltaMethod(), inverseResponsePlot(), invTranPlot(), various transformation functions
 	
 	o  Reworked (or renamed): Anova(), avPlots(), boxCoxVariable(), boxTidwell(), ceresPlots(), crPlots(), durbinWatsonTest(), hccm(), influencePlot(), leveneTest(), leveragePlots(), linearHypothesis(), ncvTest(), outlierTest(), qqPlot(), regLine(), scatterplot(), scatterplotMatrix(), spreadLevelPlot(), transformation-axis functions, vif().
 	
