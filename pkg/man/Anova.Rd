@@ -4,6 +4,7 @@
 %	2009-01-16 updated doc to correspond to changes in linearHypothesis. J. Fox
 %   2009-09-16 updated to reflect new singular.ok argument
 %   2009-09-26 updated for removal from car. J. Fox
+%   2009-12-22 updated to reflect new imatrix argument to Anova.mlm(). J. Fox
 %-------------------------------------------------------------------------------
 
 \name{Anova}
@@ -58,7 +59,7 @@ Manova(mod, ...)
 \method{Anova}{polr}(mod, type = c("II","III", 2, 3), ...)
 
 \method{Anova}{mlm}(mod, type=c("II","III", 2, 3), SSPE, error.df, 
-    idata, idesign, icontrasts=c("contr.sum", "contr.poly"),
+    idata, idesign, icontrasts=c("contr.sum", "contr.poly"), imatrix,
     test.statistic=c("Pillai", "Wilks", "Hotelling-Lawley", "Roy"),...)
     
 \method{Anova}{manova}(mod, ...)
@@ -124,6 +125,12 @@ Manova(mod, ...)
     ``data''; the contrasts must produce an intra-subject model 
     matrix in which different terms are orthogonal. The default is
     \code{c("contr.sum", "contr.poly")}.}
+  \item{imatrix}{as an alternative to specifying \code{idata}, \code{idesign}, and
+  	(optionally) \code{icontrasts}, the model matrix for the within-subject design
+  	can be given directly in the form of list of named elements. Each element gives
+  	the columns of the within-subject model matrix for a term to be tested, and must
+  	have as many rows as there are responses; the columns of the within-subject model
+  	matrix for different terms must be mutually orthogonal.}
   \item{x, object}{object of class \code{"Anova.mlm"} to print or summarize.}
   \item{multivariate, univariate}{print multivariate and univariate tests for a repeated-measures
     ANOVA; the default is \code{TRUE} for both.}
@@ -167,7 +174,9 @@ Manova(mod, ...)
   corresponding to different terms in the intra-subject model must be orthogonal 
   (as is insured by the default contrasts). Note that the contrasts given in
   \code{icontrasts} can be overridden by assigning specific contrasts to the
-  factors in \code{idata}. \code{Manova} is essentially a synonym for \code{Anova}
+  factors in \code{idata}. As an alternative, the within-subjects model matrix
+  can be specified directly via the \code{imatrix} argument.
+  \code{Manova} is essentially a synonym for \code{Anova}
   for multivariate linear models.
 }
 \value{
@@ -421,6 +430,31 @@ summary(av.ok, multivariate=FALSE)
 ## treatment:gender:phase:hour 0.73306    0.70801
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+## A "doubly multivariate" design with two  distinct repeated-measures variables
+## (example courtesy of Michael Friendly)
+## See ?WeightLoss for a description of the dataset.
+
+imatrix <- matrix(c(
+	1,0,-1, 1, 0, 0,
+	1,0, 0,-2, 0, 0,
+	1,0, 1, 1, 0, 0,
+	0,1, 0, 0,-1, 1,
+	0,1, 0, 0, 0,-2,
+	0,1, 0, 0, 1, 1), 6, 6, byrow=TRUE)
+(imatrix <- list(measure=imatrix[,1:2], month=imatrix[,3:6]))
+contrasts(WeightLoss$group) <- matrix(c(-2,1,1, 0,-1,1), ncol=2) 
+(wl.mod<-lm(cbind(wl1, wl2, wl3, se1, se2, se3)~group, data=WeightLoss))
+Anova(wl.mod, imatrix=imatrix, test="Roy")
+
+## Type II Repeated Measures MANOVA Tests: Roy test statistic
+##               Df test stat approx F num Df den Df    Pr(>F)    
+## measure        1    86.203  1293.04      2     30 < 2.2e-16 ***
+## group:measure  2     0.356     5.52      2     31  0.008906 ** 
+## month          1     9.407    65.85      4     28 7.807e-14 ***
+## group:month    2     1.772    12.84      4     29 3.909e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 
 }
 \keyword{htest}

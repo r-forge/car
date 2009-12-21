@@ -3,6 +3,7 @@
 % checked in 2008-12-29 by J. Fox (corresponds to version 1.2-10 of car
 %		with function renamed from linear.hypothesis)
 %	2009-01-16 updated doc to correspond to changes in linearHypothesis. J. Fox
+%   2009-12-22 updated to reflect changes in linearHypothesis.mlm(). J. Fox
 %-------------------------------------------------------------------------------
 
 \name{linearHypothesis}
@@ -39,7 +40,7 @@ lht(model, ...)
 
 \method{linearHypothesis}{mlm}(model, hypothesis.matrix, rhs=NULL, SSPE, V,
     test, idata, icontrasts=c("contr.sum", "contr.poly"), idesign, iterms, 
-    P=NULL, title="", verbose=FALSE, ...)
+    check.imatrix=TRUE, P=NULL, title="", verbose=FALSE, ...)
        
 \method{print}{linearHypothesis.mlm}(x, SSP=TRUE, SSPE=SSP, 
     digits=getOption("digits"), ...) 
@@ -72,6 +73,10 @@ lht(model, ...)
     specifying the intra-subject design.}
   \item{iterms}{the quoted name of a term, or a vector of quoted names of terms,
    in the intra-subject design to be tested.}
+  \item{check.imatrix}{check that columns of the intra-subject model matrix for
+  	different terms are mutually orthogonal (default, \code{TRUE}). Set to \code{FALSE}
+  	only if you have \emph{already} checked that the intra-subject model matrix is
+  	block-orthogonal.}
   \item{P}{transformation matrix to be applied to the repeated measures in
     multivariate repeated-measures data; if \code{NULL} \emph{and} no 
     intra-subject model is specified, no response-transformation is applied; if

@@ -3,6 +3,8 @@
 #	2009-01-16: replaced unlist(options("foo")) with getOption("foo")
 #   2009-09-16: optionally allow models with aliased coefficients. J. Fox
 #   2009-12-10: modification by A. Zeileis to allow wider range of coef. names.
+#   2009-12-22: small changes to linearHypothesis.mlm() to handle user-specified
+#               within-subjects designs in Anova()
 #-------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -224,18 +226,23 @@ linearHypothesis.lm <- function(model, hypothesis.matrix, rhs=NULL,
 	rval
 }
 
+
+check.imatrix <- function(X, terms){ 
+# check block orthogonality of within-subjects model matrix
+	XX <- crossprod(X)
+	if (missing(terms)) terms <- attr(X, "assign")
+	for (term in unique(terms)){
+		subs <- term == terms
+		XX[subs, subs] <- 0
+	}
+	if (any(abs(XX) > sqrt(.Machine$double.eps)))
+		stop("Terms in the intra-subject model matrix are not orthogonal.")
+}
+
+
 linearHypothesis.mlm <- function(model, hypothesis.matrix, rhs=NULL, SSPE, V,
 	test, idata, icontrasts=c("contr.sum", "contr.poly"), idesign, iterms,
-	P=NULL, title="", verbose=FALSE, ...){
-	check <- function(X){ # check block orthogonality of model matrix
-		XX <- crossprod(X)
-		terms <- attr(X, "assign")
-		for (term in unique(terms)){
-			subs <- term == terms
-			XX[subs, subs] <- 0
-		}
-		!any(abs(XX) > sqrt(.Machine$double.eps))
-	}
+	check.imatrix=TRUE, P=NULL, title="", verbose=FALSE, ...){
 	if (missing(test)) test <- c("Pillai", "Wilks", "Hotelling-Lawley", "Roy")
 	test <- match.arg(test, c("Pillai", "Wilks", "Hotelling-Lawley", "Roy"),
 		several.ok=TRUE)
@@ -253,17 +260,18 @@ linearHypothesis.mlm <- function(model, hypothesis.matrix, rhs=NULL, SSPE, V,
 			else hypothesis.matrix
 	}
 	if (missing(SSPE)) SSPE <- crossprod(residuals(model))
-	if (!missing(idata)){
+	if (missing(idata)) idata <- NULL
+	if (missing(idesign)) idesign <- NULL
+	if (!is.null(idata)){
 		for (i in 1:length(idata)){
 			if (is.null(attr(idata[,i], "contrasts"))){
 				contrasts(idata[,i]) <- if (is.ordered(idata[,i])) icontrasts[2]
 					else icontrasts[1]
 			}
 		}
-		if (missing(idesign)) stop("idesign (intra-subject design) missing.")
+		if (is.null(idesign)) stop("idesign (intra-subject design) missing.")
 		X.design <- model.matrix(idesign, data=idata)
-		if (!check(X.design))
-			stop("Terms in the intra-subject model matrix are not orthogonal.")
+		if (check.imatrix) check.imatrix(X.design)
 		intercept <- has.intercept(X.design)
 		term.names <- term.names(idesign)
 		if (intercept) term.names <- c("(Intercept)", term.names)

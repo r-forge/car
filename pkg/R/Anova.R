@@ -4,6 +4,7 @@
 # 2009-01-16: Cox models with clusters now handled. J. Fox
 # 2009-09-16: reworked glm and lm methods to handle aliased parameters. J. Fox
 # 2009-09-30: renamed "Anova" to "Analysis of Deviance" in output for some methods. J. Fox
+# 2009-12-22: modified Anova.mlm() to handle a user-supplied within-subject model matrix. J. Fox
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -570,31 +571,27 @@ has.intercept.mlm <- function (model, ...)
 	any(row.names(coefficients(model)) == "(Intercept)")
 
 Anova.mlm <- function(mod, type=c("II","III", 2, 3), SSPE, error.df, idata, 
-		idesign, icontrasts=c("contr.sum", "contr.poly"),
-		test.statistic=c("Pillai", "Wilks", "Hotelling-Lawley", "Roy"),...){
+	idesign, icontrasts=c("contr.sum", "contr.poly"), imatrix,
+	test.statistic=c("Pillai", "Wilks", "Hotelling-Lawley", "Roy"),...){
 	type <- as.character(type)
 	type <- match.arg(type)
-	if (has.intercept(mod) && nrow(coef(mod)) == 1 
-			&& (type == "2" || type == "II")) {
-		type <- "III"
-		warning("the model contains only an intercept: equivalent Type III test substituted")
-	}
 	test.statistic <- match.arg(test.statistic)
 	if (missing(SSPE)) SSPE <- crossprod(residuals(mod))
 	if (missing(idata)) {
 		idata <- NULL
 		idesign <- NULL
 	}
+	if (missing(imatrix)) imatrix <- NULL
 	error.df <- if (missing(error.df)) df.residual(mod)
-			else error.df
+		else error.df
 	switch(type,
-			II=Anova.II.mlm(mod, SSPE, error.df, idata, idesign, icontrasts, test.statistic, ...),
-			III=Anova.III.mlm(mod, SSPE, error.df, idata, idesign, icontrasts, test.statistic, ...),
-			"2"=Anova.II.mlm(mod, SSPE, error.df, idata, idesign, icontrasts, test.statistic, ...),
-			"3"=Anova.III.mlm(mod, SSPE, error.df, idata, idesign, icontrasts, test.statistic, ...))
+		II=Anova.II.mlm(mod, SSPE, error.df, idata, idesign, icontrasts, imatrix, test.statistic, ...),
+		III=Anova.III.mlm(mod, SSPE, error.df, idata, idesign, icontrasts, imatrix, test.statistic, ...),
+		"2"=Anova.II.mlm(mod, SSPE, error.df, idata, idesign, icontrasts, imatrix, test.statistic, ...),
+		"3"=Anova.III.mlm(mod, SSPE, error.df, idata, idesign, icontrasts, imatrix, test.statistic, ...))
 }
 
-Anova.III.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, test, ...){
+Anova.III.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatrix, test, ...){
 	intercept <- has.intercept(mod)
 	V <- solve(crossprod(model.matrix(mod)))
 	p <- nrow(coefficients(mod))
@@ -602,11 +599,11 @@ Anova.III.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, test,
 	terms <- term.names(mod)
 	n.terms <- length(terms)
 	assign <- mod$assign
-	if (is.null(idata)){
+	if (is.null(idata) && is.null(imatrix)){
 		if ((n.terms == 0) && intercept) {
 			Test <- linearHypothesis(mod, 1, SSPE=SSPE, ...)
 			result <- list(SSP=Test$SSPH, SSPE=SSPE, df=1, error.df=error.df,
-					terms="(Intercept)", repeated=FALSE, type="III", test=test)
+				terms="(Intercept)", repeated=FALSE, type="III", test=test)
 			class(result) <- "Anova.mlm"
 			return(result)
 		}
@@ -621,14 +618,33 @@ Anova.III.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, test,
 			df[term]<- length(subs)
 		}
 		result <- list(SSP=SSP, SSPE=SSPE, df=df, error.df=error.df, terms=terms,
-				repeated=FALSE, type="III", test=test)
+			repeated=FALSE, type="III", test=test)
 	}
 	else {
-		if (is.null(idesign)) stop("idesign (intra-subject design) missing.")
-		X.design <- model.matrix(idesign, data=idata)
-		intercept <- has.intercept(X.design)
-		iterms <- term.names(idesign)
-		if (intercept) iterms <- c("(Intercept)", iterms)
+		if (!is.null(imatrix)){
+			X.design <- do.call(cbind, imatrix)
+			ncols <- sapply(imatrix, ncol)
+			end <- cumsum(ncols)
+			start <- c(1, (end + 1))[-(length(end) + 1)]
+			cols <- mapply(seq, from=start, to=end)
+			iterms <- names(end)
+			names(cols) <- iterms
+			check.imatrix(X.design, iterms)
+		}
+		else {
+			if (is.null(idesign)) stop("idesign (intra-subject design) missing.")
+			for (i in 1:length(idata)){
+				if (is.null(attr(idata[,i], "contrasts"))){
+					contrasts(idata[,i]) <- if (is.ordered(idata[,i])) icontrasts[2]
+						else icontrasts[1]
+				}
+			}
+			X.design <- model.matrix(idesign, data=idata)
+			i.intercept <- has.intercept(X.design)
+			iterms <- term.names(idesign)
+			if (i.intercept) iterms <- c("(Intercept)", iterms)
+			check.imatrix(X.design)
+		}
 		df <- rep(0, n.terms*length(iterms))
 		hnames <- rep("", length(df))
 		P <- SSPEH <- SSP <- as.list(df)
@@ -639,26 +655,27 @@ Anova.III.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, test,
 				hyp.matrix <- I.p[subs,,drop=FALSE]
 				i <- i + 1
 				Test <- linearHypothesis(mod, hyp.matrix, SSPE=SSPE, 
-						idata=idata, idesign=idesign, icontrasts=icontrasts, iterms=iterm, ...)
+					idata=idata, idesign=idesign, icontrasts=icontrasts, iterms=iterm, 
+					check.imatrix=FALSE, P=imatrix[[iterm]], ...)
 				SSP[[i]] <- Test$SSPH
 				SSPEH[[i]] <- Test$SSPE
 				P[[i]] <- Test$P
 				df[i] <- length(subs)
 				hnames[i] <- if (iterm == "(Intercept)") terms[term]
-						else if (terms[term] == "(Intercept)") iterm
-						else paste(terms[term], ":", iterm, sep="")
+					else if (terms[term] == "(Intercept)") iterm
+					else paste(terms[term], ":", iterm, sep="")
 			}
 		}
 		names(df) <- names(SSP) <- names(SSPEH) <- hnames
 		result <- list(SSP=SSP, SSPE=SSPEH, P=P, df=df, error.df=error.df,
-				terms=hnames, repeated=TRUE, type="III", test=test, 
-				idata=idata, idesign=idesign, icontrasts=icontrasts)       
+			terms=hnames, repeated=TRUE, type="III", test=test, 
+			idata=idata, idesign=idesign, icontrasts=icontrasts, imatrix=imatrix)       
 	}
 	class(result) <- "Anova.mlm"
 	result
 }
 
-Anova.II.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, test, ...){
+Anova.II.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatrix, test, ...){
 	V <- solve(crossprod(model.matrix(mod)))
 	SSP.term <- function(term, iterm){
 		which.term <- which(term == terms)
@@ -670,16 +687,16 @@ Anova.II.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, test, 
 		hyp.matrix.2 <- I.p[c(subs.relatives, subs.term),,drop=FALSE]
 		if (missing(iterm)){
 			SSP1 <- if (length(subs.relatives) == 0) 0 
-					else linearHypothesis(mod, hyp.matrix.1, SSPE=SSPE, V=V, ...)$SSPH
+				else linearHypothesis(mod, hyp.matrix.1, SSPE=SSPE, V=V, ...)$SSPH
 			SSP2 <- linearHypothesis(mod, hyp.matrix.2, SSPE=SSPE, V=V, ...)$SSPH
 			return(SSP2 - SSP1)
 		}
 		else {
 			SSP1 <- if (length(subs.relatives) == 0) 0 
-					else linearHypothesis(mod, hyp.matrix.1, SSPE=SSPE, V=V, 
-								idata=idata, idesign=idesign, iterms=iterm, icontrasts=icontrasts, ...)$SSPH
+				else linearHypothesis(mod, hyp.matrix.1, SSPE=SSPE, V=V, 
+						idata=idata, idesign=idesign, iterms=iterm, icontrasts=icontrasts, P=imatrix[[iterm]], ...)$SSPH
 			lh2 <- linearHypothesis(mod, hyp.matrix.2, SSPE=SSPE, V=V, 
-					idata=idata, idesign=idesign, iterms=iterm, icontrasts=icontrasts, ...)
+				idata=idata, idesign=idesign, iterms=iterm, icontrasts=icontrasts, P=imatrix[[iterm]], ...)
 			return(list(SSP = lh2$SSPH - SSP1, SSPE=lh2$SSPE, P=lh2$P))
 		}
 	}
@@ -691,11 +708,11 @@ Anova.II.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, test, 
 	terms <- term.names(mod)
 	if (intercept) terms <- terms[-1]
 	n.terms <- length(terms)
-	if (is.null(idata)){
+	if (is.null(idata) && is.null(imatrix)){
 		if ((n.terms == 0) && intercept) {
 			Test <- linearHypothesis(mod, 1, SSPE=SSPE, ...)
 			result <- list(SSP=list(Test$SSPH), SSPE=SSPE, df=1, error.df=error.df,
-					terms="(Intercept)", repeated=FALSE, type="II", test=test)
+				terms="(Intercept)", repeated=FALSE, type="II", test=test)
 			class(result) <- "Anova.mlm"
 			return(result)
 		}
@@ -707,14 +724,33 @@ Anova.II.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, test, 
 			df[i]<- df.terms(mod, terms[i])
 		}    
 		result <- list(SSP=SSP, SSPE=SSPE, df=df, error.df=error.df, terms=terms,
-				repeated=FALSE, type="II", test=test)
+			repeated=FALSE, type="II", test=test)
 	}
 	else {
-		if (is.null(idesign)) stop("idesign (intra-subject design) missing.")
-		X.design <- model.matrix(idesign, data=idata)
-		iintercept <- has.intercept(X.design)
-		iterms <- term.names(idesign)
-		if (iintercept) iterms <- c("(Intercept)", iterms)
+		if (!is.null(imatrix)){
+			X.design <- do.call(cbind, imatrix)
+			ncols <- sapply(imatrix, ncol)
+			end <- cumsum(ncols)
+			start <- c(1, (end + 1))[-(length(end) + 1)]
+			cols <- mapply(seq, from=start, to=end)
+			iterms <- names(end)
+			names(cols) <- iterms
+			check.imatrix(X.design, iterms)		
+		}
+		else {
+			if (is.null(idesign)) stop("idesign (intra-subject design) missing.")
+			for (i in 1:length(idata)){
+				if (is.null(attr(idata[,i], "contrasts"))){
+					contrasts(idata[,i]) <- if (is.ordered(idata[,i])) icontrasts[2]
+						else icontrasts[1]
+				}
+			}
+			X.design <- model.matrix(idesign, data=idata)
+			iintercept <- has.intercept(X.design)
+			iterms <- term.names(idesign)
+			if (iintercept) iterms <- c("(Intercept)", iterms)
+			check.imatrix(X.design)
+		}
 		df <- rep(0, (n.terms + intercept)*length(iterms))
 		hnames <- rep("", length(df))
 		P <- SSPEH <- SSP <- as.list(df)
@@ -724,9 +760,11 @@ Anova.II.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, test, 
 				i <- i + 1
 				hyp.matrix.1 <- I.p[-1,,drop=FALSE]
 				SSP1 <- linearHypothesis(mod, hyp.matrix.1, SSPE=SSPE, V=V, 
-						idata=idata, idesign=idesign, iterms=iterm, icontrasts=icontrasts, ...)$SSPH
+					idata=idata, idesign=idesign, iterms=iterm, icontrasts=icontrasts, 
+					check.imatrix=FALSE, P=imatrix[[iterm]],...)$SSPH
 				lh2 <- linearHypothesis(mod, I.p, SSPE=SSPE, V=V, 
-						idata=idata, idesign=idesign, iterms=iterm, icontrasts=icontrasts, ...)
+					idata=idata, idesign=idesign, iterms=iterm, icontrasts=icontrasts, 
+					check.imatrix=FALSE, P=imatrix[[iterm]], ...)
 				SSP[[i]] <- lh2$SSPH - SSP1
 				SSPEH[[i]] <- lh2$SSPE
 				P[[i]] <- lh2$P
@@ -742,25 +780,17 @@ Anova.II.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, test, 
 				P[[i]] <- Test$P
 				df[i]<- length(subs)
 				hnames[i] <- if (iterm == "(Intercept)") terms[term]
-						else paste(terms[term], ":", iterm, sep="")
+					else paste(terms[term], ":", iterm, sep="")
 			}
-		}
-		if (intercept){
-			SSP <- SSP[-1]
-			SSPEH <- SSPEH[-1]
-			P <- P[-1]
-			df <- df[-1]
-			hnames <- hnames[-1]
 		}
 		names(df) <- names(P) <- names(SSP) <- names(SSPEH) <- hnames
 		result <- list(SSP=SSP, SSPE=SSPEH, P=P, df=df, error.df=error.df,
-				terms=hnames, repeated=TRUE, type="II", test=test,
-				idata=idata, idesign=idesign, icontrasts=icontrasts)       
+			terms=hnames, repeated=TRUE, type="II", test=test,
+			idata=idata, idesign=idesign, icontrasts=icontrasts, imatrix=imatrix)       
 	}
 	class(result) <- "Anova.mlm"
 	result
 }
-
 
 print.Anova.mlm <- function(x, ...){
 	test <- x$test
