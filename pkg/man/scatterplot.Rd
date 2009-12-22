@@ -14,12 +14,12 @@
 scatterplot(x, ...)
 
 \method{scatterplot}{formula}(x, data, subset, xlab, ylab, legend.title, 
-	identify.points="mahal", labels, ...)
+	id.method="mahal", labels, ...)
 
 \method{scatterplot}{default}(x, y, smooth=TRUE, spread=!by.groups, 
 	span=.5, reg.line=lm, boxplots=if (by.groups) "" else "xy",
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
-	lwd=1, lwd.smooth=lwd, identify.points="mahal", id.n=3, labels, log="", 
+	lwd=1, lwd.smooth=lwd, id.method="mahal", id.n=3, labels, log="", 
 	jitter=list(), xlim=NULL, ylim=NULL,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
 	cex.main=par("cex.main"), cex.sub=par("cex.sub"), cex.identify=cex,
@@ -56,11 +56,11 @@ sp(...)
     axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).}
   \item{lwd}{width of linear-regression lines (default \code{1}).}
   \item{lwd.smooth}{width for smooth regression lines (default is the same as \code{lwd}).}
-  \item{identify.points}{if \code{"mahal"} (the default), relatively extreme points are identified automatically
+  \item{id.method}{if \code{"mahal"} (the default), relatively extreme points are identified automatically
   	according to their Mahalanobis distances from the centroid (point of means);
-  	if \code{TRUE}, points are identified interactively by left-clicking near them; right-click
-  	to exit from interactive-point-identification mode; if \code{FALSE}, no point identification.
-  	See \code{\link{showExtremes}} for details.}
+  	if \code{"identify"}, points are identified interactively by left-clicking near them; right-click
+  	to exit from interactive-point-identification mode; if \code{"none"}, no point identification.
+  	See \code{\link{showLabels}} for details.}
   \item{id.n}{Number of relatively extreme points to identify automatically (default, \code{3}).}
   \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
   	labels, and, failing that, will use observation numbers.}
@@ -108,22 +108,21 @@ sp(...)
   \code{\link[base]{jitter}} 
   \code{\link{scatterplotMatrix}}, \code{\link{dataEllipse}},
   \code{\link[MASS]{cov.trob}},
-  \code{\link{showExtremes}}.}
+  \code{\link{showLabels}}.}
 
 \examples{
-
 scatterplot(prestige ~ income, data=Prestige, ellipse=TRUE)
 
 scatterplot(prestige ~ income|type, data=Prestige, span=1)
 
 scatterplot(vocabulary ~ education, jitter=list(x=1, y=1), 
-	data=Vocab, identify.points=FALSE, smooth=FALSE)
-	
+	data=Vocab, id.method="none", smooth=FALSE)
+
 scatterplot(infant.mortality ~ gdp, log="xy", data=UN)
 
-  \dontrun{
-scatterplot(infant.mortality ~ gdp, identify.points=TRUE, data=UN)
-  }
+	\dontrun{
+scatterplot(infant.mortality ~ gdp, id.method="identify", data=UN)
+	}
 }
 
 \keyword{hplot}

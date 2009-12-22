@@ -150,11 +150,11 @@ coefnames2bs <- function(g, para.names, parameterPrefix="b"){
 	list(g=g, std.names=std.names)
 }
 
-# ------------ temporary ------------
 
-showExtremesScatter <- function(x, y, labels,
-		ids = "xy", log="", cex.id=.75, id.n=3, col=palette()[1], 
+showLabelsScatter <- function(x, y, labels,
+		id.method = "xy", log="", cex.id=.75, id.n=3, col=palette()[1], 
 		res=.y - mean(.y), range.x=range(.x)) {
+	if (id.method == "none") return(NULL)
 	if(id.n > 0L) {
 		if (missing(labels))
 			labels <- as.character(seq(along=x))
@@ -174,18 +174,15 @@ showExtremesScatter <- function(x, y, labels,
 		labels <- labels[valid]
 		.x <- if (logged("x")) log(x) else x
 		.y <- if (logged("y")) log(y) else y
-		ind <- if (!is.character(ids)) {
-					if (length(ids) == length(x)) getPoints(ids) else
-						stop("identify.points argument is of wrong length")} else
-					switch(ids,
-							x = getPoints(abs(.x - mean(.x))),
-							y = getPoints(abs(res)),
-							xy = union(getPoints(abs(.x - mean(.x))),
-									getPoints(abs(res))),
-							mahal= getPoints(rowSums(qr.Q(qr(cbind(1, .x, .y))) ^ 2)))
+		ind <-  switch(id.method,
+			x = getPoints(abs(.x - mean(.x))),
+			y = getPoints(abs(res)),
+			xy = union(getPoints(abs(.x - mean(.x))),
+				getPoints(abs(res))),
+			mahal= getPoints(rowSums(qr.Q(qr(cbind(1, .x, .y))) ^ 2)))
 		labpos <- c(4, 2)[1 + as.numeric(.x > mean(range.x))]
 		text(x[ind], y[ind], labels[ind], cex = cex.id, xpd = TRUE,
-				pos = labpos[ind], offset = 0.25, col=col)
+			pos = labpos[ind], offset = 0.25, col=col)
 		return(labels[ind])
 	} 
 }

@@ -13,14 +13,14 @@
 
 scatterplotMatrix(x, ...)
 
-\method{scatterplotMatrix}{formula}(x, data=NULL, subset, identify.points="mahal", labels, ...)
+\method{scatterplotMatrix}{formula}(x, data=NULL, subset, id.method="mahal", labels, ...)
 
 \method{scatterplotMatrix}{default}(x, var.labels=colnames(x), 
 	diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
 	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, reg.line=lm, 
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	groups=NULL, by.groups=FALSE, identify.points="mahal", id.n=3, labels,
+	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, labels,
 	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
 	pch=1:n.groups, lwd=1, lwd.smooth=lwd,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
@@ -37,10 +37,10 @@ spm(x, ...)
   \item{data}{for \code{scatterplotMatrix.formula},
     a data frame within which to evaluate the formula.}
   \item{subset}{expression defining a subset of observations.}
-  \item{identify.points}{if \code{"mahal"} (the default), relatively extreme points in each panel are identified automatically
+  \item{id.method}{if \code{"mahal"} (the default), relatively extreme points in each panel are identified automatically
   	according to their Mahalanobis distances from the centroid (point of means);
-  	if \code{FALSE}, no point identification.
-  	See \code{\link{showExtremes}} for details (but interactive point identification is not permitted.}
+  	if \code{"none"}, no point identification.
+  	See \code{\link{showLabels}} for details (but interactive point identification is not permitted.}
   \item{id.n}{Number of relatively extreme points to identify automatically in each panel (default, \code{3}).}
   \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
   	labels, and, failing that, will use observation numbers.}

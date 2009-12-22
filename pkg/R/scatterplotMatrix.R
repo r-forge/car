@@ -1,16 +1,16 @@
 # fancy scatterplot matrices (J. Fox)
 
-# last modified: 17 December 2009 by J. Fox
+# last modified: 22 December 2009 by J. Fox
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
 }
 
-scatterplotMatrix.formula <- function (x, data=NULL, subset, identify.points="mahal", labels, ...) {
+scatterplotMatrix.formula <- function (x, data=NULL, subset, id.method="mahal", labels, ...) {
 	m <- match.call(expand.dots = FALSE)
 	if (is.matrix(eval(m$data, sys.frame(sys.parent())))) 
 		m$data <- as.data.frame(data)
-	m$identify.points <- m$labels <- m$formula <- m$... <- NULL
+	m$id.method <- m$labels <- m$formula <- m$... <- NULL
 	m[[1]] <- as.name("model.frame")
 	if (!inherits(x, "formula") | length(x) != 2) 
 		stop("invalid formula")
@@ -26,18 +26,18 @@ scatterplotMatrix.formula <- function (x, data=NULL, subset, identify.points="ma
 	m$formula <-x
 	if (missing(data)){ 
 		X <- na.omit(eval(m, parent.frame()))
-		if (identify.points != FALSE && missing(labels)) labels <- gsub("X", "", row.names(X))
+		if (id.method != "none" && missing(labels)) labels <- gsub("X", "", row.names(X))
 	}
 	else{
-		if (identify.points != FALSE && !missing(labels)) row.names(data) <- labels
+		if (id.method != "none" && !missing(labels)) row.names(data) <- labels
 		X <- eval(m, parent.frame())
-		labels <-if (identify.points != FALSE) row.names(X)
+		labels <-if (id.method != "none") row.names(X)
 			else NULL
 	}
-	if (!groups) scatterplotMatrix(X, identify.points=identify.points, labels=labels, ...)
+	if (!groups) scatterplotMatrix(X, id.method=id.method, labels=labels, ...)
 	else{
 		ncol<-ncol(X)
-		scatterplotMatrix.default(X[, -ncol], groups=X[, ncol], identify.points=identify.points, labels=labels, ...)
+		scatterplotMatrix.default(X[, -ncol], groups=X[, ncol], id.method=id.method, labels=labels, ...)
 	}
 }
 
@@ -46,7 +46,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, reg.line=lm, 
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	groups=NULL, by.groups=FALSE, identify.points="mahal", id.n=3, labels,
+	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, labels,
 #	col=rep(palette(), length.out=n.groups + 1),
 	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
 	pch=1:n.groups, lwd=1, lwd.smooth=lwd,
@@ -54,7 +54,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	cex.main=par("cex.main"), cex.identify=cex,
 	legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...){
 	spread # force evaluation
-	if (identify.points == TRUE) stop("interactive point identification not permitted")
+	if (id.method == "identify") stop("interactive point identification not permitted")
 	family <- match.arg(family)
 	lowess.line <- function(x, y, col, span) {
 		valid <- complete.cases(x, y)
@@ -93,7 +93,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 #		pos <- ifelse(x[which] <= mean(range(X$x)), 4, 2)
 #		text(x[which], y[which], labels[which], pos=pos, col=col, cex=cex.identify)
 #	}
-	if (identify.points != FALSE && missing(labels)){
+	if (id.method != "none" && missing(labels)){
 		labels <- rownames(x)
 		if (is.null(labels)) labels <- as.character(seq(length.out=nrow(x)))
 	}
@@ -191,8 +191,8 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 					if (is.function(reg.line)) reg(x[subs], y[subs], col=col[i])
 					if (ellipse) dataEllipse(x[subs], y[subs], plot.points=FALSE, 
 								levels=levels, col=col[i], robust=robust, lwd=1)
-					if (identify.points != FALSE) 
-						showExtremesScatter(x[subs], y[subs], labs[subs], ids=identify.points,
+					if (id.method != "none") 
+						showLabelsScatter(x[subs], y[subs], labs[subs], id.method=id.method,
 							id.n=id.n, col=col[i])
 				}
 			}
@@ -201,7 +201,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 				if (smooth) lowess.line(x, y, col=col[1], span)
 				if (ellipse) dataEllipse(x, y, plot.points=FALSE, levels=levels, col=col[1],
 						robust=robust, lwd=1)
-				if (identify.points != FALSE) showExtremesScatter(x, y, ids=identify.points, 
+				if (id.method != "none") showLabelsScatter(x, y, id.method=id.method, 
 						id.n=id.n, labs, col=col[1])
 			}
 		}, ...
