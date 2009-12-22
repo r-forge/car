@@ -105,7 +105,7 @@ spm(x, ...)
 \seealso{\code{\link[graphics]{pairs}}, \code{\link{scatterplot}},
   \code{\link{dataEllipse}}, \code{\link{powerTransform}}, 
   \code{\link{bcPower}}, \code{\link{yjPower}}, \code{\link[MASS]{cov.trob}},
-  \code{\link{showExtremes}}.}
+  \code{\link{showLabels}}.}
 
 \examples{
 scatterplotMatrix(~ income + education + prestige | type, data=Duncan)

@@ -167,7 +167,7 @@ Linear Regression}, third edition, Wiley, Chapter 8}
 \author{Sanford Weisberg, \email{sandy@stat.umn.edu}}
 
 \seealso{See Also \code{\link{lm}}, \code{\link{identify}},
-\code{\link{showExtremes}} }
+\code{\link{showLabels}} }
 
 
 \examples{
