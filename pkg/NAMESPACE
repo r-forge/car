@@ -56,7 +56,6 @@ export(
     ncvTest,
     outlierTest,
     vif,
-    showExtremes,
     avPlot, avPlots, showLabels, residualPlot, residualPlots,
     bootCase, nextBoot,
     
