@@ -34,7 +34,7 @@ sp(...)
 \arguments{
   \item{x}{vector of horizontal coordinates, or a ``model'' formula, of the form \code{y ~ x} or 
     (to plot by groups) \code{y ~ x | z}, where \code{z} evaluates to a factor 
-    or other variable dividing the data into groups..}
+    or other variable dividing the data into groups.}
   \item{y}{vector of vertical coordinates.}
   \item{data}{data frame within which to evaluate the formula.}
   \item{subset}{expression defining a subset of observations.}

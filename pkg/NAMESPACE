@@ -18,6 +18,7 @@ export(
     qqp,
     recode,
     regLine,
+    scatter3d,
     scatterplot,
     scatterplotMatrix,
     slp,
@@ -44,6 +45,7 @@ export(
 	durbinWatsonTest,
 	estimateTransform, testTransform,	
 	hccm,
+	identify3d,
 	infIndexPlot,
 	influencePlot,
 	invResPlot, inverseResponsePlot, invTranPlot, invTranEstimate,
@@ -94,6 +96,8 @@ S3method(print, spreadLevelPlot)
 S3method(qqPlot, default)           
 S3method(qqPlot, glm)               
 S3method(qqPlot, lm)    
+S3method(scatter3d, default)
+S3method(scatter3d, formula)
 S3method(scatterplot, default)       
 S3method(scatterplot, formula)       
 S3method(scatterplotMatrix, default)
