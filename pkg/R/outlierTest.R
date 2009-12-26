@@ -37,7 +37,7 @@ outlierTest.lm <- function(model, cutoff=0.05, n.max=10, order=TRUE, labels=name
 
 print.outlierTest<-function(x, digits=5, ...){
 	if (!x$signif){
-		cat("\nNo studentized residuals with Bonferonni p <", x$cutoff)
+		cat("\nNo Studentized residuals with Bonferonni p <", x$cutoff)
 		cat("\nLargest |rstudent|:\n")
 	}
 	bp <- x$bonf

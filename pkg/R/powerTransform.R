@@ -54,11 +54,11 @@ yjPower <- function(U,lambda,jacobian.adjusted=FALSE) {
     yj1(out,lambda)
   out}
   
-powerTransform <- function(object,...) UseMethod("powerTransform")
+powerTransform <- function(object, ...) UseMethod("powerTransform")
 
-powerTransform.default <- function(object,...) {
+powerTransform.default <- function(object, ...) {
    y <- object
-   if(!inherits(y,"matrix") & !inherits(y,"data.frame")) {
+   if(!inherits(y, "matrix") & !inherits(y, "data.frame")) {
        y <- matrix(y,ncol=1)
        colnames(y) <- c(paste(deparse(substitute(object))))}
    y <- na.omit(y)
@@ -103,7 +103,7 @@ powerTransform.formula <- function(object, data, subset, weights, na.action,
   } 
 
 estimateTransform <- function(X, Y, weights=NULL,
-   family="bcPower",start=NULL,method="L-BFGS-B",...) {
+   family="bcPower", start=NULL, method="L-BFGS-B", ...) {
    fam <- match.fun(family)
    Y <- as.matrix(Y) # coerces Y to be a matrix.
    X <- as.matrix(X) # coerces X to be a matrix. 

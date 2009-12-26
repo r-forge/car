@@ -24,7 +24,7 @@ powerTransform(object,...)
 }
 
 \arguments{
-  \item{object}{For powerTransformation, this can either be an object of type
+  \item{object}{For powerTransform, this can either be an object of type
   \sQuote{lm}, a formula or a matrix or vector; see below.}
   \item{data}{A data frame or environment, as in \sQuote{lm}}
   \item{subset}{Case indices to be used, as in \sQuote{lm}.}

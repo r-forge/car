@@ -13,8 +13,8 @@ power family.  Most users will use the function \code{\link{powerTransform}}, wh
 is a front-end for this function.
 }
 \usage{
-estimateTransform(X, Y, weights=NULL, family="bcPower",start=NULL,
-         method="L-BFGS-B",...)
+estimateTransform(X, Y, weights=NULL, family="bcPower", start=NULL,
+         method="L-BFGS-B", ...)
 }
 
 \arguments{

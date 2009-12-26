@@ -7,7 +7,7 @@
 showLabels <- function(x, y, labels=NULL,
      id.var = NULL, id.method = if(is.null(id.var)) "xy" else "none",
      id.n = 3, id.cex=1, id.col=NULL, show=TRUE, ...) {  
-  if (id.n <= 0L | show == FALSE ) 
+  if (id.n <= 0L | show==FALSE ) 
      return()
   if (is.null(id.col))
      id.col <- palette()[1]
@@ -37,18 +37,27 @@ showLabels <- function(x, y, labels=NULL,
      if (id.method == "xy") { return(c(
         showLabels(x, y, labels, NULL, id.method="x", id.n, id.cex, id.col, show),
         showLabels(x, y, labels, NULL, id.method="y", id.n, id.cex, id.col, show)))} else {
+     if (id.method == "logxy") { return(c(
+        showLabels(x, y, labels, NULL, id.method="logx", id.n, id.cex, id.col, show),
+        showLabels(x, y, labels, NULL, id.method="logy", id.n, id.cex, id.col, show)))} else {
      id.var <- switch(id.method,
         none = return(),
         identify = return(labels[identify(x, y, labels, cex=id.cex, col=id.col, ...)]),
         x = x - mean(x, na.rm = TRUE),
         y = y - mean(y, na.rm = TRUE),
-        mahal = rowSums( qr.Q( qr(cbind(1, x, y) ) )^2))}
+        logx = suppressWarnings(if(all(x) > 0) 
+             abs(log(x) - mean(log(x), na.rm = TRUE)) else return()),
+        logy = suppressWarnings(if(all(y) > 0) 
+             abs(log(y) - mean(log(y), na.rm = TRUE)) else return()),
+        mahal = rowSums( qr.Q( qr(cbind(1, x, y) ) )^2),
+        logmahal = suppressWarnings(if(all(x) > 0 & all(y) > 0)
+             rowSums( qr.Q(qr(cbind(1, log(x), log(y))))^2 ) else return())) }}
      ind <-  order(-abs(id.var))[1L:id.n]
      }
   labpos <- c(4,2)[1+as.numeric(x > mean(range(x)))]
   for (i in ind) {
-      text(x[i], y[i], labels[i], cex = id.cex, xpd = TRUE,
-        col = id.col, pos = labpos[i], offset = 0.25, ...)}
+        text(x[i], y[i], labels[i], cex = id.cex, xpd = TRUE,
+          col = id.col, pos = labpos[i], offset = 0.25, ...)} 
   return(unique(c(all.inds,labels[ind])))
   }
      
