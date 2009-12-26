@@ -1,10 +1,10 @@
-# checked in 19 December 2009 by J. Fox
+# checked in 26 December 2009 by J. Fox
 
 Boxplot <- function(y, ...){
 	UseMethod("Boxplot")
 }
 
-Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"), id.n=3, xlab, ylab, ...){
+Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"), id.n=10, xlab, ylab, ...){
 	id.method <- match.arg(id.method)
 	if (missing(ylab)) ylab <- deparse(substitute(y))
 	if (missing(labels)) labels <- seq(along=y)

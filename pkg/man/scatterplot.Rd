@@ -19,10 +19,11 @@ scatterplot(x, ...)
 \method{scatterplot}{default}(x, y, smooth=TRUE, spread=!by.groups, 
 	span=.5, reg.line=lm, boxplots=if (by.groups) "" else "xy",
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
-	lwd=1, lwd.smooth=lwd, id.method="mahal", id.n=3, labels, log="", 
+	lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
+	id.method="mahal", id.n=3, id.var=NULL, labels, log="", 
 	jitter=list(), xlim=NULL, ylim=NULL,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
-	cex.main=par("cex.main"), cex.sub=par("cex.sub"), cex.identify=cex,
+	cex.main=par("cex.main"), cex.sub=par("cex.sub"), id.cex=cex,
 	groups, by.groups=!missing(groups), legend.title=deparse(substitute(groups)), 
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
@@ -56,12 +57,17 @@ sp(...)
     axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).}
   \item{lwd}{width of linear-regression lines (default \code{1}).}
   \item{lwd.smooth}{width for smooth regression lines (default is the same as \code{lwd}).}
+  \item{lwd.spread}{width for lines showing spread (default is the same as \code{lwd}).}
+  \item{lty}{type of linear-regression lines (default \{code{1}, solid line).}
+  \item{lty.smooth}{type of smooth regression lines (default is the same as \code{lty}).}
+  \item{lty.spread}{width for lines showing spread (default is \code{2}, broken line).}
   \item{id.method}{if \code{"mahal"} (the default), relatively extreme points are identified automatically
   	according to their Mahalanobis distances from the centroid (point of means);
   	if \code{"identify"}, points are identified interactively by left-clicking near them; right-click
   	to exit from interactive-point-identification mode; if \code{"none"}, no point identification.
   	See \code{\link{showLabels}} for details.}
-  \item{id.n}{Number of relatively extreme points to identify automatically (default, \code{3}).}
+  \item{id.n}{number of relatively extreme points to identify automatically (default, \code{3}).}
+  \item{id.var}{point-identification variable, normally omitted; see \code{\link{showLabels}}.}
   \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
   	labels, and, failing that, will use observation numbers.}
   \item{log}{same as the \code{log} argument to \code{\link{plot}}, to produce log axes.}
@@ -88,7 +94,7 @@ sp(...)
     order (see \code{\link[graphics]{par}}).}
   \item{cex, cex.axis, cex.lab, cex.main, cex.sub}{set sizes of various graphical elements; 
     (see \code{\link[graphics]{par}}).}
-  \item{cex.identify}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
+  \item{id.cex}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
   \item{legend.plot}{if \code{TRUE} then a legend for the groups is plotted in the upper margin.}
   \item{reset.par}{if \code{TRUE} then plotting parameters are reset to their previous values
     when \code{scatterplot} exits; if \code{FALSE} then the \code{mar} and \code{mfcol} parameters are

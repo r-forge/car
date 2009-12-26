@@ -20,11 +20,11 @@ scatterplotMatrix(x, ...)
 	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, reg.line=lm, 
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, labels,
+	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, id.var=NULL, labels,
 	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
 	pch=1:n.groups, lwd=1, lwd.smooth=lwd,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
-	cex.main=par("cex.main"), cex.identify=cex,
+	cex.main=par("cex.main"), id.cex=cex,
 	legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...)
 
 spm(x, ...)
@@ -42,6 +42,7 @@ spm(x, ...)
   	if \code{"none"}, no point identification.
   	See \code{\link{showLabels}} for details (but interactive point identification is not permitted.}
   \item{id.n}{Number of relatively extreme points to identify automatically in each panel (default, \code{3}).}
+   \item{id.var}{point-identification variable, normally omitted; see \code{\link{showLabels}}.}
   \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
   	labels, and, failing that, will use observation numbers.}
   \item{var.labels}{variable labels (for the diagonal of the plot).}
@@ -87,7 +88,7 @@ spm(x, ...)
   \item{lwd.smooth}{width for smooth regression lines (default is the same as \code{lwd}).}
   \item{cex, cex.axis, cex.labels, cex.main}{set sizes of various graphical elements; 
     (see \code{\link[graphics]{par}}).}
-  \item{cex.identify}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
+  \item{id.cex}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
   \item{legend.plot}{if \code{TRUE} then a legend for the groups is plotted
     in the first diagonal cell.}
   \item{row1attop}{If \code{TRUE} (the default) the first row is at the top, as in a matrix, as

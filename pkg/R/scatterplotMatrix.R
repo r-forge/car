@@ -46,12 +46,11 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, reg.line=lm, 
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, labels,
-#	col=rep(palette(), length.out=n.groups + 1),
+	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, id.var=NULL, labels,
 	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
 	pch=1:n.groups, lwd=1, lwd.smooth=lwd,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
-	cex.main=par("cex.main"), cex.identify=cex,
+	cex.main=par("cex.main"), id.cex=cex,
 	legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...){
 	spread # force evaluation
 	if (id.method == "identify") stop("interactive point identification not permitted")
@@ -192,8 +191,8 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 					if (ellipse) dataEllipse(x[subs], y[subs], plot.points=FALSE, 
 								levels=levels, col=col[i], robust=robust, lwd=1)
 					if (id.method != "none") 
-						showLabelsScatter(x[subs], y[subs], labs[subs], id.method=id.method,
-							id.n=id.n, col=col[i])
+						showLabelsScatter(x[subs], y[subs], labs[subs], id.var=id.var, id.method=id.method,
+							id.n=id.n, id.col=col[i], id.cex=id.cex)
 				}
 			}
 			if (!by.groups){
@@ -201,8 +200,8 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 				if (smooth) lowess.line(x, y, col=col[1], span)
 				if (ellipse) dataEllipse(x, y, plot.points=FALSE, levels=levels, col=col[1],
 						robust=robust, lwd=1)
-				if (id.method != "none") showLabelsScatter(x, y, id.method=id.method, 
-						id.n=id.n, labs, col=col[1])
+				if (id.method != "none") showLabelsScatter(x, y, labs, id.var=id.var, id.method=id.method, 
+						id.n=id.n, id.col=col[1], id.cex=id.cex)
 			}
 		}, ...
 	)

@@ -1,6 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 22 December 2009
+# last modified 26 December 2009
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -46,12 +46,12 @@ scatterplot.formula <- function (x, data, subset, xlab, ylab, legend.title, id.m
 scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, reg.line=lm, 
 	boxplots=if (by.groups) "" else "xy",
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
-	lwd=1, lwd.smooth=lwd, id.method="mahal", id.n=3, labels, log="", jitter=list(), xlim=NULL, ylim=NULL,
+	lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
+	id.method="mahal", id.n=3, id.var=NULL, labels, log="", jitter=list(), xlim=NULL, ylim=NULL,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
-	cex.main=par("cex.main"), cex.sub=par("cex.sub"), cex.identify=cex,
+	cex.main=par("cex.main"), cex.sub=par("cex.sub"), id.cex=cex,
 	groups, by.groups=!missing(groups), legend.title=deparse(substitute(groups)), 
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	#col=rep(palette(), length.out=n.groups + 1), 
 	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
 	pch=1:n.groups, 
 	legend.plot=!missing(groups), reset.par=TRUE, ...){
@@ -72,7 +72,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			fit <- loess.smooth(x, y, span=span)
 			x <-if (logged("x")) exp(fit$x) else fit$x  
 			y <-if (logged("y")) exp(fit$y) else fit$y
-			lines(x, y, lwd=lwd.smooth, col=col)
+			lines(x, y, lwd=lwd.smooth, col=col, lty=lty.smooth)
 		}
 		else{
 			fit <- loess(y ~ x, degree=1, family="symmetric", span=span)
@@ -82,13 +82,13 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			neg.fit <- loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=!pos)
 			if (logged("x")) x <- exp(x)
 			y <- if (logged("y")) exp(fitted(fit)) else fitted(fit) 
-			lines(x, y, lwd=lwd.smooth, col=col)
+			lines(x, y, lwd=lwd.smooth, col=col, lty=lty.smooth)
 			y.pos <- if (logged("y")) exp(fitted(fit)[pos] + sqrt(fitted(pos.fit)))  
 				else fitted(fit)[pos] + sqrt(fitted(pos.fit))
-			lines(x[pos], y.pos, lwd=lwd.smooth, lty=3, col=col)
+			lines(x[pos], y.pos, lwd=lwd.spread, lty=lty.spread, col=col)
 			y.neg <- if (logged("y")) exp(fitted(fit)[!pos] - sqrt(fitted(neg.fit)))
 				else fitted(fit)[!pos] - sqrt(fitted(neg.fit))
-			lines(x[!pos], y.neg, lwd=lwd.smooth, lty=3, col=col)
+			lines(x[!pos], y.neg, lwd=lwd.spread, lty=lty.spread, col=col)
 		}
 	}
 	reg <- function(x, y, col){
@@ -115,7 +115,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			y1 <- exp(y.hat[min])
 			y2 <- exp(y.hat[max])
 		}
-		lines(c(x1, x2), c(y1, y2), lty=2, lwd=lwd, col=col)
+		lines(c(x1, x2), c(y1, y2), lwd=lwd, col=col, lty=lty)
 	}
 	hbox <- function(x){
 		if (logged("x")){
@@ -169,24 +169,6 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 		lines(c(.5, .5), c(Q3, UW))
 		if (!is.null(res$out)) points(rep(.5, length(res$out)), res$out, cex=cex)
 	}
-#	label.outliers <- function(x, y, cutoff, labels, col){
-#		if (logged("x")) x <- log(x)
-#		if (logged("y")) y <- log(y)
-#		cutoff <- 2*qf(cutoff, 2, length(x) - 1)
-#		X <- na.omit(data.frame(x, y, labels, stringsAsFactors=FALSE))
-#		res <- cov.trob(X[, c("x", "y")])
-#		d <- mahalanobis(X[, c("x", "y")], res$center, res$cov)
-#		which <- which(d > cutoff)
-#		if (length(which) == 0) return(NULL)
-#		x <- X$x
-#		y <- X$y
-#		labels <- X$labels
-#		pos <- ifelse(x[which] <= mean(range(X$x)), 4, 2)
-#		if (logged("x")) x <- exp(x)
-#		if (logged("y")) y <- exp(y)
-#		text(x[which], y[which], labels[which], pos=pos, col=col, cex=cex.identify)
-#		labels[which]
-#	}
 	# force evaluation of some arguments
 	by.groups
 	legend.plot
@@ -253,14 +235,15 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 				if (logged("x")) X$x <- log(x)
 				if (logged("y")) X$y <- log(y)
 				with(X, dataEllipse(x, y, plot.points=FALSE, lwd=1, log=log,
-					levels=levels, col=col[i], robust=robust))
+						levels=levels, col=col[i], robust=robust))
 			}
 		}
 		if (id.method != "identify") indices <- c(indices, showLabelsScatter(
-				.x[subs], 
-				.y[subs], 
-				labels=labels[subs], id.method=id.method, log=log, id.n=id.n, cex.id=cex.identify, col=col[i],
-				range.x=range.x))
+					.x[subs], 
+					.y[subs], 
+					labels=labels[subs], id.var=id.var,
+					id.method=id.method, log=log, id.n=id.n, id.cex=id.cex, id.col=col[i],
+					range.x=range.x))
 	}
 	if (!by.groups){
 		if (smooth) lowess.line(.x, .y, col=col[1], span=span)
@@ -270,12 +253,13 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 			if (logged("x")) X$x <- log(X$x)
 			if (logged("y")) X$y <- log(X$y)
 			with(X, dataEllipse(x, y, plot.points=FALSE, lwd=1, log=log, levels=levels, col=col[1],
-				robust=robust))
+					robust=robust))
 		}
 		if (id.method != "identify") indices <- showLabelsScatter(
 				.x, 
 				.y,
-				labels=labels, id.method=id.method, log=log, id.n=id.n, cex.id=cex.identify, col=col[1])
+				labels=labels, id.var=id.var,
+				id.method=id.method, log=log, id.n=id.n, id.cex=id.cex, id.col=col[1])
 	}
 	if (legend.plot) {
 		xpd <- par(xpd=TRUE)
