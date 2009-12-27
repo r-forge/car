@@ -21,8 +21,8 @@ scatterplotMatrix(x, ...)
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, id.var=NULL, labels,
-	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
-	pch=1:n.groups, lwd=1, lwd.smooth=lwd,
+	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups), pch=1:n.groups, 
+	lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
 	cex.main=par("cex.main"), id.cex=cex,
 	legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...)
@@ -86,6 +86,10 @@ spm(x, ...)
   	second for points.}
   \item{lwd}{width of linear-regression lines (default \code{1}).}
   \item{lwd.smooth}{width for smooth regression lines (default is the same as \code{lwd}).}
+  \item{lwd.spread}{width for lines showing spread (default is the same as \code{lwd}).}
+  \item{lty}{type of linear-regression lines (default \{code{1}, solid line).}
+  \item{lty.smooth}{type of smooth regression lines (default is the same as \code{lty}).}
+  \item{lty.spread}{width for lines showing spread (default is \code{2}, broken line).}
   \item{cex, cex.axis, cex.labels, cex.main}{set sizes of various graphical elements; 
     (see \code{\link[graphics]{par}}).}
   \item{id.cex}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}

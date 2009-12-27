@@ -15,11 +15,11 @@
 }
 \usage{
 basicPowerAxis(power, base=exp(1), side=c("right", "above", "left", "below"), 
-    at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
+    at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
     axis.title="Untransformed Data", cex=1, las=par("las"))
 
 bcPowerAxis(power, side=c("right", "above", "left", "below"), 
-    at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
+    at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
     axis.title="Untransformed Data", cex=1, las=par("las"))
     
 yjPowerAxis(power, side=c("right", "above", "left", "below"), 
@@ -43,6 +43,8 @@ probabilityAxis(scale=c("logit", "probit"),
   \item{at}{numeric vector giving location of tick marks on
     original scale; if missing, the function will try to pick
     nice locations for the ticks.}
+  \item{start}{if a \emph{start} was added to a variable (e.g., to make all
+  	data values positive), it can now be subtracted from the tick labels.}
   \item{lead.digits}{number of leading digits for determining `nice' numbers 
 	for tick labels (default is \code{1}.}
   \item{n.ticks}{number of tick marks; if missing, same as corresponding

@@ -48,7 +48,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, id.var=NULL, labels,
 	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
-	pch=1:n.groups, lwd=1, lwd.smooth=lwd,
+	pch=1:n.groups, lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
 	cex.main=par("cex.main"), id.cex=cex,
 	legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...){
@@ -64,7 +64,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 		y <- y[ord]
 		if (!spread){
 			fit <- loess.smooth(x, y, span=span)
-			lines(fit$x, fit$y, lwd=lwd.smooth, col=col)
+			lines(fit$x, fit$y, lty=lty.smooth, lwd=lwd.smooth, col=col)
 		}
 		else{
 			fit <- loess(y ~ x, degree=1, family="symmetric", span=span)
@@ -72,26 +72,13 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 			pos <- res > 0
 			pos.fit <- loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=pos)
 			neg.fit <- loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=!pos)
-			lines(x, fitted(fit), lwd=lwd.smooth, col=col)
+			lines(x, fitted(fit), lty=lty.smooth, lwd=lwd.smooth, col=col)
 			y.pos <- fitted(fit)[pos] + sqrt(fitted(pos.fit))
-			lines(x[pos], y.pos, lwd=lwd.smooth, lty=3, col=col)
+			lines(x[pos], y.pos, lty=lty.spread, lwd=lwd.spread, col=col)
 			y.neg <- fitted(fit)[!pos] - sqrt(fitted(neg.fit))
-			lines(x[!pos], y.neg, lwd=lwd.smooth, lty=3, col=col)
+			lines(x[!pos], y.neg, lty=lty.spread, lwd=lwd.spread, col=col)
 		}
 	}
-#	label.outliers <- function(x, y, cutoff, labels, col){
-#		cutoff <- 2*qf(cutoff, 2, length(x) - 1)
-#		X <- na.omit(data.frame(x, y, labels, stringsAsFactors=FALSE))
-#		res <- cov.trob(X[, c("x", "y")])
-#		d <- mahalanobis(X[, c("x", "y")], res$center, res$cov)
-#		which <- which(d > cutoff)
-#		if (length(which) == 0) return()
-#		x <- X$x
-#		y <- X$y
-#		labels <- X$labels
-#		pos <- ifelse(x[which] <= mean(range(X$x)), 4, 2)
-#		text(x[which], y[which], labels[which], pos=pos, col=col, cex=cex.identify)
-#	}
 	if (id.method != "none" && missing(labels)){
 		labels <- rownames(x)
 		if (is.null(labels)) labels <- as.character(seq(length.out=nrow(x)))
@@ -110,7 +97,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 		x <- model.matrix(mod)[,2]
 		min <- which.min(x)
 		max <- which.max(x)
-		lines(c(x[min], x[max]), c(y.hat[min], y.hat[max]), lty=2, lwd=lwd, col=col)
+		lines(c(x[min], x[max]), c(y.hat[min], y.hat[max]), lty=lty, lwd=lwd, col=col)
 	}
 	legendPlot <- function(){
 		usr <- par("usr")
@@ -196,7 +183,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 				}
 			}
 			if (!by.groups){
-				if (is.function(reg.line)) abline(reg.line(y ~ x),lty=2, lwd=lwd, col=col[1])
+				if (is.function(reg.line)) abline(reg.line(y ~ x), lty=lty, lwd=lwd, col=col[1])
 				if (smooth) lowess.line(x, y, col=col[1], span)
 				if (ellipse) dataEllipse(x, y, plot.points=FALSE, levels=levels, col=col[1],
 						robust=robust, lwd=1)

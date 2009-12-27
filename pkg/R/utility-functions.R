@@ -154,7 +154,7 @@ coefnames2bs <- function(g, para.names, parameterPrefix="b"){
 showLabelsScatter <- function(x, y, labels, id.var = NULL,
 	id.method = "mahal", log="", id.cex=.75, id.n=3, id.col=palette()[1], 
 	range.x=range(.x), show=TRUE) {
-	if (id.method == "none") return(NULL)
+	if (id.method == "none" || id.n == 0 || !show) return(invisible(NULL))
 	if(id.n > 0L) {
 		if (missing(labels))
 			labels <- if (!is.null(id.var)) names(id.var)
