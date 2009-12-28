@@ -5,6 +5,7 @@
 # 2009-09-16: reworked glm and lm methods to handle aliased parameters. J. Fox
 # 2009-09-30: renamed "Anova" to "Analysis of Deviance" in output for some methods. J. Fox
 # 2009-12-22: modified Anova.mlm() to handle a user-supplied within-subject model matrix. J. Fox
+# 2009-12-28: named the components of P in Anova.III.mlm(). John
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -666,7 +667,7 @@ Anova.III.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatr
 					else paste(terms[term], ":", iterm, sep="")
 			}
 		}
-		names(df) <- names(SSP) <- names(SSPEH) <- hnames
+		names(df) <- names(SSP) <- names(SSPEH) <- names(P) <- hnames
 		result <- list(SSP=SSP, SSPE=SSPEH, P=P, df=df, error.df=error.df,
 			terms=hnames, repeated=TRUE, type="III", test=test, 
 			idata=idata, idesign=idesign, icontrasts=icontrasts, imatrix=imatrix)       
