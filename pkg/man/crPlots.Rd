@@ -100,9 +100,6 @@ point identification.}
    
   Fox, J. and Weisberg, S. (in press).  \emph{An R Companion to Applied 
   Regression}, second edition.  Sage.
-  
-  Weisberg, S. (2005) 
-  \emph{Applied Linear Regression}, third edition. Wiley.
 }
 \author{John Fox \email{jfox@mcmaster.ca}}
 
