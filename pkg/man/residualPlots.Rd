@@ -19,7 +19,7 @@ is Tukey's test for nonadditivity when plotting against fitted values.
 residualPlots (model, ...)
 
 \S3method{residualPlots}{lm}(model, vars = ~., layout = NULL, ask, 
-                 main = "Residual Plots", fitted = TRUE, plot = TRUE, ...)
+                 main = "", fitted = TRUE, plot = TRUE, ...)
 
 \S3method{residualPlots}{glm}(model, ...)
 
@@ -64,7 +64,7 @@ If TRUE, ask the user before drawing the next plot; FALSE if don't
 ask.
 }
   \item{main}{
-Main title for the graphs.  Sue \code{main=""} for no title.
+Main title for the graphs.  The default is \code{main=""} for no title.
 }
   \item{fitted}{
 If TRUE, the default, include the plot against fitted values.

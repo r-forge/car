@@ -25,18 +25,18 @@ marginalModelPlot(...)
 
 \method{mmp}{lm}(m, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
-    lineColors = c("blue","red"), 
+    lineColors = palette()[c(4,2)], 
     ...)
     
 \method{mmp}{default}(m, variable, mean = TRUE, sd = FALSE, xlab =
                  deparse(substitute(variable)), degree = 1, span = 2/3,
-                 key = TRUE, lineColors = c("blue", "red"), id.var =   
+                 key = TRUE, lineColors = palette()[c(4,2)], id.var =   
                  NULL, labels, id.method = "y", id.n = 3, id.cex = 1,  
                  id.col = NULL, ...)
    
 \method{mmp}{glm}(m, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
-    lineColors = c("blue", "red"),
+    lineColors = palette()[c(4,2)],
     id.var=NULL, labels, id.method="y", id.n=3, id.cex=1, id.col=NULL, ...)
 }
 
@@ -76,7 +76,8 @@ key}
 points.  The default \code{id.n=0} suppresses labeling, and setting this
 argument greater than zero will include labeling.  See
 \code{\link{showLabels}} for these arguments.}
-\item{lineColors}{ colors for data and model smooth, respectively }
+\item{lineColors}{ colors for data and model smooth, respectively.  Using
+the default palette, these are blue and red. }
 }   
 \details{
 \code{mmp} and \code{marginalModelPlot} draw one marginal model plot.  

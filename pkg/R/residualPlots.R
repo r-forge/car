@@ -4,7 +4,7 @@
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
 
 residualPlots.lm <- function(model, vars= ~.,
-     layout=NULL, ask, main="Residual Plots", 
+     layout=NULL, ask, main="", 
      fitted=TRUE, plot=TRUE, ...){
   mf <- attr(model.frame(model), "terms")
   vform <- update(formula(model),vars)
