@@ -9,7 +9,7 @@
 showLabels <- function(x, y, labels=NULL,
 	id.var = NULL, id.method = if(is.null(id.var)) "xy" else "none",
 	id.n = 3, id.cex=1, id.col=NULL, show=TRUE, ...) {  
-	if (id.n <= 0L | show==FALSE ) 
+	if ( show ==FALSE | (id.n <= 0L & id.method != "identify")) 
 		return(invisible(NULL))
 	if (is.null(id.col))
 		id.col <- palette()[1]

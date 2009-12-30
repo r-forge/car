@@ -55,6 +55,7 @@ export(
 	lht,
     linearHypothesis,
     Manova,
+    mmp, mmps, marginalModelPlot, marginalModelPlots,
     ncvTest,
     outlierTest,
     vif,
@@ -165,6 +166,9 @@ S3method(linearHypothesis, glm)
 S3method(linearHypothesis, lm)
 S3method(linearHypothesis, mlm)
 S3method(Manova, mlm)
+S3method(mmp, default)
+S3method(mmp, lm)
+S3method(mmp, glm)
 S3method(ncvTest, glm)
 S3method(ncvTest, lm)
 S3method(outlierTest, lm)
