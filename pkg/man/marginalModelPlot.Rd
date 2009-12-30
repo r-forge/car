@@ -107,7 +107,7 @@ Linear Regression}, third edition, Wiley, Chapter 8}
 \examples{
 data(ufcwc, package="alr3")
 c1 <- lm(Height ~ Dbh, ufcwc)
-mmp(c1, ufcwc$Dbh, xlab="Diameter, Dbh", lineColors=c("black", "black"))
+mmp(c1, ufcwc$Dbh, xlab="Diameter, Dbh")
 mmps(c1)
 
 } 
