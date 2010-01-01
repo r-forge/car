@@ -6,6 +6,8 @@
 # 2009-09-30: renamed "Anova" to "Analysis of Deviance" in output for some methods. J. Fox
 # 2009-12-22: modified Anova.mlm() to handle a user-supplied within-subject model matrix. J. Fox
 # 2009-12-28: named the components of P in Anova.III.mlm(). John
+# 2010-01-01: Anova.II.mlm() now hands off (again) to Anova.III.mlm() when there
+#             is only an intercept in the between-subjects model
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -709,14 +711,18 @@ Anova.II.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatri
 	terms <- term.names(mod)
 	if (intercept) terms <- terms[-1]
 	n.terms <- length(terms)
+	if (n.terms == 0){
+		message("Note: model has only an intercept; equivalent type-III tests substituted.")
+		return(Anova.III.mlm(mod, SSPE, error.df, idata, idesign, icontrasts, imatrix, test, ...))
+	}
 	if (is.null(idata) && is.null(imatrix)){
-		if ((n.terms == 0) && intercept) {
-			Test <- linearHypothesis(mod, 1, SSPE=SSPE, ...)
-			result <- list(SSP=list(Test$SSPH), SSPE=SSPE, df=1, error.df=error.df,
-				terms="(Intercept)", repeated=FALSE, type="II", test=test)
-			class(result) <- "Anova.mlm"
-			return(result)
-		}
+#		if ((n.terms == 0) && intercept) {
+#			Test <- linearHypothesis(mod, 1, SSPE=SSPE, ...)
+#			result <- list(SSP=list(Test$SSPH), SSPE=SSPE, df=1, error.df=error.df,
+#				terms="(Intercept)", repeated=FALSE, type="II", test=test)
+#			class(result) <- "Anova.mlm"
+#			return(result)
+#		}
 		SSP <- as.list(rep(0, n.terms))
 		df <- rep(0, n.terms)
 		names(df) <- names(SSP) <- terms

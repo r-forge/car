@@ -19,7 +19,7 @@ crp(...)
 crPlot(model, ...)
 
 \method{crPlot}{lm}(model, variable, id.var = residuals(model, type = "pearson"), 
-    id.method = "x", labels, id.n = 3, id.cex=1, id.col = NULL, 
+    id.method = "x", labels, id.n = 0, id.cex=1, id.col = NULL, 
     order = 1, line = TRUE, smooth = TRUE, iter, span = 0.5, 
     las = par("las"), col = palette()[2], pch = 1, lwd = 2, ...)
 

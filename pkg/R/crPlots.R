@@ -3,6 +3,8 @@
 # modified 9 October 2009 by J. Fox
 # modified 25 November 2009 by S. Weisberg to change 
 #   variable specification, layout and point marking
+# modified 1 January 2009 by J. Fox
+#   to set default id.n=0
 
 # these functions to be rewritten; simply renamed for now
 
@@ -44,7 +46,7 @@ crPlot.lm<-function(model, variable,
   id.var = residuals(model, type="pearson"),
   id.method = "x",
   labels, 
-  id.n = 3, id.cex=1, id.col=NULL,
+  id.n = 0, id.cex=1, id.col=NULL,
   order=1, line=TRUE, smooth=TRUE,
 	iter, span=.5, las=par("las"), col=palette()[2], pch=1, lwd=2,
 	...) { 
