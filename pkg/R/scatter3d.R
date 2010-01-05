@@ -1,6 +1,7 @@
 # 3D scatterplots and point identification via rgl
 
 # checked in 23 December 2009 by J. Fox
+# 5 January 2008: fixed axis labeling in scatter3d.formula. J. Fox
 
 scatter3d <- function(x, ...){
 	UseMethod("scatter3d")
@@ -20,8 +21,8 @@ scatter3d.formula <- function(formula, data, subset, xlab, ylab, zlab, labels, .
 	m$formula <- formula
 	X <- eval(m, parent.frame())
 	names <- names(X)
-	if (missing(xlab)) xlab <- names[1]
-	if (missing(ylab)) ylab <- names[2]
+	if (missing(xlab)) xlab <- names[2]
+	if (missing(ylab)) ylab <- names[1]
 	if (missing(zlab)) zlab <- names[3]
 	if (missing(labels)) labels <- rownames(X)
 	if (ncol(X) == 3) 
