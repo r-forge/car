@@ -1,4 +1,5 @@
 # checked in 26 December 2009 by J. Fox
+# 6 January 2009: Fixed Boxplot.default() so that it works properly when g is numeric. J. Fox
 
 Boxplot <- function(y, ...){
 	UseMethod("Boxplot")
@@ -51,10 +52,11 @@ Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"), 
 		labels <- labels[valid]
 		g <- g[valid]
 		b <- boxplot(split(y, g), ylab=ylab, xlab=xlab, ...)
-		g <- as.numeric(g)
+		levels <- if (is.factor(g)) levels(g) else sort(unique(g))
+		gg <- as.numeric(g)
 		if (id.method == "none") return(invisible(NULL))
 		else if (id.method == "identify"){
-			res <- identify(g, y, labels)
+			res <- identify(gg, y, labels)
 			return(if(length(res) == 0) invisible(NULL) else labels[res])
 		}
 		else { 
@@ -63,7 +65,7 @@ Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"), 
 			if (length(b$out) > 0){
 				groups <- unique(b$group)
 				for (group in groups){
-					grp <- g == group
+					grp <- g == levels[group]
 					yy <- y[grp]
 					labs <- labels[grp]
 					sel <- yy %in% b$out[b$group == group]
@@ -101,7 +103,7 @@ Boxplot.formula <- function(formula, data=NULL, subset, na.action=NULL, labels.,
 	m <- match.call(expand.dots = FALSE)
 	if (is.matrix(eval(m$data, parent.frame()))) 
 		m$data <- as.data.frame(data)
-	m$ylab <- m$id.method <- m$... <- NULL
+	m$xlab <- m$ylab <- m$id.method <- m$... <- NULL
 	m$na.action <- na.action
 	require(stats, quietly = TRUE)
 	m[[1]] <- as.name("model.frame")
