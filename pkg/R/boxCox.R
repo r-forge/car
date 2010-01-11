@@ -55,26 +55,26 @@ boxCox.default <- function(object,
         plot(xl, loglik, xlab = xlab, ylab = ylab, type = "l",
             ylim = range(loglik, lim))
         plims <- par("usr")
-        abline(h = lim, lty = 3)
+        abline(h = lim, lty = 2)
         y0 <- plims[3L]
         scal <- (1/10 * (plims[4L] - y0))/par("pin")[2L]
         scx <- (1/10 * (plims[2L] - plims[1L]))/par("pin")[1L]
         text(xl[1L] + scx, lim + scal, " 95%")
         la <- xl[mx]
         if (mx > 1 && mx < m)
-            segments(la, y0, la, Lmax, lty = 3)
+            segments(la, y0, la, Lmax, lty = 2)
         ind <- range((1L:m)[loglik > lim])
         if (loglik[1L] < lim) {
             i <- ind[1L]
             x <- xl[i - 1] + ((lim - loglik[i - 1]) * (xl[i] -
                 xl[i - 1]))/(loglik[i] - loglik[i - 1])
-            segments(x, y0, x, lim, lty = 3)
+            segments(x, y0, x, lim, lty = 2)
         }
         if (loglik[m] < lim) {
             i <- ind[2L] + 1
             x <- xl[i - 1] + ((lim - loglik[i - 1]) * (xl[i] -
                 xl[i - 1]))/(loglik[i] - loglik[i - 1])
-            segments(x, y0, x, lim, lty = 3)
+            segments(x, y0, x, lim, lty = 2)
         }
     }
     list(x = xl, y = loglik)

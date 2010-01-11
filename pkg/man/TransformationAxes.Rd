@@ -15,20 +15,20 @@
 }
 \usage{
 basicPowerAxis(power, base=exp(1), side=c("right", "above", "left", "below"), 
-    at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
+    at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=2,
     axis.title="Untransformed Data", cex=1, las=par("las"))
 
 bcPowerAxis(power, side=c("right", "above", "left", "below"), 
-    at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
+    at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=2,
     axis.title="Untransformed Data", cex=1, las=par("las"))
     
 yjPowerAxis(power, side=c("right", "above", "left", "below"), 
-	at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
+	at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=2,
 	axis.title="Untransformed Data", cex=1, las=par("las"))
 
 probabilityAxis(scale=c("logit", "probit"), 
 	side=c("right", "above", "left", "below"),
-	at, lead.digits=1, grid=FALSE, grid.lty=3, grid.col=gray(0.50),
+	at, lead.digits=1, grid=FALSE, grid.lty=2, grid.col=gray(0.50),
     axis.title = "Probability", interval = 0.1, cex = 1, las=par("las"))
 }
 

@@ -112,8 +112,8 @@ You have to install the \code{rgl} and \code{mgcv} packages to produce 3D plots.
     concentration ellipsoid(s); default is 0.5.}
    \item{id.method}{if \code{"mahal"} (the default), relatively extreme points are identified automatically
   	according to their Mahalanobis distances from the centroid (point of means);
-  	if \code{"identify"}, points are identified interactively by left-clicking near them; right-click
-  	to exit from interactive-point-identification mode; if \code{xz}, identify extreme points in the
+  	if \code{"identify"}, points are identified interactively by right-clicking and dragging a box around them; right-click
+  	in an empty area to exit from interactive-point-identification mode; if \code{xz}, identify extreme points in the
   	predictor plane; if \code{y}, identify unusual values of the response; if \code{xyz} identify
   	unusual values of an variable; if \code{"none"}, no point identification.
   	See \code{\link{showLabels}} for more information.}

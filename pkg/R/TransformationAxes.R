@@ -6,7 +6,7 @@
 #  for power, Box-Cox,  or Yeo-Johnson transformations
 
 basicPowerAxis <- function(power, base=exp(1), side=c("right", "above", "left", "below"), 
-	at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
+	at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=2,
 	axis.title="Untransformed Data", cex=1, las=par("las")) {
 	side <- if(is.numeric(side)) side 
 		else which(match.arg(side) == c("below", "left", "above", "right"))
@@ -26,7 +26,7 @@ basicPowerAxis <- function(power, base=exp(1), side=c("right", "above", "left", 
 }
 
 bcPowerAxis <- function(power, side=c("right", "above", "left", "below"), 
-	at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
+	at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=2,
 	axis.title="Untransformed Data", cex=1, las=par("las")) {
 	inverse.power <- function(x, p){
 		if (p == 0) exp(x)
@@ -50,7 +50,7 @@ bcPowerAxis <- function(power, side=c("right", "above", "left", "below"),
 }
 	
 yjPowerAxis <- function(power, side=c("right", "above", "left", "below"), 
-	at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=3,
+	at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=2,
 	axis.title="Untransformed Data", cex=1, las=par("las")) {
 	inverse.bc <- function(x,p){
 		if (p == 0) exp(x)
@@ -79,7 +79,7 @@ yjPowerAxis <- function(power, side=c("right", "above", "left", "below"),
 # function to add a right or top probability axis to a plot of logits or probits
 
 probabilityAxis <- function(scale=c("logit", "probit"), side=c("right", "above", "left", "below"),
-	at, lead.digits=1, grid=FALSE, grid.lty=3, grid.col=gray(0.50),
+	at, lead.digits=1, grid=FALSE, grid.lty=2, grid.col=gray(0.50),
     axis.title = "Probability", interval = 0.1, cex = 1, las=par("las")){
     side <- if(is.numeric(side)) side 
         else which(match.arg(side) == c("below", "left", "above", "right"))

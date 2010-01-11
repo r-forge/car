@@ -1,5 +1,6 @@
 # Modified Nov. 24, 2009 by S. Weisberg to use showLabels
-# rather than showExtremes
+#   rather than showExtremes
+# 11 January 2009: changed lty=3 to lty=1 for fitted curve. J. Fox
 
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
 
@@ -90,7 +91,7 @@ residualPlot.lm <- function(model, variable = "fitted", type = "pearson",
     if(add.quadratic==TRUE & curvature==TRUE){
         new <- seq(min(horiz),max(horiz),length=200)
         lm2 <- lm(residuals(model,type="pearson")~poly(horiz,2))
-        lines(new,predict(lm2,list(horiz=new)),lty=3,lwd=2)
+        lines(new,predict(lm2,list(horiz=new)),lty=1,lwd=2)
         }}}
   if (!is.factor(horiz)) {  
         showLabels(horiz, vert, labels=labels, 
