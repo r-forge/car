@@ -19,10 +19,8 @@
 \usage{
 influencePlot(model, ...)
 
-\method{influencePlot}{lm}(model, scale = 10,  
-    id.var = cooks.distance(model), 
-    labels, id.method = "none", id.n = 3, id.cex=1, id.col = NULL, 
-    ...)
+\method{influencePlot}{lm}(model, scale = 10, labels, id.n = 3, 
+	id.cex=1, id.col = NULL, ...)
 }
 
 \arguments{
@@ -30,10 +28,9 @@ influencePlot(model, ...)
   }
   \item{scale}{a factor to adjust the size of the circles.
   }
-  \item{id.var, labels, id.method, id.n, id.cex, id.col}{settings for labeling
-points; see \code{link{showLabels}} for details.  To omit point labeling, set
-\code{id.n=0}.  The default is to label according to Cook's Distance.
-}
+  \item{labels, id.n, id.cex, id.col}{settings for labelling
+points; see \code{link{showLabels}} for details. To omit point labelling, set
+\code{id.n=0}.}
   \item{\dots}{arguments to pass to the \code{plot} function.
   }
 }
@@ -48,17 +45,16 @@ used for its side-effect of drawing a plot.
 \references{
     J. Fox and S. Weisberg (2011). 
     \emph{An R and S-PLUS Companion to Applied Regression}, second
-edition. Sage.
+	edition. Sage.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 
 \seealso{\code{\link[stats]{cooks.distance}}, \code{\link[stats]{rstudent}}, 
-\code{\link[stats]{hatvalues}}}
+\code{\link[stats]{hatvalues}}, \code{link{showLabels}}}
 
 \examples{
-    data(Duncan, package="car")
     influencePlot(lm(prestige ~ income + education, data=Duncan))
 }
 

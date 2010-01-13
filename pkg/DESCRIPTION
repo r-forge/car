@@ -1,6 +1,6 @@
 Package: car
 Version: 2.0-0
-Date: 2010/01/11
+Date: 2010/01/13
 Title: Companion to Applied Regression
 Author: John Fox <jfox@mcmaster.ca> and Sanford Weisberg. We are grateful to Douglas Bates, David Firth, Michael Friendly, Gregor Gorjanc, Spencer Graves, Richard Heiberger, Georges Monette, Henric Nilsson, Derek Ogle, Brian Ripley, and Achim Zeileis for various suggestions and contributions.
 Maintainer: John Fox <jfox@mcmaster.ca>

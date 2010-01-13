@@ -1,4 +1,6 @@
 # October 23, 2009  avPlots by S. Weisberg.  avPlot by John Fox
+# 13 January 2010: changed default id.n=3. J. Fox
+
 avPlots <- function(model, vars=~., layout=NULL, ask, 
            main="Added-variable Plot", ...){
   vars <- if(is.character(vars)) paste("~",vars) else vars
@@ -36,7 +38,7 @@ function (model, variable,
     id.var = residuals(model, type="pearson"),
     id.method = "x",
     labels, 
-    id.n = 2, id.cex=1, id.col=NULL,
+    id.n = 3, id.cex=1, id.col=NULL,
     col = palette()[2], col.lines = col[1],
     xlab, ylab, pch = 1, lwd = 2, main="Added-variable Plot", ...)
 {
@@ -72,7 +74,7 @@ avPlot.glm<-function(model, variable,
     id.var = residuals(model, type="pearson"),
     id.method = "x",
     labels,
-    id.n = 2, id.cex=1, id.col=NULL, 
+    id.n = 3, id.cex=1, id.col=NULL, 
     col = palette()[2], col.lines = col[1],
     xlab, ylab, pch = 1, lwd = 2,  type=c("Wang", "Weisberg"), 
     main="Added-variable Plot", ...){

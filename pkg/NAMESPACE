@@ -1,4 +1,4 @@
-# last modified 19 December 2009 by J. Fox
+# last modified 13 January 2010 by J. Fox
 
 export(
     basicPowerAxis,
@@ -193,3 +193,5 @@ S3method(summary, powerTransform)
 S3method(coef, powerTransform)
 S3method(vcov, powerTransform)
 S3method(vif, lm)
+S3method(symbox, formula)
+S3method(symbox, default)
