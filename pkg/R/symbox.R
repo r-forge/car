@@ -16,19 +16,16 @@ symbox.formula <- function(formula, data=NULL, subset, na.action=NULL, ylab=NULL
 	m[[1]] <- as.name("model.frame")
 	mf <- eval(m, parent.frame())
 	if (is.null(ylab)) ylab <- paste("Transformations of", variable)
-	symbox(mf[[variable]], ylab=ylab, ...)
+	symbox(as.vector(mf[[1]]), ylab=ylab, ...)
 }
 
-symbox.default <- function(x, powers = c(-1, -0.5, 0, 0.5, 1), start=0, ylab="", ...) {
+symbox.default <- function(x, powers = c(-1, -0.5, 0, 0.5, 1), start=0, trans=bcPower, ylab="", ...) {
     if (!(is.vector(x) && is.numeric(x))) stop("x should be a numeric vector.")
     x <- x + start
-    if (min(x) <= 0) stop("negative values for x are not allowed (after start applied)")
-    result <- outer(x, powers,  "^")
-    result[, powers < 0] <- - result[,powers < 0]
-    result[, powers == 0] <- log(x)
-    result <- as.data.frame(scale(result))
-    names <- as.character(powers)
-    names[powers == 0] <- "log"
-    names(result) <- names
+	result <- lapply(powers, function(lambda) trans(x, lambda))
+	names <- as.character(powers)
+	names[powers == 0] <- "log"
+	names(result) <- names
+	result <- as.data.frame(scale(do.call(cbind, result)))
     boxplot(result, xlab="Powers", ylab=ylab)
 }
