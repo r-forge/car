@@ -1,10 +1,15 @@
 \name{residualPlots}
 \alias{residualPlots}
+\alias{residualPlots.default}
 \alias{residualPlots.lm}
 \alias{residualPlots.glm}
 \alias{residualPlot}
+\alias{residualPlot.default}
 \alias{residualPlot.lm}
+\alias{residualPlot.glm}
 \alias{residCurvTest}
+\alias{residCurvTest.lm}
+\alias{residCurvTest.glm}
 \alias{tukeyNonaddTest}
 \title{Residual plots and curvature tests for linear model fits}
 \description{
@@ -18,24 +23,35 @@ is Tukey's test for nonadditivity when plotting against fitted values.
 
 residualPlots (model, ...)
 
-\S3method{residualPlots}{lm}(model, vars = ~., layout = NULL, ask, 
+\S3method{residualPlots}{default}(model, vars = ~., layout = NULL, ask, 
                  main = "", fitted = TRUE, plot = TRUE, ...)
+
+\S3method{residualPlots}{lm}(model, ...)
 
 \S3method{residualPlots}{glm}(model, ...)
 
-### The following are three related functions:  
+### residualPlots calls residualPlot, so these arguments can be
+### used with either function
 
 residualPlot(model, ...)  
 
-\S3method{residualPlot}{lm}(model, variable = "fitted", type = "pearson", 
+\S3method{residualPlot}{default}(model, variable = "fitted", type = "pearson", 
                  plot = TRUE,     
-                 add.quadratic = TRUE, 
+                 quadratic = TRUE, 
+                 smooth = FALSE, span = 1/2, smooth.lwd=lwd, smooth.lty=lty,
+                 smooth.col=col.lines,
                  id.var = NULL, 
                  labels,
                  id.method = "xy",
                  id.n = 3, id.cex=1, id.col=NULL,
                  col = palette()[2], col.lines = col[1], 
-                 xlab, ylab, pch = 1, lwd = 2, ...)      
+                 xlab, ylab, pch = 1, lwd = 2, lty=1,...)   
+                 
+\S3method{residualPlot}{lm}(model, ...) 
+  
+\S3method{residualPlot}{glm}(model, ...) 
+
+### The following are related functions:  
                     
 residCurvTest(model,variable)
 
@@ -88,9 +104,14 @@ is an appropriate value of the \code{type} argument to
 \code{\link{residuals.lm}} or \dQuote{rstudent} or \dQuote{rstandard} for 
 Studentized or standardized residuals.
 }
-  \item{add.quadratic}{
+  \item{quadratic}{
 if TRUE, fits the quadratic regression of the
-vertical axis on the horizontal axis.  Ignored for glms.
+vertical axis on the horizontal axis and displays a lack of fit test.  
+}
+  \item{smooth, span, smooth.lwd, smooth.lty, smooth.col}{
+Should a lowess smooth be added to the figure?  The span is the smoothing
+parameter for lowess, smooth.lwd and smooth.lty are, respectively the width
+type and color of the line drawn on the plot.  The default is FALSE.
 }
   \item{id.var}{
 if not NULL, the values of this variable are used to find the
@@ -122,7 +143,6 @@ default color for points
   \item{col.lines}{
 default color for lines
 }
-
   \item{xlab}{
 X-axis label.  If not specified, a useful label is constructed by
 the function.
@@ -136,6 +156,9 @@ plotting character.
 }
   \item{lwd}{
 line width for lines.
+}
+  \item{lty}{
+line type for quadratic.
 }
   }
 \details{

@@ -57,8 +57,9 @@ residuals from the model are used.  See \code{\link{showLabels}} for details.
 \code{\link{showLabels}}  for details.
 }
   \item{labels}{observation names}
-  \item{id.n}{Number of points to identify.  Set \code{id.n=0} for no
-point identification.}
+  \item{id.n}{Number of points to identify.  The default is \code{id.n=0} for no
+point identification, so you would need to set this to a positive value for
+automatic point marking.}
   \item{id.cex}{Character expansion for point labels.
 }
   \item{id.col}{Color for point labels.
