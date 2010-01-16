@@ -1,6 +1,6 @@
 # fancy scatterplot matrices (J. Fox)
 
-# last modified: 22 December 2009 by J. Fox
+# last modified: 15 January 2009 by J. Fox
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
@@ -89,7 +89,11 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 		labels <- x[, 2]
 		x <- x[, -(1:2)]
 	}
-	else x <- na.omit(x)
+	else {
+		x <- na.omit(data.frame(labels, x, stringsAsFactors=FALSE))
+		labels <- x[, 1]
+		x <- x[, -1]
+	}
 	if (missing(nclass)) nclass <- "FD"
 	reg <- function(x, y, col){
 		mod<-reg.line(y ~ x)
