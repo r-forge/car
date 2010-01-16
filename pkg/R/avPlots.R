@@ -2,7 +2,7 @@
 # 13 January 2010: changed default id.n=3. J. Fox
 
 avPlots <- function(model, vars=~., layout=NULL, ask, 
-           main="Added-variable Plot", ...){
+           main, ...){
   vars <- if(is.character(vars)) paste("~",vars) else vars
   vform <- update(formula(model),vars)
   if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
@@ -16,6 +16,7 @@ avPlots <- function(model, vars=~., layout=NULL, ask,
   good <- model.names[!is.na(match(model.assign, terms.used))]
   nt <- length(good)
   if (nt == 0) stop("No plots specified")
+  if (missing(main)) main <- if (nt == 1) "Added-Variable Plot" else "Added-Variable Plots"
   if(is.null(layout)){
    layout <- switch(min(nt,9), c(1,1), c(1,2), c(2,2), c(2,2),
                     c(3,2), c(3,2), c(3,3), c(3,3), c(3,3))}

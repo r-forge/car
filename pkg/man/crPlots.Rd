@@ -11,7 +11,7 @@
   partial-residual plots) for linear and generalized linear models.
 }
 \usage{
-crPlots(model, vars = ~., layout = NULL, ask, main = "Component + Residual Plots", 
+crPlots(model, vars = ~., layout = NULL, ask, main, 
     ...)
 
 crp(...)
@@ -42,8 +42,7 @@ select an appropriate layout.  If the number of graphs exceed nine, you must
 select the layout yourself, or you will get a maximum of nine per page.}
   \item{ask}{If TRUE, ask the user before drawing the next plot; FALSE if don't ask.
 This is relevant only if not all the graphs can be drawn in one window.}
-  \item{main}{The title of the plot.
-}
+  \item{main}{The title of the plot; if missing, one will be supplied.}
   \item{\dots}{\code{crPlots} passes these arguments to \code{crPlot}.  
 \code{crPlot} passes them to \code{plot}. 
 }
@@ -107,12 +106,10 @@ automatic point marking.}
 \seealso{\code{\link{ceresPlots}}, \code{\link{avPlots}}}
 
 \examples{
-data(Prestige, package="car")
 crPlots(m<-lm(prestige~income+education, data=Prestige)) 
-# get only one plot and suppress point marking
-crPlots(m, ~.-education, id.n=0)
+# get only one plot
+crPlots(m, ~.-education)
 
-data(Womenlf, package="car")
 crPlots(glm(partic != "not.work" ~ hincome + children, 
   data=Womenlf, family=binomial))
 }

@@ -142,11 +142,12 @@ mmp.glm <- function (m, variable, mean = TRUE, sd = FALSE,
 marginalModelPlots <- function(...) mmps(...)
 
 mmps <- function(m, vars=~., fitted=TRUE, layout=NULL, ask,
-        main="Marginal Model Plots", ...){
+        main, ...){
   vars <- update(m,vars,na.action=NULL,method="model.frame")
   dataClasses <- attr(attr(vars,"terms"),"dataClasses")[-1]
   terms <- names(dataClasses)[dataClasses == "numeric"]
   nt <- length(terms)+fitted
+  if (missing(main)) main <- if (nt == 1) "Marginal Model Plot" else "Marginal Model Plots"
   if(is.null(layout)){
    layout <- switch(min(nt,9),
                            c(1,1),c(1,2),c(2,2),c(2,2),c(3,2),c(3,2),

@@ -10,7 +10,7 @@
   linear models.
 }
 \usage{
-ceresPlots(model, vars = ~., layout = NULL, ask, main = "Ceres Plots", 
+ceresPlots(model, vars = ~., layout = NULL, ask, main, 
     ...)
 
 ceresPlot(model, ...)
@@ -40,7 +40,7 @@ select an appropriate layout.  If the number of graphs exceed nine, you must
 select the layout yourself, or you will get a maximum of nine per page.}
   \item{ask}{If TRUE, ask the user before drawing the next plot; FALSE if don't ask.
 This is relevant only if not all the graphs can be drawn in one window.}
-  \item{main}{The title of the plot.
+  \item{main}{The title of the plot; if missing, one will be supplied.
 }
   \item{\dots}{\code{ceresPlots} passes these arguments to \code{ceresPlot}.  
 \code{ceresPlot} passes them to \code{plot}. 

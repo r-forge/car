@@ -13,7 +13,7 @@
 }
 
 \usage{
-avPlots(model,vars=~., layout=NULL, ask, main="Added-variable Plot", ...)
+avPlots(model,vars=~., layout=NULL, ask, main, ...)
 
 avp(...)
 
@@ -55,7 +55,7 @@ added-variable plot is drawn for that predictor only.
   of the graph will have this many rows and columns.  If not set, the program will
   select an appropriate layout.  If the number of graphs exceed nine, you must 
   select the layout yourself, or you will get a maximum of nine per page.}
-\item{main}{The title of the plot.
+\item{main}{The title of the plot; if missing, one will be supplied.
 }
 \item{ask}{If TRUE, ask the user before drawing the next plot; FALSE if don't ask.
 }
@@ -123,12 +123,10 @@ will be labeled.}
 }
 
 \examples{
-    \dontrun{
 avPlots(lm(prestige~income+education+type, data=Duncan))
 
 avPlots(glm(partic != "not.work" ~ hincome + children, 
   data=Womenlf, family=binomial))
-    }
 }
 
 \keyword{hplot}

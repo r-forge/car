@@ -10,7 +10,7 @@
 
 crp<-function(...) crPlots(...)
 
-crPlots<-function(model, vars=~., layout=NULL, ask, main="Component + Residual Plots", ...){
+crPlots<-function(model, vars=~., layout=NULL, ask, main, ...){
   vars <- if(is.character(vars)) paste("~",vars) else vars
   vform <- update(formula(model),vars)
   if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
@@ -22,6 +22,7 @@ crPlots<-function(model, vars=~., layout=NULL, ask, main="Component + Residual P
 		stop("C+R plots not available for models with interactions.")}
   nt <- length(vterms)
   if (nt == 0) stop("No plots specified")
+  if (missing(main)) main <- if (nt == 1) "Component + Residual Plot" else "Component + Residual Plots" 
   if(is.null(layout)){
    layout <- switch(min(nt,9), c(1,1), c(1,2), c(2,2), c(2,2),
                                c(3,2), c(3,2), c(3,3), c(3,3), c(3,3))}

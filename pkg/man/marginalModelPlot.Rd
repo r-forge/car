@@ -19,7 +19,7 @@ for marginalModelPlots, and mmp is an alias for marginalModelPlot.
 marginalModelPlots(...)
 
 mmps(m, vars=~., fitted=TRUE, layout=NULL, ask,
-        main="Marginal Model Plots", ...)
+        main, ...)
 
 marginalModelPlot(...)
 
@@ -55,7 +55,8 @@ marginalModelPlot(...)
   own layout:  \code{c(2,3)} means two rows and three columns.}
 \item{ask}{If TRUE, ask before clearing the graph window to draw more plots.}
         \item{main}{
-Main title for the array of plots.  Use \code{main=""} to suppress the title.
+Main title for the array of plots.  Use \code{main=""} to suppress the title;
+if missing, a title will be supplied.
 }
 \item{\dots}{
 Additional arguments passed from \code{mmps} to \code{mmp} and

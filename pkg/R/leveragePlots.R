@@ -6,7 +6,7 @@
 # these functions to be rewritten; simply renamed for now
 
 leveragePlots <- function(model, vars=~., layout=NULL, ask, 
-           main="Leverage Plot", ...){
+           main, ...){
   vars <- if(is.character(vars)) paste("~",vars) else vars
   vform <- update(formula(model),vars)
   terms.model <- attr(attr(model.frame(model), "terms"), "term.labels")
@@ -14,6 +14,7 @@ leveragePlots <- function(model, vars=~., layout=NULL, ask,
   good <- terms.model[match(terms.vform, terms.model)]
   nt <- length(good)
   if (nt == 0) stop("No plots specified")
+  if (missing(main)) main <- if (nt == 1) "Leverage Plot" else "Leverage Plots"
   if(is.null(layout)){
    layout <- switch(min(nt,9), c(1,1), c(1,2), c(2,2), c(2,2),
                     c(3,2), c(3,2), c(3,3), c(3,3), c(3,3))}

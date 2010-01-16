@@ -14,7 +14,7 @@
 }
 \usage{
 leveragePlots(model, vars = ~., layout = NULL, ask, 
-    main = "Leverage Plot", ...)
+    main, ...)
 
 leveragePlot(model, ...)
 
@@ -46,7 +46,7 @@ select the layout yourself, or you will get a maximum of nine per page.
     \item{ask}{if \code{TRUE}, a menu is provided in the R Console for the
 user to select the term(s) to plot.
 }   
-  \item{main}{title for plot.
+  \item{main}{title for plot; if missing, a title will be supplied.
 }
   \item{\dots}{arguments passed down to method functions.}
   \item{term.name}{Quoted name of term in the model to be plotted; this argument 
@@ -110,7 +110,6 @@ Springer, 47-60.
 \seealso{\code{\link{avPlots}}}
 
 \examples{
-data(Duncan, package="car")
 leveragePlots(lm(prestige~(income+education)*type, data=Duncan))
 }
 
