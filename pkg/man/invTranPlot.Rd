@@ -3,7 +3,7 @@
 \alias{invTranPlot.default}
 \alias{invTranPlot.formula}
 \alias{invTranEstimate}
-%- Also NEED an '\alias' for EACH other topic documented here.
+
 \title{ Choose a predictor transformation visually or numerically }
 \description{
 \code{invTranPlot}
@@ -19,7 +19,8 @@ invTranPlot(x, ...)
 
 \S3method{invTranPlot}{formula}(x,data,subset,na.action,...)
 
-\S3method{invTranPlot}{default}(x,y,lambda=c(-1,0,1), lty.lines=1:(1 + length(lambda)),
+\S3method{invTranPlot}{default}(x,y,lambda=c(-1,0,1), 
+		lty.lines=rep(c("solid", "dashed", "dotdash", "longdash", "twodash"), length=1 + length(lambda)),
         lwd.lines=2, col.lines=palette(),
         xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
         family="bcPower", optimal=TRUE, key="topleft",

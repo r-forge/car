@@ -1,4 +1,5 @@
 # Modified 25 Nov 2009 for point marking
+# 20 Jan 2010: changed line types. J. Fox
 
 invTranPlot <- function(x,...) UseMethod("invTranPlot")
 
@@ -24,7 +25,7 @@ invTranPlot.formula <- function(x, data, subset, na.action, ...) {
   }   
 
 invTranPlot.default<- function(x, y, lambda=c(-1, 0, 1), 
-        lty.lines=1:(1+length(lambda)),
+        lty.lines=rep(c("solid", "dashed", "dotdash", "longdash", "twodash"), length=1 + length(lambda)),
         lwd.lines=2, col.lines=palette(),
         xlab=deparse(substitute(x)),ylab=deparse(substitute(y)),
         family="bcPower",optimal=TRUE,key="topleft",
