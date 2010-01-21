@@ -1,4 +1,8 @@
 # influence index plot  written 9 Dec 09 by S. Weisberg
+# 21 Jan 10: added wrapper influenceIndexPlot(). J. Fox
+
+influenceIndexPlot <- function(model, ...)
+	{UseMethod("infIndexPlot")}
 
 infIndexPlot <- function(model, ...)
          {UseMethod("infIndexPlot")}

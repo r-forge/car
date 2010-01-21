@@ -1,5 +1,6 @@
 \name{infIndexPlot}
 \alias{infIndexPlot}
+\alias{influenceIndexPlot}
 \alias{infIndexPlot.lm}
 \title{Influence index plot}
 \description{
@@ -9,6 +10,8 @@ regression object.
 }
 \usage{
 infIndexPlot(model, ...)
+
+influenceIndexPlot(model, ...)
 
 \method{infIndexPlot}{lm}(model, main="Diagnostic Plots",
      id.var=NULL, labels, id.method = "y", id.n = 0, id.cex=1,
@@ -51,7 +54,7 @@ p-values for outlier tests, and leverages.
   \code{\link{outlierTest}}, \code{link{hatvalues}} }
 \examples{
 m1 <- lm(prestige ~ income + education + type, Duncan)
-infIndexPlot(m1)
+influenceIndexPlot(m1)
 }
 
 \keyword{ hplot }% at least one, from doc/KEYWORDS

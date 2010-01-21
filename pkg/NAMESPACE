@@ -1,4 +1,4 @@
-# last modified 13 January 2010 by J. Fox
+# last modified 21 January 2010 by J. Fox
 
 export(
     basicPowerAxis,
@@ -47,6 +47,7 @@ export(
 	hccm,
 	identify3d,
 	infIndexPlot,
+	influenceIndexPlot,
 	influencePlot,
 	invResPlot, inverseResponsePlot, invTranPlot, invTranEstimate,
 	leveneTest,
