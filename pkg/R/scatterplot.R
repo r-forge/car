@@ -1,6 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 26 December 2009
+# last modified 30 January 2009
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -205,16 +205,29 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 		.y <- y
 		top <- mar[3]
 	}
+	xbox <- length(grep("x", boxplots)) > 0
+	ybox <- length(grep("y", boxplots)) > 0
 	groups <- as.factor(if(missing(groups)) rep(1, length(.x)) else as.character(groups))
-	layout(matrix(c(1, 0, 3, 2), 2, 2),
-		widths = c(5, 95),
-		heights= c(95, 5))
+	if (xbox && ybox)
+		layout(matrix(c(1, 0, 3, 2), 2, 2),
+			widths = c(5, 95),
+			heights= c(95, 5))
+	else if (ybox)
+		layout(matrix(c(1, 2),1, 2),
+			widths = c(5, 95),
+			heights= 100)
+	else if (xbox)
+		layout(matrix(c(2, 1), 2, 1),
+			widths = 100,
+			heights= c(95, 5))
+	else layout (matrix(1, 1, 1),
+			widths=100, heights=100)
 	par(mar=c(mar[1], 0, top, 0))
-	if (length(grep("y", boxplots)) > 0) vbox(.y) 
-	else plot(0, 0, xlab="", ylab="", axes=FALSE, type="n", xlim=xlim, ylim=ylim)
+	if (ybox > 0) vbox(.y) 
+#	else plot(0, 0, xlab="", ylab="", axes=FALSE, type="n", xlim=xlim, ylim=ylim)
 	par(mar=c(0, mar[2], 0, mar[4]))
-	if (length(grep("x", boxplots)) > 0) hbox(.x) 
-	else plot(0, 0, xlab="", ylab="", axes=FALSE, type="n", xlim=xlim, ylim=ylim)
+	if (xbox > 0) hbox(.x) 
+#	else plot(0, 0, xlab="", ylab="", axes=FALSE, type="n", xlim=xlim, ylim=ylim)
 	par(mar=c(mar[1:2], top, mar[4]))
 	plot(.x, .y, xlab=xlab, ylab=ylab, las=las, log=log, cex=cex, cex.axis=cex.axis, cex.lab=cex.lab,
 		cex.main=cex.main, cex.sub=cex.sub, type="n", xlim=xlim, ylim=ylim, ...)
