@@ -55,7 +55,7 @@ ncvTest(model, ...)
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link{hccm}}, \code{\link[car]{spread.level.plot}} }
+\seealso{\code{\link{hccm}}, \code{\link[car]{spreadLevelPlot}} }
 
 \examples{
 data(Ornstein, package="car")
