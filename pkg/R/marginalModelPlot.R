@@ -35,8 +35,12 @@ function (m, variable, mean = TRUE, sd = FALSE,
     zpred <- function(...){pmax(predict(...),0)}
     plot(u, m$model[, 1], xlab = xlab, ylab = colnames(m$model[1]),
         ...)
-    if(key) mtext( side=3, line=0.1, outer=FALSE, c("Data (solid)","Model (dashed)"), adj=c(0, 1), 
-           cex=0.7, col=lineColors)
+    if(key){
+       mtext(side=3, line=1.0, outer=FALSE, "Data (solid)", adj=0, cex=0.7, col=lineColors[1])
+       mtext(side=3, line=0.1, outer=FALSE, "Model (dashed)", adj=0, cex=0.7, col=lineColors[2])
+       }
+ #   if(key) mtext( side=3, line=0.1, outer=FALSE, c("Data (solid)","Model (dashed)"), adj=c(0, 1), 
+ #          cex=0.7, col=lineColors)
     loess.y <- loess(m$model[, 1] ~ u, degree = degree,
         span = span)
     loess.yhat <- loess(predict(m) ~ u, degree = degree,
@@ -75,11 +79,11 @@ mmp.glm <- function (m, variable, mean = TRUE, sd = FALSE,
     lineColors = palette()[c(4,2)],
     id.var=NULL, labels, id.method="y", id.n=3, id.cex=1, id.col=NULL, ...)
 {
-    if (missing(u)) {
+    if (missing(variable)) {
         xlab <- "Linear Predictor"
-        variable <- fitted(update(m,na.action=na.exclude))
+        u <- fitted(update(m,na.action=na.exclude))
     }  else {
-        variable <- u }
+        u <- variable }
     if(missing(labels)) labels <- names(residuals(m)[!is.na(residuals(m))])
     na.cases <- attr(m$model,"na.action")
     if(length(na.cases)>0) u <- u[-na.cases]
@@ -98,8 +102,10 @@ mmp.glm <- function (m, variable, mean = TRUE, sd = FALSE,
         response <- response[, 1]/apply(response, 1, sum)
     plot(u, response, xlab = xlab, ylab = colnames(m$model[1]),
         ...)
-    if(key) mtext( side=3, outer=FALSE, c("Data (solid)","Model (dashed)"), adj=c(0, 1), 
-          cex=0.9, col=lineColors)
+    if(key){
+       mtext(side=3, line=1.0, outer=FALSE, "Data (solid)", adj=0, cex=0.7, col=lineColors[1])
+       mtext(side=3, line=0.1, outer=FALSE, "Model (dashed)", adj=0, cex=0.7, col=lineColors[2])
+       }
     loess.y <- loess(response ~ u, degree = degree, span = span)
     loess.yhat <- loess(predict(m, type = "response") ~
         u, degree = degree, span = span)
@@ -155,12 +161,12 @@ mmps <- function(m, vars=~., fitted=TRUE, layout=NULL, ask,
   ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
   if( prod(layout) > 1) {
     op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
-            oma=c(0, 0, 1.5, 0), mar=c(5, 4, 1.5, 1.5) + .1)  
+            oma=c(0, 0, 2.5, 0), mar=c(5, 4, 1.5, 1.5) + .1)  
     on.exit(par(op))
   }
   for (term in terms){
     j <- match(term,names(vars))
     mmp(m,vars[,j],xlab=term,...)}
   if(fitted==TRUE) mmp(m,...)
-  mtext(side=3,outer=TRUE,main, cex=1.2)
+  mtext(side=3,outer=TRUE,main, line=0.5, cex=1.2)
   }

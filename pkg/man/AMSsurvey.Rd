@@ -24,12 +24,11 @@ citizenship status}
   }
 }
 \details{
-These data are produced yearly by the AMS; see
-\url{http://www.ams.org/employment/surveyreports.html}.  These data are from
-Supplementary Table 4 in the 2008-09 data.
+These data are produced yearly by the American Math Society.
 }
 \source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
+\url{http://www.ams.org/employment/surveyreports.html}
+Supplementary Table 4 in the 2008-09 data.
 }
 \references{
 Phipps, Polly, Maxwell, James W. and Rose, Colleen

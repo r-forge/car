@@ -28,7 +28,7 @@ residualPlots (model, ...)
 
 \S3method{residualPlots}{lm}(model, ...)
 
-\S3method{residualPlots}{glm}(model, ...)
+\S3method{residualPlots}{glm}(model, ...) 
 
 ### residualPlots calls residualPlot, so these arguments can be
 ### used with either function
@@ -49,7 +49,8 @@ residualPlot(model, ...)
                  
 \S3method{residualPlot}{lm}(model, ...) 
   
-\S3method{residualPlot}{glm}(model, ...) 
+\S3method{residualPlot}{glm}(model, variable = "fitted", type = "pearson", 
+                 plot = TRUE, quadratic = FALSE, smooth = TRUE, ...)  
 
 ### The following are related functions:  
                     
@@ -106,12 +107,17 @@ Studentized or standardized residuals.
 }
   \item{quadratic}{
 if TRUE, fits the quadratic regression of the
-vertical axis on the horizontal axis and displays a lack of fit test.  
+vertical axis on the horizontal axis and displays a lack of fit test.  Default
+is TRUE for lm and FALSE for glm.  
 }
-  \item{smooth, span, smooth.lwd, smooth.lty, smooth.col}{
+  \item{smooth}{
+if TRUE fits a loess smooth using the settings given below.  Defaults to FALSE
+for lm objects and TRUE for glm objects.
+}
+  \item{span, smooth.lwd, smooth.lty, smooth.col}{
 Should a lowess smooth be added to the figure?  The span is the smoothing
 parameter for lowess, smooth.lwd and smooth.lty are, respectively the width
-type and color of the line drawn on the plot.  The default is FALSE.
+type and color of the line drawn on the plot. 
 }
   \item{id.var}{
 if not NULL, the values of this variable are used to find the

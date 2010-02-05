@@ -102,14 +102,15 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
  if(is.na(column) && variable != "fitted")
    stop(paste(variable,"is not a term in the mean function"))
  horiz <- if(variable == "fitted") predict(model) else model$model[[column]]
- lab <- if(variable == "fitted") {"Fitted values"} else variable
+ lab <- if(variable == "fitted") {
+    if(inherits(model, "glm")) "Linear Predictor" else "Fitted values"} else variable
  ans <-
    if(inherits(horiz,"poly")) {
        horiz <- horiz[,1]
        lab <- paste("Linear part of",lab)
        c(NA,NA)}
    else if (class(horiz) == "factor") c(NA,NA)
-   else if (quadratic == TRUE) residCurvTest(model,variable)
+   else if (quadratic | smooth == TRUE) residCurvTest(model,variable)
    else  c(NA,NA)
 # ans <- if (class(horiz) != "factor")  else c(NA,NA)
  if(plot==TRUE){
@@ -134,7 +135,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
             id.col=id.col)  
         }
       }  
-  if(quadratic==TRUE) ans else NULL}
+  if(quadratic | smooth ==TRUE) ans else NULL}
  
 residCurvTest <- function(model, variable) {UseMethod("residCurvTest")}
 residCurvTest.lm <- function(model,variable) {
@@ -172,7 +173,9 @@ residualPlot.lm <- function(model, ...) {
   residualPlot.default(model, ...)
   }
   
-residualPlot.glm <- function(model, ...) {
-  residualPlot.default(model, ...)
+residualPlot.glm <- function(model, variable = "fitted", type = "pearson", 
+                 plot = TRUE, quadratic = FALSE, smooth = TRUE, ...) {
+  residualPlot.default(model, variable=variable, type=type, plot=plot,
+                 quadratic=quadratic, smooth=smooth, ...)
   }
 
