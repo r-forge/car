@@ -1,4 +1,4 @@
-# last modified 13 January 2010 by J. Fox
+# last modified 7 February 2010 by J. Fox
 
 symbox <- function(x, ...){
 	UseMethod("symbox")
@@ -27,5 +27,5 @@ symbox.default <- function(x, powers = c(-1, -0.5, 0, 0.5, 1), start=0, trans=bc
 	names[powers == 0] <- "log"
 	names(result) <- names
 	result <- as.data.frame(scale(do.call(cbind, result)))
-    boxplot(result, xlab="Powers", ylab=ylab)
+    boxplot(result, xlab="Powers", ylab=ylab, yaxt="n")
 }
