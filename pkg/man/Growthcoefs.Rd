@@ -6,8 +6,8 @@
 Growth coefficients
 }
 \description{
-This data are used in an example of Chapter 7 of \emph{A Companion to Applied
-Regression}
+These data are used in an example of Chapter 7 of A Companion to Applied
+Regression
 }
 \usage{data(Growthcoefs)}
 \format{
@@ -22,15 +22,18 @@ Regression}
   }
 }
 
-\source{  This file provides data for use in an example in Chapter 7 of the
-reference cited below.  The data are output from the models described in
-Sanford Weisberg, George Spangler, and Laurie S. Richmond (2010), Mixed
-effects models for fish growth, \emph{Can. J. Fish. Aquat. Sci.} 67, 269–277.
+\source{  This file provides data for use in an example in Chapter 7 of Fox and
+Weisberg (in press).  The data are output from the models described in
+Weisberg, Spangler and Richmond (2010).
 }
 \references{
- J. Fox and S. Weisberg
+Sanford Weisberg, George Spangler, and Laurie S. Richmond (2010). Mixed
+effects models for fish growth, \emph{Canadian Journal of Fisheries and Aquatic
+Sciences}, 67, 269-277.
+
+J. Fox and S. Weisberg (in press).
  \emph{An R Companion to Applied Regression, Second Edition},
- Sage, in press.
+ Sage.
 }
 \examples{
 data(Growthcoefs)
