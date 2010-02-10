@@ -196,3 +196,26 @@ showLabelsScatter <- function(x, y, labels, id.var = NULL,
 	} 
 }
 
+
+#  outerLegend, written by S. Weisberg Feb 2010
+#  outerLegend function
+#  puts a legend in the margin, either at the upper left (margin = 3)
+#  the default or upper right side otherwise
+#  all the args from legend are used except for x, y, and xpd which are
+#  set in the function.
+#  offset is a fraction of the plot width or hight to locate the legend
+outerLegend <- function(..., margin=3, offset=0){
+   lims <- par("usr")
+   if (margin == 3) {
+      x0 <- lims[1] + offset*(lims[2]-lims[1])
+      y0 <- lims[4] }
+   else {
+      x0 <- lims[2] + offset*(lims[2]-lims[1])
+      y0 <- lims[4]
+   }
+   leg <- legend(x0, y0, ... , xpd=TRUE, plot=FALSE)
+   if (margin == 3) {
+      y0 <- y0 + leg$rect$h
+   }
+   legend(x0, y0, ... , xpd=TRUE)
+   }
