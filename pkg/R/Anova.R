@@ -8,6 +8,7 @@
 # 2009-12-28: named the components of P in Anova.III.mlm(). John
 # 2010-01-01: Anova.II.mlm() now hands off (again) to Anova.III.mlm() when there
 #             is only an intercept in the between-subjects model
+# 2010-02-17: Fixed bug that caused some models with aliased coefficients to fail. J. Fox
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -107,6 +108,7 @@ Anova.II.lm <- function(mod, error, singular.ok=TRUE, ...){
 	intercept <- has.intercept(mod)
 	I.p <- diag(length(coefficients(mod)))
 	assign <- mod$assign
+	assign[!not.aliased] <- NA
 	names <- term.names(mod)
 	if (intercept) names <-names[-1]
 	n.terms <- length(names)
@@ -1211,6 +1213,7 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
 	p <- length(coefficients(mod))
 	I.p <- diag(p)
 	assign <- attr(model.matrix(mod), "assign")
+	assign[!not.aliased] <- NA
 	names <- term.names(mod)
 	if (intercept) names <- names[-1]
 	n.terms <- length(names)
