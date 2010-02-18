@@ -25,40 +25,46 @@ invTranPlot.formula <- function(x, data, subset, na.action, ...) {
   }   
 
 invTranPlot.default<- function(x, y, lambda=c(-1, 0, 1), 
-        lty.lines=rep(c("solid", "dashed", "dotdash", "longdash", "twodash"), length=1 + length(lambda)),
-        lwd.lines=2, col.lines=palette(),
-        xlab=deparse(substitute(x)),ylab=deparse(substitute(y)),
-        family="bcPower",optimal=TRUE,key="topleft",
+        lty.lines=rep(c("solid", "dashed", "dotdash", "longdash", "twodash"), 
+        length=1 + length(lambda)), lwd.lines=2, 
+        col.lines=palette(),
+        xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
+        family="bcPower", optimal=TRUE, key="auto",
         id.var = residuals(lm(y~x)),
         id.method = "none", labels, id.n = 0, id.cex=1, id.col=NULL,
         ...){
  if (missing(labels)) labels <- seq(length(x))
  if (is.factor(x)) stop("Predictor variable may not be a factor")
  if (is.factor(y)) stop("Response variable may not be a factor")
- if (optimal){opt <- invTranEstimate(x,y,family=family,confidence=FALSE)
-              lam <- c(opt$lambda,lambda)} else lam <- lambda
+ if (optimal){opt <- invTranEstimate(x, y, family=family, confidence=FALSE)
+              lam <- c(opt$lambda, lambda)} else lam <- lambda
  fam <- match.fun(family)
- plot(x,y,xlab=xlab,ylab=ylab,...)
+ plot(x, y, xlab=xlab, ylab=ylab, ...)
  rss <- NULL
- new <- seq(min(x,na.rm=TRUE),max(x,na.rm=TRUE),length=100)
+ new <- seq(min(x, na.rm=TRUE), max(x,na.rm=TRUE), length=100)
  for (j in 1:length(lam)){
-     m1 <- lm(y~fam(x,lam[j]))
-     rss <- c(rss,deviance(m1))
-     lines(new,predict(m1,data.frame(x=new)),lty=lty.lines[j],col=col.lines[j],
-      lwd=lwd.lines)}
+     m1 <- lm(y~fam(x, lam[j]))
+     rss <- c(rss, deviance(m1))
+     lines(new,predict(m1, data.frame(x=new)), lty=lty.lines[j],
+       col=col.lines[j], lwd=lwd.lines)}
  showLabels(x, y, labels=labels, 
           id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
           id.col=id.col)
- if (class(key) == "logical") {
-    if (key == TRUE) {
-      print("Click mouse on plot to locate the key, or press Escape")
-      loc <-locator(n=1)
-      legend(loc[1],loc[2], legend =  as.character(round(lam,2)), 
-          lwd=lwd.lines, lty=lty.lines, col=col.lines)}}
-    else {
+ if (!is.null(key)) {
       loc <- key
-      legend(loc[1],loc[2], legend =
-as.character(round(lam,2)),lty=lty.lines,col=col.lines,cex=.75)}
+      if(length(lam) <= 4) { 
+        outerLegend(
+            c(expression(hat(lambda)), as.character(round(lam,2))), 
+            lwd=lwd.lines, lty=c("blank",lty.lines), col=c("#00000000",col.lines),
+            bty="n", cex=0.85, fill=c("#00000000",col.lines), 
+            border=c("#00000000",col.lines), horiz=TRUE, adjust=TRUE)}
+      else {
+        legend(ifelse(cor(x, y)>0,"bottomright","topright"), 
+            legend =  c(expression(hat(lambda)),as.character(round(lam,2))), 
+            lwd=lwd.lines, lty=c("blank", lty.lines), col=c("#00000000",col.lines), 
+            inset=0.02,  cex=0.75, fill=c("#00000000",col.lines), 
+            border=c("#00000000",col.lines))
+      }}
  data.frame(lambda=lam,RSS=rss)
 }
 

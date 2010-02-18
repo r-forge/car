@@ -10,7 +10,8 @@ nextBoot.nls <- function(object,sample){
 
 bootCase <- function(object, f=coef, B=999){UseMethod("bootCase")}
 bootCase.lm <- function(object, f=coef, B=999) { 
-    bootCase.default(update(object, data=model.frame(object)), f, B)
+    bootCase.default(update(object, 
+             data=na.omit(model.frame(object))), f, B)
     }
 bootCase.glm <- function(object, f=coef, B=999) {
     bootCase.lm(object, f, B)
@@ -23,22 +24,22 @@ bootCase.default <- function (object, f=coef, B = 999)
     n <- length(resid(object))
     opt<-options(show.error.messages = FALSE)
     on.exit(options(opt))
-    coefBoot <- NULL
+    coefBoot <- matrix(0, nrow=B, ncol=length(f(object)))
     count.error <- 0
     i <- 0
 #    
     while (i < B) {
-        obj.nl <- try(update(object, subset=sample(1:n, replace = TRUE)))
-        if (is.null(class(obj.nl))) {
+        obj.boot <- try(update(object, subset=sample(1:n, replace = TRUE)))
+        if (is.null(class(obj.boot))) {
             count.error <- 0
             i <- i + 1
-            coefBoot <- rbind(coefBoot, f(obj.nl))
+            coefBoot[i, ] <- f(obj.boot)
         }
         else {
-            if (class(obj.nl)[1] != "try-error") {
+            if (class(obj.boot)[1] != "try-error") {
                 count.error <- 0
                 i <- i + 1
-                coefBoot <- rbind(coefBoot, f(obj.nl))
+                coefBoot[i, ] <- f(obj.boot)
             }
             else {
                 count.error <- count.error + 1

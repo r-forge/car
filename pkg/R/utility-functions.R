@@ -204,7 +204,7 @@ showLabelsScatter <- function(x, y, labels, id.var = NULL,
 #  all the args from legend are used except for x, y, and xpd which are
 #  set in the function.
 #  offset is a fraction of the plot width or hight to locate the legend
-outerLegend <- function(..., margin=3, offset=0){
+outerLegend <- function(..., margin=3, offset=0, adjust=FALSE){
    lims <- par("usr")
    if (margin == 3) {
       x0 <- lims[1] + offset*(lims[2]-lims[1])
@@ -215,7 +215,9 @@ outerLegend <- function(..., margin=3, offset=0){
    }
    leg <- legend(x0, y0, ... , xpd=TRUE, plot=FALSE)
    if (margin == 3) {
+      print(c(x0,y0,leg$rect$h,leg$text$x[1]))
       y0 <- y0 + leg$rect$h
+      if(adjust == TRUE) x0 <- x0 - leg$text$x[1]
    }
    legend(x0, y0, ... , xpd=TRUE)
    }

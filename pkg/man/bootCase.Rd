@@ -32,12 +32,13 @@ method and has a \code{subset} argument.  See details below.}
 compute the statistics of interest.  The default is \code{coef}, to return to
 regression coefficient estimates.}
   \item{B}{Number of bootstrap samples.}
-  \item{sample}{A sample of size n with replacement of the integers from 
-1 to n that defines a bootstrap sample.}
+  \item{sample}{A sample with replacement of the integers from 
+1 to n=non-missing sample size that defines a bootstrap sample.}
 }
 \details{
-This routine does the case-bootstrap described in the reference below.  Begin
-with a regression object.  For each of B bootstrap samples, sample the rows of the data
+This routine does the case-bootstrap described in the references below.  Begin
+with a regression object.  For each of B bootstrap samples, sample the 
+non-missing rows of the data
 matrix with replacement, and recompute and save estimates.  For nls objects there may
 be convergence problems in the bootstrap.  The routine will continue until
 convergence is attained B times, or until there are 25 consecutive failures to converge. 

@@ -37,7 +37,7 @@ function (m, variable, mean = TRUE, sd = FALSE,
         ...)
     if(key){
        outerLegend(c("Data", "Model"), lty=1:2, col=1:2,
-          bty="n", cex=0.75, fill=1:3, border=1:2, horiz=TRUE, offset=0)
+          bty="n", cex=0.75, fill=1:2, border=1:2, horiz=TRUE, offset=0)
     #mtext(side=3, line=1.0, outer=FALSE, "Data (solid)", adj=0, cex=0.7, col=lineColors[1])
     #mtext(side=3, line=0.1, outer=FALSE, "Model (dashed)", adj=0, cex=0.7, col=lineColors[2])
        }
@@ -105,8 +105,10 @@ mmp.glm <- function (m, variable, mean = TRUE, sd = FALSE,
     plot(u, response, xlab = xlab, ylab = colnames(m$model[1]),
         ...)
     if(key){
-       mtext(side=3, line=1.0, outer=FALSE, "Data (solid)", adj=0, cex=0.7, col=lineColors[1])
-       mtext(side=3, line=0.1, outer=FALSE, "Model (dashed)", adj=0, cex=0.7, col=lineColors[2])
+    outerLegend(c("Data", "Model"), lty=1:2, col=1:2,
+          bty="n", cex=0.75, fill=1:2, border=1:2, horiz=TRUE, offset=0)
+    #mtext(side=3, line=1.0, outer=FALSE, "Data (solid)", adj=0, cex=0.7, col=lineColors[1])
+    #mtext(side=3, line=0.1, outer=FALSE, "Model (dashed)", adj=0, cex=0.7, col=lineColors[2])
        }
     loess.y <- loess(response ~ u, degree = degree, span = span)
     loess.yhat <- loess(predict(m, type = "response") ~
