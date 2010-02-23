@@ -73,7 +73,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
                  id.method = "xy",
                  id.n = 3, id.cex=1, id.col=NULL, 
                  col = palette()[2], col.lines = col[1], 
-                 xlab, ylab, pch = 1, lwd = 2, lty = 1,  ...) {
+                 xlab, ylab, pch = 1, lwd = 1, lty = 1,  ...) {
 # two functions modified from 'scatterplot' function:
 	logged <- function(axis=c("x", "y")){
 		axis <- match.arg(axis)

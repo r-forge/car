@@ -215,7 +215,6 @@ outerLegend <- function(..., margin=3, offset=0, adjust=FALSE){
    }
    leg <- legend(x0, y0, ... , xpd=TRUE, plot=FALSE)
    if (margin == 3) {
-      print(c(x0,y0,leg$rect$h,leg$text$x[1]))
       y0 <- y0 + leg$rect$h
       if(adjust == TRUE) x0 <- x0 - leg$text$x[1]
    }

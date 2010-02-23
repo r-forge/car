@@ -12,18 +12,18 @@ mmp <- function(m, ...){UseMethod("mmp")}
 mmp.lm <- 
 function (m, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
-    lineColors = palette()[c(4,2)], 
+    col.line = palette()[c(4,2)], 
     ...)
 {
-    mmp.default(m, variable, mean, sd, xlab, degree, span, key, lineColors, ...)
+    mmp.default(m, variable, mean, sd, xlab, degree, span, key, col.line, ...)
 }
 
 mmp.default <-
 function (m, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
-    lineColors = palette()[c(4,2)], 
+    col.line = palette()[c(4,2)], 
     id.var=NULL, labels, id.method="y", id.n=3, id.cex=1, id.col=NULL, ...)
-{
+{   
     if (missing(variable)) {
         xlab <- "Fitted values"
         u <- fitted(update(m,na.action=na.exclude))
@@ -38,11 +38,11 @@ function (m, variable, mean = TRUE, sd = FALSE,
     if(key){
        outerLegend(c("Data", "Model"), lty=1:2, col=1:2,
           bty="n", cex=0.75, fill=1:2, border=1:2, horiz=TRUE, offset=0)
-    #mtext(side=3, line=1.0, outer=FALSE, "Data (solid)", adj=0, cex=0.7, col=lineColors[1])
-    #mtext(side=3, line=0.1, outer=FALSE, "Model (dashed)", adj=0, cex=0.7, col=lineColors[2])
+    #mtext(side=3, line=1.0, outer=FALSE, "Data (solid)", adj=0, cex=0.7, col=col.line[1])
+    #mtext(side=3, line=0.1, outer=FALSE, "Model (dashed)", adj=0, cex=0.7, col=col.line[2])
        }
  #   if(key) mtext( side=3, line=0.1, outer=FALSE, c("Data (solid)","Model (dashed)"), adj=c(0, 1), 
- #          cex=0.7, col=lineColors)
+ #          cex=0.7, col=col.line)
     loess.y <- loess(m$model[, 1] ~ u, degree = degree,
         span = span)
     loess.yhat <- loess(predict(m) ~ u, degree = degree,
@@ -50,26 +50,26 @@ function (m, variable, mean = TRUE, sd = FALSE,
     new <- seq(min(u), max(u), length = 200)
     if (mean == TRUE) {
         lines(new, predict(loess.y, data.frame(u = new)), lty = 1,
-            col = lineColors[1])
+            col = col.line[1])
         lines(new, predict(loess.yhat, data.frame(u = new)),
-            lty = 2, col = lineColors[2])
+            lty = 2, col = col.line[2])
     }
     if (sd == TRUE) {
         loess.y.var <- loess(residuals(loess.y)^2 ~ u, degree = degree,
             span = span)
         lines(new, predict(loess.y, data.frame(u = new)) +
-            sqrt(zpred(loess.y.var,data.frame(u = new))), lty = 1, col = lineColors[1])
+            sqrt(zpred(loess.y.var,data.frame(u = new))), lty = 1, col = col.line[1])
         lines(new, predict(loess.y, data.frame(u = new)) - sqrt(zpred(loess.y.var,
-            data.frame(u = new))), lty = 1, col = lineColors[1])
+            data.frame(u = new))), lty = 1, col = col.line[1])
         loess.yhat.var <- loess(residuals(loess.yhat)^2 ~ u,
             degree = degree, span = span)
         s2 <- summary(m)$sigma^2
         lines(new, predict(loess.yhat, data.frame(u = new)) +
             sqrt(s2 + zpred(loess.yhat.var, data.frame(u = new))),
-            lty = 2, col = lineColors[2])
+            lty = 2, col = col.line[2])
         lines(new, predict(loess.yhat, data.frame(u = new)) -
             sqrt(s2 + zpred(loess.yhat.var, data.frame(u = new))),
-            lty = 2, col = lineColors[2])
+            lty = 2, col = col.line[2])
     }    
     showLabels(u, m$model[, 1], labels=labels,
         id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
@@ -78,7 +78,7 @@ function (m, variable, mean = TRUE, sd = FALSE,
 
 mmp.glm <- function (m, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
-    lineColors = palette()[c(4,2)],
+    col.line = c("blue", "red"),
     id.var=NULL, labels, id.method="y", id.n=3, id.cex=1, id.col=NULL, ...)
 {
     if (missing(variable)) {
@@ -107,8 +107,8 @@ mmp.glm <- function (m, variable, mean = TRUE, sd = FALSE,
     if(key){
     outerLegend(c("Data", "Model"), lty=1:2, col=1:2,
           bty="n", cex=0.75, fill=1:2, border=1:2, horiz=TRUE, offset=0)
-    #mtext(side=3, line=1.0, outer=FALSE, "Data (solid)", adj=0, cex=0.7, col=lineColors[1])
-    #mtext(side=3, line=0.1, outer=FALSE, "Model (dashed)", adj=0, cex=0.7, col=lineColors[2])
+    #mtext(side=3, line=1.0, outer=FALSE, "Data (solid)", adj=0, cex=0.7, col=col.line[1])
+    #mtext(side=3, line=0.1, outer=FALSE, "Model (dashed)", adj=0, cex=0.7, col=col.line[2])
        }
     loess.y <- loess(response ~ u, degree = degree, span = span)
     loess.yhat <- loess(predict(m, type = "response") ~
@@ -117,17 +117,17 @@ mmp.glm <- function (m, variable, mean = TRUE, sd = FALSE,
     pred.loess.y <- fr.mmp(fam, predict(loess.y, data.frame(u = new)))
     pred.loess.yhat <- fr.mmp(fam, predict(loess.yhat, data.frame(u = new)))
     if (mean == TRUE) {
-        lines(new, pred.loess.y, lty = 1, col = lineColors[1])
-        lines(new, pred.loess.yhat, lty = 2, col = lineColors[2])
+        lines(new, pred.loess.y, lty = 1, col = col.line[1])
+        lines(new, pred.loess.yhat, lty = 2, col = col.line[2])
     }
     if (sd == TRUE) {
         loess.y.var <- loess(residuals(loess.y)^2 ~ u, degree = degree,
             span = span)
         pred.loess.y.var <- pmax(0, predict(loess.y.var, data.frame(u = new)))
         lines(new, fr.mmp(fam, pred.loess.y + sqrt(pred.loess.y.var)),
-            lty = 1, col = lineColors[1])
+            lty = 1, col = col.line[1])
         lines(new, fr.mmp(fam, pred.loess.y - sqrt(pred.loess.y.var)),
-            lty = 1, col = lineColors[1])
+            lty = 1, col = col.line[1])
         loess.yhat.var <- loess(residuals(loess.yhat)^2 ~ u,
             degree = degree, span = span)
         pred.loess.yhat.var <- pmax(0, predict(loess.yhat.var,
@@ -140,9 +140,9 @@ mmp.glm <- function (m, variable, mean = TRUE, sd = FALSE,
         pred.loess.varfun <- pmax(0, predict(loess.varfun, data.frame(u = new)))
         sd.smooth <- sqrt(pred.loess.yhat.var + pred.loess.varfun)
         lines(new, fr.mmp(fam, pred.loess.yhat + sd.smooth),
-            lty = 2, col = lineColors[2])
+            lty = 2, col = col.line[2])
         lines(new, fr.mmp(fam, pred.loess.yhat - sd.smooth),
-            lty = 2, col = lineColors[2])
+            lty = 2, col = col.line[2])
     }
     showLabels(u, m$model[, 1], labels=labels,
         id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
@@ -173,4 +173,5 @@ mmps <- function(m, vars=~., fitted=TRUE, layout=NULL, ask,
     mmp(m,vars[,j],xlab=term,...)}
   if(fitted==TRUE) mmp(m,...)
   mtext(side=3,outer=TRUE,main, line=0.5, cex=1.2)
+  invisible()
   }

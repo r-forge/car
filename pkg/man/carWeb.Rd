@@ -6,7 +6,7 @@
   This function will access the website for Applied Linear Regression} 
 
 \usage{
-carWeb(page = c("webpage", "errata", "taskviews"), rfile, data, xls)
+carWeb(page = c("webpage", "errata", "taskviews"), rfile, data)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -22,13 +22,7 @@ carWeb(page = c("webpage", "errata", "taskviews"), rfile, data, xls)
          you can save them as a text file.
   }
   \item{data}{The quoted name of a data file in \emph{A Companion to Applied 
-         Regression}, like "Duncan" or "Prestige".  All these data files are
-         already in the car package.
-  }
-    \item{xls}{The quoted name of a Excel file referenced in \emph{A Companion 
-         to Applied Regression}, like "Datasets.xls".  Unlike the previous two
-         arguments, you should include the extension ".xls" in specifying
-         the file name.
+         Regression}, like "Duncan.txt" or "Prestige.txt".  
   }
 }
 

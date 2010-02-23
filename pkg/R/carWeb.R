@@ -1,5 +1,5 @@
 carWeb <-
-function (page = c("webpage", "errata", "taskviews"), rfile, data, xls)
+function (page = c("webpage", "errata", "taskviews"), rfile, data)
 {
     data.page <- "http://socserv.socsci.mcmaster.ca/jfox/Books/Companion/data/"
     rfile.page <- "http://socserv.socsci.mcmaster.ca/jfox/Books/Companion/rfile/"
@@ -10,6 +10,5 @@ function (page = c("webpage", "errata", "taskviews"), rfile, data, xls)
     url = urls[page]
     if(!missing(rfile)) url <- paste(rfile.page, rfile, ".R",sep="")
     if(!missing(data)) url <- paste(data.page, data, ".txt", sep="")
-    if(!missing(xls)) url <- paste(data.page, xls,  sep="")
     browseURL(url)
 }
