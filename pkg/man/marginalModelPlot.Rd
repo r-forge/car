@@ -25,18 +25,18 @@ marginalModelPlot(...)
 
 \method{mmp}{lm}(m, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
-    col.line = c("blue", "red"), 
+    col.line = palette()[c(4,2)], 
     ...)
     
 \method{mmp}{default}(m, variable, mean = TRUE, sd = FALSE, xlab =
                  deparse(substitute(variable)), degree = 1, span = 2/3,
-                 key = TRUE, col.line = c("blue", "red"), id.var =   
+                 key = TRUE, col.line = palette()[c(4,2)], id.var =   
                  NULL, labels, id.method = "y", id.n = 3, id.cex = 1,  
                  id.col = NULL, ...)
    
 \method{mmp}{glm}(m, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
-    col.line = c("blue", "red"),
+    col.line = palette()[c(4,2)],
     id.var=NULL, labels, id.method="y", id.n=3, id.cex=1, id.col=NULL, ...)
 }
 
