@@ -1,4 +1,4 @@
-# last modified 27 December 2009 by J. Fox
+# last modified 25 Februrary 2010 by J. Fox
 
 # methods:
 #   'x' x - mean(x)
@@ -8,7 +8,8 @@
 
 showLabels <- function(x, y, labels=NULL,
 	id.var = NULL, id.method = if(is.null(id.var)) "xy" else "none",
-	id.n = 3, id.cex=1, id.col=NULL, show=TRUE, ...) {  
+	id.n = 3, id.cex=1, id.col=NULL, show=TRUE, ...) {
+	match.arg(id.method, c("xy", "none", "mahal", "x", "y", "identify"))
 	if ( show ==FALSE | (id.n <= 0L & id.method != "identify")) 
 		return(invisible(NULL))
 	if (is.null(id.col))
