@@ -6,7 +6,7 @@
  according to simple recode specifications.
 }
 \usage{
-recode(var, recodes, as.factor.result, levels)
+recode(var, recodes, as.factor.result, as.numeric.result=TRUE, levels)
 }
 
 \arguments{
@@ -15,6 +15,9 @@ recode(var, recodes, as.factor.result, levels)
     see below.}
   \item{as.factor.result}{return a factor; default is \code{TRUE} if 
     \code{var} is a factor, \code{FALSE} otherwise.}
+  \item{as.numeric.result}{if \code{TRUE} (the default), and \code{as.factor.result} is \code{FALSE}, 
+  	then the result will be coerced to numeric
+  	if all values in the result are numerals---i.e., represent numbers.}
   \item{levels}{an optional argument specifying the order of the
     levels in the returned factor; the default is to use the sort order
     of the level names.}
