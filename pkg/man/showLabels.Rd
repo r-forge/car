@@ -28,9 +28,10 @@ Plotting labels.  If NULL, case numbers will be used.  If labels are long, the
 \code{\link{substr}} function can be used to shorten them.
 }
   \item{id.var}{
-Either a vector of the length of x to determine which points are to
-be labeled, or a list of less than length(x) labels or observation
-numbers of the points to be labeled, or NULL indicating that 
+If \code{id.var} is a numeric vector of the same length as x, then the id.n cases
+with the largest absolute values of id.var will be labelled.  If id.var can also be a 
+vector of case numbers or labels, and these points will be labelled.  
+More usually, \code{id.var} will equal NONE, indicating that 
 \code{id.method} will be used to determine the labeling method.  See
 the details below.
 }
@@ -55,18 +56,22 @@ are returned but not shown on the plot.}
 The arguments \code{id.var} and  \code{id.method} determine how the points 
 to be identified are selected.  Here are the options for \code{id.method}: 
 \itemize{
-\item{id.method = "none"}
-\item{id.method = "identify"}{identify points interactively using the \code{\link{identify}}
-function}
-\item{id.method = "x"}{select points according to their value of \code{abs(x - mean(x))}}
-\item{id.method = "y"}{select points according to their value of \code{abs(y - mean(y))}}
-\item{id.method = "xy"}{select points according to both \code{"x"} and \code{"y"}}
-\item{id.method = "mahal"}{Treat \code{(x. y)} as if it were a bivariate sample, and
-select cases according to their Mahalanobis distance from 
-\code{mean(x), mean(y)}}}.
+   \item id.method = "none", use \code{id.var} to find cases to label 
+   \item id.method = "identify" identify points interactively using the \code{\link{identify}}
+function
+   \item id.method = "x" select points according to their value of \code{abs(x - mean(x))}
+   \item id.method = "y" select points according to their value of \code{abs(y - mean(y))}
+   \item id.method = "xy" select points according to both \code{"x"} and \code{"y"}
+   \item id.method = "mahal" Treat \code{(x. y)} as if it were a bivariate sample, and
+select cases according to their Mahalanobis distance from  \code{mean(x), mean(y)}
+}
+If the plot is created using the argument \code{log="x"}, 
+then you can set \code{id.method="logx"}, if \code{log="y"} you can set
+\code{id.method="logy"} and if \code{log="xy"}, you can set \code{id.method} to
+any of \code{"logx"}, \code{"logy"}, \code{"logxy"} or \code{"logmahal"}.
 
-Alternatively and in addition, the \code{id.var} can be used to use any other 
-variable to select the labels.  For example, in \code{m} is the \code{lm} model,
+Alternatively and in addition, the \code{id.var} can be employed to use any other 
+variable to select the labels.  For example, if \code{m} is a \code{lm} model,
 the setting \code{id.var = residuals(m, type="pearson")} will label the points
 with the \code{id.n} absolute value of the Person residual, while setting
 \code{id.var = cooks.distance(m1)} will label the points with the largest 

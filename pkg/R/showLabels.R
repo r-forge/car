@@ -9,19 +9,20 @@
 showLabels <- function(x, y, labels=NULL,
 	id.var = NULL, id.method = if(is.null(id.var)) "xy" else "none",
 	id.n = 3, id.cex=1, id.col=NULL, show=TRUE, ...) {
-	match.arg(id.method, c("xy", "none", "mahal", "x", "y", "identify"))
+	match.arg(id.method, c("xy", "none", "mahal", "x", "y", "identify",
+     "logx", "logy", "logxy", "logmahal"))
 	if ( show ==FALSE | (id.n <= 0L & id.method != "identify")) 
 		return(invisible(NULL))
 	if (is.null(id.col))
 		id.col <- palette()[1]
 	if (is.null(labels))
-		if(!is.null(id.var)) labels <- names(id.var)
+		if(length(id.var)==length(x)) labels <- names(id.var)
 	if (is.null(labels))
 		labels <- paste(seq_along(x))           
 # missing values
 	ismissing <- is.na(x) | is.na(y) | is.na(labels)
-	if( length(id.method) == length(x) ) 
-		ismissing <- ismissing | is.na(labels)
+	if( length(id.var) == length(x) ) 
+		ismissing <- ismissing | is.na(id.var)
 	if( any(ismissing) ) {
 		x <- x[!ismissing]
 		y <- y[!ismissing]
