@@ -56,9 +56,9 @@ boxTidwell.default <- function(y, x1, x2=NULL, max.iter=25, tol=.001, verbose=FA
 		if (verbose) cat(" iter =", iter, "    powers =", powers, "\n")
 	}
 	if (iter > max.iter) warning("maximum iterations exceeded")
-	result <- rbind(initial, t.vals, pvalues, powers)
-	rownames(result) <- c("Initial Power","Score Statistic","p-value","MLE of Power")
-	colnames(result) <- var.names
+	result <- cbind( t.vals, pvalues, powers)
+	colnames(result) <- c("Score Statistic","p-value","MLE of Power")
+	rownames(result) <- var.names
 	result <- list(result=result, iterations=iter)
 	class(result)<-"boxTidwell"
 	result
