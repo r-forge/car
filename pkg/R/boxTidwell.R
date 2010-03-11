@@ -37,12 +37,11 @@ boxTidwell.default <- function(y, x1, x2=NULL, max.iter=25, tol=.001, verbose=FA
 	x.log.x <- x1*log(x1)
 	mod.1 <- lm(y ~ cbind(x1, x2), ...)
 	mod.2 <- lm(y ~ cbind(x.log.x, x1, x2), ...)
-#	sumry <- summary(mod.2)
 	seb <- sqrt(diag(vcov(mod.2)))
 	which.coefs <- 2:(1 + k.x1)
 	t.vals <- ((coefficients(mod.2))/seb)[which.coefs]
 	initial <- powers <- 1 + coefficients(mod.2)[which.coefs]/coefficients(mod.1)[which.coefs]
-	pvalues<-2*(1 - pnorm(abs(t.vals)))
+	pvalues<-2*(pnorm(abs(t.vals), lower.tail=FALSE))
 	iter <- 0
 	last.powers <- 1
 	while ((max(abs((powers - last.powers)/(powers + tol))) > tol) && (iter <= max.iter) ) {
