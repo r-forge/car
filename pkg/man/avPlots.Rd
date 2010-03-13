@@ -13,7 +13,7 @@
 }
 
 \usage{
-avPlots(model,vars=~., layout=NULL, ask, main, ...)
+avPlots(model, terms=~., intercept=FALSE, layout=NULL, ask, main, ...)
 
 avp(...)
 
@@ -40,15 +40,14 @@ avPlot(model, ...)
 \arguments{
   \item{model}{model object produced by \code{lm} or \code{glm}.
 }
-  \item{vars}{ A one-sided formula that specifies a subset of the predictors. 
-One added-variable plot is drawn for each term.  The default
-\code{~.} is to plot against all numeric predictors.  For example, the
-specification \code{vars = ~.-X3} would plot against all predictors
-except for \code{X3}.  Factors and nonstandard predictors such as B-splines are 
-skipped.  If this argument is a quoted name of one of the predictors, the 
-added-variable plot is drawn for that predictor only.
+  \item{terms}{ A one-sided formula that specifies a subset of the predictors. 
+One added-variable plot is drawn for each term.   For example, the
+specification \code{terms = ~.-X3} would plot against all terms
+except for \code{X3}. If this argument is a quoted name of one of the terms, the 
+added-variable plot is drawn for that term only.
 }
-\item{variable}{A quoted string giving the name of a variable for the horizontal
+\item{intercept}{Include the intercept in the plots; default is \code{FALSE}.}
+\item{variable}{A quoted string giving the name of a regressor in the model matrix for the horizontal
   axis
 }
 \item{layout}{ If set to a value like \code{c(1,1)} or \code{c(4,3)}, the layout
@@ -106,8 +105,8 @@ will be labeled.}
   Cook, R. D. and Weisberg, S. (1999)
   \emph{Applied Regression, Including Computing and Graphics.} Wiley.
 
-  Fox, J. (1997)
-  \emph{Applied Regression, Linear Models, and Related Methods.} Sage.
+  Fox, J. (2008)
+  \emph{Applied Regression and Generalized Linear Models, Second Edition.} Sage.
   
   Wang, P C. (1985)
   Adding a variable in generalized linear models.

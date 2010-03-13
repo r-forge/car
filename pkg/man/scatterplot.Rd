@@ -26,7 +26,7 @@ scatterplot(x, ...)
 	cex.main=par("cex.main"), cex.sub=par("cex.sub"), id.cex=cex,
 	groups, by.groups=!missing(groups), legend.title=deparse(substitute(groups)), 
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups),
+	col=if (n.groups == 1) palette()[1:2] else rep(palette(), length=n.groups),
 	pch=1:n.groups, legend.plot=!missing(groups), reset.par=TRUE, ...)
   
 sp(...)

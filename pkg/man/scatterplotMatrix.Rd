@@ -21,7 +21,7 @@ scatterplotMatrix(x, ...)
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, id.var=NULL, labels,
-	col=if (n.groups == 1) c("black", "red") else rainbow_hcl(n.groups), pch=1:n.groups, 
+	col=if (n.groups == 1) palette()[1:2] else rep(palette(), length=n.groups), pch=1:n.groups, 
 	lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
 	cex.main=par("cex.main"), id.cex=cex,

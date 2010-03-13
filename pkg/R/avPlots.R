@@ -1,10 +1,11 @@
 # October 23, 2009  avPlots by S. Weisberg.  avPlot by John Fox
 # 13 January 2010: changed default id.n=3. J. Fox
+# 13 March 2010: added intercept argument. J. Fox
 
-avPlots <- function(model, vars=~., layout=NULL, ask, 
+avPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask, 
            main, ...){
-  vars <- if(is.character(vars)) paste("~",vars) else vars
-  vform <- update(formula(model),vars)
+  terms <- if(is.character(terms)) paste("~",terms) else terms
+  vform <- update(formula(model),terms)
   if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
      stop("Only predictors in the formula can be plotted.")
   terms.model <- attr(attr(model.frame(model), "terms"), "term.labels")
@@ -14,6 +15,7 @@ avPlots <- function(model, vars=~., layout=NULL, ask,
   model.names <- attributes(mm)$dimnames[[2]]
   model.assign <- attributes(mm)$assign
   good <- model.names[!is.na(match(model.assign, terms.used))]
+  if (intercept) good <- c("(Intercept)", good)
   nt <- length(good)
   if (nt == 0) stop("No plots specified")
   if (missing(main)) main <- if (nt == 1) "Added-Variable Plot" else "Added-Variable Plots"
@@ -27,7 +29,7 @@ avPlots <- function(model, vars=~., layout=NULL, ask,
   on.exit(par(op))
   for (term in good) avPlot(model, term, main="", ...)
   mtext(side=3,outer=TRUE,main, cex=1.2)
-  invisible(0)
+  invisible(NULL)
  }
  
 avp <- function(...) avPlots(...)

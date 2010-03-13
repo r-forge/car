@@ -1,4 +1,4 @@
-# last modified 1 February 2010 by J. Fox
+# last modified 13 March 2010 by J. Fox
 
 export(
     basicPowerAxis,
@@ -41,6 +41,8 @@ export(
     crPlots,
     crp,
 	deltaMethod,
+	dfbetaPlots,
+	dfbetasPlots,
 	dwt,
 	durbinWatsonTest,
 	estimateTransform, testTransform,	
@@ -146,6 +148,8 @@ S3method(deltaMethod, lm)
 S3method(deltaMethod,multinom)
 S3method(deltaMethod,polr)
 S3method(deltaMethod, nls)
+S3method(dfbetaPlots, lm)
+S3method(dfbetasPlots, lm)
 S3method(durbinWatsonTest, default)
 S3method(durbinWatsonTest, lm)
 S3method(powerTransform, default)
