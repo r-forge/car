@@ -86,10 +86,9 @@ sp(...)
     the default is \code{c(.5, .95)}.}
   \item{robust}{if \code{TRUE} (the default) use the \code{cov.trob} function in the \code{MASS} package
     to calculate the center and covariance matrix for the data ellipse.}
-  \item{col}{colors for points and lines; the default is to use the color palette defined by the
-  	\code{\link{rainbow_hcl}} function in the \pkg{colorspace} package when plotting by groups, 
-  	and \code{c("black", "red")} otherwise, in which case the first color is used for lines and the
-  	second for points.}
+  \item{col}{colors for points and lines; the default is taken from the color palette, 
+  	with \code{palette()[1]} for lines and \code{palette()[2]} for points if there are
+  	no groups, and successive colors for the groups if there are groups.}
   \item{pch}{plotting characters for points; default is the plotting characters in
     order (see \code{\link[graphics]{par}}).}
   \item{cex, cex.axis, cex.lab, cex.main, cex.sub}{set sizes of various graphical elements; 

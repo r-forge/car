@@ -80,10 +80,10 @@ spm(x, ...)
   \item{by.groups}{if \code{TRUE}, regression lines are fit by groups.}
   \item{pch}{plotting characters for points; default is the plotting characters in
     order (see \code{\link[graphics]{par}}).}
-  \item{col}{colors for points and lines; the default is to use the color palette defined by the
-  	\code{\link{rainbow_hcl}} function in the \pkg{colorspace} package when plotting by groups, 
-  	and \code{c("black", "red")} otherwise, in which case the first color is used for lines and the
-  	second for points.}
+  \item{col}{colors for points and lines; the default is taken from the color palette, 
+  	with \code{palette()[1]} for lines and \code{palette()[2]} for points if there are
+  	no groups, and successive colors for the groups if there are groups.}
+  	used for points if there are no groups
   \item{lwd}{width of linear-regression lines (default \code{1}).}
   \item{lwd.smooth}{width for smooth regression lines (default is the same as \code{lwd}).}
   \item{lwd.spread}{width for lines showing spread (default is the same as \code{lwd}).}
