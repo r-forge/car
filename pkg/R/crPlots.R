@@ -27,9 +27,10 @@ crPlots<-function(model, vars=~., layout=NULL, ask, main, ...){
    layout <- switch(min(nt,9), c(1,1), c(1,2), c(2,2), c(2,2),
                                c(3,2), c(3,2), c(3,3), c(3,3), c(3,3))}
   ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
-  op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
+  if(nt > 1){
+     op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
             oma=c(0, 0, 1.5, 0), mar=c(5, 4, 1, 2) + .1)
-  on.exit(par(op))
+     on.exit(par(op))}
 	if(!is.null(class(model$na.action)) && 
 		class(model$na.action) == 'exclude') class(model$na.action) <- 'omit'
   for(term in vterms) 

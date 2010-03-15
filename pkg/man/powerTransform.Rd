@@ -60,10 +60,10 @@ to setting the predictors to be indicator variables for that factor.
 
 Specifying the first argument as a vector, for example
 \code{powerTransform(ais$LBM)}, is equivalent to
-\code{powerTransform(LBM~1, ais)}.  Similarly,
+\code{powerTransform(LBM ~ 1, ais)}.  Similarly,
 \code{powerTransform(cbind(ais$LBM, ais$SSF))}, where the first argument is a matrix
 rather than a formula is equivalent to
-\code{powerTransform(cbind(LBM,SSF)~1, ais)}. 
+\code{powerTransform(cbind(LBM,SSF) ~ 1, ais)}. 
 
 Two families of power transformations are available.
 The bcPower family of \emph{scaled power transformations},
@@ -136,27 +136,35 @@ power transformations to improve normality or symmetry.
 }
 \author{ Sanford Weisberg, sandy@stat.umn.edu }
 
-\seealso{\code{\link{estimateTransform}},
+\seealso{\code{\link{estimateTransform}}, \code{\link{testTransform}},
 \code{\link{optim}}, \code{\link{bcPower}}, \code{\link{transform}}. }
 \examples{
 data(ais,package="alr3")
+
 # Box Cox Method, univariate
-summary(p1 <- powerTransform(LBM~Ht+Wt+RCC,ais))
+summary(p1 <- powerTransform(LBM ~ Ht + Wt + RCC, ais))
+
 # fit linear model with transformed response:
-coef(p1,round=TRUE)
-summary(m1 <- lm(bcPower(LBM,p1$roundlam)~Ht+Wt+RCC,ais))
+coef(p1, round=TRUE)
+summary(m1 <- lm(bcPower(LBM, p1$roundlam) ~ Ht + Wt + RCC, ais))
+
 # Multivariate Box Cox
 summary(powerTransform(cbind(LBM,Ht,Wt,RCC)~1,ais))
+
 # Multivariate transformation to normality within levels of 'Sex'
-summary(a3<-powerTransform(cbind(LBM,Ht,Wt,RCC)~Sex,ais))
+summary(a3<-powerTransform(cbind(LBM, Ht, Wt, RCC) ~ Sex, ais))
+
 # test lambda = (0 0 0 -1)
-testTransform(a3,c(0,0,0,-1))
+testTransform(a3, c(0, 0, 0, -1))
+
 # save the rounded transformed values, plot them with a separate
 # color for males and females
-transformedY <- bcPower(with(ais,cbind(LBM,Ht,Wt,RCC)),coef(a3,round=TRUE))
-\dontrun{pairs(transformedY,col=c("red","blue")[ais$Sex+1])}
+transformedY <- bcPower(with(ais, cbind(LBM, Ht, Wt, RCC)),
+                coef(a3, round=TRUE))
+\dontrun{pairs(transformedY, col=c("red", "blue")[ais$Sex+1])}
+
 # could also add the transformed variables to the data set using usual
 # power transformations and the 'transform' function in the base package.
-ais1 <- transform(ais,logLBM=log(LBM),logWt=log(Wt),logRCC=log(RCC))
+ais1 <- transform(ais, logLBM=log(LBM), logWt=log(Wt), logRCC=log(RCC))
 }
 \keyword{ regression}% at least one, from doc/KEYWORDS

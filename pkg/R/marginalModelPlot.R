@@ -1,93 +1,100 @@
 #############################################
 # marginal model plots    Rev 12/30/09
 # To do:
-# If u has two levels, loess goes nuts.  Check and fix.
 # Allow a Groups arg that will draw the plot for the specified group
-# write mmpControl to control margins in the plot.
 # BUG:  sd's are WRONG with weights; see cards data
+# 15 March 2010 changed to make
+#   mmps(lm(longley)) work without specifying data or response
+#   fixed bug  when only one plot is requested --- suppress call to par()
+#   added 'outerLegend' to label lines
+#   modified to work correctly with 
 #############################################
 marginalModelPlot <- function(...){mmp(...)}
-mmp <- function(m, ...){UseMethod("mmp")}
+mmp <- function(model, ...){UseMethod("mmp")}
 
 mmp.lm <- 
-function (m, variable, mean = TRUE, sd = FALSE,
-    xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
-    col.line = palette()[c(4,2)], 
+function (model, variable, mean = TRUE, sd = FALSE, 
+    xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE, 
+    col.line = palette()[c(4, 2)], 
     ...)
 {
-    mmp.default(m, variable, mean, sd, xlab, degree, span, key, col.line, ...)
+    mmp.default(model, variable, mean, sd, xlab, degree, 
+        span, key, col.line, ...)
 }
 
 mmp.default <-
-function (m, variable, mean = TRUE, sd = FALSE,
-    xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
-    col.line = palette()[c(4,2)], 
+function (model, variable, mean = TRUE, sd = FALSE, 
+    xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE, 
+    col.line = palette()[c(4, 2)], 
     id.var=NULL, labels, id.method="y", id.n=3, id.cex=1, id.col=NULL, ...)
 {   
     if (missing(variable)) {
         xlab <- "Fitted values"
-        u <- fitted(update(m,na.action=na.exclude))
+        u <- fitted(update(model, na.action=na.exclude))
     } else {
         u <- variable}
-    if(missing(labels)) labels <- names(residuals(m)[!is.na(residuals(m))])
-    na.cases <- attr(m$model,"na.action")
-    if(length(na.cases)>0) u <- u[-na.cases]
-    zpred <- function(...){pmax(predict(...),0)}
-    plot(u, m$model[, 1], xlab = xlab, ylab = colnames(m$model[1]),
+    if(missing(labels)) 
+        labels <- names(residuals(model)[!is.na(residuals(model))])
+    na.cases <- attr(model$model, "na.action")
+    if(length(na.cases) > 0) u <- u[-na.cases]
+    zpred <- function(...){pmax(predict(...), 0)}
+    plot(u, model$model[ , 1], xlab = xlab, ylab = colnames(model$model[1]), 
         ...)
     if(key){
-       outerLegend(c("Data", "Model"), lty=1:2, col=1:2,
-          bty="n", cex=0.75, fill=1:2, border=1:2, horiz=TRUE, offset=0)
-    #mtext(side=3, line=1.0, outer=FALSE, "Data (solid)", adj=0, cex=0.7, col=col.line[1])
-    #mtext(side=3, line=0.1, outer=FALSE, "Model (dashed)", adj=0, cex=0.7, col=col.line[2])
-       }
- #   if(key) mtext( side=3, line=0.1, outer=FALSE, c("Data (solid)","Model (dashed)"), adj=c(0, 1), 
- #          cex=0.7, col=col.line)
-    loess.y <- loess(m$model[, 1] ~ u, degree = degree,
+       outerLegend(c("Data", "Model"), lty=1:2, col=col.line, 
+          bty="n", cex=0.75, fill=col.line, border=col.line, horiz=TRUE, offset=0)
+          }
+    deg <- if(length(unique(u)) == 2) 0 else degree
+    ow <- options(warn=-1)
+    on.exit(options(ow))
+    loess.y <- loess(model$model[, 1] ~ u, degree = deg, 
         span = span)
-    loess.yhat <- loess(predict(m) ~ u, degree = degree,
+    loess.yhat <- loess(predict(model) ~ u, degree = deg, 
         span = span)
     new <- seq(min(u), max(u), length = 200)
     if (mean == TRUE) {
-        lines(new, predict(loess.y, data.frame(u = new)), lty = 1,
+        lines(new, predict(loess.y, data.frame(u = new)), lty = 1, 
             col = col.line[1])
-        lines(new, predict(loess.yhat, data.frame(u = new)),
+        lines(new, predict(loess.yhat, data.frame(u = new)), 
             lty = 2, col = col.line[2])
     }
     if (sd == TRUE) {
-        loess.y.var <- loess(residuals(loess.y)^2 ~ u, degree = degree,
+        loess.y.var <- loess(residuals(loess.y)^2 ~ u, degree = deg, 
             span = span)
         lines(new, predict(loess.y, data.frame(u = new)) +
-            sqrt(zpred(loess.y.var,data.frame(u = new))), lty = 1, col = col.line[1])
-        lines(new, predict(loess.y, data.frame(u = new)) - sqrt(zpred(loess.y.var,
+            sqrt(zpred(loess.y.var, data.frame(u = new))), 
+                 lty = 1, col = col.line[1])
+        lines(new, predict(loess.y, 
+            data.frame(u = new)) - sqrt(zpred(loess.y.var, 
             data.frame(u = new))), lty = 1, col = col.line[1])
-        loess.yhat.var <- loess(residuals(loess.yhat)^2 ~ u,
-            degree = degree, span = span)
-        s2 <- summary(m)$sigma^2
+        loess.yhat.var <- loess(residuals(loess.yhat)^2 ~ u, 
+            degree = deg, span = span)
+        s2 <- summary(model)$sigma^2
         lines(new, predict(loess.yhat, data.frame(u = new)) +
-            sqrt(s2 + zpred(loess.yhat.var, data.frame(u = new))),
+            sqrt(s2 + zpred(loess.yhat.var, data.frame(u = new))), 
             lty = 2, col = col.line[2])
         lines(new, predict(loess.yhat, data.frame(u = new)) -
-            sqrt(s2 + zpred(loess.yhat.var, data.frame(u = new))),
+            sqrt(s2 + zpred(loess.yhat.var, data.frame(u = new))), 
             lty = 2, col = col.line[2])
     }    
-    showLabels(u, m$model[, 1], labels=labels,
-        id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
+    showLabels(u, model$model[, 1], labels=labels, 
+        id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
         id.col=id.col)
 }
 
-mmp.glm <- function (m, variable, mean = TRUE, sd = FALSE,
-    xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
-    col.line = palette()[c(4,2)],
+mmp.glm <- function (model, variable, mean = TRUE, sd = FALSE, 
+    xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE, 
+    col.line = palette()[c(4, 2)], 
     id.var=NULL, labels, id.method="y", id.n=3, id.cex=1, id.col=NULL, ...)
 {
     if (missing(variable)) {
         xlab <- "Linear Predictor"
-        u <- fitted(update(m,na.action=na.exclude))
+        u <- fitted(update(model, na.action=na.exclude))
     }  else {
         u <- variable }
-    if(missing(labels)) labels <- names(residuals(m)[!is.na(residuals(m))])
-    na.cases <- attr(m$model,"na.action")
+    if(missing(labels)) 
+        labels <- names(residuals(model)[!is.na(residuals(model))])
+    na.cases <- attr(model$model, "na.action")
     if(length(na.cases)>0) u <- u[-na.cases]
     fr.mmp <- function(family, x) {
         if (family == "binomial")
@@ -98,20 +105,19 @@ mmp.glm <- function (m, variable, mean = TRUE, sd = FALSE,
             pmax(0, x)
         else x
     }
-    response <- m$model[, 1]
-    fam <- m$family$family
+    response <- model$model[, 1]
+    fam <- model$family$family
     if (is.matrix(response))
         response <- response[, 1]/apply(response, 1, sum)
-    plot(u, response, xlab = xlab, ylab = colnames(m$model[1]),
+    plot(u, response, xlab = xlab, ylab = colnames(model$model[1]), 
         ...)
     if(key){
-    outerLegend(c("Data", "Model"), lty=1:2, col=1:2,
-          bty="n", cex=0.75, fill=1:2, border=1:2, horiz=TRUE, offset=0)
-    #mtext(side=3, line=1.0, outer=FALSE, "Data (solid)", adj=0, cex=0.7, col=col.line[1])
-    #mtext(side=3, line=0.1, outer=FALSE, "Model (dashed)", adj=0, cex=0.7, col=col.line[2])
+    outerLegend(c("Data", "Model"), lty=1:2, col=col.line, 
+          bty="n", cex=0.75, fill=col.line, border=col.line, 
+          horiz=TRUE, offset=0)
        }
     loess.y <- loess(response ~ u, degree = degree, span = span)
-    loess.yhat <- loess(predict(m, type = "response") ~
+    loess.yhat <- loess(predict(model, type = "response") ~
         u, degree = degree, span = span)
     new <- seq(min(u), max(u), length = 200)
     pred.loess.y <- fr.mmp(fam, predict(loess.y, data.frame(u = new)))
@@ -121,57 +127,73 @@ mmp.glm <- function (m, variable, mean = TRUE, sd = FALSE,
         lines(new, pred.loess.yhat, lty = 2, col = col.line[2])
     }
     if (sd == TRUE) {
-        loess.y.var <- loess(residuals(loess.y)^2 ~ u, degree = degree,
+        loess.y.var <- loess(residuals(loess.y)^2 ~ u, degree = degree, 
             span = span)
         pred.loess.y.var <- pmax(0, predict(loess.y.var, data.frame(u = new)))
-        lines(new, fr.mmp(fam, pred.loess.y + sqrt(pred.loess.y.var)),
+        lines(new, fr.mmp(fam, pred.loess.y + sqrt(pred.loess.y.var)), 
             lty = 1, col = col.line[1])
-        lines(new, fr.mmp(fam, pred.loess.y - sqrt(pred.loess.y.var)),
+        lines(new, fr.mmp(fam, pred.loess.y - sqrt(pred.loess.y.var)), 
             lty = 1, col = col.line[1])
-        loess.yhat.var <- loess(residuals(loess.yhat)^2 ~ u,
+        loess.yhat.var <- loess(residuals(loess.yhat)^2 ~ u, 
             degree = degree, span = span)
-        pred.loess.yhat.var <- pmax(0, predict(loess.yhat.var,
+        pred.loess.yhat.var <- pmax(0, predict(loess.yhat.var, 
             data.frame(u = new)))
-        varfun <- summary(m)$dispersion * m$family$variance(predict(m,
-            type = "response"))/if (!is.null(m$prior.weights))
-            m$prior.weights
-        else 1
+        varfun <- summary(model)$dispersion * 
+            model$family$variance(predict(model, type = "response"))/
+              if (!is.null(model$prior.weights)) model$prior.weights else 1
         loess.varfun <- loess(varfun ~ u, degree = degree, span = span)
         pred.loess.varfun <- pmax(0, predict(loess.varfun, data.frame(u = new)))
         sd.smooth <- sqrt(pred.loess.yhat.var + pred.loess.varfun)
-        lines(new, fr.mmp(fam, pred.loess.yhat + sd.smooth),
+        lines(new, fr.mmp(fam, pred.loess.yhat + sd.smooth), 
             lty = 2, col = col.line[2])
-        lines(new, fr.mmp(fam, pred.loess.yhat - sd.smooth),
+        lines(new, fr.mmp(fam, pred.loess.yhat - sd.smooth), 
             lty = 2, col = col.line[2])
     }
-    showLabels(u, m$model[, 1], labels=labels,
-        id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
+    showLabels(u, model$model[, 1], labels=labels, 
+        id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
         id.col=id.col)
 }
 
 marginalModelPlots <- function(...) mmps(...)
 
-mmps <- function(m, vars=~., fitted=TRUE, layout=NULL, ask,
-        main, ...){
-  vars <- update(m,vars,na.action=NULL,method="model.frame")
-  dataClasses <- attr(attr(vars,"terms"),"dataClasses")[-1]
-  terms <- names(dataClasses)[dataClasses == "numeric"]
-  nt <- length(terms)+fitted
-  if (missing(main)) main <- if (nt == 1) "Marginal Model Plot" else "Marginal Model Plots"
+mmps <- function(model, vars=~., fitted=TRUE, layout=NULL, ask, 
+        main, AsIs=FALSE, ...){
+  mf <- attr(model.frame(model), "terms")
+  vform <- update(formula(model), vars)
+  if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
+     stop("Only predictors in the formula can be plotted. use mmp")
+  terms <- attr(mf, "term.labels") # this is a list
+  vterms <- attr(terms(vform), "term.labels")
+# drop interactions (order > 1)
+  vterms <- setdiff(vterms, terms[attr(mf, "order") > 1])
+# keep only terms that are numeric or integer or factors or poly
+  good <- NULL
+  for (term in vterms) if(
+      (AsIs == TRUE & inherits(model$model[[term]], "AsIs")) |
+      inherits(model$model[[term]], "numeric") |
+      inherits(model$model[[term]], "integer") |
+      inherits(model$model[[term]], "poly")) good <- c(good, term)
+  nt <- length(good) + fitted
+  if (missing(main)) main <- if (nt == 1) "Marginal Model Plot" else 
+     "Marginal Model Plots"
   if(is.null(layout)){
-   layout <- switch(min(nt,9),
-                           c(1,1),c(1,2),c(2,2),c(2,2),c(3,2),c(3,2),
-                           c(3,3),c(3,3),c(3,3))}
-  ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
+   layout <- switch(min(nt, 9), 
+           c(1, 1), c(1, 2), c(2, 2), c(2, 2), c(3, 2), c(3, 2), 
+           c(3, 3), c(3, 3), c(3, 3))}
+  ask <- if(missing(ask) || is.null(ask)) prod(layout) < nt else ask
   if( prod(layout) > 1) {
     op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
             oma=c(0, 0, 2.5, 0), mar=c(5, 4, 1.5, 1.5) + .1)  
     on.exit(par(op))
   }
-  for (term in terms){
-    j <- match(term,names(vars))
-    mmp(m,vars[,j],xlab=term,...)}
-  if(fitted==TRUE) mmp(m,...)
-  mtext(side=3,outer=TRUE,main, line=0.5, cex=1.2)
+  for (term in good){ 
+    if(inherits(model$model[[term]], "poly")){
+        horiz <- model.frame(model)[ , term][ , 1]
+        lab <- paste("Linear part of", term)} else {
+        horiz <- model.frame(model)[ , term]
+        lab <- term }
+    mmp(model, horiz, xlab=lab, ...)}
+  if(fitted==TRUE) mmp(model, ...)
+  mtext(side=3, outer=TRUE, main, line=0.5, cex=1.2)
   invisible()
   }

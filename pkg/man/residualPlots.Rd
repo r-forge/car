@@ -24,7 +24,8 @@ is Tukey's test for nonadditivity when plotting against fitted values.
 residualPlots (model, ...)
 
 \S3method{residualPlots}{default}(model, vars = ~., layout = NULL, ask, 
-                 main = "", fitted = TRUE, plot = TRUE, ...)
+                 main = "", fitted = TRUE, AsIs=FALSE, plot = TRUE, 
+                 tests = TRUE, ...)
 
 \S3method{residualPlots}{lm}(model, ...)
 
@@ -86,8 +87,15 @@ Main title for the graphs.  The default is \code{main=""} for no title.
   \item{fitted}{
 If TRUE, the default, include the plot against fitted values.
 }
+  \item{AsIs}{
+If FALSE, the default, terms that use the \code{AsIs} function \code{I}
+are skipped; if TRUE they are included.
+}
   \item{plot}{
 If TRUE, draw the plot(s).
+}
+  \item{tests}{
+If TRUE, display the curvature tests.
 }
   \item{...}{
 Additional arguments passed to \code{residualPlot} and then the
@@ -168,12 +176,28 @@ line type for quadratic.
 }
   }
 \details{
-\code{residualPlots} draws all residuals plots, versus
-each term specified first-order term in the model (interactions are
-automatically skipped) and versus fitted values,  and returns all the
-curvature tests.  \code{residualPlot}, which is called by \code{residualPlots},
+\code{residualPlots} draws one or more residuals plots depending on the
+value of the \code{vars} and \code{fitted} arguments.  If \code{vars = ~.},
+the default, then a plot is produced of residuals versus each first-order 
+term in the formula used to create the model.  Interaction terms, spline terms,
+and polynomial terms of more than one predictor are 
+skipped.  In addition terms that use the AsIs function, e.g., \code{I(X^2)}
+will also be skipped unless you set the argument \code{AsIs=TRUE}.  A plot of 
+residuals versus fitted values is also included unless \code{fitted=FALSE}. 
+
+In addition to plots, a table of curvature tests are displayed. For plots
+against a term in the model formula, say \code{X1}, the test displayed is
+the t-test for for \code{I(X^2)} in the fit of \code{update, model, ~. + I(X^2))}.
+Econometricians call this a specification test.  For factors, the displayed
+plot is a boxplot, and no curvature test is computed.
+For fitted values, the test is Tukey's one-degree-of-freedom test for 
+nonadditivity.  You can suppress the tests with the argument \code{tests=FALSE}.
+  
+\code{residualPlot}, which is called by \code{residualPlots},
 should be viewed as an internal function, and is included here to display its
-arguments, which can be used with \code{residualPlots} as well.  
+arguments, which can be used with \code{residualPlots} as well.  The
+\code{residualPlot} function returns the curvature test as an invisible argument.
+  
 \code{residCurvTest} computes the curvature test only.  For any factors a
 boxplot will be drawn.  For any polynomials, plots are against the linear term.
 For other non-standard predictors like B-splines are skipped.

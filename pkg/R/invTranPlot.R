@@ -52,12 +52,17 @@ invTranPlot.default<- function(x, y, lambda=c(-1, 0, 1),
           id.col=id.col)
  if (!is.null(key)) {
       loc <- key
-      if(length(lam) <= 4) { 
+      if(length(lam) <= 4) {
+        lims <- par("usr")[c(1,4)]
+        llam <- expression(paste(hat(lambda), ":"))
+        text(lims[1],lims[2], llam, xpd=TRUE, pos=3)
         outerLegend(
-            c(expression(hat(lambda)), as.character(round(lam,2))), 
-            lwd=lwd.lines, lty=c("blank",lty.lines), col=c("#00000000",col.lines),
-            bty="n", cex=0.85, fill=c("#00000000",col.lines), 
-            border=c("#00000000",col.lines), horiz=TRUE, adjust=TRUE)}
+            as.character(round(lam,2)),
+            lwd=lwd.lines, lty=lty.lines, 
+            col=col.lines,
+            bty="n", 
+            cex=0.85, fill=col.lines, 
+            border=col.lines, horiz=TRUE, adjust=FALSE)}
       else {
         legend(ifelse(cor(x, y)>0,"bottomright","topright"), 
             legend =  c(expression(hat(lambda)),as.character(round(lam,2))), 

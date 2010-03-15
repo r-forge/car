@@ -24,9 +24,10 @@ avPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask,
                     c(3,2), c(3,2), c(3,3), c(3,3), c(3,3))}
   nr <- 0
   ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
-  op<-par(no.readonly=TRUE, oma=c(0, 0, 1.5, 0), 
+  if(nt > 1) {
+    op<-par(no.readonly=TRUE, oma=c(0, 0, 1.5, 0), 
           mar=c(5, 4, 1, 2) + .1, mfrow=layout, ask=ask)
-  on.exit(par(op))
+    on.exit(par(op))}
   for (term in good) avPlot(model, term, main="", ...)
   mtext(side=3,outer=TRUE,main, cex=1.2)
   invisible(NULL)

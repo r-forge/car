@@ -3,15 +3,9 @@
 # last modified 9 October 2009 by J. Fox
 # modified  26 Nov 2009 by S. Weisberg
 #   changed layout and point marking.
-# WARNING:  the following fails:
-#  ceresPlots(lm(longley))
-# The error occurs in the following line in ceresPlot.lm
-# 			rval <- eval(call("model.frame", ff, data = data, subset = subset, 
-#				na.action = I), envir)
-# In this case the the data argument in the call that created the object is
-# null because the data are in the formula argument.
-# 'envir' does not contain the data, and hence an error.  This is not a new
-# bug. 
+#   modified 15 Mar 2010 by S. Weisberg to make the following work:
+#   m1 <- lm(longley)
+#   ceresPlots(longley)
 
 # these functions to be rewritten; simply renamed for now
 
@@ -39,9 +33,10 @@ ceresPlots<-function(model, vars=~., layout=NULL, ask, main, ...){
    layout <- switch(min(nt,9), c(1,1), c(1,2), c(2,2), c(2,2),
                                c(3,2), c(3,2), c(3,3), c(3,3), c(3,3))}
   ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
-  op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
+  if(nt > 1){
+    op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
             oma=c(0, 0, 1.5, 0), mar=c(5, 4, 1, 2) + .1)
-  on.exit(par(op))
+    on.exit(par(op))}
 	if(!is.null(class(model$na.action)) && 
 		class(model$na.action) == 'exclude') class(model$na.action) <- 'omit'
   for(term in vterms) 
@@ -62,7 +57,7 @@ ceresPlot.lm<-function(model, variable,
   id.n = 3, id.cex=1, id.col=NULL,
   line=TRUE, smooth=TRUE, span=.5, iter, 
 	las=par("las"), col=palette()[2], pch=1, lwd=2, main="Ceres Plot", ...){
-	# the lm method works with glm's too
+	# the lm method works with glm's too              
 	if(missing(labels)) labels <- names(residuals(model))	
 	expand.model.frame <- function (model, extras, envir = environment(formula(model)),
 		na.expand = FALSE){  # modified version of R base function
@@ -78,10 +73,11 @@ ceresPlot.lm<-function(model, variable,
 		if (!na.expand) {
 			naa <- model$call$na.action
 			subset <- model$call$subset
-			rval <- if (is.null(data)) eval(call("model.frame", ff, # modified
-							subset = subset, na.action = naa), envir)           #  lines
-				else eval(call("model.frame", ff, data = data,          #
-							subset = subset, na.action = naa), envir)           #
+ 			rval <- if (is.null(data)){ 
+            eval(call("model.frame", ff, data=model.frame(model),
+ 							   subset = subset, na.action = naa), envir)} else           
+            eval(call("model.frame", ff, data = data,         
+ 							subset = subset, na.action = naa), envir)           
 		}
 		else {
 			subset <- model$call$subset

@@ -18,45 +18,49 @@ for marginalModelPlots, and mmp is an alias for marginalModelPlot.
 \usage{
 marginalModelPlots(...)
 
-mmps(m, vars=~., fitted=TRUE, layout=NULL, ask,
-        main, ...)
+mmps(model, vars= ~ ., fitted=TRUE, layout=NULL, ask,
+        main, AsIs=FALSE, ...)
 
 marginalModelPlot(...)
 
-\method{mmp}{lm}(m, variable, mean = TRUE, sd = FALSE,
+\method{mmp}{lm}(model, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
     col.line = palette()[c(4,2)], 
     ...)
     
-\method{mmp}{default}(m, variable, mean = TRUE, sd = FALSE, xlab =
+\method{mmp}{default}(model, variable, mean = TRUE, sd = FALSE, xlab =
                  deparse(substitute(variable)), degree = 1, span = 2/3,
                  key = TRUE, col.line = palette()[c(4,2)], id.var =   
                  NULL, labels, id.method = "y", id.n = 3, id.cex = 1,  
                  id.col = NULL, ...)
    
-\method{mmp}{glm}(m, variable, mean = TRUE, sd = FALSE,
+\method{mmp}{glm}(model, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
     col.line = palette()[c(4,2)],
     id.var=NULL, labels, id.method="y", id.n=3, id.cex=1, id.col=NULL, ...)
 }
 
 \arguments{
-\item{m}{A regression object, usually of type either lm or glm,
+\item{model}{A regression object, usually of type either lm or glm,
    for which there is a \code{predict} method defined. }
 \item{vars}{A one-sided formula.  A marginal model plot will be drawn for
   each variable on the right-side of this formula that is not a factor.  The
-  default is \code{~.}, which specifies that all the terms in 
+  default is \code{~ . }, which specifies that all the terms in 
   \code{formula(object} will be used.  See examples below.}
 \item{fitted}{If the default TRUE, then a marginal model plot in the direction
   of the fitted values or linear predictor of a generalized linear model will
   be drawn.}
 \item{layout}{A reasonable layout for the plots in the window is
   determined by the program.  If you don't like the default you can set your
-  own layout:  \code{c(2,3)} means two rows and three columns.}
+  own layout:  \code{c(2, 3)} means two rows and three columns.}
 \item{ask}{If TRUE, ask before clearing the graph window to draw more plots.}
         \item{main}{
 Main title for the array of plots.  Use \code{main=""} to suppress the title;
 if missing, a title will be supplied.
+}
+  \item{AsIs}{
+If FALSE, the default, terms that use the \code{AsIs} function \code{I}
+are skipped; if TRUE they are included.
 }
 \item{\dots}{
 Additional arguments passed from \code{mmps} to \code{mmp} and
@@ -64,7 +68,13 @@ then to \code{plot}.  Users should generally use \code{mmps}.
 }
 \item{variable}{ The quantity to be plotted on the horizontal axis.  The
   default is the predicted values \code{predict(object)}.  Can be any other
-  vector of length equal to the number of observations in the object. }
+  vector of length equal to the number of observations in the object. Thus the
+  \code{mmp} function can be used to get a marginal model plot versus any
+  predictor or term while the \code{mmps} function can be used only to get
+  marginal model plots for the first-order terms in the formula.  In 
+  particular, terms defined by a spline basis are skipped by \code{mmps}, but
+  you can use \code{mmp} to the the plot for the variable used to define
+  the splines.}
 \item{mean}{ If TRUE, compare mean smooths}
 \item{sd}{ If TRUE, compare sd smooths }
 \item{xlab}{ label for horizontal axis }
@@ -81,11 +91,12 @@ argument greater than zero will include labeling.  See
 the default palette, these are blue and red. }
 }   
 \details{
-\code{mmp} and \code{marginalModelPlot} draw one marginal model plot.  
-\code{mmps} and \code{marginalModelPlots} draws all marginal model plots,
-versus each of the terms in the model and versus fitted values.  \code{mmps}
-should not be used if some of the terms in the model are factors or
-interactions.
+\code{mmp} and \code{marginalModelPlot} draw one marginal model plot against
+whatever is specified as the horizontal axis.  
+\code{mmps} and \code{marginalModelPlots} draws marginal model plots
+versus each of the terms in the \code{vars} argument and versus fitted values.  
+\code{mmps} skips factors, interactions, and spline terms.  For polynomial
+terms in one variable, plots are against the first-order term.
 }
 
 \value{

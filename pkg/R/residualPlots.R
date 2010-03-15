@@ -4,9 +4,9 @@
 
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
 
-residualPlots.default <- function(model, vars= ~.,
+residualPlots.default <- function(model, vars= ~., 
      layout=NULL, ask, main="", 
-     fitted=TRUE, plot=TRUE, ...){
+     fitted=TRUE, AsIs=FALSE, plot=TRUE, tests=TRUE, ...){
   mf <- attr(model.frame(model), "terms")
   vform <- update(formula(model), vars)
   if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
@@ -18,24 +18,26 @@ residualPlots.default <- function(model, vars= ~.,
 # keep only terms that are numeric or integer or factors or poly
   good <- NULL
   for (term in vterms) if(
+      (AsIs == TRUE & inherits(model$model[[term]], "AsIs")) |
       inherits(model$model[[term]], "numeric") |
       inherits(model$model[[term]], "integer") |
       inherits(model$model[[term]], "factor") | 
-      inherits(model$model[[term]], "poly")) good <- c(good,term)
+      inherits(model$model[[term]], "poly")) good <- c(good, term)
   nt <- length(good) + fitted
   if (nt == 0) stop("No plots specified")
   if(is.null(layout)){
-   layout <- switch(min(nt,9), c(1,1), c(1,2), c(2,2), c(2,2),
-                               c(3,2), c(3,2), c(3,3), c(3,3), c(3,3))}
+   layout <- switch(min(nt, 9), c(1, 1), c(1, 2), c(2, 2), c(2, 2), 
+                               c(3, 2), c(3, 2), c(3, 3), c(3, 3), c(3, 3))}
   nr <- 0
   ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
-  op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
+  if(nt > 1 & plot == TRUE) {
+    op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
             oma=c(0, 0, 1.5, 0), mar=c(5, 4, 1, 2) + .1)
-  on.exit(par(op))
-  ans <- NULL     
+    on.exit(par(op))}
+  ans <- NULL       
   if(!is.null(good)){
     for (term in good){
-     nr <- nr+1
+     nr <- nr + 1
      qtest <- residualPlot(model, term, plot=plot, ...)
      if(!is.null(qtest)){
         ans <- rbind(ans, qtest)
@@ -43,14 +45,14 @@ residualPlots.default <- function(model, vars= ~.,
     } }   
   # Tukey's test
   if (fitted == TRUE){
-   tuk <- residualPlot(model,"fitted",plot=plot,...)
+   tuk <- residualPlot(model, "fitted", plot=plot, ...)
    if (class(model)[1] == "lm"){
       ans <- rbind(ans, tuk)
-      row.names(ans)[nr+1] <- "Tukey test"
-      ans[nr+1,2] <- 2*pnorm(abs(ans[nr+1,1]),lower.tail=FALSE)}}
-  mtext(side=3,outer=TRUE,main, cex=1.2)
+      row.names(ans)[nr + 1] <- "Tukey test"
+      ans[nr + 1, 2] <- 2*pnorm(abs(ans[nr + 1, 1]), lower.tail=FALSE)}}
+  if(plot == TRUE) mtext(side=3, outer=TRUE, main, cex=1.2)
   if(!is.null(ans)) dimnames(ans)[[2]] <- c("Test stat", "Pr(>|t|)")
-  if(is.null(ans)) invisible(ans) else round(ans, 3)
+  if(is.null(ans)) invisible(ans) else if(tests == TRUE) round(ans, 3)
   }
   
 residualPlots.lm <- function(model, ...) {
@@ -66,11 +68,11 @@ residualPlot <- function(model, ...) UseMethod("residualPlot")
 residualPlot.default <- function(model, variable = "fitted", type = "pearson", 
                  plot = TRUE,     
                  quadratic = TRUE, 
-                 smooth = FALSE, span = 1/2, smooth.lwd=lwd, smooth.lty=lty,
-                 smooth.col=col.lines,
+                 smooth = FALSE, span = 1/2, smooth.lwd=lwd, smooth.lty=lty, 
+                 smooth.col=col.lines, 
                  id.var = NULL, 
-                 labels,
-                 id.method = "xy",
+                 labels, 
+                 id.method = "xy", 
                  id.n = 3, id.cex=1, id.col=NULL, 
                  col = palette()[2], col.lines = col[1], 
                  xlab, ylab, pch = 1, lwd = 1, lty = 1,  ...) {
@@ -95,78 +97,80 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
 		}
 # End of copied functions
  string.capitalize <- function(string) {
-     paste(toupper(substring(string,1,1)),substring(string,2),sep="")}
- if(missing(labels)) labels <-  names(residuals(model)[!is.na(residuals(model))])
- ylab <- paste(string.capitalize(type),"residuals")
- column <- match(variable,names(model$model))
+     paste(toupper(substring(string, 1, 1)), substring(string, 2), sep="")}
+ if(missing(labels)) 
+      labels <-  names(residuals(model)[!is.na(residuals(model))])
+ ylab <- paste(string.capitalize(type), "residuals")
+ column <- match(variable, names(model$model))
  if(is.na(column) && variable != "fitted")
-   stop(paste(variable,"is not a term in the mean function"))
+   stop(paste(variable, "is not a term in the mean function"))
  horiz <- if(variable == "fitted") predict(model) else model$model[[column]]
  lab <- if(variable == "fitted") {
-    if(inherits(model, "glm")) "Linear Predictor" else "Fitted values"} else variable
+    if(inherits(model, "glm")) 
+       "Linear Predictor" else "Fitted values"} else variable
  ans <-
-   if(inherits(horiz,"poly")) {
-       horiz <- horiz[,1]
-       lab <- paste("Linear part of",lab)
-       c(NA,NA)}
-   else if (class(horiz) == "factor") c(NA,NA)
-   else if (quadratic | smooth == TRUE) residCurvTest(model,variable)
-   else  c(NA,NA)
-# ans <- if (class(horiz) != "factor")  else c(NA,NA)
+   if(inherits(horiz, "poly")) {
+       horiz <- horiz[ , 1]
+       lab <- paste("Linear part of", lab)
+       c(NA, NA)}
+   else if (class(horiz) == "factor") c(NA, NA)
+   else if (quadratic | smooth == TRUE) residCurvTest(model, variable)
+   else  c(NA, NA)
+# ans <- if (class(horiz) != "factor")  else c(NA, NA)
  if(plot==TRUE){
   vert <- switch(type, "rstudent"=rstudent(model), 
-       "rstandard"=rstandard(model),residuals(model,type=type))
+       "rstandard"=rstandard(model), residuals(model, type=type))
   if(class(horiz) == "factor") {
      idm <- switch(id.method, xy="y", x="y", y="y", "none")  
      Boxplot(vert, horiz, xlab=lab, ylab=ylab, labels=labels, 
-            id.method=idm, id.n=id.n, id.cex=id.cex,
+            id.method=idm, id.n=id.n, id.cex=id.cex, 
             id.col=id.col, ...) 
      abline(h=0, lty=2) } else {
      plot(horiz, vert, xlab=lab, ylab=ylab, ...)
-     abline(h=0,lty=2)
+     abline(h=0, lty=2)
      if(quadratic==TRUE){
-        new <- seq(min(horiz),max(horiz),length=200)
-        lm2 <- lm(residuals(model,type="pearson")~poly(horiz,2))
-        lines(new,predict(lm2,list(horiz=new)),lty=1,lwd=2, col=col.lines)
+        new <- seq(min(horiz), max(horiz), length=200)
+        lm2 <- lm(residuals(model, type="pearson")~poly(horiz, 2))
+        lines(new, predict(lm2, list(horiz=new)), lty=1, lwd=2, col=col.lines)
         }
      if(smooth==TRUE) lowess.line(horiz, vert, smooth.col, span)
      showLabels(horiz, vert, labels=labels, 
-            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
+            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
             id.col=id.col)  
         }
       }  
-  if(quadratic | smooth ==TRUE) ans else NULL}
+  if(quadratic | smooth ==TRUE) invisible(ans) else NULL}
  
 residCurvTest <- function(model, variable) {UseMethod("residCurvTest")}
-residCurvTest.lm <- function(model,variable) {
+residCurvTest.lm <- function(model, variable) {
  if(variable == "fitted") tukeyNonaddTest(model) else {
-  if(is.na(match(variable, attr(model$terms,"term.labels"))))
-     stop(paste(variable,"is not a term in the mean function")) else {
-     xsqres <- qr.resid(model$qr,model.frame(model)[[variable]]^2)
+  if(is.na(match(variable, attr(model$terms, "term.labels"))))
+     stop(paste(variable, "is not a term in the mean function")) else {
+     xsqres <- qr.resid(model$qr, model.frame(model)[[variable]]^2)
      r <- residuals(model, type="pearson")
      m1 <- lm(r ~ xsqres, weights=weights(model))
      df.correction <- sqrt((df.residual(model)-1) / df.residual(m1))
-     test <- summary(m1)$coef[2,3] * df.correction
-     c(Test=test, Pvalue=2 * pt(-abs(test),df.residual(model)-1))
+     test <- summary(m1)$coef[2, 3] * df.correction
+     c(Test=test, Pvalue=2 * pt(-abs(test), df.residual(model)-1))
      }}}
 
 residCurvTest.glm <- function(model, variable) {
  if(variable == "fitted") c(NA, NA) else {
-  if(is.na(match(variable, attr(model$terms,"term.labels"))))
-     stop(paste(variable,"is not a term in the mean function")) else {
+  if(is.na(match(variable, attr(model$terms, "term.labels"))))
+     stop(paste(variable, "is not a term in the mean function")) else {
      newmod <- paste(" ~ . + I(", variable, "^2)", sep="")
      m2 <- update(model, newmod)
-     c(Test= test<-deviance(model)-deviance(m2), Pvalue=1-pchisq(test,1))
+     c(Test= test<-deviance(model)-deviance(m2), Pvalue=1-pchisq(test, 1))
 }}}
      
 tukeyNonaddTest <- function(model){
  qr <- model$qr
- fitsq <- qr.resid(qr,predict(model,type="response")^2)
- r <- residuals(model,type="pearson")
- m1 <- lm(r~fitsq,weights=weights(model))
- df.correction <- sqrt((df.residual(model)-1)/df.residual(m1))
- tukey <- summary(m1)$coef[2,3] * df.correction
- c(Test=tukey,Pvalue=2*pnorm(-abs(tukey)))
+ fitsq <- qr.resid(qr, predict(model, type="response")^2)
+ r <- residuals(model, type="pearson")
+ m1 <- lm(r~fitsq, weights=weights(model))
+ df.correction <- sqrt((df.residual(model) - 1)/df.residual(m1))
+ tukey <- summary(m1)$coef[2, 3] * df.correction
+ c(Test=tukey, Pvalue=2*pnorm(-abs(tukey)))
  }
  
 residualPlot.lm <- function(model, ...) {
@@ -175,7 +179,7 @@ residualPlot.lm <- function(model, ...) {
   
 residualPlot.glm <- function(model, variable = "fitted", type = "pearson", 
                  plot = TRUE, quadratic = FALSE, smooth = TRUE, ...) {
-  residualPlot.default(model, variable=variable, type=type, plot=plot,
+  residualPlot.default(model, variable=variable, type=type, plot=plot, 
                  quadratic=quadratic, smooth=smooth, ...)
   }
 
