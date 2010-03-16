@@ -2,13 +2,14 @@
 
 # last modified 9 October 2009 by J. Fox
 # modified 25 November for layout and marking points only
+# changed 'vars' to 'terms' 16 March 2010 SW
 
 # these functions to be rewritten; simply renamed for now
 
-leveragePlots <- function(model, vars=~., layout=NULL, ask, 
+leveragePlots <- function(model, terms= ~ ., layout=NULL, ask, 
            main, ...){
-  vars <- if(is.character(vars)) paste("~",vars) else vars
-  vform <- update(formula(model),vars)
+  terms <- if(is.character(terms)) paste("~",terms) else terms
+  vform <- update(formula(model),terms)
   terms.model <- attr(attr(model.frame(model), "terms"), "term.labels")
   terms.vform <- attr(terms(vform), "term.labels")
   good <- terms.model[match(terms.vform, terms.model)]

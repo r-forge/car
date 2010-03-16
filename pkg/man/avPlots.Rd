@@ -13,7 +13,7 @@
 }
 
 \usage{
-avPlots(model, terms=~., intercept=FALSE, layout=NULL, ask, main, ...)
+avPlots(model, terms= ~ ., intercept=FALSE, layout=NULL, ask, main, ...)
 
 avp(...)
 

@@ -4,11 +4,11 @@
 
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
 
-residualPlots.default <- function(model, vars= ~., 
+residualPlots.default <- function(model, terms= ~ . , 
      layout=NULL, ask, main="", 
      fitted=TRUE, AsIs=FALSE, plot=TRUE, tests=TRUE, ...){
   mf <- attr(model.frame(model), "terms")
-  vform <- update(formula(model), vars)
+  vform <- update(formula(model), terms)
   if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
      stop("Only predictors in the formula can be plotted.")
   terms <- attr(mf, "term.labels") # this is a list

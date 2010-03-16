@@ -23,7 +23,7 @@ is Tukey's test for nonadditivity when plotting against fitted values.
 
 residualPlots (model, ...)
 
-\S3method{residualPlots}{default}(model, vars = ~., layout = NULL, ask, 
+\S3method{residualPlots}{default}(model, terms = ~., layout = NULL, ask, 
                  main = "", fitted = TRUE, AsIs=FALSE, plot = TRUE, 
                  tests = TRUE, ...)
 
@@ -63,11 +63,11 @@ tukeyNonaddTest(model)
   \item{model}{ 
 A regression object 
 }
-  \item{vars}{
+  \item{terms}{
 A one-sided formula that specifies a subset of the predictors. One
 residual plot is drawn for each specified.  The default
 \code{~.} is to plot against all predictors.  For example, the
-specification \code{vars = ~.-X3} would plot against all predictors
+specification \code{terms = ~.-X3} would plot against all predictors
 except for \code{X3}.  Some nonstandard predictors, such as B-splines, are 
 skipped.
 }
@@ -177,7 +177,7 @@ line type for quadratic.
   }
 \details{
 \code{residualPlots} draws one or more residuals plots depending on the
-value of the \code{vars} and \code{fitted} arguments.  If \code{vars = ~.},
+value of the \code{terms} and \code{fitted} arguments.  If \code{terms = ~ .},
 the default, then a plot is produced of residuals versus each first-order 
 term in the formula used to create the model.  Interaction terms, spline terms,
 and polynomial terms of more than one predictor are 

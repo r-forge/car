@@ -2,6 +2,7 @@
 # Utility functions (J. Fox)
 
 # last modified 25 February 2010 by J. Fox
+# 16 March 2010 changed 'vars' argument to 'terms'
 
 # function to find "nice" numbers
 

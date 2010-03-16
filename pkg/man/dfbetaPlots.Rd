@@ -19,10 +19,10 @@ dfbetaPlots(model, ...)
 
 dfbetasPlots(model, ...)
 
-\method{dfbetaPlots}{lm}(model, terms=~., intercept=FALSE, layout=NULL, ask, 
+\method{dfbetaPlots}{lm}(model, terms= ~ ., intercept=FALSE, layout=NULL, ask, 
 	main, id.n=4, labels=rownames(dfbeta), ...)
 
-\method{dfbetaPlots}{lm}(model, terms=~., intercept=FALSE, layout=NULL, ask, 
+\method{dfbetaPlots}{lm}(model, terms= ~ ., intercept=FALSE, layout=NULL, ask, 
 	main, id.n=4, labels=rownames(dfbeta), ...)
 }
 	

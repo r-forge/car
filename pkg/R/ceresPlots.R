@@ -9,9 +9,9 @@
 
 # these functions to be rewritten; simply renamed for now
 
-ceresPlots<-function(model, vars=~., layout=NULL, ask, main, ...){
-  vars <- if(is.character(vars)) paste("~",vars) else vars
-  vform <- update(formula(model),vars)
+ceresPlots<-function(model, terms= ~ ., layout=NULL, ask, main, ...){
+  terms <- if(is.character(terms)) paste("~", terms) else terms
+  vform <- update(formula(model), terms)
   if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
      stop("Only predictors in the formula can be plotted.")
   mf <- attr(model.frame(model), "terms")
@@ -105,15 +105,15 @@ ceresPlot.lm<-function(model, variable,
 	all.obs<-if (is.null(model$call$data)) obs else row.names(eval(model$call$data))
 	xx<-rep(NA, length(all.obs))
 	names(xx)<-all.obs
-	vars<-predictor.names(model)
-	if (is.na(match(var, vars))) stop(paste(var,"is not in the model."))
+	terms<-predictor.names(model)
+	if (is.na(match(var, terms))) stop(paste(var,"is not in the model."))
 	if (!is.null(model$contrasts[[var]])) stop(paste(var,"is a factor."))
-	vars<-vars[-match(var,vars)]
+	terms<-terms[-match(var,terms)]
 	if (any(attr(terms(model),"order")>1)) {
 		stop("ceres plot not available for models with interactions.")
 	}
 	.x<-xvars<-NULL
-	for (xvar in vars){
+	for (xvar in terms){
 		if (is.null(model$contrasts[[xvar]])){
 			xvars<-c(xvars,xvar)
 			xx[obs]<-fitted.values(loess(as.formula(paste("mod.mat[,'",xvar,"']~mod.mat[,'",var,"']",sep=""))))

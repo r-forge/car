@@ -10,9 +10,9 @@
 
 crp<-function(...) crPlots(...)
 
-crPlots<-function(model, vars=~., layout=NULL, ask, main, ...){
-  vars <- if(is.character(vars)) paste("~",vars) else vars
-  vform <- update(formula(model),vars)
+crPlots<-function(model, terms= ~ ., layout=NULL, ask, main, ...){
+  terms <- if(is.character(terms)) paste("~", terms) else terms
+  vform <- update(formula(model), terms)
   if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
      stop("Only predictors in the formula can be plotted.")
   mf <- attr(model.frame(model), "terms")
@@ -58,8 +58,8 @@ crPlot.lm<-function(model, variable,
 		class(model$na.action) == 'exclude') class(model$na.action) <- 'omit'
 	var<-if (is.character(variable) & 1==length(variable)) variable
 		else deparse(substitute(variable))
-	vars<-predictor.names(model)
-	if (is.na(match(var, vars))) stop(paste(var,"is not in the model."))
+	terms<-predictor.names(model)
+	if (is.na(match(var, terms))) stop(paste(var,"is not in the model."))
 	if (any(attr(terms(model),"order")>1)) {
 		stop("C+R plots not available for models with interactions.")
 	}

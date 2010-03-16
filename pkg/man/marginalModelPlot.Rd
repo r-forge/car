@@ -18,7 +18,7 @@ for marginalModelPlots, and mmp is an alias for marginalModelPlot.
 \usage{
 marginalModelPlots(...)
 
-mmps(model, vars= ~ ., fitted=TRUE, layout=NULL, ask,
+mmps(model, terms= ~ ., fitted=TRUE, layout=NULL, ask,
         main, AsIs=FALSE, ...)
 
 marginalModelPlot(...)
@@ -43,7 +43,7 @@ marginalModelPlot(...)
 \arguments{
 \item{model}{A regression object, usually of type either lm or glm,
    for which there is a \code{predict} method defined. }
-\item{vars}{A one-sided formula.  A marginal model plot will be drawn for
+\item{terms}{A one-sided formula.  A marginal model plot will be drawn for
   each variable on the right-side of this formula that is not a factor.  The
   default is \code{~ . }, which specifies that all the terms in 
   \code{formula(object} will be used.  See examples below.}
@@ -94,7 +94,7 @@ the default palette, these are blue and red. }
 \code{mmp} and \code{marginalModelPlot} draw one marginal model plot against
 whatever is specified as the horizontal axis.  
 \code{mmps} and \code{marginalModelPlots} draws marginal model plots
-versus each of the terms in the \code{vars} argument and versus fitted values.  
+versus each of the terms in the \code{terms} argument and versus fitted values.  
 \code{mmps} skips factors, interactions, and spline terms.  For polynomial
 terms in one variable, plots are against the first-order term.
 }

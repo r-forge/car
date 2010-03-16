@@ -13,7 +13,7 @@
   of the usual added-variable (partial-regression) plot.
 }
 \usage{
-leveragePlots(model, vars = ~., layout = NULL, ask, 
+leveragePlots(model, terms = ~., layout = NULL, ask, 
     main, ...)
 
 leveragePlot(model, ...)
@@ -30,10 +30,10 @@ leveragePlot(model, ...)
 \arguments{
   \item{model}{model object produced by \code{lm}
 }
-  \item{vars}{ A one-sided formula that specifies a subset of the predictors. 
+  \item{terms}{ A one-sided formula that specifies a subset of the predictors. 
 One added-variable plot is drawn for each term.  The default
 \code{~.} is to plot against all numeric predictors.  For example, the
-specification \code{vars = ~.-X3} would plot against all predictors
+specification \code{terms = ~ . - X3} would plot against all predictors
 except for \code{X3}.  Factors and nonstandard predictors such as B-splines are 
 skipped.  If this argument is a quoted name of one of the predictors, the 
 added-variable plot is drawn for that predictor only.

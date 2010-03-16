@@ -156,10 +156,10 @@ mmp.glm <- function (model, variable, mean = TRUE, sd = FALSE,
 
 marginalModelPlots <- function(...) mmps(...)
 
-mmps <- function(model, vars=~., fitted=TRUE, layout=NULL, ask, 
+mmps <- function(model, terms= ~ ., fitted=TRUE, layout=NULL, ask, 
         main, AsIs=FALSE, ...){
   mf <- attr(model.frame(model), "terms")
-  vform <- update(formula(model), vars)
+  vform <- update(formula(model), terms)
   if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
      stop("Only predictors in the formula can be plotted. use mmp")
   terms <- attr(mf, "term.labels") # this is a list

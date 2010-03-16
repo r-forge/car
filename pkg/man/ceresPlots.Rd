@@ -10,7 +10,7 @@
   linear models.
 }
 \usage{
-ceresPlots(model, vars = ~., layout = NULL, ask, main, 
+ceresPlots(model, terms = ~., layout = NULL, ask, main, 
     ...)
 
 ceresPlot(model, ...)
@@ -26,10 +26,10 @@ ceresPlot(model, ...)
 
 \arguments{
   \item{model}{model object produced by \code{lm} or \code{glm}.}
-  \item{vars}{ A one-sided formula that specifies a subset of the predictors. 
+  \item{terms}{ A one-sided formula that specifies a subset of the predictors. 
 One component-plus-residual plot is drawn for each term.  The default
 \code{~.} is to plot against all numeric predictors.  For example, the
-specification \code{vars = ~.-X3} would plot against all predictors
+specification \code{terms = ~ . - X3} would plot against all predictors
 except for \code{X3}.  Factors and nonstandard predictors such as B-splines are 
 skipped.  If this argument is a quoted name of one of the predictors, the 
 component-plus-residual plot is drawn for that predictor only.
@@ -115,7 +115,7 @@ point identification.}
 \seealso{\code{\link{crPlots}}, \code{\link{avPlots}}, \code{\link{showLabels}}}
 
 \examples{
-ceresPlots(lm(prestige~income+education+type, data=Prestige), ~.-type)
+ceresPlots(lm(prestige~income+education+type, data=Prestige), terms= ~ . - type)
 }
 
 \keyword{hplot}
