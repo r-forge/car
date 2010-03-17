@@ -26,7 +26,7 @@ slp(...)
 	main=paste("Spread-Level Plot for", deparse(substitute(x)), 
 		"by", deparse(substitute(by))), col=palette()[2], pch=1, lwd=2, ...)
 
-\method{spreadLevelPlot}{lm}(x, start=0, robust.line=TRUE, 
+\method{spreadLevelPlot}{lm}(x, robust.line=TRUE, 
 	xlab="Fitted Values",
 	ylab="Absolute Studentized Residuals", las=par("las"),
 	main=paste("Spread-Level Plot for\n", deparse(substitute(x))),
@@ -90,8 +90,8 @@ slp(...)
 \seealso{\code{\link{hccm}}, \code{\link{ncvTest}} }
 
 \examples{
-spreadLevelPlot(interlocks+1~nation, data=Ornstein)
-slp(lm(interlocks ~ assets + sector + nation, data=Ornstein))
+spreadLevelPlot(interlocks + 1 ~ nation, data=Ornstein)
+slp(lm(interlocks + 1 ~ assets + sector + nation, data=Ornstein))
 }
 
 \keyword{hplot}

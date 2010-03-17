@@ -2,6 +2,7 @@
 # Revision history:
 # 2009-09-29 by J. Fox (renamed)
 # 2010-03-11 by J. Fox: output changed
+# 2010-03-13 by J. Fox: output row label fixed when just one X
 #-------------------------------------------------------------------------------
 
 
@@ -58,7 +59,7 @@ boxTidwell.default <- function(y, x1, x2=NULL, max.iter=25, tol=.001, verbose=FA
 	if (iter > max.iter) warning("maximum iterations exceeded")
 	result <- cbind( t.vals, pvalues, powers)
 	colnames(result) <- c("Score Statistic","p-value","MLE of lambda")
-	rownames(result) <- var.names
+	rownames(result) <- if (nrow(result) == 1) "" else var.names
 	result <- list(result=result, iterations=iter)
 	class(result)<-"boxTidwell"
 	result

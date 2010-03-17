@@ -1,6 +1,6 @@
 # spread-level plots (J. Fox)
 
-# last modified 1 October 2009
+# modified 16 March 2010 by J. Fox: spreadLevelPlot.lm now deletes observations with negative fitted values
 
 slp <- function(...) spreadLevelPlot(...)
 
@@ -55,28 +55,59 @@ spreadLevelPlot.default <- function(x, by, robust.line=TRUE,
 	result
 }
 
-spreadLevelPlot.lm <- function(x, start=0, robust.line=TRUE, 
+#spreadLevelPlot.lm <- function(x, start=0, robust.line=TRUE, 
+#	xlab="Fitted Values",
+#	ylab="Absolute Studentized Residuals", las=par("las"),
+#	main=paste("Spread-Level Plot for\n", deparse(substitute(x))),
+#	pch=1, col=palette()[2], lwd=2, ...){
+#	resid <- na.omit(abs(rstudent(x)))
+#	fitval <- na.omit(fitted.values(x))
+#	min <- min(fitval)
+#	if (min <= -start) {
+#		start<- nice(-min +0.05*diff(quantile(fitval, c(.25, .75))), direction="up")
+#		warning(paste("Start = ", start, 
+#				"added to fitted values to avoid 0 or negative values."))
+#	}
+#	if (start != 0) xlab <- paste(xlab, "+", signif(start, getOption("digits")))
+#	plot(fitval + start, resid, log="xy", main=main, xlab=xlab, ylab=ylab, 
+#		las=las, col=col, pch=pch, ...)
+#	mod <- if (robust.line)
+#			rlm(log(resid) ~ log(fitval + start))
+#		else lm(log(resid) ~ log(fitval + start), ...)
+#	first <- which.min(fitval) 
+#	last <- which.max(fitval) 
+#	lines((fitval + start)[c(first, last)], exp(fitted.values(mod)[c(first, last)]), 
+#		lwd=lwd, col=col, ...)
+#	p <- 1 - (coefficients(mod))[2]
+#	names(p) <- NULL
+#	result <- list(PowerTransformation=p)
+#	class(result) <- "spreadLevelPlot"
+#	result
+#}
+
+spreadLevelPlot.lm <- function(x, robust.line=TRUE, 
 	xlab="Fitted Values",
 	ylab="Absolute Studentized Residuals", las=par("las"),
 	main=paste("Spread-Level Plot for\n", deparse(substitute(x))),
 	pch=1, col=palette()[2], lwd=2, ...){
 	resid <- na.omit(abs(rstudent(x)))
 	fitval <- na.omit(fitted.values(x))
-	min <- min(fitval)
-	if (min <= -start) {
-		start<- nice(-min +0.05*diff(quantile(fitval, c(.25, .75))), direction="up")
-		warning(paste("Start = ", start, 
-				"added to fitted values to avoid 0 or negative values."))
+	non.pos <- fitval <= 0
+	if (any(non.pos)){
+		fitval <- fitval[!non.pos]
+		resid <- resid[!non.pos]
+		n.non.pos <- sum(non.pos)
+		warning(n.non.pos, " negative", if(n.non.pos > 1) " fitted values" else " fitted value", " removed")
 	}
-	if (start != 0) xlab <- paste(xlab, "+", signif(start, getOption("digits")))
-	plot(fitval + start, resid, log="xy", main=main, xlab=xlab, ylab=ylab, 
+	min <- min(fitval)
+	plot(fitval, resid, log="xy", main=main, xlab=xlab, ylab=ylab, 
 		las=las, col=col, pch=pch, ...)
 	mod <- if (robust.line)
-			rlm(log(resid) ~ log(fitval + start))
-		else lm(log(resid) ~ log(fitval + start), ...)
+			rlm(log(resid) ~ log(fitval))
+		else lm(log(resid) ~ log(fitval), ...)
 	first <- which.min(fitval) 
 	last <- which.max(fitval) 
-	lines((fitval + start)[c(first, last)], exp(fitted.values(mod)[c(first, last)]), 
+	lines((fitval)[c(first, last)], exp(fitted.values(mod)[c(first, last)]), 
 		lwd=lwd, col=col, ...)
 	p <- 1 - (coefficients(mod))[2]
 	names(p) <- NULL
