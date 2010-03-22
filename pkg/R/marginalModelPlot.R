@@ -28,21 +28,23 @@ function (model, variable, mean = TRUE, sd = FALSE,
     col.line = palette()[c(4, 2)], 
     id.var=NULL, labels, id.method="y", id.n=3, id.cex=1, id.col=NULL, ...)
 {   
+    if  (!is.null(attr(model$model, "na.action"))) {
+        if (attr(attr(model$model, "na.action"), "class") == "exclude")
+            model <- update(model, na.action=na.omit)}     
     if (missing(variable)) {
         xlab <- "Fitted values"
-        u <- fitted(update(model, na.action=na.exclude))
+        u <- fitted(model)
     } else {
         u <- variable}
     if(missing(labels)) 
-        labels <- names(residuals(model)[!is.na(residuals(model))])
-    na.cases <- attr(model$model, "na.action")
-    if(length(na.cases) > 0) u <- u[-na.cases]
+        labels <- names(residuals(model))
     zpred <- function(...){pmax(predict(...), 0)}
     plot(u, model$model[ , 1], xlab = xlab, ylab = colnames(model$model[1]), 
         ...)
     if(key){
        outerLegend(c("Data", "Model"), lty=1:2, col=col.line, 
-          bty="n", cex=0.75, fill=col.line, border=col.line, horiz=TRUE, offset=0)
+          bty="n", cex=0.75, fill=col.line, border=col.line, horiz=TRUE, 
+          offset=0)
           }
     deg <- if(length(unique(u)) == 2) 0 else degree
     ow <- options(warn=-1)
