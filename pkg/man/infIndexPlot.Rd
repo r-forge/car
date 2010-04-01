@@ -14,7 +14,7 @@ infIndexPlot(model, ...)
 influenceIndexPlot(model, ...)
 
 \method{infIndexPlot}{lm}(model,
-     Cook=TRUE, Studentized=TRUE, Bonf=TRUE, hat=TRUE, 
+     vars=c("Cook", "Studentized", "Bonf", "hat"), 
      main="Diagnostic Plots",
      id.var=NULL, labels, id.method = "y", id.n = 0, id.cex=1,
      id.col=NULL, ...) 
@@ -22,10 +22,13 @@ influenceIndexPlot(model, ...)
 }
 \arguments{
   \item{model}{A regression object of type lm or glm}
-  \item{Cook,Studentized,Bonf,hat}{
-If each of these is TRUE, plots are drawn for Cook's distances, Studentized
-residuals, Bonferroni p-values for an outlier test, and hat-values (or leverages).
-If set to FALSE, that particular plot is skipped.
+  \item{vars}{
+All the quantities listed in this argument are plotted.  Use \dQuote{Cook}
+for Cook's distances, \dQuote{Studentized} for Studentized
+residuals, \dQuote{Bonf} for Bonferroni p-values for an outlier test, and 
+and \dQuote{hat} for hat-values (or leverages).   Capitalization is optional.
+All may be abbreviated by the first four characters, or three characters for 
+\dQuote{hat}.
 }
   \item{main}{main title for graph}
   \item{id.var, labels, id.method, id.n, id.cex, id.col}{
