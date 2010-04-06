@@ -13,7 +13,8 @@ infIndexPlot.lm <- function(model,
      main="Diagnostic Plots",
      id.var=NULL, labels, id.method = "y", id.n = 0, id.cex=1,
      id.col=NULL, ...) {
-   what <- match(substr(vars, 2, 4), c("ook", "tud", "onf", "at"))
+   what <- pmatch(tolower(vars), 
+                  tolower(c("Cook", "Studentized", "Bonf", "hat")))
    if(length(what) < 1) stop("Nothing to plot")
    names <- c("Cook's distance", "Studentized residuals",
            "Bonferroni p-value", "hat-values")

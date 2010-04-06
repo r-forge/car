@@ -27,8 +27,7 @@ All the quantities listed in this argument are plotted.  Use \dQuote{Cook}
 for Cook's distances, \dQuote{Studentized} for Studentized
 residuals, \dQuote{Bonf} for Bonferroni p-values for an outlier test, and 
 and \dQuote{hat} for hat-values (or leverages).   Capitalization is optional.
-All may be abbreviated by the first four characters, or three characters for 
-\dQuote{hat}.
+All may be abbreviated by the first one or more letters.
 }
   \item{main}{main title for graph}
   \item{id.var, labels, id.method, id.n, id.cex, id.col}{
