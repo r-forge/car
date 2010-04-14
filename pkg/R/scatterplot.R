@@ -1,6 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 12 April 2010 by J. Fox
+# last modified 14 April 2010 by J. Fox
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -42,7 +42,7 @@ scatterplot.formula <- function (x, data, subset, xlab, ylab, legend.title, id.m
 	}
 }
 
-scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, lowess.threshold=10, reg.line=lm, 
+scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, loess.threshold=5, reg.line=lm, 
 	boxplots=if (by.groups) "" else "xy",
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
 	lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
@@ -68,7 +68,8 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 		ord <- order(x)
 		x <- x[ord]
 		y <- y[ord]
-		if (length(unique(x)) < lowess.threshold || length(unique(y)) < lowess.threshold) return()
+#		if (length(unique(x)) < lowess.threshold || length(unique(y)) < lowess.threshold) return()
+		if (length(unique(y)) < loess.threshold) return()
 		warn <- options(warn=-1)
 		if (!spread){
 			fit <- try(loess.smooth(x, y, span=span), silent=TRUE)
@@ -90,8 +91,8 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 			}
 			res <- residuals(fit)
 			pos <- res > 0
-			pos.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=pos), silent=TRUE)
-			neg.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=!pos), silent=TRUE)
+			pos.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="gaussian", subset=pos), silent=TRUE)
+			neg.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="gaussian", subset=!pos), silent=TRUE)
 			if (class(pos.fit) == "try-error" || class(neg.fit) == "try.error"){
 				err <<- c(err, "spread")
 				options(warn)

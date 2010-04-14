@@ -23,7 +23,7 @@ avPlot(model, ...)
     id.var = residuals(model, type="pearson"),
     id.method = "x",
     labels, 
-    id.n = 3, id.cex=1, id.col=NULL,
+    id.n = 0, id.cex=1, id.col=NULL,
     col = palette()[2], col.lines = col[1],
     xlab, ylab, pch = 1, lwd = 2, 
     main="Added-variable Plot", ...)
@@ -32,7 +32,7 @@ avPlot(model, ...)
     id.var = residuals(model, type="pearson"),
     id.method = "x",
     labels,
-    id.n = 3, id.cex=1, id.col=NULL, 
+    id.n = 0, id.cex=1, id.col=NULL, 
     col = palette()[2], col.lines = col[1],
     xlab, ylab, pch = 1, lwd = 2,  type=c("Wang", "Weisberg"), 
     main="Added-variable Plot", ...)
@@ -68,7 +68,7 @@ residuals from the model are used.  See \code{\link{showLabels}} for details.
 \code{\link{showLabels}}  for details.
 }
   \item{labels}{observation names}
-  \item{id.n}{Number of points to identify.  Set \code{id.n=0} for no
+  \item{id.n}{Number of points to identify.  Set \code{id.n=0}, the default, for no
 point identification.  The default value for \code{id.method} identifies both
 extreme horizontal points and extreme residuals, so up to \code{2*id.n} points
 will be labeled.}

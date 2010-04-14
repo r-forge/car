@@ -21,7 +21,7 @@ qqp(...)
         col=palette()[2], lwd=2, pch=1, cex=par("cex"), 
 	line=c("quartiles", "robust", "none"),  
         labels = if(!is.null(names(x))) names(x) else seq(along=x),
-        id.method = "y", id.n = 3, id.cex=1, id.col=NULL, ...)
+        id.method = "y", id.n = 0, id.cex=1, id.col=NULL, ...)
 
 \method{qqPlot}{lm}(x, xlab=paste(distribution, "Quantiles"),
         ylab=paste("Studentized Residuals(", deparse(substitute(x)), ")",
@@ -29,7 +29,7 @@ sep=""), main=NULL,
         distribution=c("t", "norm"), line=c("robust", "quartiles", "none"),
         las=par("las"), simulate=TRUE, envelope=.95,  
         reps=1000, col=palette()[2], lwd=2, pch=1, cex=par("cex"),
-        labels, id.method = "y", id.n = 3, id.cex=1,
+        labels, id.method = "y", id.n = 0, id.cex=1,
         id.col=NULL, ...)
 }
 
@@ -57,7 +57,7 @@ sep=""), main=NULL,
 \code{id.method="y"}
     will identify the \code{id.n} points with the largest value of 
     \code{abs(y-mean(y))}.  See \code{\link{showLabels}} for other options.}
-  \item{id.n}{number of points labeled.  Default is 3.  if \code{id.n=0} no
+  \item{id.n}{number of points labelled.  If \code{id.n=0}, the default, no
     point identification.} 
   \item{id.cex}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
   \item{id.col}{color for the point labels.}

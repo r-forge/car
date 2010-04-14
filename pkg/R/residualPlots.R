@@ -1,6 +1,7 @@
 # Modified Nov. 24, 2009 by S. Weisberg to use showLabels
 #   rather than showExtremes
 # 11 & 20 January 2010: changed lty=3 to lty=1 for fitted curve. J. Fox
+# 14 April 2010: set id.n = 0. J. Fox
 
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
 
@@ -73,7 +74,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
                  id.var = NULL, 
                  labels, 
                  id.method = "xy", 
-                 id.n = 3, id.cex=1, id.col=NULL, 
+                 id.n = 0, id.cex=1, id.col=NULL, 
                  col = palette()[2], col.lines = col[1], 
                  xlab, ylab, pch = 1, lwd = 1, lty = 1,  ...) {
 # two functions modified from 'scatterplot' function:

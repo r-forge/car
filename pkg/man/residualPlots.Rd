@@ -44,7 +44,7 @@ residualPlot(model, ...)
                  id.var = NULL, 
                  labels,
                  id.method = "xy",
-                 id.n = 3, id.cex=1, id.col=NULL,
+                 id.n = 0, id.cex=1, id.col=NULL,
                  col = palette()[2], col.lines = col[1], 
                  xlab, ylab, pch = 1, lwd = 1, lty=1,...)   
                  
@@ -143,7 +143,7 @@ for details.
 Number of points to identify.  If \code{id.method="xy"} then
 up to \code{id.n} points will be identified in each direction for both
 extreme horizontal and vertical points.   To turn off point labeling either set
-\code{id.n=0} or \code{id.method="none"}.
+\code{id.n=0}, the default, or \code{id.method="none"}.
 }     
   \item{id.cex}{
 character expansion factor for point labels.

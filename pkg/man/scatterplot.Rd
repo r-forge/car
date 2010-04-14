@@ -17,7 +17,7 @@ scatterplot(x, ...)
 	id.method="mahal", labels, ...)
 
 \method{scatterplot}{default}(x, y, smooth=TRUE, spread=!by.groups, 
-	span=.5, lowess.threshold=10, reg.line=lm, boxplots=if (by.groups) "" else "xy",
+	span=.5, loess.threshold=5, reg.line=lm, boxplots=if (by.groups) "" else "xy",
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
 	lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
 	id.method="mahal", id.n=3, id.var=NULL, labels, log="", 
@@ -45,8 +45,8 @@ sp(...)
   	the root-mean-square positive and negative residuals from the loess line to display conditional spread and
   	asymmetry.}
   \item{span}{span for the loess smoother.}
-  \item{lowess.threshold}{suppress the loess smoother if there are fewer than \code{lowess.threshold} unique
-  	values (default, 10) of \code{x} or \code{y}.}
+  \item{loess.threshold}{suppress the loess smoother if there are fewer than \code{loess.threshold} unique
+  	values (default, 5) of \code{y}.}
   \item{reg.line}{function to draw a regression line on the plot
     or \code{FALSE} not to plot a regression line.}
   \item{boxplots}{if \code{"x"} a boxplot for \code{x} is drawn above the plot;

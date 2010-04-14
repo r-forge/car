@@ -31,7 +31,7 @@ All may be abbreviated by the first one or more letters.
 }
   \item{main}{main title for graph}
   \item{id.var, labels, id.method, id.n, id.cex, id.col}{
-Arguements for point marking; see \code{\link{showLabels}} for the 
+Arguments for point marking; see \code{\link{showLabels}} for the 
 definitions.  With the default \code{id.n=0} points are not 
 marked.}
   \item{\dots}{Arguments passed to \code{plot}}

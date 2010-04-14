@@ -19,7 +19,7 @@
 \usage{
 influencePlot(model, ...)
 
-\method{influencePlot}{lm}(model, scale = 10, labels, id.n = 3, 
+\method{influencePlot}{lm}(model, scale = 10, labels, id.n = 0, 
 	id.cex=1, id.col = NULL, ...)
 }
 
@@ -30,7 +30,7 @@ influencePlot(model, ...)
   }
   \item{labels, id.n, id.cex, id.col}{settings for labelling
 points; see \code{link{showLabels}} for details. To omit point labelling, set
-\code{id.n=0}.}
+\code{id.n=0}, the default.}
   \item{\dots}{arguments to pass to the \code{plot} function.
   }
 }

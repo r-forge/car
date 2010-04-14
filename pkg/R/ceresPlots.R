@@ -6,6 +6,7 @@
 #   modified 15 Mar 2010 by S. Weisberg to make the following work:
 #   m1 <- lm(longley)
 #   ceresPlots(longley)
+# 14 April 2010: set id.n = 0. J. Fox
 
 # these functions to be rewritten; simply renamed for now
 
@@ -54,7 +55,7 @@ ceresPlot.lm<-function(model, variable,
   id.var = residuals(model, type="pearson"),
   id.method = "x",
   labels, 
-  id.n = 3, id.cex=1, id.col=NULL,
+  id.n = 0, id.cex=1, id.col=NULL,
   line=TRUE, smooth=TRUE, span=.5, iter, 
 	las=par("las"), col=palette()[2], pch=1, lwd=2, main="Ceres Plot", ...){
 	# the lm method works with glm's too              

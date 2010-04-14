@@ -20,7 +20,7 @@ leveragePlot(model, ...)
 
 \method{leveragePlot}{lm}(model, term.name, 
     id.var = residuals(model, type = "pearson"), 
-    id.method = "x", labels, id.n = 2, id.cex=1, id.col = NULL, 
+    id.method = "x", labels, id.n = 0, id.cex=1, id.col = NULL, 
     las = par("las"), col = palette()[2], pch = 1, lwd = 2, 
     main = "Leverage Plot", ...)
 
@@ -55,8 +55,8 @@ is omitted for \code{leveragePlots}.}
 point labelling that can be used with either \code{leveragePlot} or with
 \code{LeveragePlots}.  The defaults are to label the \code{id.n} points with the
 most extreme value on the horizontal axis, and the \code{id.n} points with the 
-largest residuals in absolute value.  Setting \code{id.n=0} suppresses point
-labeling.  See \code{\link{showLabels}} for the usage of these arguements.
+largest residuals in absolute value.  Setting \code{id.n=0}, the default suppresses point
+labelling.  See \code{\link{showLabels}} for the usage of these arguments.
 }
 \item{las}{if \code{0}, ticks labels are drawn parallel to the
     axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).

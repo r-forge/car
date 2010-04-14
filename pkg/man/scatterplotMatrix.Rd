@@ -17,7 +17,7 @@ scatterplotMatrix(x, ...)
 
 \method{scatterplotMatrix}{default}(x, var.labels=colnames(x), 
 	diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
-	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, lowess.threshold=10, reg.line=lm, 
+	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, loess.threshold=5, reg.line=lm, 
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, id.var=NULL, labels,
@@ -59,8 +59,8 @@ spm(x, ...)
   	the root-mean-square positive and negative residuals from the loess line to display conditional spread and
   	asymmetry.}
   \item{span}{span for lowess smoother.}
-   \item{lowess.threshold}{suppress the loess smoother if there are fewer than \code{lowess.threshold} unique
-  	values (default, 10) of a variable.}
+   \item{loess.threshold}{suppress the loess smoother if there are fewer than \code{loess.threshold} unique
+  	values (default, 5) of the variable on the vertical axis.}
   \item{reg.line}{if not \code{FALSE} a line is plotted using the
     function given by this argument; e.g., using \code{rlm} in
     package \code{MASS} plots a robust-regression line.}

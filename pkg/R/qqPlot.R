@@ -2,6 +2,7 @@
 
 # last modified 30 September 2009 by J. Fox
 # November 2009 by S. Weisberg -- changed to use showLabels for point identification
+# 14 April 2010: set id.n = 0. J. Fox
 
 qqp <- function(...) qqPlot(...)
 
@@ -15,7 +16,7 @@ qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
   col=palette()[2], lwd=2, pch=1, cex=par("cex"), 
 	line=c("quartiles", "robust", "none"), 
   labels = if(!is.null(names(x))) names(x) else seq(along=x),
-  id.method = "y", id.n = 3, id.cex=1, id.col=NULL, ...)
+  id.method = "y", id.n = 0, id.cex=1, id.col=NULL, ...)
   {
 	line <- match.arg(line)
 	good <- !is.na(x)
@@ -62,7 +63,7 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 	simulate=TRUE, envelope=.95,  
         reps=1000, 
 	col=palette()[2], lwd=2, pch=1, cex=par("cex"),
-        labels, id.method = "y", id.n = 3, id.cex=1, 
+        labels, id.method = "y", id.n = 0, id.cex=1, 
         id.col=NULL, ...){
 	result <- NULL
 	distribution <- match.arg(distribution)

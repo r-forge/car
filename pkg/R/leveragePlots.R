@@ -3,6 +3,7 @@
 # last modified 9 October 2009 by J. Fox
 # modified 25 November for layout and marking points only
 # changed 'vars' to 'terms' 16 March 2010 SW
+# 14 April 2010: set id.n = 0. J. Fox
 
 # these functions to be rewritten; simply renamed for now
 
@@ -38,7 +39,7 @@ leveragePlot.lm<-function(model, term.name,
     id.var = residuals(model, type="pearson"),
     id.method = "x",
     labels, 
-    id.n = 2, id.cex=1, id.col=NULL, 
+    id.n = 0, id.cex=1, id.col=NULL, 
 	  las=par("las"), col=palette()[2], pch=1, lwd=2, main="Leverage Plot", ...){
 	term.name<-if (is.character(term.name) & 1==length(term.name)) term.name
 		else deparse(substitute(term.name))

@@ -26,7 +26,7 @@ mmp.default <-
 function (model, variable, mean = TRUE, sd = FALSE, 
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE, 
     col.line = palette()[c(4, 2)], 
-    id.var=NULL, labels, id.method="y", id.n=3, id.cex=1, id.col=NULL, ...)
+    id.var=NULL, labels, id.method="y", id.n=0, id.cex=1, id.col=NULL, ...)
 {   
     if  (!is.null(attr(model$model, "na.action"))) {
         if (attr(attr(model$model, "na.action"), "class") == "exclude")
@@ -87,7 +87,7 @@ function (model, variable, mean = TRUE, sd = FALSE,
 mmp.glm <- function (model, variable, mean = TRUE, sd = FALSE, 
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE, 
     col.line = palette()[c(4, 2)], 
-    id.var=NULL, labels, id.method="y", id.n=3, id.cex=1, id.col=NULL, ...)
+    id.var=NULL, labels, id.method="y", id.n=0, id.cex=1, id.col=NULL, ...)
 {
     if (missing(variable)) {
         xlab <- "Linear Predictor"

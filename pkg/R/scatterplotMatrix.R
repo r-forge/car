@@ -1,6 +1,6 @@
 # fancy scatterplot matrices (J. Fox)
 
-# last modified: 12 April 2010 by J. Fox
+# last modified: 14 April 2010 by J. Fox
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
@@ -43,7 +43,7 @@ scatterplotMatrix.formula <- function (x, data=NULL, subset, id.method="mahal", 
 
 scatterplotMatrix.default <- function(x, var.labels=colnames(x), 
 	diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
-	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, lowess.threshold=10, reg.line=lm, 
+	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, loess.threshold=5, reg.line=lm, 
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, id.var=NULL, labels,
@@ -64,8 +64,8 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 		ord <- order(x)
 		x <- x[ord]
 		y <- y[ord]
-		if (length(unique(x)) < lowess.threshold || length(unique(y)) < lowess.threshold) return()
-#		if (length(unique(y)) < lowess.threshold) return()
+#		if (length(unique(x)) < lowess.threshold || length(unique(y)) < lowess.threshold) return()
+		if (length(unique(y)) < loess.threshold) return()
 		if (!spread){
 			fit <- try(loess.smooth(x, y, span=span), silent=TRUE)
 			if (class(fit) == "try-error"){
@@ -84,8 +84,8 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 			}
 			res <- residuals(fit)
 			pos <- res > 0
-			pos.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=pos), silent=TRUE)
-			neg.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=!pos), silent=TRUE)
+			pos.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="gaussian", subset=pos), silent=TRUE)
+			neg.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="gaussian", subset=!pos), silent=TRUE)
 			if (class(pos.fit) == "try-error" || class(neg.fit) == "try-error"){
 				err <<- c(err, "spread")
 				options(warn)

@@ -54,9 +54,9 @@ Set to NULL to suppress the legend.}
   \item{xlab}{Label for the horizontal axis.}
 
   \item{ylab}{Label for the vertical axis.}
-  \item{id.var,id.method,labels,id.n,id.cex,id.col}{Arguments for labeling
-points.  The default \code{id.n=0} suppresses labeling, and setting this
-argument greater than zero will include labeling.  See
+  \item{id.var,id.method,labels,id.n,id.cex,id.col}{Arguments for labelling
+points.  The default \code{id.n=0} suppresses labelling, and setting this
+argument greater than zero will include labelling.  See
 \code{\link{showLabels}} for these arguments.}
   \item{\dots}{ Additional arguments passed to the plot method.}
 }

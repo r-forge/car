@@ -3,6 +3,7 @@
 #  inserted default labeling of the id.n largest Cook D.
 # 13 January 2009: changed to label points by all of hatvalues,
 #  studentized residuals, and Cook's Ds. J. Fox
+# 14 April 2010: set id.n = 0. J. Fox
 
 # moved from Rcmdr 5 December 2006
 
@@ -15,7 +16,7 @@ influencePlot.lm <- function(model, scale=10,
 #    id.var = cooks.distance(model), 
     labels,
 #    id.method = "none",
-    id.n = 3, id.cex=1, id.col=NULL,
+    id.n = 0, id.cex=1, id.col=NULL,
     ...){ 
 	hatval <- hatvalues(model)
 	rstud <- rstudent(model)
