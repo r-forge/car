@@ -1,6 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 13 March 2010 by J. Fox
+# last modified 12 April 2010 by J. Fox
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -42,8 +42,7 @@ scatterplot.formula <- function (x, data, subset, xlab, ylab, legend.title, id.m
 	}
 }
 
-
-scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, reg.line=lm, 
+scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, lowess.threshold=10, reg.line=lm, 
 	boxplots=if (by.groups) "" else "xy",
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
 	lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
@@ -59,6 +58,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 		axis <- match.arg(axis)
 		0 != length(grep(axis, log))
 	}
+	err <- ""
 	lowess.line <- function(x, y, col, span) {
 		if (logged("x")) x <- log(x)
 		if (logged("y")) y <- log(y)
@@ -68,18 +68,35 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 		ord <- order(x)
 		x <- x[ord]
 		y <- y[ord]
+		if (length(unique(x)) < lowess.threshold || length(unique(y)) < lowess.threshold) return()
+		warn <- options(warn=-1)
 		if (!spread){
-			fit <- loess.smooth(x, y, span=span)
+			fit <- try(loess.smooth(x, y, span=span), silent=TRUE)
+			if (class(fit) == "try-error"){
+				err <<- c(err, "smooth")
+				options(warn)
+				return()
+			}
 			x <-if (logged("x")) exp(fit$x) else fit$x  
 			y <-if (logged("y")) exp(fit$y) else fit$y
 			lines(x, y, lwd=lwd.smooth, col=col, lty=lty.smooth)
 		}
 		else{
-			fit <- loess(y ~ x, degree=1, family="symmetric", span=span)
+			fit <- try(loess(y ~ x, degree=1, family="symmetric", span=span), silent=TRUE)
+			if (class(fit) == "try-error"){
+				err <<- c(err, "smooth")
+				options(warn)
+				return()
+			}
 			res <- residuals(fit)
 			pos <- res > 0
-			pos.fit <- loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=pos)
-			neg.fit <- loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=!pos)
+			pos.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=pos), silent=TRUE)
+			neg.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=!pos), silent=TRUE)
+			if (class(pos.fit) == "try-error" || class(neg.fit) == "try.error"){
+				err <<- c(err, "spread")
+				options(warn)
+				return()
+			}
 			if (logged("x")) x <- exp(x)
 			y <- if (logged("y")) exp(fitted(fit)) else fitted(fit) 
 			lines(x, y, lwd=lwd.smooth, col=col, lty=lty.smooth)
@@ -90,6 +107,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 				else fitted(fit)[!pos] - sqrt(fitted(neg.fit))
 			lines(x[!pos], y.neg, lwd=lwd.spread, lty=lty.spread, col=col)
 		}
+		options(warn)
 	}
 	reg <- function(x, y, col){
 		if (logged("x")) x <- log(x)
@@ -281,6 +299,8 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, r
 		legend(usr[1], usr[4] + 1.2*top*strheight("x"), legend=levels(groups), 
 			pch=pch, col=col[1:n.groups], pt.cex=cex, cex=cex.lab, title=legend.title)
 	}
+	if ("smooth" %in% err) warning("could not fit smooth")
+	if ("spread" %in% err) warning("could not smooth spread")
 	if (id.method == "identify") indices <- labels[identify(.x, .y, labels)]
 	if (is.null(indices)) invisible(indices) else if (is.numeric(indices)) sort(indices) else indices
 }

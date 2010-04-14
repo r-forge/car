@@ -1,6 +1,6 @@
 # fancy scatterplot matrices (J. Fox)
 
-# last modified: 13 March 2010 by J. Fox
+# last modified: 12 April 2010 by J. Fox
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
@@ -43,7 +43,7 @@ scatterplotMatrix.formula <- function (x, data=NULL, subset, id.method="mahal", 
 
 scatterplotMatrix.default <- function(x, var.labels=colnames(x), 
 	diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
-	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, reg.line=lm, 
+	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, lowess.threshold=10, reg.line=lm, 
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, id.var=NULL, labels,
@@ -55,29 +55,49 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	spread # force evaluation
 	if (id.method == "identify") stop("interactive point identification not permitted")
 	family <- match.arg(family)
+	err <- ""
 	lowess.line <- function(x, y, col, span) {
+		warn <- options(warn=-1)
 		valid <- complete.cases(x, y)
 		x <- x[valid]
 		y <- y[valid]
 		ord <- order(x)
 		x <- x[ord]
 		y <- y[ord]
+		if (length(unique(x)) < lowess.threshold || length(unique(y)) < lowess.threshold) return()
+#		if (length(unique(y)) < lowess.threshold) return()
 		if (!spread){
-			fit <- loess.smooth(x, y, span=span)
+			fit <- try(loess.smooth(x, y, span=span), silent=TRUE)
+			if (class(fit) == "try-error"){
+				err <<- c(err, "smooth")
+				options(warn)
+				return()
+			}
 			lines(fit$x, fit$y, lty=lty.smooth, lwd=lwd.smooth, col=col)
 		}
 		else{
-			fit <- loess(y ~ x, degree=1, family="symmetric", span=span)
+			fit <- try(loess(y ~ x, degree=1, family="symmetric", span=span), silent=TRUE)
+			if (class(fit) == "try-error"){
+				err <<- c(err, "smooth")
+				options(warn)
+				return()
+			}
 			res <- residuals(fit)
 			pos <- res > 0
-			pos.fit <- loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=pos)
-			neg.fit <- loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=!pos)
+			pos.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=pos), silent=TRUE)
+			neg.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="symmetric", subset=!pos), silent=TRUE)
+			if (class(pos.fit) == "try-error" || class(neg.fit) == "try-error"){
+				err <<- c(err, "spread")
+				options(warn)
+				return()
+			}
 			lines(x, fitted(fit), lty=lty.smooth, lwd=lwd.smooth, col=col)
 			y.pos <- fitted(fit)[pos] + sqrt(fitted(pos.fit))
 			lines(x[pos], y.pos, lty=lty.spread, lwd=lwd.spread, col=col)
 			y.neg <- fitted(fit)[!pos] - sqrt(fitted(neg.fit))
 			lines(x[!pos], y.neg, lty=lty.spread, lwd=lwd.spread, col=col)
 		}
+		options(warn)
 	}
 	if (id.method != "none" && missing(labels)){
 		labels <- rownames(x)
@@ -106,8 +126,8 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	legendPlot <- function(){
 		usr <- par("usr")
 		legend("bottomleft", bg="white",
-				legend=levels(groups), pch=pch, col=col[1:n.groups],
-				cex=cex)
+			legend=levels(groups), pch=pch, col=col[1:n.groups],
+			cex=cex)
 	}	
 	do.legend <- legend.plot	
 # The following panel function adapted from Richard Heiberger
@@ -159,12 +179,12 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	if (transform != FALSE | length(transform) == ncol(x)){
 		if (transform == TRUE & length(transform) == 1){
 			transform <- if (by.groups) coef(powerTransform(as.matrix(x) ~ groups, family=family), round=TRUE)
-						else coef(powerTransform(x, family=family), round=TRUE)
-			}
+				else coef(powerTransform(x, family=family), round=TRUE)
+		}
 		for (i in 1:ncol(x)){
 			x[, i] <- if (family == "bcPower") 
-						bcPower(x[, i], transform[i])
-					else yjPower(x[, i], transform[i])
+					bcPower(x[, i], transform[i])
+				else yjPower(x[, i], transform[i])
 			var.labels[i] <- paste(var.labels[i], "^(", round(transform[i],2), ")", sep="")
 		}
 	}
@@ -180,7 +200,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 					if (smooth) lowess.line(x[subs], y[subs], col=col[i], span)
 					if (is.function(reg.line)) reg(x[subs], y[subs], col=col[i])
 					if (ellipse) dataEllipse(x[subs], y[subs], plot.points=FALSE, 
-								levels=levels, col=col[i], robust=robust, lwd=1)
+							levels=levels, col=col[i], robust=robust, lwd=1)
 					if (id.method != "none") 
 						showLabelsScatter(x[subs], y[subs], labs[subs], id.var=id.var, id.method=id.method,
 							id.n=id.n, id.col=col[i], id.cex=id.cex)
@@ -196,6 +216,8 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 			}
 		}, ...
 	)
+	if ("smooth" %in% err) warning("some smooths failed")
+	if ("spread" %in% err) warning("some spreads failed")
 }
 
 spm <- function(x, ...){

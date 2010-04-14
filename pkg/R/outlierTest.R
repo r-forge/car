@@ -1,6 +1,7 @@
 #-------------------------------------------------------------------------------
 # Revision history:
 # 2009-09-28 by J. Fox (renamed)
+# 2010-04-14 by J. Fox fixed error in reporting largest abs rstudent
 #-------------------------------------------------------------------------------
 
 # Bonferroni test for an outlier (J. Fox)
@@ -24,7 +25,7 @@ outlierTest.lm <- function(model, cutoff=0.05, n.max=10, order=TRUE, labels=name
 	ord <- if (order) order(bp) else 1:n
 	ord <- ord[bp[ord] <= cutoff]
 	result <- if (length(ord) == 0){
-			which <- which.max(rstudent)
+			which <- which.max(abs(rstudent))
 			list(rstudent=rstudent[which], p=p[which], bonf.p=bp[which], signif=FALSE, cutoff=cutoff)
 		}
 		else {
