@@ -20,8 +20,7 @@ avp(...)
 avPlot(model, ...)
 
 \method{avPlot}{lm}(model, variable,
-    id.var = residuals(model, type="pearson"),
-    id.method = "x",
+    id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels, 
     id.n = 0, id.cex=1, id.col=NULL,
     col = palette()[2], col.lines = col[1],
@@ -29,8 +28,7 @@ avPlot(model, ...)
     main="Added-variable Plot", ...)
 
 \method{avPlot}{glm}(model, variable, 
-    id.var = residuals(model, type="pearson"),
-    id.method = "x",
+    id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels,
     id.n = 0, id.cex=1, id.col=NULL, 
     col = palette()[2], col.lines = col[1],
@@ -61,20 +59,9 @@ added-variable plot is drawn for that term only.
 \item{\dots}{\code{avPlots} passes these arguments to \code{avPlot}.  
   \code{avPlot} passes them to \code{plot}. 
 }
-  \item{id.var}{values to be used to identify points.  By default, the Pearson
-residuals from the model are used.  See \code{\link{showLabels}} for details.
-}
-  \item{id.method}{Additional methods to identify points, see 
-\code{\link{showLabels}}  for details.
-}
-  \item{labels}{observation names}
-  \item{id.n}{Number of points to identify.  Set \code{id.n=0}, the default, for no
-point identification.  The default value for \code{id.method} identifies both
-extreme horizontal points and extreme residuals, so up to \code{2*id.n} points
-will be labeled.}
-  \item{id.cex}{Character expansion for point labels.
-}
-  \item{id.col}{Color for point labels.
+  \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
+    points.  The default has \code{id.n=0} for labeling no points.  See
+    \code{\link{showLabels}} for details of these arguments.
 }
   \item{col}{color for points; the default is the \emph{second} entry
     in the current color palette (see \code{\link[grDevices]{palette}}

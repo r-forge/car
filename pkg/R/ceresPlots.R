@@ -7,6 +7,7 @@
 #   m1 <- lm(longley)
 #   ceresPlots(longley)
 # 14 April 2010: set id.n = 0. J. Fox
+# new args for showLabels 15 April S. Weisberg
 
 # these functions to be rewritten; simply renamed for now
 
@@ -52,8 +53,7 @@ ceresPlot<-function (model, ...) {
 }
 
 ceresPlot.lm<-function(model, variable, 
-  id.var = residuals(model, type="pearson"),
-  id.method = "x",
+  id.method = list(abs(residuals(model, type="pearson")), "x"),
   labels, 
   id.n = 0, id.cex=1, id.col=NULL,
   line=TRUE, smooth=TRUE, span=.5, iter, 
@@ -137,7 +137,7 @@ ceresPlot.lm<-function(model, variable,
 		ylab=paste("CERES Residual(",responseName(model),")", sep=""),
 		main=main, las=las)
 	showLabels(mod.mat[,var], partial.res, labels=labels, 
-            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
+            id.method=id.method, id.n=id.n, id.cex=id.cex,
             id.col=id.col)
 	if (line) abline(lm(partial.res~mod.mat[,var]), lty=2, lwd=lwd, col=col)
 	if (smooth) {

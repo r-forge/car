@@ -40,8 +40,7 @@ avPlot <-  function(model, ...) UseMethod("avPlot")
 
 avPlot.lm <-
 function (model, variable,
-    id.var = residuals(model, type="pearson"),
-    id.method = "x",
+    id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels, 
     id.n = 0, id.cex=1, id.col=NULL,
     col = palette()[2], col.lines = col[1],
@@ -71,13 +70,12 @@ function (model, variable,
         col = col, pch = pch, ...)
     abline(lsfit(res[, 1], res[, 2], wt = wt), col = col.lines, lwd = lwd)
     showLabels(res[, 1],res[, 2], labels=labels, 
-          id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
+          id.method=id.method, id.n=id.n, id.cex=id.cex, 
           id.col=id.col)  
 }
 
 avPlot.glm<-function(model, variable, 
-    id.var = residuals(model, type="pearson"),
-    id.method = "x",
+    id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels,
     id.n = 0, id.cex=1, id.col=NULL, 
     col = palette()[2], col.lines = col[1],
@@ -106,7 +104,7 @@ avPlot.glm<-function(model, variable,
         ylab=ylab, col=col, pch=pch, main=main, ...)
     abline(lsfit(res.x, res.y, wt=wt), col=col.lines, lwd=lwd)
     showLabels(res.x,res.y, labels=labels, 
-          id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
+          id.method=id.method, id.n=id.n, id.cex=id.cex, 
           id.col=id.col)  
     }
 

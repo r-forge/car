@@ -18,10 +18,12 @@ crp(...)
 
 crPlot(model, ...)
 
-\method{crPlot}{lm}(model, variable, id.var = residuals(model, type = "pearson"), 
-    id.method = "x", labels, id.n = 0, id.cex=1, id.col = NULL, 
-    order = 1, line = TRUE, smooth = TRUE, iter, span = 0.5, 
-    las = par("las"), col = palette()[2], pch = 1, lwd = 2, ...)
+\method{crPlot}{lm}(model, variable, 
+  id.method = list(abs(residuals(model, type="pearson")), "x"),
+  labels, id.n = 0, id.cex=1, id.col=NULL,
+  order=1, line=TRUE, smooth=TRUE,
+	iter, span=.5, las=par("las"), col=palette()[2], pch=1, lwd=2,
+	...)
 
 \method{crPlot}{glm}(model, ...)
 }
@@ -49,19 +51,9 @@ This is relevant only if not all the graphs can be drawn in one window.}
   \item{variable}{A quoted string giving the name of a variable for the horizontal
 axis
 }
-  \item{id.var}{values to be used to identify points.  By default, the Pearson
-residuals from the model are used.  See \code{\link{showLabels}} for details.
-}
-  \item{id.method}{Additional methods to identify points, see 
-\code{\link{showLabels}}  for details.
-}
-  \item{labels}{observation names}
-  \item{id.n}{Number of points to identify.  The default is \code{id.n=0} for no
-point identification, so you would need to set this to a positive value for
-automatic point marking.}
-  \item{id.cex}{Character expansion for point labels.
-}
-  \item{id.col}{Color for point labels.
+  \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
+    points.  The default has \code{id.n=0} for labeling no points.  See
+    \code{\link{showLabels}} for details of these arguments.
 }
   \item{order}{order of polynomial regression performed for predictor to be plotted.}
   \item{line}{\code{TRUE} to plot least-squares line.}

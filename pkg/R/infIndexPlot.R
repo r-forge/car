@@ -11,7 +11,7 @@ infIndexPlot <- function(model, ...)
 infIndexPlot.lm <- function(model,
      vars=c("Cook", "Studentized", "Bonf", "hat"), 
      main="Diagnostic Plots",
-     id.var=NULL, labels, id.method = "y", id.n = 0, id.cex=1,
+     labels, id.method = "y", id.n = 0, id.cex=1,
      id.col=NULL, ...) {
    what <- pmatch(tolower(vars), 
                   tolower(c("Cook", "Studentized", "Bonf", "hat")))
@@ -37,7 +37,7 @@ infIndexPlot.lm <- function(model,
       if (j == 2) abline(h=0, lty=2 )
       axis(1, labels= ifelse(j<length(what), FALSE, TRUE))
       showLabels(xaxis, y, labels=labels,
-            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
+            id.method=id.method, id.n=id.n, id.cex=id.cex,
             id.col=id.col)
     }
     mtext(side=3,outer=TRUE,main, cex=1.2, line=1)

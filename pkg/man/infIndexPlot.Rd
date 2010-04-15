@@ -16,8 +16,8 @@ influenceIndexPlot(model, ...)
 \method{infIndexPlot}{lm}(model,
      vars=c("Cook", "Studentized", "Bonf", "hat"), 
      main="Diagnostic Plots",
-     id.var=NULL, labels, id.method = "y", id.n = 0, id.cex=1,
-     id.col=NULL, ...) 
+     labels, id.method = "y", id.n = 0, id.cex=1,
+     id.col=NULL, ...)
 
 }
 \arguments{
@@ -30,10 +30,10 @@ and \dQuote{hat} for hat-values (or leverages).   Capitalization is optional.
 All may be abbreviated by the first one or more letters.
 }
   \item{main}{main title for graph}
-  \item{id.var, labels, id.method, id.n, id.cex, id.col}{
-Arguments for point marking; see \code{\link{showLabels}} for the 
-definitions.  With the default \code{id.n=0} points are not 
-marked.}
+  \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
+    points.  The default has \code{id.n=0} for labeling no points.  See
+    \code{\link{showLabels}} for details of these arguments.
+}
   \item{\dots}{Arguments passed to \code{plot}}
 }
 
@@ -60,7 +60,7 @@ p-values for outlier tests, and leverages.
 \author{Sanford Weisberg, \email{sandy@stat.umn.edu}}
 
 \seealso{ \code{\link{cooks.distance}}, \code{\link{rstudent}},
-  \code{\link{outlierTest}}, \code{link{hatvalues}} }
+  \code{\link{outlierTest}}, \code{\link{hatvalues}} }
 \examples{
 m1 <- lm(prestige ~ income + education + type, Duncan)
 influenceIndexPlot(m1)

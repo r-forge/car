@@ -40,8 +40,7 @@ residualPlot(model, ...)
                  plot = TRUE,     
                  quadratic = TRUE, 
                  smooth = FALSE, span = 1/2, smooth.lwd=lwd, smooth.lty=lty,
-                 smooth.col=col.lines,
-                 id.var = NULL, 
+                 smooth.col=col.lines, 
                  labels,
                  id.method = "xy",
                  id.n = 0, id.cex=1, id.col=NULL,
@@ -127,29 +126,9 @@ Should a lowess smooth be added to the figure?  The span is the smoothing
 parameter for lowess, smooth.lwd and smooth.lty are, respectively the width
 type and color of the line drawn on the plot. 
 }
-  \item{id.var}{
-if not NULL, the values of this variable are used to find the
-observations to label.  See \code{\link{showLabels}} for details.
-} 
-  \item{labels}{
-Values to use to label points.  If not set, residuals are found from
-\code{names(residuals(model))}
-}
-  \item{id.method}{
-selects how points are to be selected for labeling.  See \code{\link{showLabels}}
-for details.
-}
-  \item{id.n}{
-Number of points to identify.  If \code{id.method="xy"} then
-up to \code{id.n} points will be identified in each direction for both
-extreme horizontal and vertical points.   To turn off point labeling either set
-\code{id.n=0}, the default, or \code{id.method="none"}.
-}     
-  \item{id.cex}{
-character expansion factor for point labels.
-}
-  \item{id.col}{
-color for labels
+  \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
+    points.  The default has \code{id.n=0} for labeling no points.  See
+    \code{\link{showLabels}} for details of these arguments.
 }
   \item{col}{
 default color for points

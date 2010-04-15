@@ -30,14 +30,14 @@ marginalModelPlot(...)
     
 \method{mmp}{default}(model, variable, mean = TRUE, sd = FALSE, xlab =
                  deparse(substitute(variable)), degree = 1, span = 2/3,
-                 key = TRUE, col.line = palette()[c(4,2)], id.var =   
-                 NULL, labels, id.method = "y", id.n = 0, id.cex = 1,  
+                 key = TRUE, col.line = palette()[c(4,2)],   
+                 labels, id.method = "y", id.n = 0, id.cex = 1,  
                  id.col = NULL, ...)
    
 \method{mmp}{glm}(model, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
     col.line = palette()[c(4,2)],
-    id.var=NULL, labels, id.method="y", id.n=0, id.cex=1, id.col=NULL, ...)
+    labels, id.method="y", id.n=0, id.cex=1, id.col=NULL, ...)
 }
 
 \arguments{
@@ -83,7 +83,7 @@ then to \code{plot}.  Users should generally use \code{mmps}.
 \item{span}{Span, the smoothing parameter for \code{loess}.  }
 \item{key}{If TRUE, include a key at the top of the plot, if FALSE omit the
 key}
-  \item{id.var,id.method,labels,id.n,id.cex,id.col}{Arguments for labelling
+  \item{id.method,labels,id.n,id.cex,id.col}{Arguments for labelling
 points.  The default \code{id.n=0} suppresses labelling, and setting this
 argument greater than zero will include labelling.  See
 \code{\link{showLabels}} for these arguments.}

@@ -53,7 +53,7 @@ qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
 		lines(z, upper, lty=2, lwd=lwd, col=col)
 		lines(z, lower, lty=2, lwd=lwd, col=col)
 	}
-	showLabels(z, ord.x, labels=ord.lab, id.var=NULL,
+	showLabels(z, ord.x, labels=ord.lab,
      id.method = id.method, id.n = id.n, id.cex=id.cex, id.col=id.col)
 }
 

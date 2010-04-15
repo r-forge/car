@@ -1,6 +1,7 @@
 \name{showLabels}
 \Rdversion{1.1}
 \alias{showLabels}
+\alias{showLabels1}
 \title{
 Utility function to identify and mark extreme points in a 2D plot.
 }
@@ -11,9 +12,11 @@ to call this function directly, the documentation below applies to all
 these other functions.
 }
 \usage{
-showLabels(x, y, labels=NULL, id.var = NULL, 
-     id.method = if(is.null(id.var)) "xy" else "none",
-     id.n = 3, id.cex=1, id.col=NULL, show=TRUE, ...)
+showLabels(x, y, labels=NULL, id.method="identify",  
+  id.n = 3, id.cex=1, id.col=NULL, ...)
+     
+showLabels1(x, y, labels=NULL, id.method="identify",
+	id.n = 3, id.cex=1, id.col=NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -27,17 +30,8 @@ Plotted vertical coordinates.
 Plotting labels.  If NULL, case numbers will be used.  If labels are long, the
 \code{\link{substr}} function can be used to shorten them.
 }
-  \item{id.var}{
-If \code{id.var} is a numeric vector of the same length as x, then the id.n cases
-with the largest absolute values of id.var will be labelled.  If id.var can also be a 
-vector of case numbers or labels, and these points will be labelled.  
-More usually, \code{id.var} will equal NONE, indicating that 
-\code{id.method} will be used to determine the labeling method.  See
-the details below.
-}
   \item{id.method}{
-How points are to be identified if \code{id.var} is not explicitly
-provided.  See Details below.
+How points are to be identified.  See Details below.
 }
   \item{id.n}{
 Number of points to be identified.  If set to zero, no points are identified.  
@@ -48,41 +42,43 @@ Controls the size of the plotted labels.  The default is 0.75.
   \item{id.col}{
 Controls the color of the plotted labels.  The default is the default color.
 }
-  \item{show}{If TRUE, labels are drawn on the plot.  If FALSE, then the labels 
-are returned but not shown on the plot.}
   \item{...}{additional arguments passed to \code{identify} or to \code{text}.}
 }
 \details{
-The arguments \code{id.var} and  \code{id.method} determine how the points 
-to be identified are selected.  Here are the options for \code{id.method}: 
+The argument \code{id.method} determine how the points 
+to be identified are selected.  The default value of \code{id.method="identify"},
+then the \code{\link{identify}} is used to identify points interactively using
+the mouse.  Up to \code{id.n} points can be identified, so if you set 
+\code{id.n=0}, which is the default in many \code{car} functions, then no
+point identification is done.
+
+Automatic point identification can be done depending on the value of the
+argument \code{id.method}.
 \itemize{
-   \item id.method = "none", use \code{id.var} to find cases to label 
-   \item id.method = "identify" identify points interactively using the \code{\link{identify}}
-function
    \item id.method = "x" select points according to their value of \code{abs(x - mean(x))}
    \item id.method = "y" select points according to their value of \code{abs(y - mean(y))}
-   \item id.method = "xy" select points according to both \code{"x"} and \code{"y"}
    \item id.method = "mahal" Treat \code{(x. y)} as if it were a bivariate sample, and
 select cases according to their Mahalanobis distance from  \code{mean(x), mean(y)}
+   \item id.method = "logx", "logy" or "logmahal" can be used if the plot is drawn
+using logged-axes.
+  \item id.method can be a vector of the same length as \code{x} consisting of 
+values to determine the points to be labelled.  For example, for a linear model
+\code{m}, setting \code{id.method=cooks.distance(m), id.n=4} will label the 
+points corresponding to the four largest values of Cook's distance, or
+\code{id.method = abs(residuals(m, type="pearson")), id.n =2} would label
+the two observations corresponding to the largest absolute Pearson residuals.
+  \item id.method can be a list of case numbers or case-labels, in which case
+  those cases will be labelled, as long as \code{id.n} is greater than zero.
 }
-If the plot is created using the argument \code{log="x"}, 
-then you can set \code{id.method="logx"}, if \code{log="y"} you can set
-\code{id.method="logy"} and if \code{log="xy"}, you can set \code{id.method} to
-any of \code{"logx"}, \code{"logy"}, \code{"logxy"} or \code{"logmahal"}.
 
-Alternatively and in addition, the \code{id.var} can be employed to use any other 
-variable to select the labels.  For example, if \code{m} is a \code{lm} model,
-the setting \code{id.var = residuals(m, type="pearson")} will label the points
-with the \code{id.n} absolute value of the Person residual, while setting
-\code{id.var = cooks.distance(m1)} will label the points with the largest 
-value of Cook's distance.  Finally setting \code{id.var = c(1, 3, 4)} will label
-observations 1, 3 and 4 regardless of their location.
-
-Both \code{id.var} and \code{id.method} can be used simultaneously, but this
-is likely to be rather confusing.  
+With \code{showLabels}, the \code{id.method} argument can be list, so, for
+example \code{idmethod=list("x", "y")} would label according to the horizontal 
+and vertical axes variables.
 }
 \value{
-A utility function used for its side-effect of drawing labels on a plot.
+A utility function used for its side-effect of drawing labels on a plot. 
+Although intended for use with other car functions, this function can be
+used directly.
 }
 \references{
   Fox, J. (2008).
@@ -102,16 +98,14 @@ A utility function used for its side-effect of drawing labels on a plot.
 }
 
 \examples{
-# Although intended for use with other car functions, this function can be
-# used directly
 plot(education ~ income, Prestige)
 with(Prestige, showLabels(income, education, 
-     labels = rownames(Prestige), id.method="x"))
+     labels = rownames(Prestige), id.method=list("x", "y"), id.n=3))
 m <- lm(education ~ income, Prestige)
 plot(education ~ income, Prestige)
 abline(m)
 with(Prestige, showLabels(income, education, 
-     labels=rownames(Prestige), id.var=residuals(m)))
+     labels=rownames(Prestige), id.method=residuals(m), id.n=4))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

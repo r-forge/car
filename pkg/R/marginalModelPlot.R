@@ -26,7 +26,7 @@ mmp.default <-
 function (model, variable, mean = TRUE, sd = FALSE, 
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE, 
     col.line = palette()[c(4, 2)], 
-    id.var=NULL, labels, id.method="y", id.n=0, id.cex=1, id.col=NULL, ...)
+    labels, id.method="y", id.n=0, id.cex=1, id.col=NULL, ...)
 {   
     if  (!is.null(attr(model$model, "na.action"))) {
         if (attr(attr(model$model, "na.action"), "class") == "exclude")
@@ -80,14 +80,14 @@ function (model, variable, mean = TRUE, sd = FALSE,
             lty = 2, col = col.line[2])
     }    
     showLabels(u, model$model[, 1], labels=labels, 
-        id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
+        id.method=id.method, id.n=id.n, id.cex=id.cex, 
         id.col=id.col)
 }
 
 mmp.glm <- function (model, variable, mean = TRUE, sd = FALSE, 
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE, 
     col.line = palette()[c(4, 2)], 
-    id.var=NULL, labels, id.method="y", id.n=0, id.cex=1, id.col=NULL, ...)
+    labels, id.method="y", id.n=0, id.cex=1, id.col=NULL, ...)
 {
     if (missing(variable)) {
         xlab <- "Linear Predictor"
@@ -152,7 +152,7 @@ mmp.glm <- function (model, variable, mean = TRUE, sd = FALSE,
             lty = 2, col = col.line[2])
     }
     showLabels(u, model$model[, 1], labels=labels, 
-        id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
+        id.method=id.method, id.n=id.n, id.cex=id.cex, 
         id.col=id.col)
 }
 

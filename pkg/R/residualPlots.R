@@ -2,6 +2,7 @@
 #   rather than showExtremes
 # 11 & 20 January 2010: changed lty=3 to lty=1 for fitted curve. J. Fox
 # 14 April 2010: set id.n = 0. J. Fox
+# 15 April 2010; rewrite showLabels
 
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
 
@@ -70,8 +71,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
                  plot = TRUE,     
                  quadratic = TRUE, 
                  smooth = FALSE, span = 1/2, smooth.lwd=lwd, smooth.lty=lty, 
-                 smooth.col=col.lines, 
-                 id.var = NULL, 
+                 smooth.col=col.lines,  
                  labels, 
                  id.method = "xy", 
                  id.n = 0, id.cex=1, id.col=NULL, 
@@ -136,7 +136,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
         }
      if(smooth==TRUE) lowess.line(horiz, vert, smooth.col, span)
      showLabels(horiz, vert, labels=labels, 
-            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
+            id.method=id.method, id.n=id.n, id.cex=id.cex, 
             id.col=id.col)  
         }
       }  

@@ -19,13 +19,15 @@ invTranPlot(x, ...)
 
 \S3method{invTranPlot}{formula}(x, data, subset, na.action, ...)
 
-\S3method{invTranPlot}{default}(x, y, lambda=c(-1,0,1), 
-		lty.lines=rep(c("solid", "dashed", "dotdash", "longdash", "twodash"), 
-    length=1 + length(lambda)), lwd.lines=2, col.lines=palette(),
-    xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
-    family="bcPower", optimal=TRUE, key="auto",
-    id.var = residuals(lm(y~x)), id.method = "none", labels, id.n = 0, id.cex=1, 
-    id.col = NULL,...)
+\S3method{invTranPlot}{default}(x, y, lambda=c(-1, 0, 1), 
+        lty.lines=rep(c("solid", "dashed", "dotdash", "longdash", "twodash"), 
+        length=1 + length(lambda)), lwd.lines=2, 
+        col.lines=palette(),
+        xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
+        family="bcPower", optimal=TRUE, key="auto",
+        id.method = abs(residuals(lm(y~x))),
+        labels, id.n = 0, id.cex=1, id.col=NULL,
+        ...)
 
 invTranEstimate(x,y,family="bcPower",confidence=0.95)
 }
@@ -54,11 +56,11 @@ Set to NULL to suppress the legend.}
   \item{xlab}{Label for the horizontal axis.}
 
   \item{ylab}{Label for the vertical axis.}
-  \item{id.var,id.method,labels,id.n,id.cex,id.col}{Arguments for labelling
-points.  The default \code{id.n=0} suppresses labelling, and setting this
-argument greater than zero will include labelling.  See
-\code{\link{showLabels}} for these arguments.}
-  \item{\dots}{ Additional arguments passed to the plot method.}
+  \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
+    points.  The default has \code{id.n=0} for labeling no points.  See
+    \code{\link{showLabels}} for details of these arguments.
+}
+  \item{...}{Additional arguments passed to the plot method.}
 }
 \value{
 \code{invTranPlot}

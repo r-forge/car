@@ -30,8 +30,8 @@ invTranPlot.default<- function(x, y, lambda=c(-1, 0, 1),
         col.lines=palette(),
         xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
         family="bcPower", optimal=TRUE, key="auto",
-        id.var = residuals(lm(y~x)),
-        id.method = "none", labels, id.n = 0, id.cex=1, id.col=NULL,
+        id.method = abs(residuals(lm(y~x))),
+        labels, id.n = 0, id.cex=1, id.col=NULL,
         ...){
  if (missing(labels)) labels <- seq(length(x))
  if (is.factor(x)) stop("Predictor variable may not be a factor")
@@ -48,7 +48,7 @@ invTranPlot.default<- function(x, y, lambda=c(-1, 0, 1),
      lines(new,predict(m1, data.frame(x=new)), lty=lty.lines[j],
        col=col.lines[j], lwd=lwd.lines)}
  showLabels(x, y, labels=labels, 
-          id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
+          id.method=id.method, id.n=id.n, id.cex=id.cex, 
           id.col=id.col)
  if (!is.null(key)) {
       loc <- key

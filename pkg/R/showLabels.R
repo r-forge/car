@@ -1,79 +1,81 @@
 # last modified 25 Februrary 2010 by J. Fox
+# rewritten 15 April 2010 S Weisberg
 
-# methods:
-#   'x' x - mean(x)
-#   'y' y - mean(y)
-#   'xy' both 'x' and 'y'
-#   'mahal' rowSums( qr.Q(qr(cbind(1,x,y))) ^ 2
+showLabels <- function(x, y, labels=NULL, id.method="identify",  
+  id.n = 3, id.cex=1, id.col=NULL, ...) {
+  if(id.n <= 0L) return(invisible(NULL))
+  res <- NULL
+  for (meth in id.method) 
+     res <- c(res, showLabels1(x, y, labels, meth, id.n, id.cex, id.col, ...))
+  return(if(is.null(res)) invisible(res) else res)
+  }   
 
-showLabels <- function(x, y, labels=NULL,
-	id.var = NULL, id.method = if(is.null(id.var)) "xy" else "none",
-	id.n = 3, id.cex=1, id.col=NULL, show=TRUE, ...) {
-	match.arg(id.method, c("xy", "none", "mahal", "x", "y", "identify",
-     "logx", "logy", "logxy", "logmahal"))
-	if ( show ==FALSE | (id.n <= 0L & id.method != "identify")) 
-		return(invisible(NULL))
+showLabels1 <- function(x, y, labels=NULL, id.method="identify",
+	id.n = 3, id.cex=1, id.col=NULL, ...) {
+  if(id.n <= 0L) return(invisible(NULL)) 
+# If labels are NULL, try to get the labels from x:
+  if (is.null(labels)) 
+    labels <- names(x)
+	if (is.null(labels))
+		labels <- paste(seq_along(x))   
+# id.method can be a character string like "x" or "y", or it can be
+# a vector like abs(rstudent(model)) or c(1, 2, 4) or a vector of labels
+  use.built.in.method <- is.character(id.method) & length(id.method) == 1
+  if(use.built.in.method==TRUE) 
+	  match.arg(id.method, c("mahal", "x", "y", "identify",
+     "logx", "logy", "logmahal"))
+# label color
 	if (is.null(id.col))
-		id.col <- palette()[1]
-	if (is.null(labels))
-		if(length(id.var)==length(x)) labels <- names(id.var)
-	if (is.null(labels))
-		labels <- paste(seq_along(x))           
-# missing values
-	ismissing <- is.na(x) | is.na(y) | is.na(labels)
-	if( length(id.var) == length(x) ) 
-		ismissing <- ismissing | is.na(id.var)
+		id.col <- palette()[1]   
+  if(use.built.in.method==TRUE){
+   if(id.method == "identify") {
+    	result <- labels[identify(x, y, labels, n=id.n, cex=id.cex, 
+                 col=id.col, ...)]
+    	if(length(result) > 0) return(unique(result)) else return(NULL)
+ 	}}
+#	if (use.built.in.method == TRUE & id.n <= 0L & id.method != "identify") 
+#		return(invisible(NULL))
+# id.var is a vector of length(x) such that large values of id.var are to
+# labeled
+  if(use.built.in.method==FALSE) {
+    if(length(id.method) == length(x)) id.var <- id.method else {
+      id.var <- rep(0, length(x))
+      names(id.var) <- labels
+      id.var[id.method] <- 1
+      id.n <- length(id.method)
+      }} else {
+    id.var <- switch(id.method,
+					x = abs(x - mean(x, na.rm = TRUE)),
+					y = abs(y - mean(y, na.rm = TRUE)),
+					logx = suppressWarnings(if(all(x) > 0) 
+								abs(log(x) - mean(log(x), na.rm = TRUE)) else 
+                return(invisible(NULL))),
+					logy = suppressWarnings(if(all(y) > 0) 
+								abs(log(y) - mean(log(y), na.rm = TRUE)) else 
+                return(invisible(NULL))),
+					mahal = rowSums( qr.Q( qr(cbind(1, x, y) ) )^2),
+					logmahal = suppressWarnings(if(all(x) > 0 & all(y) > 0)
+								rowSums( qr.Q(qr(cbind(1, log(x), log(y))))^2 ) else 
+                return(invisible(NULL)))) 
+     }    
+# missing values need to be removed
+	ismissing <- is.na(x) | is.na(y) | is.na(labels) | is.na(id.var)
 	if( any(ismissing) ) {
 		x <- x[!ismissing]
 		y <- y[!ismissing]
 		labels <- labels[!ismissing]
-		if (length(id.var) == length(ismissing)) 
-			id.var <- id.var[!ismissing]
+		id.var <- id.var[!ismissing]
 	}
-	all.inds <- NULL
-	if (!is.null(id.var)) {
-		all.inds <- showLabels(x, y, labels, NULL, id.method, id.n, id.cex, 
-			id.col, show)
-		if (length(id.var) == length(x))
-			ind <- order(-abs(id.var))[1L:id.n] else
-			ind <- if(is.character(id.var)) match(id.var, labels) else id.var
-	} 
-	else { 
-		if (id.method == "xy") { 
-			result <- c(showLabels(x, y, labels, NULL, id.method="x", id.n, id.cex, id.col, show),
-				showLabels(x, y, labels, NULL, id.method="y", id.n, id.cex, id.col, show))
-			if (length(result) == 0) return(invisible(NULL)) else return(result)
-		} 
-		else {
-			if (id.method == "logxy") { 
-				result <- c(showLabels(x, y, labels, NULL, id.method="logx", id.n, id.cex, id.col, show),
-					showLabels(x, y, labels, NULL, id.method="logy", id.n, id.cex, id.col, show))
-				if (length(result) == 0) return(invisible(NULL)) else return(result)
-			} 
-			else {
-				id.var <- switch(id.method,
-					none = return(invisible(NULL)),
-					identify = {
-						result <- labels[identify(x, y, labels, cex=id.cex, col=id.col, ...)]
-						if (length(result) == 0) return(invisible(NULL)) else return(result)
-					},
-					x = x - mean(x, na.rm = TRUE),
-					y = y - mean(y, na.rm = TRUE),
-					logx = suppressWarnings(if(all(x) > 0) 
-								abs(log(x) - mean(log(x), na.rm = TRUE)) else return(invisible(NULL))),
-					logy = suppressWarnings(if(all(y) > 0) 
-								abs(log(y) - mean(log(y), na.rm = TRUE)) else return(invisible(NULL))),
-					mahal = rowSums( qr.Q( qr(cbind(1, x, y) ) )^2),
-					logmahal = suppressWarnings(if(all(x) > 0 & all(y) > 0)
-								rowSums( qr.Q(qr(cbind(1, log(x), log(y))))^2 ) else return(invisible(NULL)))) }}
-		ind <-  order(-abs(id.var))[1L:id.n]
-	}
-	labpos <- c(4,2)[1+as.numeric(x > mean(range(x)))]
+# criterion
+  ind <-  order(-id.var)[1L:id.n]
+  mid <- mean(if(par("xlog")==TRUE) 10^(par("usr")[1:2]) else 
+              par("usr")[1:2])
+	labpos <- c(4,2)[1+as.numeric(x > mid)]
 	for (i in ind) {
 		text(x[i], y[i], labels[i], cex = id.cex, xpd = TRUE,
 			col = id.col, pos = labpos[i], offset = 0.25, ...)} 
-	result <- unique(c(all.inds,labels[ind]))
-	if (length(result) == 0) return(invisible(NULL)) else return(result)
+	result <- labels[ind]
+	if (length(result) == 0) return(NULL) else return(result)
 }
 
 

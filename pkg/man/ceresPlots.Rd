@@ -15,8 +15,9 @@ ceresPlots(model, terms = ~., layout = NULL, ask, main,
 
 ceresPlot(model, ...)
 
-\method{ceresPlot}{lm}(model, variable, id.var = residuals(model, type = "pearson"), 
-    id.method = "x", labels, id.n = 0, id.cex = 1, id.col = NULL, 
+\method{ceresPlot}{lm}(model, variable, 
+    id.method = list(abs(residuals(model, type = "pearson")), "x"), 
+    labels, id.n = 0, id.cex = 1, id.col = NULL, 
     line = TRUE, smooth = TRUE, span = 0.5, iter, las = par("las"), 
     col = palette()[2], pch = 1, lwd = 2, main = "Ceres Plot", 
     ...)
@@ -47,18 +48,9 @@ This is relevant only if not all the graphs can be drawn in one window.}
 }  
   \item{variable}{A quoted string giving the name of a variable for the horizontal
 axis}
-  \item{id.var}{values to be used to identify points.  By default, the Pearson
-residuals from the model are used.  See \code{\link{showLabels}} for details.
-}
-  \item{id.method}{Additional methods to identify points, see 
-\code{\link{showLabels}}  for details.
-}
-  \item{labels}{observation names}
-  \item{id.n}{Number of points to identify.  Set \code{id.n=0}, the default, for no
-point identification.}
-  \item{id.cex}{Character expansion for point labels.
-}
-  \item{id.col}{Color for point labels.
+  \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
+    points.  The default has \code{id.n=0} for labeling no points.  See
+    \code{\link{showLabels}} for details of these arguments.
 }
   \item{line}{\code{TRUE} to plot least-squares line.
 }

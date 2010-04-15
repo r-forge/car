@@ -5,6 +5,7 @@
 #   variable specification, layout and point marking
 # modified 1 January 2009 by J. Fox
 #   to set default id.n=0
+# changed showLabels args 15 April 2010 S. Weisberg
 
 # these functions to be rewritten; simply renamed for now
 
@@ -45,8 +46,7 @@ crPlot<-function (model, ...) {
 }
 
 crPlot.lm<-function(model, variable, 
-  id.var = residuals(model, type="pearson"),
-  id.method = "x",
+  id.method = list(abs(residuals(model, type="pearson")), "x"),
   labels, 
   id.n = 0, id.cex=1, id.col=NULL,
   order=1, line=TRUE, smooth=TRUE,
@@ -88,7 +88,7 @@ crPlot.lm<-function(model, variable,
 			lines(lowess(.x, partial.res[,var], iter=iter, f=span), lwd=lwd, col=col)
 		}
 		showLabels(.x, partial.res[,var], labels=labels, 
-            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
+            id.method=id.method, id.n=id.n, id.cex=id.cex,
             id.col=id.col)
 	}
 	else {
@@ -106,7 +106,7 @@ crPlot.lm<-function(model, variable,
 			lines(lowess(.x, partial.res[,last], iter=iter, f=span), lwd=lwd, col=col)
 		}
 		showLabels(.x, partial.res[,last], labels=labels, 
-            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
+            id.method=id.method, id.n=id.n, id.cex=id.cex,
             id.col=id.col)
 	}          
 }

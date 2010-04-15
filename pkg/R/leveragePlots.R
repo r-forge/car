@@ -36,8 +36,7 @@ leveragePlot<-function (model, ...) {
 }
 
 leveragePlot.lm<-function(model, term.name,
-    id.var = residuals(model, type="pearson"),
-    id.method = "x",
+    id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels, 
     id.n = 0, id.cex=1, id.col=NULL, 
 	  las=par("las"), col=palette()[2], pch=1, lwd=2, main="Leverage Plot", ...){
@@ -70,7 +69,7 @@ leveragePlot.lm<-function(model, term.name,
 		las=las, col=col, pch=pch)
 	abline(lsfit(v.x, v.y, wt=wt), col=col, lwd=lwd)
   showLabels(v.x, v.y, labels=labels, 
-          id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex, 
+          id.method=id.method, id.n=id.n, id.cex=id.cex, 
           id.col=id.col)
 }
 

@@ -18,11 +18,10 @@ leveragePlots(model, terms = ~., layout = NULL, ask,
 
 leveragePlot(model, ...)
 
-\method{leveragePlot}{lm}(model, term.name, 
-    id.var = residuals(model, type = "pearson"), 
-    id.method = "x", labels, id.n = 0, id.cex=1, id.col = NULL, 
-    las = par("las"), col = palette()[2], pch = 1, lwd = 2, 
-    main = "Leverage Plot", ...)
+\method{leveragePlot}{lm}(model, term.name,
+    id.method = list(abs(residuals(model, type="pearson")), "x"),
+    labels, id.n = 0, id.cex=1, id.col=NULL, las=par("las"), 
+    col=palette()[2], pch=1, lwd=2, main="Leverage Plot", ...)
 
 \method{leveragePlot}{glm}(model, ...)
 }
@@ -51,12 +50,9 @@ user to select the term(s) to plot.
   \item{\dots}{arguments passed down to method functions.}
   \item{term.name}{Quoted name of term in the model to be plotted; this argument 
 is omitted for \code{leveragePlots}.}
-  \item{id.var, id.method, labels, id.n, id.cex, id.col}{Arguments to control
-point labelling that can be used with either \code{leveragePlot} or with
-\code{LeveragePlots}.  The defaults are to label the \code{id.n} points with the
-most extreme value on the horizontal axis, and the \code{id.n} points with the 
-largest residuals in absolute value.  Setting \code{id.n=0}, the default suppresses point
-labelling.  See \code{\link{showLabels}} for the usage of these arguments.
+  \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
+    points.  The default has \code{id.n=0} for labeling no points.  See
+    \code{\link{showLabels}} for details of these arguments.
 }
 \item{las}{if \code{0}, ticks labels are drawn parallel to the
     axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).
