@@ -62,7 +62,7 @@ export(
     ncvTest,
     outlierTest,
     vif,
-    avPlot, avPlots, showLabels, residualPlot, residualPlots,
+    avPlot, avPlots, showLabels, showLabels1, residualPlot, residualPlots,
     bootCase, nextBoot,
     subsets,
     

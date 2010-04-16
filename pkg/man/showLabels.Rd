@@ -3,7 +3,7 @@
 \alias{showLabels}
 \alias{showLabels1}
 \title{
-Utility function to identify and mark extreme points in a 2D plot.
+Utility functions to identify and mark extreme points in a 2D plot.  
 }
 \description{
 This function is called by several graphical functions in the \code{car}
@@ -13,7 +13,7 @@ these other functions.
 }
 \usage{
 showLabels(x, y, labels=NULL, id.method="identify",  
-  id.n = 3, id.cex=1, id.col=NULL, ...)
+  id.n = length(x), id.cex=1, id.col=NULL, ...)
      
 showLabels1(x, y, labels=NULL, id.method="identify",
 	id.n = 3, id.cex=1, id.col=NULL, ...)
@@ -45,11 +45,16 @@ Controls the color of the plotted labels.  The default is the default color.
   \item{...}{additional arguments passed to \code{identify} or to \code{text}.}
 }
 \details{
+The function \code{showLabels} accepts \code{id.method} as a list to label 
+cases with more than one criterion.  The function \code{showLabels1} is called
+by \code{showLabels} and does not accept a list as its \code{id.method} 
+argument.
+
 The argument \code{id.method} determine how the points 
 to be identified are selected.  The default value of \code{id.method="identify"},
-then the \code{\link{identify}} is used to identify points interactively using
-the mouse.  Up to \code{id.n} points can be identified, so if you set 
-\code{id.n=0}, which is the default in many \code{car} functions, then no
+then the \code{\link{identify}} function is used to identify points 
+interactively using the mouse.  Up to \code{id.n} points can be identified, 
+so if  \code{id.n=0}, which is the default in many \code{car} functions, then no
 point identification is done.
 
 Automatic point identification can be done depending on the value of the
@@ -57,7 +62,7 @@ argument \code{id.method}.
 \itemize{
    \item id.method = "x" select points according to their value of \code{abs(x - mean(x))}
    \item id.method = "y" select points according to their value of \code{abs(y - mean(y))}
-   \item id.method = "mahal" Treat \code{(x. y)} as if it were a bivariate sample, and
+   \item id.method = "mahal" Treat \code{(x, y)} as if it were a bivariate sample, and
 select cases according to their Mahalanobis distance from  \code{mean(x), mean(y)}
    \item id.method = "logx", "logy" or "logmahal" can be used if the plot is drawn
 using logged-axes.

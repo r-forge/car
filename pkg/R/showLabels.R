@@ -2,16 +2,17 @@
 # rewritten 15 April 2010 S Weisberg
 
 showLabels <- function(x, y, labels=NULL, id.method="identify",  
-  id.n = 3, id.cex=1, id.col=NULL, ...) {
+  id.n = length(x), id.cex=1, id.col=NULL, ...) {
   if(id.n <= 0L) return(invisible(NULL))
   res <- NULL
+  id.method <- if(is.list(id.method)) id.method else list(id.method)
   for (meth in id.method) 
      res <- c(res, showLabels1(x, y, labels, meth, id.n, id.cex, id.col, ...))
   return(if(is.null(res)) invisible(res) else res)
   }   
 
 showLabels1 <- function(x, y, labels=NULL, id.method="identify",
-	id.n = 3, id.cex=1, id.col=NULL, ...) {
+	id.n = 3, id.cex=1, id.col=NULL, ...) {       
   if(id.n <= 0L) return(invisible(NULL)) 
 # If labels are NULL, try to get the labels from x:
   if (is.null(labels)) 
@@ -28,7 +29,7 @@ showLabels1 <- function(x, y, labels=NULL, id.method="identify",
 	if (is.null(id.col))
 		id.col <- palette()[1]   
   if(use.built.in.method==TRUE){
-   if(id.method == "identify") {
+   if(id.method == "identify") { 
     	result <- labels[identify(x, y, labels, n=id.n, cex=id.cex, 
                  col=id.col, ...)]
     	if(length(result) > 0) return(unique(result)) else return(NULL)
@@ -58,7 +59,7 @@ showLabels1 <- function(x, y, labels=NULL, id.method="identify",
 								rowSums( qr.Q(qr(cbind(1, log(x), log(y))))^2 ) else 
                 return(invisible(NULL)))) 
      }    
-# missing values need to be removed
+# missing values need to be removed   
 	ismissing <- is.na(x) | is.na(y) | is.na(labels) | is.na(id.var)
 	if( any(ismissing) ) {
 		x <- x[!ismissing]
