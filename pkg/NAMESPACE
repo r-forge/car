@@ -65,7 +65,7 @@ export(
     avPlot, avPlots, showLabels, showLabels1, residualPlot, residualPlots,
     bootCase, nextBoot,
     subsets,
-    
+    coefTable,
     # deprecated functions
     av.plot,
     av.plots,
