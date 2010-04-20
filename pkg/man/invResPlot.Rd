@@ -56,12 +56,7 @@ Linear Regression}, third edition, Wiley, Chapter 7}
 \author{Sanford Weisberg, \code{sandy@stat.umn.edu}}
 
 \examples{
-data(highway, package="alr3")
-highway$Sigs1 <- (round(highway$Sigs*highway$Len)+1)/highway$Len
-d <- with(highway,data.frame(Rate=Rate,logLen=logb(Len,2),
-                logADT=logb(ADT,2),logTrks=logb(Trks,2),
-                Slim=Slim,Shld=Shld,logSigs1=logb(Sigs1,2)))
-m2 <- lm(Rate~logLen+logADT+logTrks+Slim+Shld+logSigs1,d)
+m2 <- lm(rate ~ log(len) + log(ADT) + slim + shld + log(sigs1), Highway1)
 invResPlot(m2)
 }
 \keyword{ hplot }% at least one, from doc/KEYWORDS

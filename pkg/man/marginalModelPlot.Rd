@@ -117,9 +117,7 @@ Linear Regression}, third edition, Wiley, Chapter 8}
 \author{Sanford Weisberg, \email{sandy@stat.umn.edu}}
 
 \examples{
-data(ufcwc, package="alr3")
-c1 <- lm(Height ~ Dbh, ufcwc)
-mmp(c1, ufcwc$Dbh, xlab="Diameter, Dbh")
+c1 <- lm(infant.mortality ~ gdp, UN)
 mmps(c1)
 
 } 

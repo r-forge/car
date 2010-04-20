@@ -128,14 +128,10 @@ Linear Regression}, third edition, Wiley, Section 6.1.2}
 and John Fox,  \email{jfox@mcmaster.ca}}
 
 \examples{
-# cakes is a data frame with response Y, predictors X1 X2 
-data(cakes,package="alr3") 
-m1 <- lm(Y~ X2 + I(X2^2), data = cakes) # quadratic polynomial
-deltaMethod(m1, "-b1/(2*b2)") # X2 that maximizes the quadratic
-# second order polynomial in two predictors:
-m2 <- lm(Y ~ X1 + X2 + I(X1^2) + I(X2^2) + X1:X2, data=cakes)
-# Find X1 to maximize Y when X2=350:
-deltaMethod(m2,"(b1+b5*350)/(-2*b3)")
+m1 <- lm(time ~ t1 + t2, data = Transact) 
+deltaMethod(m1, "b1/b2") # ratio of coefficients
+deltaMethod(m1, "t1/t2") # use names of preds. rather than coefs.
+deltaMethod(m1, "t1/t2", vcov=hccm) # use hccm function to est. vars.
 }
 \keyword{ models }% at least one, from doc/KEYWORDS
 \keyword{ regression }

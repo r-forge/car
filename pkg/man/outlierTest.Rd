@@ -67,9 +67,6 @@ outlierTest(model, ...)
 \examples{
 data(Duncan, package="car")
 outlierTest(lm(prestige ~ income + education, data=Duncan))
-
-data(cloud, package="alr3")
-outlierTest(lm(logb(Rain, 2) ~ S + logb(C, 2) + logb(P, 2) + E + A, data=cloud, subset=-2))
 }
 
 \keyword{regression}

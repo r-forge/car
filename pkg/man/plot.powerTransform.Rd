@@ -51,9 +51,8 @@ second edition, Sage.
 See Also as \code{\link{powerTransform}}
 }
 \examples{
-data(ais,package="alr3")
-p1 <- powerTransform(cbind(Ht,Wt,RCC,WCC)~Sex,ais)
-with(ais,plot(p1,z=LBM,col=Sex+1))
+summary(a3 <- powerTransform(cbind(len, ADT, trks, sigs1) ~ hwy, Highway1))
+with(Highway1, plot(a3, z=rate, col=as.numeric(hwy)))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

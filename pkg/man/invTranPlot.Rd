@@ -80,9 +80,8 @@ New York:  Wiley. }
 \author{Sanford Weisberg, \email{sandy@stat.umn.edu} }
 
 \examples{
-data(baeskel, package = "alr3")
-with(baeskel, invTranPlot(Sulfur ,Tension))
-with(baeskel, invTranEstimate(Sulfur, Tension))
+with(UN, invTranPlot(gdp, infant.mortality))
+with(UN, invTranEstimate(gdp, infant.mortality))
 }    
 \keyword{ hplot }% at least one, from doc/KEYWORDS
 \keyword{regression}

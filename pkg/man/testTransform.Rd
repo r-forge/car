@@ -43,12 +43,8 @@ Weisberg, S. (2005) \emph{Applied Linear Regression}, third edition. Wiley.
 
 \seealso{\code{\link{powerTransform}}. }
 \examples{
-data(ais,package="alr3")
-# Box Cox Method, univariate
-summary(a1 <- powerTransform(LBM~Ht+Wt+RCC,ais))
-testTransform(a1,lambda=.33)
-# Multivariate Box Cox
-summary(a2<-powerTransform(cbind(LBM,Ht,Wt,RCC)~1,ais))
-testTransform(a2,c(.5,.5,.5,.5))
+summary(a3 <- powerTransform(cbind(len, ADT, trks, sigs1) ~ hwy, Highway1))
+# test lambda = (0 0 0 -1)
+testTransform(a3, c(0, 0, 0, -1))
 }
 \keyword{ regression}% at least one, from doc/KEYWORDS
