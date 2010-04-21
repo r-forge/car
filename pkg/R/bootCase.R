@@ -9,18 +9,19 @@ nextBoot.nls <- function(object,sample){
     data=data.frame(update(object,model=TRUE)$model))}
 
 bootCase <- function(object, f=coef, B=999){UseMethod("bootCase")}
-bootCase.lm <- function(object, f=coef, B=999) { 
-    bootCase.default(update(object, 
-             data=na.omit(model.frame(object))), f, B)
+bootCase.lm <- function(object, f=coef, B=999) {
+    bootCase.default(object, f, B, names(resid(object)))
+#    bootCase.default(update(object, 
+#             data=na.omit(model.frame(object))), f, B)
     }
 bootCase.glm <- function(object, f=coef, B=999) {
     bootCase.lm(object, f, B)
     }
 bootCase.nls <- function(object, f=coef, B=999) {
-    bootCase.default(object, f, B)
+    bootCase.default(object, f, B, seq(length(resid(object))))
     }
-bootCase.default <- function (object, f=coef, B = 999)
-{
+bootCase.default <- function (object, f=coef, B = 999, rows)
+{       
     n <- length(resid(object))
     opt<-options(show.error.messages = FALSE)
     on.exit(options(opt))
@@ -29,7 +30,7 @@ bootCase.default <- function (object, f=coef, B = 999)
     i <- 0
 #    
     while (i < B) {
-        obj.boot <- try(update(object, subset=sample(1:n, replace = TRUE)))
+        obj.boot <- try(update(object, subset=sample(rows, replace = TRUE)))
         if (is.null(class(obj.boot))) {
             count.error <- 0
             i <- i + 1

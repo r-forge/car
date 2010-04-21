@@ -1,7 +1,6 @@
 \name{showLabels}
 \Rdversion{1.1}
 \alias{showLabels}
-\alias{showLabels1}
 \title{
 Utility functions to identify and mark extreme points in a 2D plot.  
 }
@@ -15,8 +14,6 @@ these other functions.
 showLabels(x, y, labels=NULL, id.method="identify",  
   id.n = length(x), id.cex=1, id.col=NULL, ...)
      
-showLabels1(x, y, labels=NULL, id.method="identify",
-	id.n = 3, id.cex=1, id.col=NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -64,8 +61,6 @@ argument \code{id.method}.
    \item id.method = "y" select points according to their value of \code{abs(y - mean(y))}
    \item id.method = "mahal" Treat \code{(x, y)} as if it were a bivariate sample, and
 select cases according to their Mahalanobis distance from  \code{mean(x), mean(y)}
-   \item id.method = "logx", "logy" or "logmahal" can be used if the plot is drawn
-using logged-axes.
   \item id.method can be a vector of the same length as \code{x} consisting of 
 values to determine the points to be labelled.  For example, for a linear model
 \code{m}, setting \code{id.method=cooks.distance(m), id.n=4} will label the 
@@ -79,6 +74,9 @@ the two observations corresponding to the largest absolute Pearson residuals.
 With \code{showLabels}, the \code{id.method} argument can be list, so, for
 example \code{idmethod=list("x", "y")} would label according to the horizontal 
 and vertical axes variables.
+
+Finally, if the axes in the graph are logged, the function uses logged-variables
+where appropriate.
 }
 \value{
 A utility function used for its side-effect of drawing labels on a plot. 

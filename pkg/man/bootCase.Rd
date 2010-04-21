@@ -1,6 +1,5 @@
 \name{bootCase}
 \alias{bootCase}
-\alias{bootCase.default}
 \alias{bootCase.lm}
 \alias{bootCase.glm}
 \alias{bootCase.nls}
