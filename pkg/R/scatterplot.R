@@ -1,6 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 14 April 2010 by J. Fox
+# last modified 21 April 2010 by J. Fox
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -297,7 +297,9 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 		xpd <- par(xpd=TRUE)
 		on.exit(par(xpd=xpd), add=TRUE)
 		usr <- par("usr")
-		legend(usr[1], usr[4] + 1.2*top*strheight("x"), legend=levels(groups), 
+		legend.x <- if (logged("x")) 10^(usr[1]) else usr[1]
+		legend.y <- if (logged("y")) 10^(usr[4] + 1.2*top*strheight("x")) else usr[4] + 1.2*top*strheight("x")
+		legend(legend.x, legend.y, legend=levels(groups), 
 			pch=pch, col=col[1:n.groups], pt.cex=cex, cex=cex.lab, title=legend.title)
 	}
 	if ("smooth" %in% err) warning("could not fit smooth")
