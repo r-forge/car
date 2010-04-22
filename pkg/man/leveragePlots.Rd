@@ -20,7 +20,7 @@ leveragePlot(model, ...)
 
 \method{leveragePlot}{lm}(model, term.name,
     id.method = list(abs(residuals(model, type="pearson")), "x"),
-    labels, id.n = 0, id.cex=1, id.col=NULL, las=par("las"), 
+    labels, id.n = 0, id.cex=1, id.col=palette()[1], las=par("las"), 
     col=palette()[2], pch=1, lwd=2, main="Leverage Plot", ...)
 
 \method{leveragePlot}{glm}(model, ...)

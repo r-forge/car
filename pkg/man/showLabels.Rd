@@ -12,7 +12,7 @@ these other functions.
 }
 \usage{
 showLabels(x, y, labels=NULL, id.method="identify",  
-  id.n = length(x), id.cex=1, id.col=NULL, ...)
+  id.n = length(x), id.cex=1, id.col=palette()[1], ...)
      
 }
 %- maybe also 'usage' for other objects documented here.
@@ -37,7 +37,7 @@ Number of points to be identified.  If set to zero, no points are identified.
 Controls the size of the plotted labels.  The default is 0.75.
 }
   \item{id.col}{
-Controls the color of the plotted labels.  The default is the default color.
+Controls the color of the plotted labels. 
 }
   \item{...}{additional arguments passed to \code{identify} or to \code{text}.}
 }

@@ -26,7 +26,7 @@ invTranPlot(x, ...)
         xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
         family="bcPower", optimal=TRUE, key="auto",
         id.method = abs(residuals(lm(y~x))),
-        labels, id.n = 0, id.cex=1, id.col=NULL,
+        labels, id.n = 0, id.cex=1, id.col=palette()[1],
         ...)
 
 invTranEstimate(x,y,family="bcPower",confidence=0.95)

@@ -22,7 +22,7 @@ scatterplotMatrix1(x, ...)
     loess.threshold = 5, reg.line = lm, 
     transform = FALSE, family = c("bcPower", "yjPower"), ellipse = FALSE, 
     levels = c(0.5, 0.95), robust = TRUE, groups = NULL, by.groups = FALSE, 
-    labels, id.method = "mahal", id.n = 0, id.cex = 1, id.col = NULL, 
+    labels, id.method="mahal", id.n=0, id.cex=1, id.col=palette()[1], 
     col = if (n.groups == 1) palette()[1:2] else rep(palette(), 
         length = n.groups), 
     pch = 1:n.groups, lwd = 1, lwd.smooth = lwd, 

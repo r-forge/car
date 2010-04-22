@@ -16,7 +16,7 @@ influencePlot.lm <- function(model, scale=10,
 #    id.var = cooks.distance(model), 
     labels,
 #    id.method = "none",
-    id.n = 0, id.cex=1, id.col=NULL,
+    id.n = 0, id.cex=1, id.col=palette()[1],
     ...){ 
 	hatval <- hatvalues(model)
 	rstud <- rstudent(model)

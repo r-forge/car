@@ -2,7 +2,7 @@
 # rewritten 15 April 2010 S Weisberg
 
 showLabels <- function(x, y, labels=NULL, id.method="identify",  
-  id.n = length(x), id.cex=1, id.col=NULL,  ...) {
+  id.n = length(x), id.cex=1, id.col=palette()[1],  ...) {
   if(id.n <= 0L) return(invisible(NULL))
   res <- NULL
   id.method <- if(is.list(id.method)) id.method else list(id.method)
@@ -13,7 +13,7 @@ showLabels <- function(x, y, labels=NULL, id.method="identify",
   }   
 
 showLabels1 <- function(x, y, labels=NULL, id.method="identify",
-	id.n = length(x), id.cex=1, id.col=NULL,  ...) {       
+	id.n = length(x), id.cex=1, id.col=palette()[1],  ...) {       
 # If labels are NULL, try to get the labels from x:
   if (is.null(labels)) 
     labels <- names(x)
@@ -24,6 +24,9 @@ showLabels1 <- function(x, y, labels=NULL, id.method="identify",
   use.built.in.method <- is.character(id.method) & length(id.method) == 1
   if(use.built.in.method==TRUE) 
 	  match.arg(id.method, c("mahal", "x", "y", "identify")) 
+# label color
+	if (is.null(id.col))
+		id.col <- palette()[1]
 # Use identify?
   if(id.method == "identify") { 
     	result <- labels[identify(x, y, labels, n=length(x), cex=id.cex, 
@@ -78,10 +81,7 @@ showLabels1 <- function(x, y, labels=NULL, id.method="identify",
 								      rowSums( qr.Q(qr(cbind(1, x, log(y))))^2 ) else 
                       return(invisible(NULL)))  } else {
                   rowSums( qr.Q(qr(cbind(1, x, y)))^2 ) }}})      
-     } 
-# label color
-	if (is.null(id.col))
-		id.col <- palette()[1]   
+     }    
 # criterion
   ind <-  order(-id.var)[1L:id.n]
   mid <- mean(if(par("xlog")==TRUE) 10^(par("usr")[1:2]) else 

@@ -12,7 +12,7 @@ infIndexPlot.lm <- function(model,
      vars=c("Cook", "Studentized", "Bonf", "hat"), 
      main="Diagnostic Plots",
      labels, id.method = "y", id.n = 0, id.cex=1,
-     id.col=NULL, ...) {
+     id.col=palette()[1], ...) {
    what <- pmatch(tolower(vars), 
                   tolower(c("Cook", "Studentized", "Bonf", "hat")))
    if(length(what) < 1) stop("Nothing to plot")

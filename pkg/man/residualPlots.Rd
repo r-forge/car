@@ -43,7 +43,7 @@ residualPlot(model, ...)
                  smooth.col=col.lines, 
                  labels,
                  id.method = "xy",
-                 id.n = 0, id.cex=1, id.col=NULL,
+                 id.n = 0, id.cex=1, id.col=palette()[1],
                  col = palette()[2], col.lines = col[1], 
                  xlab, ylab, pch = 1, lwd = 1, lty=1,...)   
                  

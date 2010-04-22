@@ -55,7 +55,7 @@ ceresPlot<-function (model, ...) {
 ceresPlot.lm<-function(model, variable, 
   id.method = list(abs(residuals(model, type="pearson")), "x"),
   labels, 
-  id.n = 0, id.cex=1, id.col=NULL,
+  id.n = 0, id.cex=1, id.col=palette()[1],
   line=TRUE, smooth=TRUE, span=.5, iter, 
 	las=par("las"), col=palette()[2], pch=1, lwd=2, main="Ceres Plot", ...){
 	# the lm method works with glm's too              

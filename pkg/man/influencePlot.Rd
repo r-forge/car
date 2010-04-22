@@ -20,7 +20,7 @@
 influencePlot(model, ...)
 
 \method{influencePlot}{lm}(model, scale = 10, labels, id.n = 0, 
-	id.cex=1, id.col = NULL, ...)
+	id.cex=1, id.col=palette()[1], ...)
 }
 
 \arguments{

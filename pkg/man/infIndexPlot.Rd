@@ -17,7 +17,7 @@ influenceIndexPlot(model, ...)
      vars=c("Cook", "Studentized", "Bonf", "hat"), 
      main="Diagnostic Plots",
      labels, id.method = "y", id.n = 0, id.cex=1,
-     id.col=NULL, ...)
+     id.col=palette()[1], ...)
 
 }
 \arguments{

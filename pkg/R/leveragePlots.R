@@ -38,7 +38,7 @@ leveragePlot<-function (model, ...) {
 leveragePlot.lm<-function(model, term.name,
     id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels, 
-    id.n = 0, id.cex=1, id.col=NULL, 
+    id.n = 0, id.cex=1, id.col=palette()[1], 
 	  las=par("las"), col=palette()[2], pch=1, lwd=2, main="Leverage Plot", ...){
 	term.name<-if (is.character(term.name) & 1==length(term.name)) term.name
 		else deparse(substitute(term.name))
