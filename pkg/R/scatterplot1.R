@@ -264,7 +264,7 @@ scatterplot1.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, 
 			}
 		if (id.method != "identify") indices <- c(indices,
      showLabels(.x[subs], .y[subs], labels=labels[subs], id.method=id.method,
-		   id.n=id.n, id.cex=id.cex, id.col=id.col))
+		   id.n=id.n, id.cex=id.cex, id.col=col[i]))
   }}
 	if (!by.groups){
 		if (smooth) lowess.line(.x, .y, col=col[1], span=span)

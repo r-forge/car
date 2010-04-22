@@ -66,7 +66,9 @@ sp1(...)
   \item{lty.spread}{width for lines showing spread (default is \code{2}, broken line).}
   \item{id.method,id.n,id.cex,id.col}{Arguments for the labelling of
     points.  The default has \code{id.n=0} for labeling no points.  See
-    \code{\link{showLabels}} for details of these arguments.
+    \code{\link{showLabels}} for details of these arguments.  If the plot uses
+    different colors for groups, then the \code{id.col} argument is ignored and
+    label colors are determined by the \code{col} argument. 
 }
   \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
   	labels, and, failing that, will use observation numbers.}
