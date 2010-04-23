@@ -31,13 +31,16 @@ marginalModelPlot(...)
 \method{mmp}{default}(model, variable, mean = TRUE, sd = FALSE, xlab =
                  deparse(substitute(variable)), degree = 1, span = 2/3,
                  key = TRUE, col.line = palette()[c(4,2)],   
-                 labels, id.method = "y", id.n = 0, id.cex = 1,  
-                 id.col=palette()[1], ...)
+                 labels, id.method = "y", 
+                 id.n=if(id.method=="identify") Inf else 0, 
+                 id.cex = 1, id.col=palette()[1], ...)
    
 \method{mmp}{glm}(model, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
     col.line = palette()[c(4,2)],
-    labels, id.method="y", id.n=0, id.cex=1, id.col=palette()[1], ...)
+    labels, id.method="y", 
+    id.n=if(id.method=="identify") Inf else 0,
+    id.cex=1, id.col=palette()[1], ...)
 }
 
 \arguments{

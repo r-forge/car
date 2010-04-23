@@ -22,7 +22,8 @@ avPlot(model, ...)
 \method{avPlot}{lm}(model, variable,
     id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels, 
-    id.n = 0, id.cex=1, id.col=palette()[1],
+    id.n= if(id.method=="identify") Inf else 0,
+    id.cex=1, id.col=palette()[1],
     col = palette()[2], col.lines = col[1],
     xlab, ylab, pch = 1, lwd = 2, 
     main="Added-variable Plot", ...)
@@ -30,7 +31,8 @@ avPlot(model, ...)
 \method{avPlot}{glm}(model, variable, 
     id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels,
-    id.n = 0, id.cex=1, id.col=palette()[1], 
+    id.n=if(id.method=="identify") Inf else 0,
+    id.cex=1, id.col=palette()[1], 
     col = palette()[2], col.lines = col[1],
     xlab, ylab, pch = 1, lwd = 2,  type=c("Wang", "Weisberg"), 
     main="Added-variable Plot", ...)
@@ -60,7 +62,7 @@ added-variable plot is drawn for that term only.
   \code{avPlot} passes them to \code{plot}. 
 }
   \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
-    points.  The default has \code{id.n=0} for labeling no points.  See
+    points.  The default is \code{id.n=0} for labeling no points.  See
     \code{\link{showLabels}} for details of these arguments.
 }
   \item{col}{color for points; the default is the \emph{second} entry

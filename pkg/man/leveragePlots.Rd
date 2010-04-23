@@ -20,7 +20,9 @@ leveragePlot(model, ...)
 
 \method{leveragePlot}{lm}(model, term.name,
     id.method = list(abs(residuals(model, type="pearson")), "x"),
-    labels, id.n = 0, id.cex=1, id.col=palette()[1], las=par("las"), 
+    labels, 
+    id.n = if(id.method=="identify") Inf else 0,
+    id.cex=1, id.col=palette()[1], las=par("las"), 
     col=palette()[2], pch=1, lwd=2, main="Leverage Plot", ...)
 
 \method{leveragePlot}{glm}(model, ...)
@@ -51,7 +53,7 @@ user to select the term(s) to plot.
   \item{term.name}{Quoted name of term in the model to be plotted; this argument 
 is omitted for \code{leveragePlots}.}
   \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
-    points.  The default has \code{id.n=0} for labeling no points.  See
+    points.  The default is \code{id.n=0} for labeling no points.  See
     \code{\link{showLabels}} for details of these arguments.
 }
 \item{las}{if \code{0}, ticks labels are drawn parallel to the

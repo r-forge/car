@@ -20,10 +20,16 @@ dfbetaPlots(model, ...)
 dfbetasPlots(model, ...)
 
 \method{dfbetaPlots}{lm}(model, terms= ~ ., intercept=FALSE, layout=NULL, ask, 
-	main, id.n=4, labels=rownames(dfbeta), ...)
+	      main, labels=rownames(dfbeta), 
+        id.method="y",  
+        id.n=if(id.method=="identify") Inf else 0, id.cex=1, 
+        id.col=palette()[1],...)
 
-\method{dfbetaPlots}{lm}(model, terms= ~ ., intercept=FALSE, layout=NULL, ask, 
-	main, id.n=4, labels=rownames(dfbeta), ...)
+\method{dfbetaPlots}{lm}(model, terms=~., intercept=FALSE, layout=NULL, ask, 
+	      main, 
+        labels=rownames(dfbeta), id.method="y",
+        id.n=if(id.method=="identify") Inf else 0, id.cex=1, 
+        id.col=palette()[1], ...)
 }
 	
 \arguments{
@@ -47,10 +53,10 @@ index plot is drawn for that term only.
 }
 \item{\dots}{optional additional arguments to be passed to \code{\link{showLabels}}, e.g., \code{id.col}. 
 }
-  \item{labels}{observation names.}
-  \item{id.n}{Number of points to identify.  Set \code{id.n=0} for no
-point identification.  The default value for \code{id.method} identifies extreme
-dfbeta or dfbetas values.}
+  \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
+    points.  The default is \code{id.n=0} for labeling no points.  See
+    \code{\link{showLabels}} for details of these arguments.
+}
 }
 
 

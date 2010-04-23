@@ -28,11 +28,12 @@ showLabels1 <- function(x, y, labels=NULL, id.method="identify",
 	if (is.null(id.col))
 		id.col <- palette()[1]
 # Use identify?
-  if(id.method == "identify") { 
+  if(use.built.in.method==TRUE){
+   if(id.method == "identify") { 
     	result <- labels[identify(x, y, labels, n=length(x), cex=id.cex, 
                  col=id.col, ...)]
     	if(length(result) > 0) return(unique(result)) else return(NULL)
- 	}
+ 	}}
 # require id.n positive
   if(id.n <= 0L) return(invisible(NULL))  	
 # logged-axes?
@@ -65,9 +66,9 @@ showLabels1 <- function(x, y, labels=NULL, id.method="identify",
                  abs(x - mean(x)),
 					y = if(log.y==TRUE) 
                  suppressWarnings(if(all(y) > 0) 
-								    abs(log(x) - mean(log(y))) else 
+								    abs(log(y) - mean(log(y))) else 
                     return(invisible(NULL)))  else
-                 abs(x - mean(x)),
+                 abs(y - mean(y)),
           mahal = if(log.x == TRUE & log.y == TRUE) {        
                    suppressWarnings(if(all(x) > 0 & all(y) > 0)
 								      rowSums( qr.Q(qr(cbind(1, log(x), log(y))))^2 ) else 

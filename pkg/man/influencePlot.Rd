@@ -19,8 +19,10 @@
 \usage{
 influencePlot(model, ...)
 
-\method{influencePlot}{lm}(model, scale = 10, labels, id.n = 0, 
-	id.cex=1, id.col=palette()[1], ...)
+\method{influencePlot}{lm}(model, scale=10,  
+    labels, id.method = "noteworthy",
+    id.n = if(id.method=="identify") Inf else 0, 
+    id.cex=1, id.col=palette()[1], ...)
 }
 
 \arguments{
@@ -28,9 +30,13 @@ influencePlot(model, ...)
   }
   \item{scale}{a factor to adjust the size of the circles.
   }
-  \item{labels, id.n, id.cex, id.col}{settings for labelling
+  \item{labels, id.method, id.n, id.cex, id.col}{settings for labelling
 points; see \code{link{showLabels}} for details. To omit point labelling, set
-\code{id.n=0}, the default.}
+\code{id.n=0}, the default.  The default \code{id.method="noteworthy"} is used
+only in this function and indicates setting labels for points with large
+Stedentized residuals, hat-values or Cook's distances.  Set 
+\code{id.method="identify"} for interactive point identification.
+}
   \item{\dots}{arguments to pass to the \code{plot} function.
   }
 }
@@ -48,14 +54,15 @@ used for its side-effect of drawing a plot.
 	edition. Sage.
 }
 
-\author{John Fox \email{jfox@mcmaster.ca}}
+\author{John Fox \email{jfox@mcmaster.ca}, minor changes by S. Weisberg
+\email{sandy@stat.umn.edu}}
 
 
 \seealso{\code{\link[stats]{cooks.distance}}, \code{\link[stats]{rstudent}}, 
 \code{\link[stats]{hatvalues}}, \code{link{showLabels}}}
 
 \examples{
-    influencePlot(lm(prestige ~ income + education, data=Duncan))
+influencePlot(lm(prestige ~ income + education, data=Duncan))
 }
 
 \keyword{regression}

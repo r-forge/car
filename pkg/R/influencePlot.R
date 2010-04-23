@@ -4,6 +4,7 @@
 # 13 January 2009: changed to label points by all of hatvalues,
 #  studentized residuals, and Cook's Ds. J. Fox
 # 14 April 2010: set id.n = 0. J. Fox
+# 23 April 2010: rewrote point marking, S. Weisberg
 
 # moved from Rcmdr 5 December 2006
 
@@ -11,13 +12,10 @@ influencePlot <- function(model, ...){
     UseMethod("influencePlot")
     }
 
-influencePlot.lm <- function(model, scale=10, 
-#    col=c(1,2), 
-#    id.var = cooks.distance(model), 
-    labels,
-#    id.method = "none",
-    id.n = 0, id.cex=1, id.col=palette()[1],
-    ...){ 
+influencePlot.lm <- function(model, scale=10,  
+    labels, id.method = "noteworthy",
+    id.n = if(id.method=="identify") Inf else 0, 
+    id.cex=1, id.col=palette()[1], ...){ 
 	hatval <- hatvalues(model)
 	rstud <- rstudent(model)
 	if (missing(labels)) labels <- names(rstud)
@@ -33,15 +31,15 @@ influencePlot.lm <- function(model, scale=10,
 #	points(hatval, rstud, cex=scale*cook, 
 #			col=ifelse(cooks <- cook > cutoff, col[2], col[1]))
 	points(hatval, rstud, cex=scale*cook)
-#	noteworthy <- showLabels(hatval, rstud, labels=labels, 
-#            id.var=id.var, id.method=id.method, id.n=id.n, id.cex=id.cex,
-#            id.col=id.col)
-	which.rstud <- order(abs(rstud), decreasing=TRUE)[1:id.n]
-	which.cook <- order(cook, decreasing=TRUE)[1:id.n]
-	which.hatval <- order(hatval, decreasing=TRUE)[1:id.n]
-	which.all <- union(which.rstud, union(which.cook, which.hatval))
-	noteworthy <- showLabels(hatval, rstud, labels=labels, id.var=which.all, id.n=id.n,
-		id.cex=id.cex, id.col=id.col)
+	if(id.method != "identify"){
+	   which.rstud <- order(abs(rstud), decreasing=TRUE)[1:id.n]
+	   which.cook <- order(cook, decreasing=TRUE)[1:id.n]
+	   which.hatval <- order(hatval, decreasing=TRUE)[1:id.n]
+	   which.all <- union(which.rstud, union(which.cook, which.hatval))
+	   id.method <- which.all
+	   }
+	noteworthy <- showLabels(hatval, rstud, labels=labels, id.method=id.method, 
+    id.n=id.n, id.cex=id.cex, id.col=id.col)
   	if (length(noteworthy > 0))
 	return(data.frame(StudRes=rstud[noteworthy], Hat=hatval[noteworthy],
 	        CookD=cook[noteworthy]))

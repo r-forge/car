@@ -26,8 +26,9 @@ invTranPlot(x, ...)
         xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
         family="bcPower", optimal=TRUE, key="auto",
         id.method = abs(residuals(lm(y~x))),
-        labels, id.n = 0, id.cex=1, id.col=palette()[1],
-        ...)
+        labels, 
+        id.n = if(id.method=="identify") Inf else 0,
+        id.cex=1, id.col=palette()[1], ...)
 
 invTranEstimate(x,y,family="bcPower",confidence=0.95)
 }
@@ -57,7 +58,7 @@ Set to NULL to suppress the legend.}
 
   \item{ylab}{Label for the vertical axis.}
   \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
-    points.  The default has \code{id.n=0} for labeling no points.  See
+    points.  The default is \code{id.n=0} for labeling no points.  See
     \code{\link{showLabels}} for details of these arguments.
 }
   \item{...}{Additional arguments passed to the plot method.}

@@ -2,6 +2,7 @@
 # 13 January 2010: changed default id.n=3. J. Fox
 # 13 March 2010: added intercept argument. J. Fox
 # 14 April 2010: set id.n = 0. J. Fox
+# 22 April 2010: modified id.n S. Weisberg
 
 avPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask, 
            main, ...){
@@ -42,7 +43,8 @@ avPlot.lm <-
 function (model, variable,
     id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels, 
-    id.n = 0, id.cex=1, id.col=palette()[1],
+    id.n = if(id.method=="identify") Inf else 0,
+    id.cex=1, id.col=palette()[1],
     col = palette()[2], col.lines = col[1],
     xlab, ylab, pch = 1, lwd = 2, main="Added-variable Plot", ...)
 {
@@ -77,7 +79,8 @@ function (model, variable,
 avPlot.glm<-function(model, variable, 
     id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels,
-    id.n = 0, id.cex=1, id.col=palette()[1], 
+    id.n = if(id.method=="identify") Inf else 0,
+    id.cex=1, id.col=palette()[1], 
     col = palette()[2], col.lines = col[1],
     xlab, ylab, pch = 1, lwd = 2,  type=c("Wang", "Weisberg"), 
     main="Added-variable Plot", ...){

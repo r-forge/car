@@ -6,11 +6,11 @@ scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
 }
 
-scatterplotMatrix.formula <- function (x, data=NULL, subset, id.method="mahal", labels, ...) {
+scatterplotMatrix.formula <- function (x, data=NULL, subset, labels, ...) {
 	m <- match.call(expand.dots = FALSE)
 	if (is.matrix(eval(m$data, sys.frame(sys.parent())))) 
 		m$data <- as.data.frame(data)
-	m$id.method <- m$labels <- m$formula <- m$... <- NULL
+	m$labels <- m$formula <- m$... <- NULL
 	m[[1]] <- as.name("model.frame")
 	if (!inherits(x, "formula") | length(x) != 2) 
 		stop("invalid formula")
@@ -26,18 +26,17 @@ scatterplotMatrix.formula <- function (x, data=NULL, subset, id.method="mahal", 
 	m$formula <-x
 	if (missing(data)){ 
 		X <- na.omit(eval(m, parent.frame()))
-		if (id.method != "none" && missing(labels)) labels <- gsub("X", "", row.names(X))
+		if (missing(labels)) labels <- gsub("X", "", row.names(X))
 	}
 	else{
-		if (id.method != "none" && !missing(labels)) row.names(data) <- labels
+		if (!missing(labels)) row.names(data) <- labels
 		X <- eval(m, parent.frame())
-		labels <-if (id.method != "none") row.names(X)
-			else NULL
+		labels <- row.names(X)
 	}
-	if (!groups) scatterplotMatrix(X, id.method=id.method, labels=labels, ...)
+	if (!groups) scatterplotMatrix(X, labels=labels, ...)
 	else{
 		ncol<-ncol(X)
-		scatterplotMatrix.default(X[, -ncol], groups=X[, ncol], id.method=id.method, labels=labels, ...)
+		scatterplotMatrix.default(X[, -ncol], groups=X[, ncol], labels=labels, ...)
 	}
 }
 
@@ -46,11 +45,12 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, loess.threshold=5, reg.line=lm, 
 	transform=FALSE, family=c("bcPower", "yjPower"),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, id.var=NULL, labels,
+	groups=NULL, by.groups=FALSE, 
+	labels, id.method="mahal", id.n=0, id.cex=1, id.col=palette()[1],
 	col=if (n.groups == 1) palette()[1:2] else rep(palette(), length=n.groups),
 	pch=1:n.groups, lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
-	cex.main=par("cex.main"), id.cex=cex,
+	cex.main=par("cex.main"), 
 	legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...){
 	spread # force evaluation
 	if (id.method == "identify") stop("interactive point identification not permitted")
@@ -99,7 +99,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 		}
 		options(warn)
 	}
-	if (id.method != "none" && missing(labels)){
+	if (missing(labels)){
 		labels <- rownames(x)
 		if (is.null(labels)) labels <- as.character(seq(length.out=nrow(x)))
 	}
@@ -201,9 +201,11 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 					if (is.function(reg.line)) reg(x[subs], y[subs], col=col[i])
 					if (ellipse) dataEllipse(x[subs], y[subs], plot.points=FALSE, 
 							levels=levels, col=col[i], robust=robust, lwd=1)
-					if (id.method != "none") 
-						showLabelsScatter(x[subs], y[subs], labs[subs], id.var=id.var, id.method=id.method,
-							id.n=id.n, id.col=col[i], id.cex=id.cex)
+					showLabels(x[subs], y[subs], labs[subs], id.method=id.method, 
+					    id.n=id.n, id.col=col[i], id.cex=id.cex)
+					#if (id.method != "none") 
+					#	showLabelsScatter(x[subs], y[subs], labs[subs], id.var=id.var, id.method=id.method,
+					#		id.n=id.n, id.col=col[i], id.cex=id.cex)
 				}
 			}
 			if (!by.groups){
@@ -211,8 +213,10 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 				if (smooth) lowess.line(x, y, col=col[1], span)
 				if (ellipse) dataEllipse(x, y, plot.points=FALSE, levels=levels, col=col[1],
 						robust=robust, lwd=1)
-				if (id.method != "none") showLabelsScatter(x, y, labs, id.var=id.var, id.method=id.method, 
-						id.n=id.n, id.col=col[1], id.cex=id.cex)
+				showLabels(x, y, labs, id.method=id.method, 
+					    id.n=id.n, id.col=id.col, id.cex=id.cex)
+				#if (id.method != "none") showLabelsScatter(x, y, labs, id.var=id.var, id.method=id.method, 
+				#		id.n=id.n, id.col=col[1], id.cex=id.cex)
 			}
 		}, ...
 	)

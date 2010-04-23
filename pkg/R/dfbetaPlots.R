@@ -4,8 +4,11 @@ dfbetasPlots <- function(model, ...){
 	UseMethod("dfbetasPlots")
 }
 
-dfbetasPlots.lm <- function(model, terms=~., intercept=FALSE, layout=NULL, ask, 
-	main, id.n=4, labels=rownames(dfbetas), ...){
+dfbetasPlots.lm <- function(model, terms= ~ ., intercept=FALSE, layout=NULL, ask, 
+	      main, labels=rownames(dfbeta), 
+        id.method="y",  
+        id.n=if(id.method=="identify") Inf else 0, id.cex=1, 
+        id.col=palette()[1],...){
 	terms <- if(is.character(terms)) paste("~",terms) else terms
 	vform <- update(formula(model),terms)
 	if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
@@ -34,7 +37,9 @@ dfbetasPlots.lm <- function(model, terms=~., intercept=FALSE, layout=NULL, ask,
 		dfbs <- dfbetas[, term]
 		plot(dfbs, ylab=term, ...)
 		abline(h=c(-1, 0, 1), lty=2)
-		showLabels(seq(along=dfbs), dfbs, id.method="y", id.n=id.n, labels=labels, ...)
+		showLabels(seq(along=dfbs), dfbs, id.method=id.method, 
+                       id.n=id.n, labels=labels, id.col=id.col,
+                       id.cex=id.cex, ...)
 	}
 	mtext(side=3,outer=TRUE,main, cex=1.2)
 	invisible(NULL)
@@ -45,7 +50,10 @@ dfbetaPlots <- function(model, ...){
 }
 
 dfbetaPlots.lm <- function(model, terms=~., intercept=FALSE, layout=NULL, ask, 
-	main, id.n=4, labels=rownames(dfbeta), ...){
+	      main, 
+        labels=rownames(dfbeta), id.method="y",
+        id.n=if(id.method=="identify") Inf else 0, id.cex=1, 
+        id.col=palette()[1], ...){
 	terms <- if(is.character(terms)) paste("~",terms) else terms
 	vform <- update(formula(model),terms)
 	if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
@@ -76,7 +84,8 @@ dfbetaPlots.lm <- function(model, terms=~., intercept=FALSE, layout=NULL, ask,
 		se <- seb[term]
 		plot(dfb, ylab=term)
 		abline(h=c(-se, 0, se), lty=2)
-		showLabels(seq(along=dfb), dfb, id.method="y", id.n=id.n, labels=labels, ...)
+		showLabels(seq(along=dfb), dfb, id.method=id.method, id.n=id.n, 
+              labels=labels, id.cex=id.cex, id.col=id.col, ...)
 	}
 	mtext(side=3,outer=TRUE,main, cex=1.2)
 	invisible(NULL)

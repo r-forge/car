@@ -20,7 +20,8 @@ crPlot(model, ...)
 
 \method{crPlot}{lm}(model, variable, 
   id.method = list(abs(residuals(model, type="pearson")), "x"),
-  labels, id.n = 0, id.cex=1, id.col=palette()[1],
+  labels, id.n = if(id.method=="identify") Inf else 0,
+  id.cex=1, id.col=palette()[1],
   order=1, line=TRUE, smooth=TRUE,
 	iter, span=.5, las=par("las"), col=palette()[2], pch=1, lwd=2,
 	...)
@@ -52,7 +53,7 @@ This is relevant only if not all the graphs can be drawn in one window.}
 axis
 }
   \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
-    points.  The default has \code{id.n=0} for labeling no points.  See
+    points.  The default is \code{id.n=0} for labeling no points.  See
     \code{\link{showLabels}} for details of these arguments.
 }
   \item{order}{order of polynomial regression performed for predictor to be plotted.}

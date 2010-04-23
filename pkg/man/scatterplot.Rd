@@ -13,21 +13,23 @@
 \usage{
 scatterplot(x, ...)
 
-\method{scatterplot}{formula}(x, data, subset, xlab, ylab, legend.title, 
-	id.method="mahal", labels, ...)
+\method{scatterplot}{formula}(x, data, subset, xlab, ylab, legend.title, labels, 
+    ...)
 
-\method{scatterplot}{default}(x, y, smooth=TRUE, spread=!by.groups, 
-	span=.5, loess.threshold=5, reg.line=lm, boxplots=if (by.groups) "" else "xy",
-	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
-	lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
-	id.method="mahal", id.n=3, id.var=NULL, labels, log="", 
-	jitter=list(), xlim=NULL, ylim=NULL,
-	cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
-	cex.main=par("cex.main"), cex.sub=par("cex.sub"), id.cex=cex,
-	groups, by.groups=!missing(groups), legend.title=deparse(substitute(groups)), 
-	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	col=if (n.groups == 1) palette()[1:2] else rep(palette(), length=n.groups),
-	pch=1:n.groups, legend.plot=!missing(groups), reset.par=TRUE, ...)
+\method{scatterplot}{default}(x, y, smooth = TRUE, spread = !by.groups, span = 0.5, 
+    loess.threshold = 5, reg.line = lm, boxplots = if (by.groups) "" else "xy", 
+    xlab = deparse(substitute(x)), ylab = deparse(substitute(y)), 
+    las = par("las"), lwd = 1, lwd.smooth = lwd, lwd.spread = lwd, 
+    lty = 1, lty.smooth = lty, lty.spread = 2, labels, id.method = "mahal", 
+    id.n = if(id.method=="identify") length(x) else 0, 
+    id.cex = 1, id.col = palette()[1], log = "", jitter = list(), 
+    xlim = NULL, ylim = NULL, cex = par("cex"), cex.axis = par("cex.axis"), 
+    cex.lab = par("cex.lab"), cex.main = par("cex.main"), cex.sub = par("cex.sub"), 
+    groups, by.groups = !missing(groups), legend.title = deparse(substitute(groups)), 
+    ellipse = FALSE, levels = c(0.5, 0.95), robust = TRUE, 
+    col = if (n.groups == 1) palette()[1:2] else rep(palette(), length = n.groups), 
+    pch = 1:n.groups, legend.plot = !missing(groups), reset.par = TRUE, 
+    ...)
   
 sp(...)
 }
@@ -63,13 +65,12 @@ sp(...)
   \item{lty}{type of linear-regression lines (default \{code{1}, solid line).}
   \item{lty.smooth}{type of smooth regression lines (default is the same as \code{lty}).}
   \item{lty.spread}{width for lines showing spread (default is \code{2}, broken line).}
-  \item{id.method}{if \code{"mahal"} (the default), relatively extreme points are identified automatically
-  	according to their Mahalanobis distances from the centroid (point of means);
-  	if \code{"identify"}, points are identified interactively by left-clicking near them; right-click
-  	to exit from interactive-point-identification mode; if \code{"none"}, no point identification.
-  	See \code{\link{showLabels}} for details.}
-  \item{id.n}{number of relatively extreme points to identify automatically (default, \code{3}).}
-  \item{id.var}{point-identification variable, normally omitted; see \code{\link{showLabels}}.}
+  \item{id.method,id.n,id.cex,id.col}{Arguments for the labelling of
+    points.  The default is \code{id.n=0} for labeling no points.  See
+    \code{\link{showLabels}} for details of these arguments.  If the plot uses
+    different colors for groups, then the \code{id.col} argument is ignored and
+    label colors are determined by the \code{col} argument. 
+}
   \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
   	labels, and, failing that, will use observation numbers.}
   \item{log}{same as the \code{log} argument to \code{\link{plot}}, to produce log axes.}
@@ -95,7 +96,6 @@ sp(...)
     order (see \code{\link[graphics]{par}}).}
   \item{cex, cex.axis, cex.lab, cex.main, cex.sub}{set sizes of various graphical elements; 
     (see \code{\link[graphics]{par}}).}
-  \item{id.cex}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
   \item{legend.plot}{if \code{TRUE} then a legend for the groups is plotted in the upper margin.}
   \item{reset.par}{if \code{TRUE} then plotting parameters are reset to their previous values
     when \code{scatterplot} exits; if \code{FALSE} then the \code{mar} and \code{mfcol} parameters are
@@ -123,9 +123,9 @@ scatterplot(prestige ~ income, data=Prestige, ellipse=TRUE)
 scatterplot(prestige ~ income|type, data=Prestige, span=1)
 
 scatterplot(vocabulary ~ education, jitter=list(x=1, y=1), 
-	data=Vocab, id.method="none", smooth=FALSE)
+	data=Vocab, id.n=0, smooth=FALSE)
 
-scatterplot(infant.mortality ~ gdp, log="xy", data=UN)
+scatterplot(infant.mortality ~ gdp, log="xy", data=UN, id.n=5)
 
 	\dontrun{
 scatterplot(infant.mortality ~ gdp, id.method="identify", data=UN)

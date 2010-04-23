@@ -20,7 +20,6 @@ export(
     regLine,
     scatter3d,
     scatterplot, 
-    scatterplot1, sp1, scatterplotMatrix1, spm1,
     scatterplotMatrix,
     slp,
     some,
@@ -105,11 +104,7 @@ S3method(qqPlot, lm)
 S3method(scatter3d, default)
 S3method(scatter3d, formula)
 S3method(scatterplot, default)       
-S3method(scatterplot, formula) 
-S3method(scatterplot1, default)       
-S3method(scatterplot1, formula) 
-S3method(scatterplotMatrix1, default)       
-S3method(scatterplotMatrix1, formula)      
+S3method(scatterplot, formula)       
 S3method(scatterplotMatrix, default)
 S3method(scatterplotMatrix, formula)
 S3method(some, data.frame)           

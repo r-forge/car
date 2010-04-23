@@ -13,10 +13,12 @@ qqPlot<-function(x, ...) {
 qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
 	xlab=paste(distribution, "quantiles"), main=NULL, las=par("las"),
 	envelope=.95,  
-  col=palette()[2], lwd=2, pch=1, cex=par("cex"), 
+        col=palette()[2], lwd=2, pch=1, cex=par("cex"), 
 	line=c("quartiles", "robust", "none"), 
-  labels = if(!is.null(names(x))) names(x) else seq(along=x),
-  id.method = "y", id.n = 0, id.cex=1, id.col=palette()[1], ...)
+        labels = if(!is.null(names(x))) names(x) else seq(along=x),
+        id.method = "y", 
+        id.n = if(id.method=="identify") Inf else 0,
+        id.cex=1, id.col=palette()[1], ...)
   {
 	line <- match.arg(line)
 	good <- !is.na(x)
@@ -63,7 +65,8 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 	simulate=TRUE, envelope=.95,  
         reps=1000, 
 	col=palette()[2], lwd=2, pch=1, cex=par("cex"),
-        labels, id.method = "y", id.n = 0, id.cex=1, 
+        labels, id.method = "y", 
+        id.n = if(id.method=="identify") Inf else 0, id.cex=1, 
         id.col=palette()[1], ...){
 	result <- NULL
 	distribution <- match.arg(distribution)

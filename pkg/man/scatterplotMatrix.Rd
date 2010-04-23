@@ -13,19 +13,23 @@
 
 scatterplotMatrix(x, ...)
 
-\method{scatterplotMatrix}{formula}(x, data=NULL, subset, id.method="mahal", labels, ...)
+\method{scatterplotMatrix}{formula}(x, data=NULL, subset, labels, ...)
 
-\method{scatterplotMatrix}{default}(x, var.labels=colnames(x), 
-	diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
-	plot.points=TRUE, smooth=TRUE, spread=smooth && !by.groups, span=.5, loess.threshold=5, reg.line=lm, 
-	transform=FALSE, family=c("bcPower", "yjPower"),
-	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	groups=NULL, by.groups=FALSE, id.method="mahal", id.n=3, id.var=NULL, labels,
-	col=if (n.groups == 1) palette()[1:2] else rep(palette(), length=n.groups), pch=1:n.groups, 
-	lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
-	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
-	cex.main=par("cex.main"), id.cex=cex,
-	legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...)
+\method{scatterplotMatrix}{default}(x, var.labels = colnames(x), diagonal = c("density", 
+    "boxplot", "histogram", "oned", "qqplot", "none"), adjust = 1, 
+    nclass, plot.points = TRUE, smooth = TRUE, 
+    spread = smooth && !by.groups, span = 0.5, 
+    loess.threshold = 5, reg.line = lm, 
+    transform = FALSE, family = c("bcPower", "yjPower"), ellipse = FALSE, 
+    levels = c(0.5, 0.95), robust = TRUE, groups = NULL, by.groups = FALSE, 
+    labels, id.method="mahal", id.n=0, id.cex=1, id.col=palette()[1], 
+    col = if (n.groups == 1) palette()[1:2] else rep(palette(), 
+        length = n.groups), 
+    pch = 1:n.groups, lwd = 1, lwd.smooth = lwd, 
+    lwd.spread = lwd, lty = 1, lty.smooth = lty, lty.spread = 2, 
+    cex = par("cex"), cex.axis = par("cex.axis"), cex.labels = NULL, 
+    cex.main = par("cex.main"), legend.plot = length(levels(groups)) > 
+        1, row1attop = TRUE, ...)
 
 spm(x, ...)
 }
@@ -37,14 +41,12 @@ spm(x, ...)
   \item{data}{for \code{scatterplotMatrix.formula},
     a data frame within which to evaluate the formula.}
   \item{subset}{expression defining a subset of observations.}
-  \item{id.method}{if \code{"mahal"} (the default), relatively extreme points in each panel are identified automatically
-  	according to their Mahalanobis distances from the centroid (point of means);
-  	if \code{"none"}, no point identification.
-  	See \code{\link{showLabels}} for details (but interactive point identification is not permitted.}
-  \item{id.n}{Number of relatively extreme points to identify automatically in each panel (default, \code{3}).}
-   \item{id.var}{point-identification variable, normally omitted; see \code{\link{showLabels}}.}
-  \item{labels}{a vector of point labels; if absent, the function tries to determine reasonable
-  	labels, and, failing that, will use observation numbers.}
+  \item{labels,id.method,id.n,id.cex,id.col}{Arguments for the labelling of
+    points.  The default is \code{id.n=0} for labeling no points.  See
+    \code{\link{showLabels}} for details of these arguments.  If the plot uses
+    different colors for groups, then the \code{id.col} argument is ignored and
+    label colors are determined by the \code{col} argument. 
+}
   \item{var.labels}{variable labels (for the diagonal of the plot).}
   \item{diagonal}{contents of the diagonal panels of the plot.}
   \item{adjust}{relative bandwidth for density estimate, passed to 
@@ -94,7 +96,6 @@ spm(x, ...)
   \item{lty.spread}{width for lines showing spread (default is \code{2}, broken line).}
   \item{cex, cex.axis, cex.labels, cex.main}{set sizes of various graphical elements; 
     (see \code{\link[graphics]{par}}).}
-  \item{id.cex}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
   \item{legend.plot}{if \code{TRUE} then a legend for the groups is plotted
     in the first diagonal cell.}
   \item{row1attop}{If \code{TRUE} (the default) the first row is at the top, as in a matrix, as

@@ -16,8 +16,9 @@ influenceIndexPlot(model, ...)
 \method{infIndexPlot}{lm}(model,
      vars=c("Cook", "Studentized", "Bonf", "hat"), 
      main="Diagnostic Plots",
-     labels, id.method = "y", id.n = 0, id.cex=1,
-     id.col=palette()[1], ...)
+     labels, id.method = "y",
+     id.n = if(id.method=="identify") Inf else 0,
+     id.cex=1, id.col=palette()[1], ...)
 
 }
 \arguments{
@@ -31,7 +32,7 @@ All may be abbreviated by the first one or more letters.
 }
   \item{main}{main title for graph}
   \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
-    points.  The default has \code{id.n=0} for labeling no points.  See
+    points.  The default is \code{id.n=0} for labeling no points.  See
     \code{\link{showLabels}} for details of these arguments.
 }
   \item{\dots}{Arguments passed to \code{plot}}
