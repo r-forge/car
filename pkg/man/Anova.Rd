@@ -187,8 +187,8 @@ Manova(mod, ...)
   corrections.
 }
 \references{ 
-  Fox, J. (1997)
-  \emph{Applied Regression, Linear Models, and Related Methods.} Sage.
+  Fox, J. (2008)
+  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition. Sage.
   
   Hand, D. J., and Taylor, C. C. (1987)
   \emph{Multivariate Analysis of Variance and Repeated Measures: A Practical

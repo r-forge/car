@@ -76,13 +76,12 @@ added-variable plot is drawn for that term only.
 \item{ylab}{y-axis label.  If omitted a label will be constructed.}
   \item{type}{if \code{"Wang"} use the method of Wang (1985);
     if \code{"Weisberg"} use the method in the Arc software associated with
-    Cook and Weisberg (1999).}
+    Cook and Weisberg (1999)}
 }
 
 \details{
   The function intended for direct use is \code{avPlots} (for which \code{avp}
-  is an abbreviation). By default, these functions are used interactively
-  through a text menu.
+  is an abbreviation). 
 }
 
 \value{
@@ -95,13 +94,13 @@ added-variable plot is drawn for that term only.
   \emph{Applied Regression, Including Computing and Graphics.} Wiley.
 
   Fox, J. (2008)
-  \emph{Applied Regression and Generalized Linear Models, Second Edition.} Sage.
+  \emph{Applied Regression and Generalized Linear Models}, Second Edition. Sage.
   
   Wang, P C. (1985)
   Adding a variable in generalized linear models.
   \emph{Technometrics} \bold{27}, 273--276.
   
-  Weisberg, S. (2005). \emph{Applied Linear Regression}, 3rd Edition, Wiley.
+  Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition, Wiley.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}, Sanford Weiberg \email{sandy@umn.edu}}

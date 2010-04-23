@@ -5,7 +5,7 @@
 \description{
   \code{estimateTransform} computes members of families of transformations
 indexed by one
-parameter, the Box-Cox power family, or the Yeo and Johnson (2000) family, or
+parameter, the Box-Cox power family, or the Yeo and Johnson (2000)amily, or
 the
 basic power family, interpreting zero power as logarithmic. 
 The family can be modified to have Jacobian one, or not, except for the basic
@@ -56,17 +56,17 @@ values will  often be the desirable transformations.}
 \references{Box, G. E. P. and Cox, D. R. (1964) An analysis of transformations. \emph{Journal
 of the Royal Statisistical Society, Series B}. 26 211-46.
 
-Cook, R. D. and Weisberg, S. (1999).  \emph{Applied Regression Including Computing
+Cook, R. D. and Weisberg, S. (1999)  \emph{Applied Regression Including Computing
 and Graphics}.  Wiley.
 
-Fox, J. (2002).  \emph{R and S-Plus Companion to Applied Regression}.  Sage. 
+Fox, J. (2011)  \emph{R Companion to Applied Regression}, Second Edition.  Sage. 
 
-Velilla, S. (1993).  A note on the multivariate Box-Cox transformation to 
+Velilla, S. (1993)  A note on the multivariate Box-Cox transformation to 
 normality.  \emph{Statistics and Probability Letters}, 17, 259-263.
 
-Weisberg, S. (2005) \emph{Applied Linear Regression}, third edition. Wiley.
+Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. Wiley.
 
-Yeo, I. and Johnson, R. (2000).  A new family of
+Yeo, I. and Johnson, R. (2000) A new family of
 power transformations to improve normality or symmetry.  
 \emph{Biometrika}, 87, 954-959.
 }

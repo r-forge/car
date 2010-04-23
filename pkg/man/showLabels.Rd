@@ -85,13 +85,13 @@ used directly.
 }
 \references{
   Fox, J. (2008).
-  \emph{Applied Regression, Linear Models, and Related Methods.},
-  2nd Edition, Sage.
+  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition.,
+  Second Edition, Sage.
   
-  Fox, J. and Weisberg, S. (in press).  \emph{Companion to Applied Regression},
-    2nd Edition, Sage.
+  Fox, J. and Weisberg, (2011)\emph{An R Companion to Applied Regression},
+    Second Edition, Sage.
   
-  Weisberg, S. (2005). \emph{Applied Linear Regression}, 3rd Edition, Wiley.
+  Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition, Wiley.
 }
 \author{John Fox \email{jfox@mcmaster.ca}, Sanford Weisberg \email{sandy@umn.edu}}
 

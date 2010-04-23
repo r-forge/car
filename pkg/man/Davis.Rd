@@ -45,8 +45,8 @@ There are some missing data.
   and non-exercising women.
   \emph{Appetite}, \bold{15}, 13--21.
   
-  Fox, J. (1997)
-  \emph{Applied Regression, Linear Models, and Related Methods.} Sage.
+  Fox, J. (2008)
+  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition. Sage.
 }
 
 

@@ -76,7 +76,7 @@ Set to NULL to suppress the legend.}
 \seealso{ \code{\link{inverseResponsePlot}},\code{\link{optimize}}}
 
 \references{
-Weisberg, S. (2005).  \emph{Applied Linear Regression}, third edition.
+Weisberg, S. (2005)  \emph{Applied Linear Regression}, Third Edition.
 New York:  Wiley. }
 \author{Sanford Weisberg, \email{sandy@stat.umn.edu} }
 

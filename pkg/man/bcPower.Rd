@@ -20,7 +20,7 @@ basicPower(U,lambda)
   \item{U}{A vector, matrix or data.frame of values to be transformed}
   \item{lambda}{The one-dimensional transformation parameter, usually in 
   the range from \eqn{-2} to \eqn{2}, or if U is a matrix, a vector of length
-  ncol(U) of transformation parameters}
+  \code{ncol(U)} of transformation parameters}
   \item{jacobian.adjusted}{If TRUE, the transformation is normalized to have
   Jacobian equal to one.  The default is FALSE.}
 }
@@ -48,10 +48,10 @@ basicPower(U,lambda)
   Returns a vector or matrix of transformed values.
 }
 
-\references{Weisberg, S. (2005).  \emph{Applied Linear Regression}, third edition.
-New York:  Wiley, Chapter 7.
+\references{Weisberg, S. (2005)  \emph{Applied Linear Regression}, Third Edition.
+Wiley, Chapter 7.
 
-Yeo, In-Kwon and Johnson, Richard (2000).  A new family of power
+Yeo, In-Kwon and Johnson, Richard (2000) A new family of power
 transformations to improve normality or symmetry.  \emph{Biometrika}, 87,
 954-959.
 }

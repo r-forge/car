@@ -7,7 +7,7 @@
 \title{Finding univariate or multivariate power transformations}
 \description{
   \code{powerTransform} computes members of families of transformations indexed by one
-parameter, the Box-Cox power family, or the Yeo and Johnson (2000) family, or the
+parameter, the Box-Cox power family, or the Yeo and Johnson (2000)amily, or the
 basic power family, interpreting zero power as logarithmic. 
 The family can be modified to have Jacobian one, or not, except for the basic
 power family.
@@ -51,8 +51,8 @@ the left-side are all transformed, generally with different transformations
 to make all the residuals as close to
 normally distributed as possible.  \code{cbind(y1,y2,y3)~1} would specify transformations
 to multivariate normality with no predictors.  This generalizes the multivariate
-power transformations suggested by Velilla (1993) by allowing for different
-families of transformations, and by allowing for predictors.  Cook and Weisberg (1999) 
+power transformations suggested by Velilla (1993)by allowing for different
+families of transformations, and by allowing for predictors.  Cook and Weisberg (1999)
 and Weisberg (2005) suggest the usefulness of transforming
 a set of predictors \code{z1, z2, z3} for multivariate normality and for transforming
 for multivariate normality conditional on levels of a factor, which is equivalent
@@ -119,18 +119,19 @@ directly to test any other value for lambda.
 \emph{Journal
 of the Royal Statisistical Society, Series B}. 26 211-46.
 
-Cook, R. D. and Weisberg, S. (1999).  \emph{Applied Regression Including
+Cook, R. D. and Weisberg, S. (1999)  \emph{Applied Regression Including
 Computing
 and Graphics}.  Wiley.
 
-Fox, J. (2002).  \emph{R and S-Plus Companion to Applied Regression}.  Sage. 
+Fox, J. (2011)  \emph{R and Companion to Applied Regression}, Second
+Edition.  Sage. 
 
-Velilla, S. (1993).  A note on the multivariate Box-Cox transformation to 
+Velilla, S. (1993)  A note on the multivariate Box-Cox transformation to 
 normality.  \emph{Statistics and Probability Letters}, 17, 259-263.
 
-Weisberg, S. (2005) \emph{Applied Linear Regression}, third edition. Wiley.
+Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. Wiley.
 
-Yeo, I. and Johnson, R. (2000).  A new family of
+Yeo, I. and Johnson, R. (2000) A new family of
 power transformations to improve normality or symmetry.  
 \emph{Biometrika}, 87, 954-959.
 }

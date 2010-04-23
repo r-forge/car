@@ -51,7 +51,7 @@ Numeric output is a list with elements
 \code{\link{showLabels}}}
 
 \references{S. Weisberg (2005), \emph{Applied
-Linear Regression}, third edition, Wiley, Chapter 7}
+Linear Regression}, Third Edition, Wiley, Chapter 7}
 
 \author{Sanford Weisberg, \code{sandy@stat.umn.edu}}
 

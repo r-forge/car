@@ -34,10 +34,10 @@ the value of the log-likelihood at the maximum likelihood estimate.
 \references{Box, G. E. P. and Cox, D. R. (1964) An analysis of transformations. \emph{Journal
 of the Royal Statisistical Society, Series B}. 26 211-46.
 
-Cook, R. D. and Weisberg, S. (1999).  \emph{Applied Regression Including Computing
+Cook, R. D. and Weisberg, S. (1999)  \emph{Applied Regression Including Computing
 and Graphics}.  Wiley.
 
-Weisberg, S. (2005) \emph{Applied Linear Regression}, third edition. Wiley.
+Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. Wiley.
 }
 \author{ Sanford Weisberg, sandy@stat.umn.edu }
 

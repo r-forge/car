@@ -6,12 +6,12 @@
 
 \title{Functions to Construct Contrasts}
 \description{
-    These are substitutes for similarly named functions in the base package 
+    These are substitutes for similarly named functions in the stats package 
     (note the uppercase letter starting the second word in each function name).
     The only difference is that the contrast functions from the car package
     produce easier-to-read names for the contrasts when they are used in statistical models. 
     
-    The functions and this documentation are adapted from the base package.
+    The functions and this documentation are adapted from the stats package.
     }
 
 \usage{

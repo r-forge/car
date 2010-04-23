@@ -36,7 +36,7 @@ The observations are the U. S. states plus Washington, D. C. in 1970.
 
 \references{
   Fox, J.  (1997)
-  \emph{Applied Regression, Linear Models, and Related Methods.}
+  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition.
 Sage.
 }
 

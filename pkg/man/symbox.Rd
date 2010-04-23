@@ -38,13 +38,9 @@ symbox(x, ...)
 
 \references{
 
-	J. Fox and S. Weisberg (2011). 
-    \emph{An R and S-PLUS Companion to Applied Regression}, second
-	edition. Sage.
+	J. Fox and S. Weisberg (2011)
+    \emph{An R Companion to Applied Regression}, Second Edition. Sage.
 	
-    Friendly, M. (2005)
-    \emph{SAS System for Statistical Graphics, 2nd Edition.} 
-    SAS Institute (In preparation).
 }
     
 \seealso{\code{\link[graphics]{boxplot}}, \code{\link[MASS]{boxcox}}, \code{\link{bcPower}}, \code{\link{yjPower}}}

@@ -28,7 +28,7 @@ hccm(model, ...)
   \item{model}{an unweighted linear model, produced by \code{lm}.}
   \item{type}{one of \code{"hc0"}, \code{"hc1"}, \code{"hc2"}, \code{"hc3"}, or \code{"hc4"}; the
     first of these gives the classic White correction. The \code{"hc1"}, \code{"hc2"}, and \code{"hc3"}
-    corrections are described in Long and Ervin (2000); \code{"hc4"} is described in Cribari-Neto (2004).}
+    corrections are described in Long and Ervin (2000)\code{"hc4"} is described in Cribari-Neto (2004).}
   \item{singular.ok}{if \code{FALSE} (the default is \code{TRUE}), a model with aliased coefficients
     produces an error; otherwise, the aliased coefficients are ignored in the coefficient covariance
     matrix that's returned.}
@@ -51,7 +51,7 @@ hccm(model, ...)
   Asymptotic inference under heteroskedasticity of unknown form.
   \emph{Computational Statistics and Data Analysis} \bold{45}, 215--233.
   
-  Long, J. S. and Ervin, L. H. (2000) 
+  Long, J. S. and Ervin, L. H. (2000)
   Using heteroscedasity consistent standard errors in the linear regression model. 
   \emph{The American Statistician} \bold{54}, 217--224.
   

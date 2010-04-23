@@ -49,9 +49,8 @@ used for its side-effect of drawing a plot.
 }
 
 \references{
-    J. Fox and S. Weisberg (2011). 
-    \emph{An R and S-PLUS Companion to Applied Regression}, second
-	edition. Sage.
+    J. Fox and S. Weisberg (2011)
+    \emph{An R Companion to Applied Regression}, Second Edition. Sage.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}, minor changes by S. Weisberg

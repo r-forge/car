@@ -68,8 +68,6 @@ index plot is drawn for that term only.
 \references{
   Fox, J. (2008)
   \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage.
-  
-  Weisberg, S. (2005). \emph{Applied Linear Regression}, 3rd Edition, Wiley.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}, Sanford Weiberg \email{sandy@umn.edu}}

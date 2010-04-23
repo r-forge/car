@@ -40,8 +40,8 @@ The observations are 20 groups.
 }
 
 \references{
-  Fox, J. (1997)
-  \emph{Applied Regression, Linear Models, and Related Methods.} Sage.
+  Fox, J. (2008)
+  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition. Sage.
 }
 
 \usage{

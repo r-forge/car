@@ -49,10 +49,10 @@ of signals per mile of roadway, adjusted to have no zero values.
 
 \source{Carl Hoffstedt}
 \references{
-Weisberg, S. (2005). \emph{Applied Linear Regression}, 3rd edition. New York: Wiley, Section 7.2.
+Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. New York: Wiley, Section 7.2.
 
-Fox, J. and Weisberg, S. (in press).  \emph{An R companion to Applied
-Regression}, second ed., Sage.}
+Fox, J. and Weisberg, (2011)\emph{An R companion to Applied
+Regression}, Second Edition, Sage.}
 
 \examples{
 data(Highway1)

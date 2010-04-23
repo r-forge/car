@@ -110,12 +110,12 @@ Used for its side effect of producing plots.
 
 \references{ 
 
-Fox, J. and Weisberg, S. (in press).
-\emph{An R Companion to Applied Regression}, second edition.  Sage.
+Fox, J. and Weisberg, (2011)
+\emph{An R Companion to Applied Regression}, Second Edition.  Sage.
 
 
 S. Weisberg (2005), \emph{Applied
-Linear Regression}, third edition, Wiley, Chapter 8}
+Linear Regression}, Third Edition, Wiley, Chapter 8}
 
 \author{Sanford Weisberg, \email{sandy@stat.umn.edu}}
 

@@ -119,11 +119,11 @@ The value of \code{g} is given as a row label.
 by the function \code{\link{D}}.}
 
 \references{
-J. Fox and S. Weisberg (2011). \emph{R Companion to Applied Regression},
-second edition, Sage.
+J. Fox and S. Weisberg (2011)\emph{R Companion to Applied Regression},
+Second Edition, Sage.
 
 S. Weisberg (2005), \emph{Applied
-Linear Regression}, third edition, Wiley, Section 6.1.2}
+Linear Regression}, Third Edition, Wiley, Section 6.1.2}
 \author{Sanford Weisberg, \email{sandy@stat.umn.edu}
 and John Fox,  \email{jfox@mcmaster.ca}}
 

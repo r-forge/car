@@ -8,17 +8,18 @@ American Math Society Survey Data
 Counts of new PhDs in the mathematical sciences for 2008-09 categorized by type
 of institution, gender, and US citizenship status.
 }
-\usage{data(AMSsurvey)}
+\usage{AMSsurvey}
 \format{
   A data frame with 24 observations on the following 5 variables.
   \describe{
-    \item{\code{type}}{a factor with levels \code{I(Pu)} for group I
+    \item{type}{a factor with levels \code{I(Pu)} for group I
 public universities, \code{I(Pr)} for group I private universities, \code{II}
-\code{III}, \code{IV}, \code{Va} for the corresponding groups of universities}
-    \item{\code{class}}{a factor with levels \code{Female:Non-US} \code{Female:US} \code{Male:Non-US} \code{Male:US}}
-    \item{\code{sex}}{a factor with levels \code{Female}, \code{Male} of the
+and \code{III} for groups II and III, \code{IV} for statistics and
+biostatistics programs, and \code{Va} for applied mathemeatics programs.}
+    \item{class}{a factor with levels \code{Female:Non-US} \code{Female:US} \code{Male:Non-US} \code{Male:US}}
+    \item{sex}{a factor with levels \code{Female}, \code{Male} of the
 recipient}
-    \item{\code{citizen}}{a factor with levels \code{Non-US}, \code{US} giving
+    \item{citizen}{a factor with levels \code{Non-US}, \code{US} giving
 citizenship status}
     \item{\code{count}}{The number of individuals of each type}
   }
@@ -37,6 +38,6 @@ Phipps, Polly, Maxwell, James W. and Rose, Colleen
 \url{http://www.ams/org/employment/2009Survey-First-Report-Supp-Table4.pdf}
 }
 \examples{
-data(AMSsurvey)
+AMSsurvey
 }
 \keyword{datasets}

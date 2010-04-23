@@ -5,7 +5,7 @@
 \description{
 The \code{Baumann} data frame has 66 rows and 6 columns.
 The data are from an experimental study conducted by Baumann and Jones, as reported
-by Moore and McCabe (1993). Students were randomly assigned to one of three
+by Moore and McCabe (1993) Students were randomly assigned to one of three
 experimental groups.
 }
 \format{

@@ -34,7 +34,8 @@ boxCox(object, ...)
 a formula or fitted model object. Currently only lm and aov objects are handled.
 }
   \item{lambda}{
-vector of values of lambda default (-2, 2) in steps of 0.1. 
+vector of values of lambda default (-2, 2) in steps of 0.1 where the profile
+log-likelihood will be evaluated. 
 }
   \item{plotit}{
 logical which controls whether the result should be plotted. 
@@ -87,9 +88,9 @@ Computing
 and Graphics}.  Wiley.
 
 Fox, J. and Weisberg, S. (2011).  \emph{R Companion to Applied Regression},
-2nd edition.  Sage. 
+Second Edition.  Sage. 
 
-Weisberg, S. (2005) \emph{Applied Linear Regression}, third edition. Wiley.
+Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. Wiley.
 
 Yeo, I. and Johnson, R. (2000).  A new family of
 power transformations to improve normality or symmetry.  
