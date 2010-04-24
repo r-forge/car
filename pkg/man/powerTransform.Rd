@@ -7,7 +7,7 @@
 \title{Finding univariate or multivariate power transformations}
 \description{
   \code{powerTransform} computes members of families of transformations indexed by one
-parameter, the Box-Cox power family, or the Yeo and Johnson (2000)amily, or the
+parameter, the Box-Cox power family, or the Yeo and Johnson (2000) family, or the
 basic power family, interpreting zero power as logarithmic. 
 The family can be modified to have Jacobian one, or not, except for the basic
 power family.
@@ -51,7 +51,7 @@ the left-side are all transformed, generally with different transformations
 to make all the residuals as close to
 normally distributed as possible.  \code{cbind(y1,y2,y3)~1} would specify transformations
 to multivariate normality with no predictors.  This generalizes the multivariate
-power transformations suggested by Velilla (1993)by allowing for different
+power transformations suggested by Velilla (1993) by allowing for different
 families of transformations, and by allowing for predictors.  Cook and Weisberg (1999)
 and Weisberg (2005) suggest the usefulness of transforming
 a set of predictors \code{z1, z2, z3} for multivariate normality and for transforming
@@ -61,15 +61,15 @@ to setting the predictors to be indicator variables for that factor.
 Specifying the first argument as a vector, for example
 \code{powerTransform(ais$LBM)}, is equivalent to
 \code{powerTransform(LBM ~ 1, ais)}.  Similarly,
-\code{powerTransform(cbind(ais$LBM, ais$SSF))}, where the first argument is a matrix
+\code{powerTransform( cbind(ais$LBM, ais$SSF))}, where the first argument is a matrix
 rather than a formula is equivalent to
-\code{powerTransform(cbind(LBM,SSF) ~ 1, ais)}. 
+\code{powerTransform(cbind(LBM, SSF) ~ 1, ais)}. 
 
 Two families of power transformations are available.
 The bcPower family of \emph{scaled power transformations},
 \code{family="bctrans"}, 
 equals \eqn{(U^{\lambda}-1)/\lambda}{(U^(lambda)-1)/lambda} 
-for \eqn{\lambda}{lambda} \eqn{\neq}{not equal to} zero, and 
+for \eqn{\lambda}{lambda} \eqn{\neq}{not equal to} 0, and 
 \eqn{\log(U)}{log(U)} if \eqn{\lambda =0}{lambda = 0}.
   
 If \code{family="yjPower"} then the Yeo-Johnson transformations are used.  

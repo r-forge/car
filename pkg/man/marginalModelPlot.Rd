@@ -12,8 +12,8 @@
 For a regression object, plots the response on the vertical axis versus
 a linear combination \eqn{u} of terms in the mean function on the horizontal
 axis.  Added to the plot are a \code{loess} smooth for the graph, along with
-a loess smooth from the plot of the fitted values on \eqn{u}.  mmps is an alias
-for marginalModelPlots, and mmp is an alias for marginalModelPlot.
+a loess smooth from the plot of the fitted values on \eqn{u}.  \code{mmps} is an alias
+for \code{marginalModelPlots}, and \code{mmp} is an alias for \code{marginalModelPlot}.
 }
 \usage{
 marginalModelPlots(...)
@@ -25,7 +25,7 @@ marginalModelPlot(...)
 
 \method{mmp}{lm}(model, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
-    col.line = palette()[c(4,2)], 
+    col.line = palette()[c(4, 2)], 
     ...)
     
 \method{mmp}{default}(model, variable, mean = TRUE, sd = FALSE, xlab =
@@ -37,7 +37,7 @@ marginalModelPlot(...)
    
 \method{mmp}{glm}(model, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
-    col.line = palette()[c(4,2)],
+    col.line = palette()[c(4, 2)],
     labels, id.method="y", 
     id.n=if(id.method=="identify") Inf else 0,
     id.cex=1, id.col=palette()[1], ...)
@@ -48,7 +48,7 @@ marginalModelPlot(...)
    for which there is a \code{predict} method defined. }
 \item{terms}{A one-sided formula.  A marginal model plot will be drawn for
   each variable on the right-side of this formula that is not a factor.  The
-  default is \code{~ . }, which specifies that all the terms in 
+  default is \code{~ .}, which specifies that all the terms in 
   \code{formula(object} will be used.  See examples below.}
 \item{fitted}{If the default TRUE, then a marginal model plot in the direction
   of the fitted values or linear predictor of a generalized linear model will
@@ -115,7 +115,8 @@ Fox, J. and Weisberg, (2011)
 
 
 S. Weisberg (2005), \emph{Applied
-Linear Regression}, Third Edition, Wiley, Chapter 8}
+Linear Regression}, Third Edition, Wiley, Chapter 8.
+}
 
 \author{Sanford Weisberg, \email{sandy@stat.umn.edu}}
 

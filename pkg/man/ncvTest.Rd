@@ -51,6 +51,8 @@ ncvTest(model, ...)
   
   Fox, J. (2008)
   \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage. 
+  
+  Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition, Wiley.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}}

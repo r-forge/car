@@ -1,7 +1,7 @@
 \name{Highway1}
 \alias{Highway1}
 \docType{data}
-\title{Highway1 accidents}
+\title{Highway accidents}
 \description{
 The data comes from a unpublished master's paper by Carl Hoffstedt. They relate the automobile accident rate, in accidents per million vehicle miles to several potential terms.  The data include 39 sections of large highways in the state of Minnesota in 1973.  The goal of this analysis was to understand the impact of design variables, Acpts, Slim, Sig, and Shld that are under the control of the highway department, on accidents.
 }
@@ -47,11 +47,12 @@ of signals per mile of roadway, adjusted to have no zero values.
  }
 }
 
-\source{Carl Hoffstedt}
+\source{Carl Hoffstedt.  This differs from the dataset \code{highway} in the
+\code{alr3} package only by transformation of some of the columns.}
 \references{
 Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. New York: Wiley, Section 7.2.
 
-Fox, J. and Weisberg, (2011)\emph{An R companion to Applied
+Fox, J. and Weisberg, (2011) \emph{An R companion to Applied
 Regression}, Second Edition, Sage.}
 
 \examples{

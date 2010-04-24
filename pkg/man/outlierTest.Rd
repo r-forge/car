@@ -51,11 +51,13 @@ outlierTest(model, ...)
 }
 
 \references{
-  Cook, R. D. and Weisberg, S. (1984)
-  \emph{Residuals and Influence in Regression.} Wiley.
+  Cook, R. D. and Weisberg, S. (1982)
+  \emph{Residuals and Influence in Regression.} Chapman and Hall.
   
   Fox, J. (2008)
   \emph{Applied Regression Analysis and Generalized LInear Models, Second Edition.} Sage.
+  
+  Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition, Wiley.
   
   Williams, D. A. (1987)
   Generalized linear model diagnostics using the deviance and single

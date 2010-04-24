@@ -11,7 +11,7 @@ on the horizontal axis.  Uses \code{nls} to
 estimate  \eqn{\lambda}{lambda} in the function 
 \eqn{\hat{Y}=b_0+b_1Y^{\lambda}}{Yhat = b0 + b1(Y)^(lambda)}.
 Adds the fitted curve to the plot. 
-invResPlot is an alias for inverseResponsePlot.
+\code{invResPlot} is an alias for \code{inverseResponsePlot}.
 }
 
 \usage{

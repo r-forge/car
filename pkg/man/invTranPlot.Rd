@@ -11,7 +11,7 @@ draws a two-dimensional scatterplot of \eqn{Y}{Y} versus
 \eqn{X}{X}, along with the OLS
 fit from the regression of \eqn{Y}{Y} on 
 \eqn{(X^{\lambda}-1)/\lambda}{(Y^(lam)-1)/lam}.  \code{invTranEstimate}
-find the nonlinear least squares estimate of \eqn{\lambda}{lambda} and its
+finds the nonlinear least squares estimate of \eqn{\lambda}{lambda} and its
 standard error.
 }
 \usage{            
@@ -30,7 +30,7 @@ invTranPlot(x, ...)
         id.n = if(id.method=="identify") Inf else 0,
         id.cex=1, id.col=palette()[1], ...)
 
-invTranEstimate(x,y,family="bcPower",confidence=0.95)
+invTranEstimate(x, y, family="bcPower", confidence=0.95)
 }
 
 \arguments{
@@ -42,7 +42,7 @@ invTranEstimate(x,y,family="bcPower",confidence=0.95)
   \item{na.action}{Optional, as in \code{lm}, the action for missing data}
   \item{lambda}{The powers used in the plot.  The optimal power than minimizes
   the residual sum of squares is always added unless optimal is FALSE. }
-  \item{family}{The transformation family to use, \code{"bcPower"},
+  \item{family}{The transformation family to use, \code{"bcPower"}, 
   \code{"yjPower"}, or a user-defined family.}
   \item{confidence}{returns a profile likelihood confidence interval for the optimal 
 transformation with this confidence level.  If FALSE, no interval is returned.}
