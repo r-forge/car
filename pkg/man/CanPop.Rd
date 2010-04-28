@@ -24,10 +24,10 @@ Decennial time-series of Canadian population, 1851--1991.
 
 \source{
  Urquhart, M. C. and Buckley, K. A. H. (Eds.) (1965)
- \emph{Historical Statistics of Canada}. Macmillan [p. 1369].
+ \emph{Historical Statistics of Canada}. Macmillan, p. 1369.
  
  Canada (1994)
- \emph{Canada Year Book}. Statistics Canada [Table 3.2].
+ \emph{Canada Year Book}. Statistics Canada, Table 3.2.
 }
 
 \references{

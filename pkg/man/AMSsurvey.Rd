@@ -21,7 +21,7 @@ biostatistics programs, and \code{Va} for applied mathemeatics programs.}
 recipient}
     \item{citizen}{a factor with levels \code{Non-US}, \code{US} giving
 citizenship status}
-    \item{\code{count}}{The number of individuals of each type}
+    \item{count}{The number of individuals of each type}
   }
 }
 \details{

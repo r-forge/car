@@ -70,7 +70,7 @@ index plot is drawn for that term only.
   \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage.
 }
 
-\author{John Fox \email{jfox@mcmaster.ca}, Sanford Weiberg \email{sandy@umn.edu}}
+\author{John Fox \email{jfox@mcmaster.ca}, Sanford Weisberg \email{sandy@umn.edu}}
 
 \seealso{\code{\link{dfbeta}} ,\code{\link{dfbetas}}}
 

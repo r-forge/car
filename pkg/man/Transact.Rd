@@ -23,7 +23,7 @@ Data on transaction times in branch offices of a large Australian bank.
 Cunningham, R. and Heathcote, C.
 (1989), Estimating a non-Gaussian regression model with multicollinearity.
 Australian Journal of Statistics, 31,12-17.}
-\references{Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. New York: Wiley, Section 4.6.1.}
+\references{Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition.  Wiley, Section 4.6.1.}
 \usage{
 Transact
 }

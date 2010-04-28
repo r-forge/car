@@ -39,7 +39,7 @@ contr.Helmert(n, contrasts = TRUE)
         \item{\code{decorate.contrasts}}{This option should be set to a 2-element character vector containing the prefix and suffix
             characters to surround contrast names. If the option is not set, then \code{c("[", "]")} is used. For example, setting
             \code{options(decorate.contrasts=c(".", ""))} produces contrast names that are separated from factor names by a period.
-            Setting \code{options(decorate.contrasts=c("", ""))} reproduces the behaviour of the R base contrast functions.} 
+            Setting \code{options( decorate.contrasts=c("", ""))} reproduces the behaviour of the R base contrast functions.} 
         \item{\code{decorate.contr.Treatment}}{A character string to be appended to contrast names to signify treatment contrasts;
             if the option is unset, then \code{"T."} is used.}
         \item{\code{decorate.contr.Sum}}{Similar to the above, with default \code{"S."}.}

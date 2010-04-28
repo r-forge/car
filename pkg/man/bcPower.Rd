@@ -55,7 +55,7 @@ Yeo, In-Kwon and Johnson, Richard (2000) A new family of power
 transformations to improve normality or symmetry.  \emph{Biometrika}, 87,
 954-959.
 }
-\author{ Sanford Weisberg, sandy@stat.umn.edu }
+\author{ Sanford Weisberg, <sandy@stat.umn.edu> }
 
 \seealso{\code{\link{powerTransform}} }
 \examples{

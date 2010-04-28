@@ -77,7 +77,7 @@ Set to NULL to suppress the legend.}
 
 \references{
 Weisberg, S. (2005)  \emph{Applied Linear Regression}, Third Edition.
-New York:  Wiley. }
+  Wiley. }
 \author{Sanford Weisberg, \email{sandy@stat.umn.edu} }
 
 \examples{

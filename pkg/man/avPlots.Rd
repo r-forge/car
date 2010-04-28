@@ -103,7 +103,7 @@ added-variable plot is drawn for that term only.
   Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition, Wiley.
 }
 
-\author{John Fox \email{jfox@mcmaster.ca}, Sanford Weiberg \email{sandy@umn.edu}}
+\author{John Fox \email{jfox@mcmaster.ca}, Sanford Weisberg \email{sandy@umn.edu}}
 
 \seealso{\code{\link{residualPlots}} ,\code{\link{crPlots}}, \code{\link{ceresPlots}},
 % \code{\link{leveragePlots}}

@@ -16,8 +16,8 @@ coefTable(..., se = TRUE, digits = 3)
 \arguments{
   \item{\dots}{
 The names of one or more regression models.  These may be of class lm, glm,
-nlr, or any other regression method for which the functions coef and vcov
-return appropriate values.
+nlr, or any other regression method for which the functions \code{coef} and 
+\code{vcov} return appropriate values.
 }
   \item{se}{
 If TRUE, the default, return standard errors as well as estimates, if FALSE

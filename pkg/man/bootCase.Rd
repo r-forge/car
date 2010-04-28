@@ -64,7 +64,7 @@ These can be summarized as needed using standard R tools.
 J. Fox and S. Weisberg (2011) \emph{Companion to Applied Regression}, Second Edition.
 Thousand Oaks:  Sage.
 
-S. Weisberg (2005) \emph{Applied Linear Regression}, Third Edition.  New York: 
+S. Weisberg (2005) \emph{Applied Linear Regression}, Third Edition.   
 Wiley, Chapters 4 and 11.}
 
 \author{ Sanford Weisberg, \email{sandy@stat.umn.edu}.  The error checking was

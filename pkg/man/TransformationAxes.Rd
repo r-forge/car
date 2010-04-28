@@ -14,16 +14,20 @@
   the left of the plot as well.
 }
 \usage{
-basicPowerAxis(power, base=exp(1), side=c("right", "above", "left", "below"), 
-    at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=2,
+basicPowerAxis(power, base=exp(1), 
+    side=c("right", "above", "left", "below"), 
+    at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), 
+    grid.lty=2,
     axis.title="Untransformed Data", cex=1, las=par("las"))
 
 bcPowerAxis(power, side=c("right", "above", "left", "below"), 
-    at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=2,
+    at, start=0, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), 
+    grid.lty=2,
     axis.title="Untransformed Data", cex=1, las=par("las"))
     
 yjPowerAxis(power, side=c("right", "above", "left", "below"), 
-	at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), grid.lty=2,
+	at, lead.digits=1, n.ticks, grid=FALSE, grid.col=gray(0.50), 
+  grid.lty=2,
 	axis.title="Untransformed Data", cex=1, las=par("las"))
 
 probabilityAxis(scale=c("logit", "probit"), 

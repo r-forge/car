@@ -45,7 +45,7 @@ The value of \code{tfr} for 1973 is misrecorded as 2931; it should be 1931.
 \source{
    Fox, B. (1980) 
    \emph{Women's Domestic Labour and their Involvement 
-   in Wage Work.} Unpublished doctoral dissertation [p. 449].
+   in Wage Work.} Unpublished doctoral dissertation, p. 449.
 }
 
 \references{

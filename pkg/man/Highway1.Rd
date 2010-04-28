@@ -50,9 +50,9 @@ of signals per mile of roadway, adjusted to have no zero values.
 \source{Carl Hoffstedt.  This differs from the dataset \code{highway} in the
 \code{alr3} package only by transformation of some of the columns.}
 \references{
-Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. New York: Wiley, Section 7.2.
+Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition.  Wiley, Section 7.2.
 
-Fox, J. and Weisberg, (2011) \emph{An R companion to Applied
+Fox, J. and Weisberg, S. (2011) \emph{An R companion to Applied
 Regression}, Second Edition, Sage.}
 
 \examples{

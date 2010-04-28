@@ -5,7 +5,7 @@
 \description{
   \code{estimateTransform} computes members of families of transformations
 indexed by one
-parameter, the Box-Cox power family, or the Yeo and Johnson (2000)amily, or
+parameter, the Box-Cox power family, or the Yeo and Johnson (2000) family, or
 the
 basic power family, interpreting zero power as logarithmic. 
 The family can be modified to have Jacobian one, or not, except for the basic
@@ -21,7 +21,7 @@ estimateTransform(X, Y, weights=NULL, family="bcPower", start=NULL,
   \item{X}{A matrix or data.frame giving the \dQuote{right-side variables}.}
   \item{Y}{A vector or matrix or data.frame giving the \dQuote{left-side
 variables.}}
-  \item{weights}{Case weights, is in \sQuote{lm}.}
+  \item{weights}{Case weights, as in \sQuote{lm}.}
   \item{family}{The transformation family to use.  This is the quoted name of a
   function for computing the transformed values.  The default is
 \dQuote{bcPower}
@@ -70,7 +70,7 @@ Yeo, I. and Johnson, R. (2000) A new family of
 power transformations to improve normality or symmetry.  
 \emph{Biometrika}, 87, 954-959.
 }
-\author{ Sanford Weisberg, sandy@stat.umn.edu }
+\author{ Sanford Weisberg, <sandy@stat.umn.edu> }
 
 \seealso{\code{\link{powerTransform}}, \code{\link{testTransform}},
 \code{\link{optim}}. }

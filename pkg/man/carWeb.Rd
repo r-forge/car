@@ -1,9 +1,9 @@
 \name{carWeb}
 \alias{carWeb}
 
-\title{ Access to the Compainion to Applied Linear Regression website }
+\title{ Access to the R Companion to Applied Regression website }
 \description{
-  This function will access the website for Applied Linear Regression} 
+  This function will access the website for An R Companion to Applied Regression} 
 
 \usage{
 carWeb(page = c("webpage", "errata", "taskviews"), rfile, data)
@@ -21,8 +21,9 @@ carWeb(page = c("webpage", "errata", "taskviews"), rfile, data)
          commands used in that chapter will be displayed in your browser, where
          you can save them as a text file.
   }
-  \item{data}{The quoted name of a data file in \emph{A Companion to Applied 
-         Regression}, like "Duncan.txt" or "Prestige.txt".  
+  \item{data}{The quoted name of a data file in \emph{An R Companion to Applied 
+         Regression}, like "Duncan.txt" or "Prestige.txt".  The file will be
+         opened in your web browser. 
   }
 }
 

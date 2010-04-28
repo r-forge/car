@@ -48,10 +48,11 @@ polynomial contrasts are useful).
   \emph{Multivariate Data Reduction and Discrimination with SAS Software.}
    SAS Institute.
   
-  Friendly, M. (in press)
+  Friendly, M. (2006)
   Data ellipses, HE plots and reduced-rank displays for
   multivariate linear models: SAS software and examples.
-  \emph{Journal of Statistical Software}.  
+  \emph{Journal of Statistical Software}, 17(6),
+  \url{http://www.jstatsoft.org/v17/i06}.  
 
 }
 \examples{

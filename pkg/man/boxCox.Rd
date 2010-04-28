@@ -17,15 +17,18 @@ other than the Box-Cox power family.
 boxCox(object, ...)
 
 \method{boxCox}{default}(object, lambda = seq(-2, 2, 1/10), plotit = TRUE,
-       interp = (plotit && (m < 100)), eps = 1/50, xlab = expression(lambda),
+       interp = (plotit && (m < 100)), eps = 1/50, 
+       xlab = expression(lambda),
        ylab = "log-Likelihood", family="bcPower", ...)
 
 \method{boxCox}{formula}(object, lambda = seq(-2, 2, 1/10), plotit = TRUE,
-       interp = (plotit && (m < 100)), eps = 1/50, xlab = expression(lambda),
+       interp = (plotit && (m < 100)), eps = 1/50, 
+       xlab = expression(lambda),
        ylab = "log-Likelihood", family="bcPower", ...)
 
 \method{boxCox}{lm}(object, lambda = seq(-2, 2, 1/10), plotit = TRUE,
-       interp = (plotit && (m < 100)), eps = 1/50, xlab = expression(lambda),
+       interp = (plotit && (m < 100)), eps = 1/50, 
+       xlab = expression(lambda),
        ylab = "log-Likelihood", family="bcPower", ...)
 }
 
@@ -72,9 +75,9 @@ allow nonpositive responses will be used.
 
 \value{
 A list of the lambda vector and the computed profile log-likelihood vector, 
-invisibly if the result is plotted.  If plotit = TRUE plots log-likelihood vs 
+invisibly if the result is plotted.  If \code{plotit=TRUE} plots log-likelihood vs 
 lambda and indicates a 95% confidence interval about the maximum observed value of 
-lambda. If interp = TRUE, spline interpolation is used to give a smoother plot. 
+lambda. If \code{interp=TRUE}, spline interpolation is used to give a smoother plot. 
 
 }
 \references{
@@ -83,7 +86,7 @@ Box, G. E. P. and Cox, D. R. (1964) An analysis of transformations.
 \emph{Journal
 of the Royal Statisistical Society, Series B}. 26 211-46.
 
-Cook, R. D. and Weisberg, S. (1999).  \emph{Applied Regression Including
+Cook, R. D. and Weisberg, S. (1999)  \emph{Applied Regression Including
 Computing
 and Graphics}.  Wiley.
 
@@ -92,11 +95,11 @@ Second Edition.  Sage.
 
 Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. Wiley.
 
-Yeo, I. and Johnson, R. (2000).  A new family of
+Yeo, I. and Johnson, R. (2000)  A new family of
 power transformations to improve normality or symmetry.  
 \emph{Biometrika}, 87, 954-959.
 }
-\author{ Sanford Weisberg, sandy@stat.umn.edu }
+\author{ Sanford Weisberg, <sandy@stat.umn.edu> }
 
 \seealso{
 \code{\link{boxcox}}, \code{\link{yjPower}}, \code{\link{bcPower}},

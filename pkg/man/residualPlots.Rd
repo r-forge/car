@@ -72,7 +72,7 @@ except for \code{X3}.  Some nonstandard predictors, such as B-splines, are
 skipped.
 }
   \item{layout}{ 
-If set to a value like \code{c(1,1)} or \code{c(4,3)}, the layout
+If set to a value like \code{c(1, 1)} or \code{c(4, 3)}, the layout
 of the graph will have this many rows and columns.  If not set, the program
 will select an appropriate layout.  If the number of graphs exceed nine, you 
 must select the layout yourself, or you will get a maximum of nine per page.
@@ -103,7 +103,7 @@ Additional arguments passed to \code{residualPlot} and then the
 }
   \item{variable}{
 Quoted variable name for the horizontal axis, or 
-\code{"fitted"} to the plot versus fitted values.
+\code{"fitted"} to plot versus fitted values.
 }
   \item{type}{
 Type of residuals to be used.  Pearson residuals are 
@@ -165,7 +165,7 @@ skipped.  In addition terms that use the AsIs function, e.g., \code{I(X^2)}
 will also be skipped unless you set the argument \code{AsIs=TRUE}.  A plot of 
 residuals versus fitted values is also included unless \code{fitted=FALSE}. 
 
-In addition to plots, a table of curvature tests are displayed. For plots
+In addition to plots, a table of curvature tests is displayed. For plots
 against a term in the model formula, say \code{X1}, the test displayed is
 the t-test for for \code{I(X^2)} in the fit of \code{update, model, ~. + I(X^2))}.
 Econometricians call this a specification test.  For factors, the displayed
@@ -179,7 +179,9 @@ arguments, which can be used with \code{residualPlots} as well.  The
 \code{residualPlot} function returns the curvature test as an invisible argument.
   
 \code{residCurvTest} computes the curvature test only.  For any factors a
-boxplot will be drawn.  For any polynomials, plots are against the linear term.
+boxplot will be drawn.  
+
+For any polynomials, plots are against the linear term.
 For other non-standard predictors like B-splines are skipped.
 }
 \value{
@@ -191,11 +193,11 @@ residual plots.
 }
 \references{
 
-Fox, J. and Weisberg, (2011)
+Fox, J. and Weisberg, S. (2011)
 \emph{An R Companion to Applied Regression}, Second Edition.  Sage.
 
 
-Weisberg, S. (2005), \emph{Applied
+Weisberg, S. (2005) \emph{Applied
 Linear Regression}, Third Edition, Wiley, Chapter 8}
 \author{Sanford Weisberg, \email{sandy@stat.umn.edu}}
 

@@ -16,7 +16,8 @@ scatterplot(x, ...)
 \method{scatterplot}{formula}(x, data, subset, xlab, ylab, legend.title, labels, 
     ...)
 
-\method{scatterplot}{default}(x, y, smooth = TRUE, spread = !by.groups, span = 0.5, 
+\method{scatterplot}{default}(x, y, smooth = TRUE, 
+    spread = !by.groups, span = 0.5, 
     loess.threshold = 5, reg.line = lm, boxplots = if (by.groups) "" else "xy", 
     xlab = deparse(substitute(x)), ylab = deparse(substitute(y)), 
     las = par("las"), lwd = 1, lwd.smooth = lwd, lwd.spread = lwd, 
@@ -24,8 +25,9 @@ scatterplot(x, ...)
     id.n = if(id.method=="identify") length(x) else 0, 
     id.cex = 1, id.col = palette()[1], log = "", jitter = list(), 
     xlim = NULL, ylim = NULL, cex = par("cex"), cex.axis = par("cex.axis"), 
-    cex.lab = par("cex.lab"), cex.main = par("cex.main"), cex.sub = par("cex.sub"), 
-    groups, by.groups = !missing(groups), legend.title = deparse(substitute(groups)), 
+    cex.lab = par("cex.lab"), cex.main = par("cex.main"), 
+    cex.sub = par("cex.sub"), groups, by.groups = !missing(groups), 
+    legend.title = deparse(substitute(groups)), 
     ellipse = FALSE, levels = c(0.5, 0.95), robust = TRUE, 
     col = if (n.groups == 1) palette()[1:2] else rep(palette(), length = n.groups), 
     pch = 1:n.groups, legend.plot = !missing(groups), reset.par = TRUE, 

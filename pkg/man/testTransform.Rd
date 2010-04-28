@@ -39,7 +39,7 @@ and Graphics}.  Wiley.
 
 Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. Wiley.
 }
-\author{ Sanford Weisberg, sandy@stat.umn.edu }
+\author{ Sanford Weisberg, <sandy@stat.umn.edu> }
 
 \seealso{\code{\link{powerTransform}}. }
 \examples{

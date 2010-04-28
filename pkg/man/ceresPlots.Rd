@@ -6,7 +6,7 @@
 
 \title{Ceres Plots}
 \description{
-  These functions calculate Ceres plots for linear and generalized
+  These functions draw Ceres plots for linear and generalized
   linear models.
 }
 \usage{

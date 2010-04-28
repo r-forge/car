@@ -23,22 +23,24 @@ scatter3d(x, ...)
 \method{scatter3d}{formula}(formula, data, subset, xlab, ylab, zlab, labels, ...)
 
 \method{scatter3d}{default}(x, y, z,
-	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
-	zlab=deparse(substitute(z)), axis.scales=TRUE, revolutions=0, bg.col=c("white", "black"),
-	axis.col=if (bg.col == "white") c("darkmagenta", "black", "darkcyan")
-		else c("darkmagenta", "white", "darkcyan"),
-	surface.col=c("blue", "green", "orange", "magenta", "cyan", "red", "yellow", "gray"),
-	neg.res.col="red", pos.res.col="green",
-	square.col=if (bg.col == "white") "black" else "gray", point.col="yellow",
-	text.col=axis.col, grid.col=if (bg.col == "white") "black" else "gray",
-	fogtype=c("exp2", "linear", "exp", "none"),
-	residuals=(length(fit) == 1), surface=TRUE, fill=TRUE, grid=TRUE, grid.lines=26,
-	df.smooth=NULL, df.additive=NULL,
-	sphere.size=1, threshold=0.01, speed=1, fov=60, 
-	fit="linear", groups=NULL, parallel=TRUE, ellipsoid=FALSE, level=0.5,
-	id.method=c("mahal", "xz", "y", "xyz", "identify", "none"), id.n=3,
-	labels=as.character(seq(along=x)), offset = ((100/length(x))^(1/3)) * 0.02,
-	model.summary=FALSE, ...)
+	  xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
+	  zlab=deparse(substitute(z)), axis.scales=TRUE, revolutions=0, 
+      bg.col=c("white", "black"),
+	  axis.col=if (bg.col == "white") c("darkmagenta", "black", "darkcyan")
+		  else c("darkmagenta", "white", "darkcyan"),
+	  surface.col=c("blue", "green", "orange", "magenta", "cyan", "red", 
+      "yellow", "gray"),
+	  neg.res.col="red", pos.res.col="green",
+	  square.col=if (bg.col == "white") "black" else "gray", point.col="yellow",
+	  text.col=axis.col, grid.col=if (bg.col == "white") "black" else "gray",
+	  fogtype=c("exp2", "linear", "exp", "none"),
+	  residuals=(length(fit) == 1), surface=TRUE, fill=TRUE, grid=TRUE, 
+    grid.lines=26, df.smooth=NULL, df.additive=NULL,
+	  sphere.size=1, threshold=0.01, speed=1, fov=60, 
+	  fit="linear", groups=NULL, parallel=TRUE, ellipsoid=FALSE, level=0.5,
+	  id.method=c("mahal", "xz", "y", "xyz", "identify", "none"), id.n=3,
+	  labels=as.character(seq(along=x)), offset = ((100/length(x))^(1/3)) * 0.02,
+	  model.summary=FALSE, ...)
     
 identify3d(x, y, z, axis.scales=TRUE, groups = NULL, labels = 1:length(x),
 	col = c("blue", "green", "orange", "magenta", "cyan", "red", "yellow", "gray"),

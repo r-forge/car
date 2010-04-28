@@ -51,7 +51,7 @@ p-values are available only from the \code{lm} method.
 
 \references{ 
   Fox, J. (2008)
-  \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models}, Second Edition. Sage.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}}

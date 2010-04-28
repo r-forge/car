@@ -29,9 +29,9 @@ between male and female faculty members.
 }
 
 \references{
- J. Fox and S. Weisberg
+ J. Fox and S. Weisberg (2011)
  \emph{An R Companion to Applied Regression}, Second Edition
- Sage, in press.
+ Sage.
 }
 
 \keyword{datasets}

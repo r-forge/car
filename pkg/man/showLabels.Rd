@@ -42,32 +42,27 @@ Controls the color of the plotted labels.
   \item{...}{additional arguments passed to \code{identify} or to \code{text}.}
 }
 \details{
-The function \code{showLabels} accepts \code{id.method} as a list to label 
-cases with more than one criterion.  The function \code{showLabels1} is called
-by \code{showLabels} and does not accept a list as its \code{id.method} 
-argument.
-
 The argument \code{id.method} determine how the points 
-to be identified are selected.  The default value of \code{id.method="identify"},
-then the \code{\link{identify}} function is used to identify points 
+to be identified are selected.  For the default value of \code{id.method="identify"},
+the \code{\link{identify}} function is used to identify points 
 interactively using the mouse.  Up to \code{id.n} points can be identified, 
-so if  \code{id.n=0}, which is the default in many \code{car} functions, then no
-point identification is done.
+so if  \code{id.n=0}, which is the default in many functions in the \code{car} 
+package, then no point identification is done.
 
 Automatic point identification can be done depending on the value of the
 argument \code{id.method}.
 \itemize{
-   \item id.method = "x" select points according to their value of \code{abs(x - mean(x))}
-   \item id.method = "y" select points according to their value of \code{abs(y - mean(y))}
-   \item id.method = "mahal" Treat \code{(x, y)} as if it were a bivariate sample, and
-select cases according to their Mahalanobis distance from  \code{mean(x), mean(y)}
-  \item id.method can be a vector of the same length as \code{x} consisting of 
+   \item \code{id.method = "x"} select points according to their value of \code{abs(x - mean(x))}
+   \item \code{id.method = "y"} select points according to their value of \code{abs(y - mean(y))}
+   \item \code{id.method = "mahal"} Treat \code{(x, y)} as if it were a bivariate sample, and
+select cases according to their Mahalanobis distance from  \code{(mean(x), mean(y))}
+  \item \code{id.method} can be a vector of the same length as \code{x} consisting of 
 values to determine the points to be labeled.  For example, for a linear model
 \code{m}, setting \code{id.method=cooks.distance(m), id.n=4} will label the 
 points corresponding to the four largest values of Cook's distance, or
-\code{id.method = abs(residuals(m, type="pearson")), id.n =2} would label
+\code{id.method = abs(residuals(m, type="pearson")), id.n=2} would label
 the two observations corresponding to the largest absolute Pearson residuals.
-  \item id.method can be a list of case numbers or case-labels, in which case
+  \item \code{id.method} can be a vector of case numbers or case-labels, in which case
   those cases will be labeled, as long as \code{id.n} is greater than zero.
 }
 
@@ -80,15 +75,15 @@ where appropriate.
 }
 \value{
 A utility function used for its side-effect of drawing labels on a plot. 
-Although intended for use with other car functions, this function can be
-used directly.
+Although intended for use with other functions in the \code{car} package, 
+this function can be used directly.
 }
 \references{
-  Fox, J. (2008).
-  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition.,
+  Fox, J. (2008)
+  \emph{Applied Regression, Linear Models, and Related Methods}, 
   Second Edition, Sage.
   
-  Fox, J. and Weisberg, (2011) \emph{An R Companion to Applied Regression},
+  Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied Regression},
     Second Edition, Sage.
   
   Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition, Wiley.

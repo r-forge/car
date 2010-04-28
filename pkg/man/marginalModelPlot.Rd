@@ -49,7 +49,7 @@ marginalModelPlot(...)
 \item{terms}{A one-sided formula.  A marginal model plot will be drawn for
   each variable on the right-side of this formula that is not a factor.  The
   default is \code{~ .}, which specifies that all the terms in 
-  \code{formula(object} will be used.  See examples below.}
+  \code{formula(object)} will be used.  See examples below.}
 \item{fitted}{If the default TRUE, then a marginal model plot in the direction
   of the fitted values or linear predictor of a generalized linear model will
   be drawn.}
@@ -110,11 +110,11 @@ Used for its side effect of producing plots.
 
 \references{ 
 
-Fox, J. and Weisberg, (2011)
+Fox, J. and Weisberg, S. (2011)
 \emph{An R Companion to Applied Regression}, Second Edition.  Sage.
 
 
-S. Weisberg (2005), \emph{Applied
+S. Weisberg (2005) \emph{Applied
 Linear Regression}, Third Edition, Wiley, Chapter 8.
 }
 

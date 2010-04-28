@@ -39,7 +39,7 @@ Third post-test.
 \source{
   Moore, D. S. and McCabe, G. P. (1993)
   \emph{Introduction to the Practice of Statistics, Second Edition.}
-  Freeman [pp. 794--795].
+  Freeman, p. 794--795.
 }
 \usage{
 Baumann

@@ -50,8 +50,8 @@ Numeric output is a list with elements
 \seealso{\code{\link{invTranPlot}}, \code{\link{powerTransform}}, 
 \code{\link{showLabels}}}
 
-\references{S. Weisberg (2005), \emph{Applied
-Linear Regression}, Third Edition, Wiley, Chapter 7}
+\references{S. Weisberg (2005) \emph{Applied
+Linear Regression}, Third Edition, Wiley, Chapter 7.}
 
 \author{Sanford Weisberg, \code{sandy@stat.umn.edu}}
 
