@@ -34,7 +34,7 @@ influencePlot(model, ...)
 points; see \code{link{showLabels}} for details. To omit point labelling, set
 \code{id.n=0}, the default.  The default \code{id.method="noteworthy"} is used
 only in this function and indicates setting labels for points with large
-Stedentized residuals, hat-values or Cook's distances.  Set 
+Studentized residuals, hat-values or Cook's distances.  Set 
 \code{id.method="identify"} for interactive point identification.
 }
   \item{\dots}{arguments to pass to the \code{plot} function.

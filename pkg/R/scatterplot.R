@@ -1,6 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 21 April 2010 by J. Fox
+# last modified 25 April 2010 by J. Fox
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -208,20 +208,23 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 	if (!missing(groups)){
 			data <- na.omit(data.frame(groups, x, y, labels, stringsAsFactors=FALSE))
 			groups <- data[,1]
+			if (!is.factor(groups)) groups <- as.factor(groups)
 			.x <- data[,2]
 			.y <- data[,3]
 			labels <- data[,4]
 		  top <- if (legend.plot) 
-             4 + length(levels(as.factor(groups))) else mar[3]
+             # 4 + length(levels(as.factor(groups))) else mar[3]
+			4 + nlevels(groups) else mar[3]
 	    }
 	    else {
 		    .x <- x
 		    .y <- y
 		    top <- mar[3]
+			groups <- factor(rep(1, length(.x)))
 	}
 	xbox <- length(grep("x", boxplots)) > 0
 	ybox <- length(grep("y", boxplots)) > 0
-	groups <- as.factor(if(missing(groups)) rep(1, length(.x)) else as.character(groups))
+	# groups <- as.factor(if(missing(groups)) rep(1, length(.x)) else as.character(groups))
 	if (xbox && ybox)
 		layout(matrix(c(1, 0, 3, 2), 2, 2),
 			widths = c(5, 95),

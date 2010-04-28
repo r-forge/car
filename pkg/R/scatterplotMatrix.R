@@ -1,6 +1,6 @@
 # fancy scatterplot matrices (J. Fox)
 
-# last modified: 14 April 2010 by J. Fox
+# last modified: 25 April 2010 by J. Fox
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
@@ -105,7 +105,8 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	}
 	if (!(missing(groups))){
 		x <- na.omit(data.frame(groups, labels, x, stringsAsFactors=FALSE))
-		groups <- as.factor(as.character(x[, 1]))
+#		groups <- as.factor(as.character(x[, 1]))
+		if (!is.factor(groups)) groups <- as.factor(as.character(x[,1]))
 		labels <- x[, 2]
 		x <- x[, -(1:2)]
 	}
