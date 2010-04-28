@@ -62,13 +62,13 @@ argument \code{id.method}.
    \item id.method = "mahal" Treat \code{(x, y)} as if it were a bivariate sample, and
 select cases according to their Mahalanobis distance from  \code{mean(x), mean(y)}
   \item id.method can be a vector of the same length as \code{x} consisting of 
-values to determine the points to be labelled.  For example, for a linear model
+values to determine the points to be labeled.  For example, for a linear model
 \code{m}, setting \code{id.method=cooks.distance(m), id.n=4} will label the 
 points corresponding to the four largest values of Cook's distance, or
 \code{id.method = abs(residuals(m, type="pearson")), id.n =2} would label
 the two observations corresponding to the largest absolute Pearson residuals.
   \item id.method can be a list of case numbers or case-labels, in which case
-  those cases will be labelled, as long as \code{id.n} is greater than zero.
+  those cases will be labeled, as long as \code{id.n} is greater than zero.
 }
 
 With \code{showLabels}, the \code{id.method} argument can be list, so, for
@@ -88,7 +88,7 @@ used directly.
   \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition.,
   Second Edition, Sage.
   
-  Fox, J. and Weisberg, (2011)\emph{An R Companion to Applied Regression},
+  Fox, J. and Weisberg, (2011) \emph{An R Companion to Applied Regression},
     Second Edition, Sage.
   
   Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition, Wiley.

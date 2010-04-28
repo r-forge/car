@@ -91,7 +91,7 @@ axis
   \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition. Second Edition.
    Sage.
    
-  Fox, J. and Weisberg, (2011)\emph{An R Companion to Applied 
+  Fox, J. and Weisberg, (2011) \emph{An R Companion to Applied 
   Regression}, Second Edition.  Sage.
 }
 \author{John Fox \email{jfox@mcmaster.ca}}

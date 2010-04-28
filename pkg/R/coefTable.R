@@ -9,7 +9,7 @@ coefTable <- function(..., se=TRUE, digits=3){
     colnames(table) <- if (se) paste(rep(c("Est.", "SE"), n.models),
                            rep(1:n.models, each=2))
         else paste(rep("Est.", n.models), 1:n.models)
-    cat("\nCall:)")
+    cat("\nCall:")
     for (i in 1:n.models){
         model <- models[[i]]
         fout <- deparse(model$call,width.cutoff=getOption("width") - 9)

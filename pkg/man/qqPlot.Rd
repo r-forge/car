@@ -60,7 +60,7 @@ sep=""), main=NULL,
 \code{id.method="y"}
     will identify the \code{id.n} points with the largest value of 
     \code{abs(y-mean(y))}.  See \code{\link{showLabels}} for other options.}
-  \item{id.n}{number of points labelled.  If \code{id.n=0}, the default, no
+  \item{id.n}{number of points labeled.  If \code{id.n=0}, the default, no
     point identification.} 
   \item{id.cex}{set size of the text for point labels; the default is \code{cex} (which is typically \code{1}).}
   \item{id.col}{color for the point labels.}

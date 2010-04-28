@@ -59,7 +59,7 @@ of the Royal Statisistical Society, Series B}. 26 211-46.
 Cook, R. D. and Weisberg, S. (1999)  \emph{Applied Regression Including Computing
 and Graphics}.  Wiley.
 
-Fox, J. (2011)  \emph{R Companion to Applied Regression}, Second Edition.  Sage. 
+Fox, J. (2011) \emph{R Companion to Applied Regression}, Second Edition. Sage. 
 
 Velilla, S. (1993)  A note on the multivariate Box-Cox transformation to 
 normality.  \emph{Statistics and Probability Letters}, 17, 259-263.

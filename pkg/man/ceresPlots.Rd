@@ -99,7 +99,7 @@ axis}
   \emph{Applied Regression, Linear Models, and Related Methods},
   Second Edition Sage.
   
-  Fox, J. and Weisberg, S. (2011)\emph{An R Companion to Applied Regression},
+  Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied Regression},
   Second Edition. Sage.
   
   Weisberg, S. (2005)  \emph{Applied Linear Regression}, Third Edition. Wiley.

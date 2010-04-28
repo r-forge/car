@@ -119,7 +119,7 @@ The value of \code{g} is given as a row label.
 by the function \code{\link{D}}.}
 
 \references{
-J. Fox and S. Weisberg (2011)\emph{R Companion to Applied Regression},
+J. Fox and S. Weisberg (2011) \emph{R Companion to Applied Regression},
 Second Edition, Sage.
 
 S. Weisberg (2005), \emph{Applied

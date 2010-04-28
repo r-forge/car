@@ -87,7 +87,7 @@ Cook, R. D. and Weisberg, S. (1999).  \emph{Applied Regression Including
 Computing
 and Graphics}.  Wiley.
 
-Fox, J. and Weisberg, S. (2011).  \emph{R Companion to Applied Regression},
+Fox, J. and Weisberg, S. (2011)  \emph{R Companion to Applied Regression},
 Second Edition.  Sage. 
 
 Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. Wiley.
