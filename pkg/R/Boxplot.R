@@ -5,7 +5,8 @@ Boxplot <- function(y, ...){
 	UseMethod("Boxplot")
 }
 
-Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"), id.n=10, xlab, ylab, ...){
+Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"), 
+     id.n=10, xlab, ylab, ...){
 	id.method <- match.arg(id.method)
 	if (missing(ylab)) ylab <- deparse(substitute(y))
 	if (missing(labels)) labels <- seq(along=y)
@@ -97,7 +98,8 @@ Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"), 
 	}          
 }
 
-Boxplot.formula <- function(formula, data=NULL, subset, na.action=NULL, labels., id.method=c("y", "identify", "none"), xlab, ylab, ...){
+Boxplot.formula <- function(formula, data=NULL, subset, na.action=NULL, labels., 
+  id.method=c("y", "identify", "none"), xlab, ylab, ...){
 	# much of this function adapted from graphics:boxplot.formula
 	id.method <- match.arg(id.method)
 	m <- match.call(expand.dots = FALSE)
@@ -114,7 +116,8 @@ Boxplot.formula <- function(formula, data=NULL, subset, na.action=NULL, labels.,
 		response <- attr(attr(mf, "terms"), "response")
 		if (missing(ylab)) ylab <- names(mf)[response]
 		if (missing(xlab)) xlab <- names(mf)[-c(response, lab.var)]
-		Boxplot(mf[[response]], mf[, -c(response, lab.var)], labels=mf[[lab.var]], xlab=xlab, ylab=ylab, id.method=id.method, ...)
+		Boxplot(mf[[response]], mf[, -c(response, lab.var)], labels=mf[[lab.var]], 
+            xlab=xlab, ylab=ylab, id.method=id.method, ...)
 	}
 	else if (length(formula) == 2){
 		if (missing(ylab)) ylab <- names(mf)[-lab.var]

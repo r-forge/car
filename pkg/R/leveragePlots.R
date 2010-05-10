@@ -38,9 +38,10 @@ leveragePlot<-function (model, ...) {
 leveragePlot.lm<-function(model, term.name,
     id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels, 
-    id.n = if(id.method=="identify") Inf else 0,
+    id.n = if(id.method[1]=="identify") Inf else 0,
     id.cex=1, id.col=palette()[1], 
-	  las=par("las"), col=palette()[2], pch=1, lwd=2, main="Leverage Plot", ...){
+	  las=par("las"), col=palette()[2], pch=1, lwd=2, 
+    main="Leverage Plot", grid=TRUE, ...){
 	term.name<-if (is.character(term.name) & 1==length(term.name)) term.name
 		else deparse(substitute(term.name))
 	labels <- if(missing(labels)) labels <- names(residuals(model))
@@ -69,6 +70,7 @@ leveragePlot.lm<-function(model, term.name,
 		ylab=paste(responseName," | others"), 
 		las=las, col=col, pch=pch)
 	abline(lsfit(v.x, v.y, wt=wt), col=col, lwd=lwd)
+	if(grid) grid(lty=1)
   showLabels(v.x, v.y, labels=labels, 
           id.method=id.method, id.n=id.n, id.cex=id.cex, 
           id.col=id.col)

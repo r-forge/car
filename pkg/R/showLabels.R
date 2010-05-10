@@ -28,7 +28,7 @@ showLabels1 <- function(x, y, labels=NULL, id.method="identify",
 	if (is.null(id.col))
 		id.col <- palette()[1]
 # Use identify?
-  if(use.built.in.method==TRUE){
+  if(use.built.in.method==TRUE){  
    if(id.method == "identify") { 
     	result <- labels[identify(x, y, labels, n=length(x), cex=id.cex, 
                  col=id.col, ...)]

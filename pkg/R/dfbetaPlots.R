@@ -7,8 +7,8 @@ dfbetasPlots <- function(model, ...){
 dfbetasPlots.lm <- function(model, terms= ~ ., intercept=FALSE, layout=NULL, ask, 
 	      main, labels=rownames(dfbeta), 
         id.method="y",  
-        id.n=if(id.method=="identify") Inf else 0, id.cex=1, 
-        id.col=palette()[1],...){
+        id.n=if(id.method[1]=="identify") Inf else 0, id.cex=1, 
+        id.col=palette()[1], grid=TRUE, ...){
 	terms <- if(is.character(terms)) paste("~",terms) else terms
 	vform <- update(formula(model),terms)
 	if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
@@ -36,6 +36,7 @@ dfbetasPlots.lm <- function(model, terms= ~ ., intercept=FALSE, layout=NULL, ask
 	for (term in good) {
 		dfbs <- dfbetas[, term]
 		plot(dfbs, ylab=term, ...)
+		if(grid) grid(lty=1)
 		abline(h=c(-1, 0, 1), lty=2)
 		showLabels(seq(along=dfbs), dfbs, id.method=id.method, 
                        id.n=id.n, labels=labels, id.col=id.col,
@@ -52,8 +53,8 @@ dfbetaPlots <- function(model, ...){
 dfbetaPlots.lm <- function(model, terms=~., intercept=FALSE, layout=NULL, ask, 
 	      main, 
         labels=rownames(dfbeta), id.method="y",
-        id.n=if(id.method=="identify") Inf else 0, id.cex=1, 
-        id.col=palette()[1], ...){
+        id.n=if(id.method[1]=="identify") Inf else 0, id.cex=1, 
+        id.col=palette()[1], grid=TRUE, ...){
 	terms <- if(is.character(terms)) paste("~",terms) else terms
 	vform <- update(formula(model),terms)
 	if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
@@ -83,6 +84,7 @@ dfbetaPlots.lm <- function(model, terms=~., intercept=FALSE, layout=NULL, ask,
 		dfb <- dfbeta[, term]
 		se <- seb[term]
 		plot(dfb, ylab=term)
+		if(grid) grid(lty=1)
 		abline(h=c(-se, 0, se), lty=2)
 		showLabels(seq(along=dfb), dfb, id.method=id.method, id.n=id.n, 
               labels=labels, id.cex=id.cex, id.col=id.col, ...)

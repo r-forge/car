@@ -15,7 +15,7 @@ influencePlot <- function(model, ...){
 
 influencePlot.lm <- function(model, scale=10,  
     labels, id.method = "noteworthy",
-    id.n = if(id.method=="identify") Inf else 0, 
+    id.n = if(id.method[1]=="identify") Inf else 0, 
     id.cex=1, id.col=palette()[1], ...){ 
 	hatval <- hatvalues(model)
 	rstud <- rstudent(model)

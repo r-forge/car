@@ -20,11 +20,11 @@ crPlot(model, ...)
 
 \method{crPlot}{lm}(model, variable, 
   id.method = list(abs(residuals(model, type="pearson")), "x"),
-  labels, id.n = if(id.method=="identify") Inf else 0,
+  labels, id.n = if(id.method[1]=="identify") Inf else 0,
   id.cex=1, id.col=palette()[1],
   order=1, line=TRUE, smooth=TRUE,
 	iter, span=.5, las=par("las"), col=palette()[2], pch=1, lwd=2,
-	...)
+	grid=TRUE, ...)
 
 \method{crPlot}{glm}(model, ...)
 }
@@ -70,6 +70,8 @@ axis
   \item{pch}{plotting character for points; default is \code{1} 
     (a circle, see \code{\link[graphics]{par}}).}
   \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).}
+  \item{grid}{If TRUE, the default, a light-gray background grid is put on the
+graph}
 }
 \details{
   The function intended for direct use is \code{crPlots}, for which \code{crp}

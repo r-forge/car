@@ -22,8 +22,8 @@ qqp(...)
 	line=c("quartiles", "robust", "none"),  
         labels = if(!is.null(names(x))) names(x) else seq(along=x),
         id.method = "y", 
-        id.n =if(id.method=="identify") Inf else 0,
-        id.cex=1, id.col=palette()[1], ...)
+        id.n =if(id.method[1]=="identify") Inf else 0,
+        id.cex=1, id.col=palette()[1], grid=TRUE, ...)
 
 \method{qqPlot}{lm}(x, xlab=paste(distribution, "Quantiles"),
         ylab=paste("Studentized Residuals(", deparse(substitute(x)), ")",
@@ -32,8 +32,8 @@ sep=""), main=NULL,
         las=par("las"), simulate=TRUE, envelope=.95,  
         reps=1000, col=palette()[2], lwd=2, pch=1, cex=par("cex"),
         labels, id.method = "y", 
-        id.n = if(id.method=="identify") Inf else 0,
-        id.cex=1, id.col=palette()[1], ...)
+        id.n = if(id.method[1]=="identify") Inf else 0,
+        id.cex=1, id.col=palette()[1], grid=TRUE, ...)
 }
 
 \arguments{
@@ -72,6 +72,8 @@ sep=""), main=NULL,
     for \code{lm} object only. The method is due to Atkinson (1985).}
   \item{reps}{integer; number of bootstrap replications for confidence envelope.}
   \item{\dots}{arguments such as \code{df} to be passed to the appropriate quantile function.}
+  \item{grid}{If TRUE, the default, a light-gray background grid is put on the
+graph}
 }
 
 \details{

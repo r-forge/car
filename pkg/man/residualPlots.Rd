@@ -43,10 +43,10 @@ residualPlot(model, ...)
                  smooth.col=col.lines, 
                  labels,
                  id.method = "xy",
-                 id.n = if(id.method=="identify") Inf else 0,
+                 id.n = if(id.method[1]=="identify") Inf else 0,
                  id.cex=1, id.col=palette()[1],
                  col = palette()[2], col.lines = col[1], 
-                 xlab, ylab, pch = 1, lwd = 1, lty=1,...)   
+                 xlab, ylab, pch = 1, lwd = 1, lty=1, grid=TRUE, ...)   
                  
 \S3method{residualPlot}{lm}(model, ...) 
   
@@ -154,6 +154,8 @@ line width for lines.
   \item{lty}{
 line type for quadratic.
 }
+  \item{grid}{If TRUE, the default, a light-gray background grid is put on the
+graph}
   }
 \details{
 \code{residualPlots} draws one or more residuals plots depending on the

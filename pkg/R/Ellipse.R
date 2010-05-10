@@ -3,7 +3,8 @@
 # last modified 24 January 2010 by J. Fox
 
 ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5, segments=51, add=TRUE, 
-	xlab="", ylab="", las=par("las"), col=palette()[2], lwd=2, lty=1, ...) {
+	xlab="", ylab="", las=par("las"), col=palette()[2], lwd=2, lty=1, 
+  grid=TRUE, ...) {
 	logged <- function(axis=c("x", "y")){
 		axis <- match.arg(axis)
 		0 != length(grep(axis, log))
@@ -19,13 +20,15 @@ ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5
 	if (add) lines(ellipse, col=col, lwd=lwd, lty=lty, ...) 
 	else plot(ellipse, xlab = xlab, ylab = ylab, type ="l", col=col, 
 			lwd=lwd, lty=lty, las=las, ... ) 
+  if(grid) grid(lty=1)	
 	if (center.pch) points(center[1], center[2], pch=center.pch, cex=center.cex, col=col)
-}
+  }
 
-dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19, center.cex=1.5,
+dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19, 
+  center.cex=1.5,
 	plot.points=TRUE, add=!plot.points, segments=51, robust=FALSE, 
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), 
-	las=par("las"), col=palette()[2], pch=1, lwd=2, lty=1, ...) {
+	las=par("las"), col=palette()[2], pch=1, lwd=2, lty=1, grid=TRUE, ...) {
 	if (length(col) == 1) col <- rep(col, 2)
 	if(missing(y)){
 		if (is.matrix(x) && ncol(x) == 2) {
@@ -40,6 +43,7 @@ dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19, center
 		stop("x and y must be vectors of the same length")
 	if (plot.points && !add) plot(x, y, xlab=xlab, ylab=ylab, col=col[1], pch=pch, las=las, ...)
 	if (plot.points && add)  points(x, y, col=col[1], pch=pch, ...)
+	if(grid) grid(lty=1)
 	dfn <- 2
 	dfd <- length(x) - 1
 	if (robust) {
@@ -65,7 +69,7 @@ confidenceEllipse <- function (model, ...) {
 
 confidenceEllipse.lm <- function(model, which.coef, levels=0.95, Scheffe=FALSE, 
 	center.pch=19, center.cex=1.5, segments=51, xlab, ylab, 
-	las=par("las"), col=palette()[2], lwd=2, lty=1, ...){
+	las=par("las"), col=palette()[2], lwd=2, lty=1,  ...){
 	which.coef <- if(length(coefficients(model)) == 2) c(1, 2)
 		else{
 			if (missing(which.coef)){

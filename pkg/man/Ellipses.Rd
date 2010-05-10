@@ -13,13 +13,13 @@
 \usage{
 ellipse(center, shape, radius, log="", center.pch=19, center.cex=1.5, 
   segments=51, add=TRUE, xlab="", ylab="", 
-   las=par('las'), col=palette()[2], lwd=2, lty=1, ...)
+   las=par('las'), col=palette()[2], lwd=2, lty=1, grid=TRUE, ...)
 
 dataEllipse(x, y, log="", levels=c(0.5, 0.95), center.pch=19, center.cex=1.5, 
   plot.points=TRUE, add=!plot.points, segments=51, robust=FALSE,
   xlab=deparse(substitute(x)), 
   ylab=deparse(substitute(y)), 
-  las=par('las'), col=palette()[2], pch=1, lwd=2, lty=1, ...)
+  las=par('las'), col=palette()[2], pch=1, lwd=2, lty=1, grid=TRUE, ...)
 
 confidenceEllipse(model, ...)
 
@@ -72,6 +72,8 @@ confidenceEllipse(model, ...)
   \item{lty}{line type; default is \code{1}, a solid line (see \code{\link[graphics]{par}}).}
   \item{\dots}{other plotting parameters to be passed to \code{plot} and
     \code{line}.}
+  \item{grid}{If TRUE, the default, a light-gray background grid is put on the
+graph}
 }
 \details{
   The ellipse is computed by suitably transforming a unit circle.

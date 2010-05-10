@@ -6,7 +6,7 @@
 Companion to Applied Regression
 }
 \description{
-This package accompanies J. Fox and S. Weisberg, An R Companion to Applied Regression,
+This package accompanies Fox, J. and Weisberg, S., An R Companion to Applied Regression,
 Second Edition, Sage, forthcoming.
 }
 \details{

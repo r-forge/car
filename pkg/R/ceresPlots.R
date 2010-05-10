@@ -55,10 +55,11 @@ ceresPlot<-function (model, ...) {
 ceresPlot.lm<-function(model, variable, 
   id.method = list(abs(residuals(model, type="pearson")), "x"),
   labels, 
-  id.n = if(id.method=="identify") Inf else 0,
+  id.n = if(id.method[1]=="identify") Inf else 0,
   id.cex=1, id.col=palette()[1],
   line=TRUE, smooth=TRUE, span=.5, iter, 
-	las=par("las"), col=palette()[2], pch=1, lwd=2, main="Ceres Plot", ...){
+	las=par("las"), col=palette()[2], pch=1, lwd=2, main="Ceres Plot", 
+  grid=TRUE, ...){
 	# the lm method works with glm's too              
 	if(missing(labels)) labels <- names(residuals(model))	
 	expand.model.frame <- function (model, extras, envir = environment(formula(model)),
@@ -137,6 +138,7 @@ ceresPlot.lm<-function(model, variable,
 	plot(mod.mat[,var], partial.res, xlab=var, col=col, pch=pch,
 		ylab=paste("CERES Residual(",responseName(model),")", sep=""),
 		main=main, las=las)
+	if(grid) grid(lty=1)
 	showLabels(mod.mat[,var], partial.res, labels=labels, 
             id.method=id.method, id.n=id.n, id.cex=id.cex,
             id.col=id.col)

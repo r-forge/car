@@ -3,6 +3,7 @@
 # 13 March 2010: added intercept argument. J. Fox
 # 14 April 2010: set id.n = 0. J. Fox
 # 22 April 2010: modified id.n S. Weisberg
+# 10 May 2010:  added gridlines
 
 avPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask, 
            main, ...){
@@ -43,10 +44,10 @@ avPlot.lm <-
 function (model, variable,
     id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels, 
-    id.n = if(id.method=="identify") Inf else 0,
+    id.n = if(id.method[1]=="identify") Inf else 0,
     id.cex=1, id.col=palette()[1],
     col = palette()[2], col.lines = col[1],
-    xlab, ylab, pch = 1, lwd = 2, main="Added-variable Plot", ...)
+    xlab, ylab, pch = 1, lwd = 2, main="Added-variable Plot", grid=TRUE, ...)
 {
     variable <- if (is.character(variable) & 1 == length(variable))
         variable
@@ -70,6 +71,7 @@ function (model, variable,
     plot(res[, 1], res[, 2], xlab = xlab,
         ylab = ylab,
         col = col, pch = pch, ...)
+    if(grid) grid(lty=1)
     abline(lsfit(res[, 1], res[, 2], wt = wt), col = col.lines, lwd = lwd)
     showLabels(res[, 1],res[, 2], labels=labels, 
           id.method=id.method, id.n=id.n, id.cex=id.cex, 
@@ -79,11 +81,11 @@ function (model, variable,
 avPlot.glm<-function(model, variable, 
     id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels,
-    id.n = if(id.method=="identify") Inf else 0,
+    id.n = if(id.method[1]=="identify") Inf else 0,
     id.cex=1, id.col=palette()[1], 
     col = palette()[2], col.lines = col[1],
     xlab, ylab, pch = 1, lwd = 2,  type=c("Wang", "Weisberg"), 
-    main="Added-variable Plot", ...){
+    main="Added-variable Plot", grid=TRUE, ...){
     #last modified 20 Feb 2002 by J. Fox
     type<-match.arg(type)
     if(missing(labels)) labels <- names(residuals(model)[!is.na(residuals(model))])
@@ -105,6 +107,7 @@ avPlot.glm<-function(model, variable,
     ylab <- if(missing(ylab)) paste(responseName, " | others") else ylab
     plot(res.x, res.y, xlab=xlab, 
         ylab=ylab, col=col, pch=pch, main=main, ...)
+    if(grid) grid(lty=1)
     abline(lsfit(res.x, res.y, wt=wt), col=col.lines, lwd=lwd)
     showLabels(res.x,res.y, labels=labels, 
           id.method=id.method, id.n=id.n, id.cex=id.cex, 

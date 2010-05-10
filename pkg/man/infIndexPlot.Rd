@@ -17,8 +17,8 @@ influenceIndexPlot(model, ...)
      vars=c("Cook", "Studentized", "Bonf", "hat"), 
      main="Diagnostic Plots",
      labels, id.method = "y",
-     id.n = if(id.method=="identify") Inf else 0,
-     id.cex=1, id.col=palette()[1], ...)
+     id.n = if(id.method[1]=="identify") Inf else 0,
+     id.cex=1, id.col=palette()[1], grid=TRUE, ...)
 
 }
 \arguments{
@@ -35,6 +35,8 @@ All may be abbreviated by the first one or more letters.
     points.  The default is \code{id.n=0} for labeling no points.  See
     \code{\link{showLabels}} for details of these arguments.
 }
+\item{grid}{If TRUE, the default, a light-gray background grid is put on the
+graph}
   \item{\dots}{Arguments passed to \code{plot}}
 }
 

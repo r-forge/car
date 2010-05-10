@@ -32,15 +32,15 @@ marginalModelPlot(...)
                  deparse(substitute(variable)), degree = 1, span = 2/3,
                  key = TRUE, col.line = palette()[c(4,2)],   
                  labels, id.method = "y", 
-                 id.n=if(id.method=="identify") Inf else 0, 
-                 id.cex = 1, id.col=palette()[1], ...)
+                 id.n=if(id.method[1]=="identify") Inf else 0, 
+                 id.cex = 1, id.col=palette()[1], grid=TRUE, ...)
    
 \method{mmp}{glm}(model, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE,
     col.line = palette()[c(4, 2)],
     labels, id.method="y", 
-    id.n=if(id.method=="identify") Inf else 0,
-    id.cex=1, id.col=palette()[1], ...)
+    id.n=if(id.method[1]=="identify") Inf else 0,
+    id.cex=1, id.col=palette()[1], grid=TRUE, ...)
 }
 
 \arguments{
@@ -92,6 +92,8 @@ argument greater than zero will include labelling.  See
 \code{\link{showLabels}} for these arguments.}
 \item{col.line}{ colors for data and model smooth, respectively.  Using
 the default palette, these are blue and red. }
+\item{grid}{If TRUE, the default, a light-gray background grid is put on the
+graph}
 }   
 \details{
 \code{mmp} and \code{marginalModelPlot} draw one marginal model plot against

@@ -6,6 +6,7 @@
 # modified 1 January 2009 by J. Fox
 #   to set default id.n=0
 # changed showLabels args 15 April 2010 S. Weisberg
+# added grid, 10 May 2010
 
 # these functions to be rewritten; simply renamed for now
 
@@ -48,11 +49,11 @@ crPlot<-function (model, ...) {
 crPlot.lm<-function(model, variable, 
   id.method = list(abs(residuals(model, type="pearson")), "x"),
   labels, 
-  id.n = if(id.method=="identify") Inf else 0,
+  id.n = if(id.method[1]=="identify") Inf else 0,
   id.cex=1, id.col=palette()[1],
   order=1, line=TRUE, smooth=TRUE,
 	iter, span=.5, las=par("las"), col=palette()[2], pch=1, lwd=2,
-	...) { 
+	grid=TRUE, ...) { 
 	# method also works for glm objects
 	if(missing(labels)) labels <- names(residuals(model))
 	if(!is.null(class(model$na.action)) && 
@@ -84,6 +85,7 @@ crPlot.lm<-function(model, variable,
 		plot(.x, partial.res[,var], xlab=var, 
 			ylab=paste("Component+Residual(", responseName(model),")", sep=""),
 			las=las, col=col, pch=pch)
+		if(grid) grid(lty=1)
 		if (line) abline(lm(partial.res[,var]~.x), lty=2, lwd=lwd, col=col)
 		if (smooth) {
 			lines(lowess(.x, partial.res[,var], iter=iter, f=span), lwd=lwd, col=col)

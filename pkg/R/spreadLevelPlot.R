@@ -11,7 +11,8 @@ spreadLevelPlot <- function(x, ...) {
 spreadLevelPlot.default <- function(x, by, robust.line=TRUE, 
 	start=0, xlab="Median", ylab="Hinge-Spread", point.labels=TRUE, las=par("las"),
 	main=paste("Spread-Level Plot for", deparse(substitute(x)), 
-		"by", deparse(substitute(by))), col=palette()[2], pch=1, lwd=2, ...){
+		"by", deparse(substitute(by))), col=palette()[2], pch=1, lwd=2, 
+  grid=TRUE, ...){
 	good <- complete.cases(x, by)
 	if (sum(good) != length(x)) {
 		warning("NAs ignored")
@@ -38,6 +39,7 @@ spreadLevelPlot.default <- function(x, by, robust.line=TRUE,
 	spreads<-result[ ,4]
 	plot(medians, spreads, log="xy", main=main, xlab=xlab, ylab=ylab, 
 		las=las, pch=pch, col=col, ...)
+	if(grid) grid(lty=1)
 	pos <- ifelse(medians > median(medians), 2, 4)
 	if (point.labels) text(medians, spreads, as.character(values), pos=pos, ...)
 	mod <- if (robust.line)
@@ -89,7 +91,7 @@ spreadLevelPlot.lm <- function(x, robust.line=TRUE,
 	xlab="Fitted Values",
 	ylab="Absolute Studentized Residuals", las=par("las"),
 	main=paste("Spread-Level Plot for\n", deparse(substitute(x))),
-	pch=1, col=palette()[2], lwd=2, ...){
+	pch=1, col=palette()[2], lwd=2, grid=TRUE, ...){
 	resid <- na.omit(abs(rstudent(x)))
 	fitval <- na.omit(fitted.values(x))
 	non.pos <- fitval <= 0
@@ -102,6 +104,7 @@ spreadLevelPlot.lm <- function(x, robust.line=TRUE,
 	min <- min(fitval)
 	plot(fitval, resid, log="xy", main=main, xlab=xlab, ylab=ylab, 
 		las=las, col=col, pch=pch, ...)
+	if(grid) grid(lty=1)
 	mod <- if (robust.line)
 			rlm(log(resid) ~ log(fitval))
 		else lm(log(resid) ~ log(fitval), ...)

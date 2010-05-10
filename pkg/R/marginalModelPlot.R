@@ -15,7 +15,7 @@ mmp <- function(model, ...){UseMethod("mmp")}
 mmp.lm <- 
 function (model, variable, mean = TRUE, sd = FALSE, 
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE, 
-    col.line = palette()[c(4, 2)], 
+    col.line = palette()[c(4, 2)],  
     ...)
 {
     mmp.default(model, variable, mean, sd, xlab, degree, 
@@ -27,8 +27,8 @@ function (model, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE, 
     col.line = palette()[c(4, 2)], 
     labels, id.method="y", 
-    id.n=if(id.method=="identify") Inf else 0,
-    id.cex=1, id.col=palette()[1], ...)
+    id.n=if(id.method[1]=="identify") Inf else 0,
+    id.cex=1, id.col=palette()[1], grid=TRUE, ...)
 {   
     if  (!is.null(attr(model$model, "na.action"))) {
         if (attr(attr(model$model, "na.action"), "class") == "exclude")
@@ -43,6 +43,7 @@ function (model, variable, mean = TRUE, sd = FALSE,
     zpred <- function(...){pmax(predict(...), 0)}
     plot(u, model$model[ , 1], xlab = xlab, ylab = colnames(model$model[1]), 
         ...)
+    if(grid) grid(lty=1)
     if(key){
        outerLegend(c("Data", "Model"), lty=1:2, col=col.line, 
           bty="n", cex=0.75, fill=col.line, border=col.line, horiz=TRUE, 
@@ -90,8 +91,8 @@ mmp.glm <- function (model, variable, mean = TRUE, sd = FALSE,
     xlab = deparse(substitute(variable)), degree = 1, span = 2/3, key=TRUE, 
     col.line = palette()[c(4, 2)], 
     labels, id.method="y", 
-    id.n=if(id.method=="identify") Inf else 0,
-    id.cex=1, id.col=palette()[1], ...)
+    id.n=if(id.method[1]=="identify") Inf else 0,
+    id.cex=1, id.col=palette()[1], grid=TRUE, ...)
 {
     if (missing(variable)) {
         xlab <- "Linear Predictor"
@@ -117,6 +118,7 @@ mmp.glm <- function (model, variable, mean = TRUE, sd = FALSE,
         response <- response[, 1]/apply(response, 1, sum)
     plot(u, response, xlab = xlab, ylab = colnames(model$model[1]), 
         ...)
+    if(grid) grid(lty=1)
     if(key){
     outerLegend(c("Data", "Model"), lty=1:2, col=col.line, 
           bty="n", cex=0.75, fill=col.line, border=col.line, 

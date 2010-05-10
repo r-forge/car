@@ -12,8 +12,8 @@ infIndexPlot.lm <- function(model,
      vars=c("Cook", "Studentized", "Bonf", "hat"), 
      main="Diagnostic Plots",
      labels, id.method = "y", 
-     id.n = if(id.method=="identify") Inf else 0,
-     id.cex=1, id.col=palette()[1], ...) {
+     id.n = if(id.method[1]=="identify") Inf else 0,
+     id.cex=1, id.col=palette()[1], grid=TRUE, ...) {
    what <- pmatch(tolower(vars), 
                   tolower(c("Cook", "Studentized", "Bonf", "hat")))
    if(length(what) < 1) stop("Nothing to plot")
@@ -35,6 +35,7 @@ infIndexPlot.lm <- function(model,
              outlier.t.test, hatvalues(model))
       xa <- if(j==4) "s" else "s"
       plot(xaxis,y,type="b", ylab=names[j], xlab="", xaxt="n", tck=0.1, ...)
+      if(grid) grid(lty=1)      
       if (j == 2) abline(h=0, lty=2 )
       axis(1, labels= ifelse(j<length(what), FALSE, TRUE))
       showLabels(xaxis, y, labels=labels,

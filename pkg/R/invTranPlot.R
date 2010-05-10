@@ -32,7 +32,7 @@ invTranPlot.default<- function(x, y, lambda=c(-1, 0, 1),
         family="bcPower", optimal=TRUE, key="auto",
         id.method = abs(residuals(lm(y~x))),
         labels, 
-        id.n = if(id.method=="identify") Inf else 0, 
+        id.n = if(id.method[1]=="identify") Inf else 0, 
         id.cex=1, id.col=palette()[1], ...){
  if (missing(labels)) labels <- seq(length(x))
  if (is.factor(x)) stop("Predictor variable may not be a factor")

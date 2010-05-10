@@ -29,7 +29,7 @@ between male and female faculty members.
 }
 
 \references{
- J. Fox and S. Weisberg (2011)
+ Fox J. and Weisberg, S. (2011)
  \emph{An R Companion to Applied Regression}, Second Edition
  Sage.
 }

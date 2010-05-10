@@ -22,7 +22,7 @@ scatterplot(x, ...)
     xlab = deparse(substitute(x)), ylab = deparse(substitute(y)), 
     las = par("las"), lwd = 1, lwd.smooth = lwd, lwd.spread = lwd, 
     lty = 1, lty.smooth = lty, lty.spread = 2, labels, id.method = "mahal", 
-    id.n = if(id.method=="identify") length(x) else 0, 
+    id.n = if(id.method[1]=="identify") length(x) else 0, 
     id.cex = 1, id.col = palette()[1], log = "", jitter = list(), 
     xlim = NULL, ylim = NULL, cex = par("cex"), cex.axis = par("cex.axis"), 
     cex.lab = par("cex.lab"), cex.main = par("cex.main"), 
@@ -31,7 +31,7 @@ scatterplot(x, ...)
     ellipse = FALSE, levels = c(0.5, 0.95), robust = TRUE, 
     col = if (n.groups == 1) palette()[1:2] else rep(palette(), length = n.groups), 
     pch = 1:n.groups, legend.plot = !missing(groups), reset.par = TRUE, 
-    ...)
+    grid=TRUE, ...)
   
 sp(...)
 }
@@ -104,6 +104,8 @@ sp(...)
     altered for the current plotting device. Set to \code{FALSE} if you want to add graphical elements
     (such as lines) to the plot.}
   \item{\dots}{other arguments passed down and to \code{plot}.}
+  \item{grid}{If TRUE, the default, a light-gray background grid is put on the
+graph}
 }
 
 \value{

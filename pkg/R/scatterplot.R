@@ -47,7 +47,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
 	lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
 	labels, id.method = "mahal", 
-  id.n = if(id.method=="identify") length(x) else 0, 
+  id.n = if(id.method[1]=="identify") length(x) else 0, 
   id.cex = 1, id.col = palette()[1],
 	log="", jitter=list(), xlim=NULL, ylim=NULL,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
@@ -56,7 +56,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	col=if (n.groups == 1) palette()[1:2] else rep(palette(), length=n.groups),
 	pch=1:n.groups, 
-	legend.plot=!missing(groups), reset.par=TRUE, ...){
+	legend.plot=!missing(groups), reset.par=TRUE, grid=TRUE, ...){
 	logged <- function(axis=c("x", "y")){
 		axis <- match.arg(axis)
 		0 != length(grep(axis, log))
@@ -149,7 +149,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 			.x <- x
 		}
 		plot(x, seq(0, 1, length=length(x)), type="n", axes=FALSE, xlab="", ylab="", log=log.x, xlim=xlim)
-		res <- boxplot.stats(.x, coef = 1.5, do.conf=FALSE)
+    res <- boxplot.stats(.x, coef = 1.5, do.conf=FALSE)
 		if (logged("x")){
 			res$stats <- exp(res$stats)
 			if (!is.null(res$out)) res$out <- exp(res$out)
@@ -175,7 +175,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 			.y <- y
 		}
 		plot(seq(0, 1, length=length(y)), y, type="n", axes=FALSE, xlab="", ylab="", log=log.y, ylim=ylim)
-		res <- boxplot.stats(.y, coef = 1.5, do.conf=FALSE)
+    res <- boxplot.stats(.y, coef = 1.5, do.conf=FALSE)
 		if (logged("y")){
 			res$stats <- exp(res$stats)
 			if (!is.null(res$out)) res$out <- exp(res$out)
@@ -248,7 +248,8 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 	par(mar=c(mar[1:2], top, mar[4]))
 	plot(.x, .y, xlab=xlab, ylab=ylab, las=las, log=log, cex=cex, cex.axis=cex.axis, cex.lab=cex.lab,
 		cex.main=cex.main, cex.sub=cex.sub, type="n", xlim=xlim, ylim=ylim, ...)
-	n.groups <- length(levels(groups))
+	if(grid) grid(lty=1)
+  n.groups <- length(levels(groups))
 	if (n.groups > length(col)) stop("number of groups exceeds number of available colors")
 	indices <- NULL
 	range.x <- if (logged("x")) range(log(.x), na.rm=TRUE) else range(.x, na.rm=TRUE)

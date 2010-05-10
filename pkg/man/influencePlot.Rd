@@ -21,7 +21,7 @@ influencePlot(model, ...)
 
 \method{influencePlot}{lm}(model, scale=10,  
     labels, id.method = "noteworthy",
-    id.n = if(id.method=="identify") Inf else 0, 
+    id.n = if(id.method[1]=="identify") Inf else 0, 
     id.cex=1, id.col=palette()[1], ...)
 }
 
@@ -49,7 +49,7 @@ used for its side-effect of drawing a plot.
 }
 
 \references{
-    J. Fox and S. Weisberg (2011) \emph{An R Companion to Applied Regression}, 
+    Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied Regression}, 
     Second Edition. Sage.
 }
 

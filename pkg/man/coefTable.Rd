@@ -33,7 +33,7 @@ This function is used for its side-effect of printing the result.  It
 returns a matrix of estimates and standard errors.
 }
 \references{
-J. Fox and S. Weisberg (2011) \emph{An R Companion to Applied Regression},
+Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied Regression},
 Second Edition, Sage.
 }
 \author{John Fox \email{jfox@mcmaster.ca}}

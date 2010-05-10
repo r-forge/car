@@ -24,13 +24,14 @@ slp(...)
 \method{spreadLevelPlot}{default}(x, by, robust.line=TRUE, 
 	start=0, xlab="Median", ylab="Hinge-Spread", point.labels=TRUE, las=par("las"),
 	main=paste("Spread-Level Plot for", deparse(substitute(x)), 
-		"by", deparse(substitute(by))), col=palette()[2], pch=1, lwd=2, ...)
+		"by", deparse(substitute(by))), col=palette()[2], pch=1, lwd=2, 
+    grid=TRUE, ...)
 
 \method{spreadLevelPlot}{lm}(x, robust.line=TRUE, 
 	xlab="Fitted Values",
 	ylab="Absolute Studentized Residuals", las=par("las"),
 	main=paste("Spread-Level Plot for\n", deparse(substitute(x))),
-	pch=1, col=palette()[2], lwd=2, ...)
+	pch=1, col=palette()[2], lwd=2, grid=TRUE, ...)
 	  
 \method{print}{spreadLevelPlot}(x, ...)
 }
@@ -60,6 +61,8 @@ slp(...)
   \item{pch}{plotting character for points; default is \code{1} 
     (a circle, see \code{\link[graphics]{par}}).}
   \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).}
+  \item{grid}{If TRUE, the default, a light-gray background grid is put on the
+graph}
   \item{\dots}{arguments passed to plotting functions.}
 }
 \details{

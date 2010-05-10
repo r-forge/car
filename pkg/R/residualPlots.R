@@ -74,10 +74,11 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
                  smooth.col=col.lines,  
                  labels, 
                  id.method = "xy", 
-                 id.n = if(id.method=="identify") Inf else 0,
+                 id.n = if(id.method[1]=="identify") Inf else 0,
                  id.cex=1, id.col=palette()[1], 
                  col = palette()[2], col.lines = col[1], 
-                 xlab, ylab, pch = 1, lwd = 1, lty = 1,  ...) {
+                 xlab, ylab, pch = 1, lwd = 1, lty = 1,  
+                 grid=TRUE, ...) {
 # two functions modified from 'scatterplot' function:
 	logged <- function(axis=c("x", "y")){
 		axis <- match.arg(axis)
@@ -129,6 +130,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
             id.col=id.col, ...) 
      abline(h=0, lty=2) } else {
      plot(horiz, vert, xlab=lab, ylab=ylab, ...)
+     if(grid) grid(lty=1)
      abline(h=0, lty=2)
      if(quadratic==TRUE){
         new <- seq(min(horiz), max(horiz), length=200)

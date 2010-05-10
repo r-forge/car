@@ -18,11 +18,11 @@ ceresPlot(model, ...)
 \method{ceresPlot}{lm}(model, variable, 
     id.method = list(abs(residuals(model, type = "pearson")), "x"), 
     labels, 
-    id.n = if(id.method=="identify") Inf else 0,
+    id.n = if(id.method[1]=="identify") Inf else 0,
     id.cex = 1, id.col=palette()[1], 
     line = TRUE, smooth = TRUE, span = 0.5, iter, las = par("las"), 
     col = palette()[2], pch = 1, lwd = 2, main = "Ceres Plot", 
-    ...)
+    grid=TRUE, ...)
 
 \method{ceresPlot}{glm}(model, ...)
 }
@@ -74,7 +74,9 @@ axis}
     (a circle, see \code{\link[graphics]{par}}).
 }
   \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).
-}
+  }
+  \item{grid}{If TRUE, the default, a light-gray background grid is put on the
+graph}
 }
 \details{
   Ceres plots are a generalization of component+residual (partial

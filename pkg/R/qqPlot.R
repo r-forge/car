@@ -17,8 +17,8 @@ qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
 	line=c("quartiles", "robust", "none"), 
         labels = if(!is.null(names(x))) names(x) else seq(along=x),
         id.method = "y", 
-        id.n = if(id.method=="identify") Inf else 0,
-        id.cex=1, id.col=palette()[1], ...)
+        id.n = if(id.method[1]=="identify") Inf else 0,
+        id.cex=1, id.col=palette()[1], grid=TRUE, ...)
   {
 	line <- match.arg(line)
 	good <- !is.na(x)
@@ -32,6 +32,7 @@ qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
 	z <- q.function(P, ...)
 	plot(z, ord.x, xlab=xlab, ylab=ylab, main=main, las=las, col=col, pch=pch,
 		cex=cex)
+	if(grid) grid(lty=1)
 	if (line == "quartiles" || line == "none"){
 		Q.x <- quantile(ord.x, c(.25,.75))
 		Q.z <- q.function(c(.25,.75), ...)
@@ -66,8 +67,8 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
         reps=1000, 
 	col=palette()[2], lwd=2, pch=1, cex=par("cex"),
         labels, id.method = "y", 
-        id.n = if(id.method=="identify") Inf else 0, id.cex=1, 
-        id.col=palette()[1], ...){
+        id.n = if(id.method[1]=="identify") Inf else 0, id.cex=1, 
+        id.col=palette()[1], grid=TRUE, ...){
 	result <- NULL
 	distribution <- match.arg(distribution)
 	line <- match.arg(line)
@@ -92,7 +93,8 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 		P <- ppoints(n)
 		z <- if (distribution == 't') qt(P, df=res.df-1) else qnorm(P)
 		plot(z, ord.x, xlab=xlab, ylab=ylab, main=main, las=las, pch=pch, col=col, cex=cex)
-		yhat <- na.omit(fitted.values(x))
+		if(grid) grid(lty=1)
+    yhat <- na.omit(fitted.values(x))
 		S <- sumry$sigma
 		Y <- matrix(yhat, n, reps) + matrix(rnorm(n*reps, sd=S), n, reps)
 		X <- model.matrix(x)

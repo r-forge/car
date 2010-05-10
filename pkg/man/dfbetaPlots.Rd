@@ -22,14 +22,14 @@ dfbetasPlots(model, ...)
 \method{dfbetaPlots}{lm}(model, terms= ~ ., intercept=FALSE, layout=NULL, ask, 
 	      main, labels=rownames(dfbeta), 
         id.method="y",  
-        id.n=if(id.method=="identify") Inf else 0, id.cex=1, 
-        id.col=palette()[1],...)
+        id.n=if(id.method[1]=="identify") Inf else 0, id.cex=1, 
+        id.col=palette()[1], grid=TRUE, ...)
 
-\method{dfbetaPlots}{lm}(model, terms=~., intercept=FALSE, layout=NULL, ask, 
+\method{dfbetasPlots}{lm}(model, terms=~., intercept=FALSE, layout=NULL, ask, 
 	      main, 
         labels=rownames(dfbeta), id.method="y",
-        id.n=if(id.method=="identify") Inf else 0, id.cex=1, 
-        id.col=palette()[1], ...)
+        id.n=if(id.method[1]=="identify") Inf else 0, id.cex=1, 
+        id.col=palette()[1], grid=TRUE, ...)
 }
 	
 \arguments{
@@ -57,6 +57,8 @@ index plot is drawn for that term only.
     points.  The default is \code{id.n=0} for labeling no points.  See
     \code{\link{showLabels}} for details of these arguments.
 }
+   \item{grid}{If TRUE, the default, a light-gray background grid is put on the
+graph}
 }
 
 
