@@ -5,6 +5,7 @@
 #  studentized residuals, and Cook's Ds. J. Fox
 # 14 April 2010: set id.n = 0. J. Fox
 # 23 April 2010: rewrote point marking, S. Weisberg
+# 10 May 2010: fixed computation of n
 
 # moved from Rcmdr 5 December 2006
 
@@ -22,7 +23,7 @@ influencePlot.lm <- function(model, scale=10,
 	cook <- sqrt(cooks.distance(model))
 	scale <- scale/max(cook, na.rm=TRUE)
 	p <- length(coef(model))
-	n <- length(rstud)
+	n <- sum(!is.na(rstud))
 #	cutoff <- sqrt(4/(n - p))
 	plot(hatval, rstud, xlab='Hat-Values',
 			ylab='Studentized Residuals', type='n', ...)
