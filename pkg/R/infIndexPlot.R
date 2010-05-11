@@ -35,7 +35,7 @@ infIndexPlot.lm <- function(model,
              outlier.t.test, hatvalues(model))
       xa <- if(j==4) "s" else "s"
       plot(xaxis,y,type="b", ylab=names[j], xlab="", xaxt="n", tck=0.1, ...)
-      if(grid) grid(lty=1)      
+      if(grid) grid(lty=1, equilogs=FALSE)      
       if (j == 2) abline(h=0, lty=2 )
       axis(1, labels= ifelse(j<length(what), FALSE, TRUE))
       showLabels(xaxis, y, labels=labels,

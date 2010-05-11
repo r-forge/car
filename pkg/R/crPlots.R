@@ -85,7 +85,7 @@ crPlot.lm<-function(model, variable,
 		plot(.x, partial.res[,var], xlab=var, 
 			ylab=paste("Component+Residual(", responseName(model),")", sep=""),
 			las=las, col=col, pch=pch)
-		if(grid) grid(lty=1)
+		if(grid) grid(lty=1, equilogs=FALSE)
 		if (line) abline(lm(partial.res[,var]~.x), lty=2, lwd=lwd, col=col)
 		if (smooth) {
 			lines(lowess(.x, partial.res[,var], iter=iter, f=span), lwd=lwd, col=col)

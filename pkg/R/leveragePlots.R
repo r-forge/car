@@ -70,7 +70,7 @@ leveragePlot.lm<-function(model, term.name,
 		ylab=paste(responseName," | others"), 
 		las=las, col=col, pch=pch)
 	abline(lsfit(v.x, v.y, wt=wt), col=col, lwd=lwd)
-	if(grid) grid(lty=1)
+	if(grid) grid(lty=1, equilogs=FALSE)
   showLabels(v.x, v.y, labels=labels, 
           id.method=id.method, id.n=id.n, id.cex=id.cex, 
           id.col=id.col)

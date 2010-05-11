@@ -32,7 +32,7 @@ qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
 	z <- q.function(P, ...)
 	plot(z, ord.x, xlab=xlab, ylab=ylab, main=main, las=las, col=col, pch=pch,
 		cex=cex)
-	if(grid) grid(lty=1)
+	if(grid) grid(lty=1, equilogs=FALSE)
 	if (line == "quartiles" || line == "none"){
 		Q.x <- quantile(ord.x, c(.25,.75))
 		Q.z <- q.function(c(.25,.75), ...)
@@ -93,7 +93,7 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 		P <- ppoints(n)
 		z <- if (distribution == 't') qt(P, df=res.df-1) else qnorm(P)
 		plot(z, ord.x, xlab=xlab, ylab=ylab, main=main, las=las, pch=pch, col=col, cex=cex)
-		if(grid) grid(lty=1)
+		if(grid) grid(lty=1, equilogs=FALSE)
     yhat <- na.omit(fitted.values(x))
 		S <- sumry$sigma
 		Y <- matrix(yhat, n, reps) + matrix(rnorm(n*reps, sd=S), n, reps)

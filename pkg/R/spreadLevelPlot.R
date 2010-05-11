@@ -39,7 +39,7 @@ spreadLevelPlot.default <- function(x, by, robust.line=TRUE,
 	spreads<-result[ ,4]
 	plot(medians, spreads, log="xy", main=main, xlab=xlab, ylab=ylab, 
 		las=las, pch=pch, col=col, ...)
-	if(grid) grid(lty=1)
+	if(grid) grid(lty=1, equilogs=FALSE)
 	pos <- ifelse(medians > median(medians), 2, 4)
 	if (point.labels) text(medians, spreads, as.character(values), pos=pos, ...)
 	mod <- if (robust.line)
@@ -104,7 +104,7 @@ spreadLevelPlot.lm <- function(x, robust.line=TRUE,
 	min <- min(fitval)
 	plot(fitval, resid, log="xy", main=main, xlab=xlab, ylab=ylab, 
 		las=las, col=col, pch=pch, ...)
-	if(grid) grid(lty=1)
+	if(grid) grid(lty=1, equilogs=FALSE)
 	mod <- if (robust.line)
 			rlm(log(resid) ~ log(fitval))
 		else lm(log(resid) ~ log(fitval), ...)

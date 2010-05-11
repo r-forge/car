@@ -71,7 +71,7 @@ function (model, variable,
     plot(res[, 1], res[, 2], xlab = xlab,
         ylab = ylab,
         col = col, pch = pch, ...)
-    if(grid) grid(lty=1)
+    if(grid) grid(lty=1, equilogs=FALSE)
     abline(lsfit(res[, 1], res[, 2], wt = wt), col = col.lines, lwd = lwd)
     showLabels(res[, 1],res[, 2], labels=labels, 
           id.method=id.method, id.n=id.n, id.cex=id.cex, 
@@ -107,7 +107,7 @@ avPlot.glm<-function(model, variable,
     ylab <- if(missing(ylab)) paste(responseName, " | others") else ylab
     plot(res.x, res.y, xlab=xlab, 
         ylab=ylab, col=col, pch=pch, main=main, ...)
-    if(grid) grid(lty=1)
+    if(grid) grid(lty=1, equilogs=FALSE)
     abline(lsfit(res.x, res.y, wt=wt), col=col.lines, lwd=lwd)
     showLabels(res.x,res.y, labels=labels, 
           id.method=id.method, id.n=id.n, id.cex=id.cex, 

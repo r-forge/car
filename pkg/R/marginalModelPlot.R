@@ -43,7 +43,7 @@ function (model, variable, mean = TRUE, sd = FALSE,
     zpred <- function(...){pmax(predict(...), 0)}
     plot(u, model$model[ , 1], xlab = xlab, ylab = colnames(model$model[1]), 
         ...)
-    if(grid) grid(lty=1)
+    if(grid) grid(lty=1, equilogs=FALSE)
     if(key){
        outerLegend(c("Data", "Model"), lty=1:2, col=col.line, 
           bty="n", cex=0.75, fill=col.line, border=col.line, horiz=TRUE, 
@@ -118,7 +118,7 @@ mmp.glm <- function (model, variable, mean = TRUE, sd = FALSE,
         response <- response[, 1]/apply(response, 1, sum)
     plot(u, response, xlab = xlab, ylab = colnames(model$model[1]), 
         ...)
-    if(grid) grid(lty=1)
+    if(grid) grid(lty=1, equilogs=FALSE)
     if(key){
     outerLegend(c("Data", "Model"), lty=1:2, col=col.line, 
           bty="n", cex=0.75, fill=col.line, border=col.line, 

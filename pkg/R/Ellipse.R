@@ -20,7 +20,7 @@ ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5
 	if (add) lines(ellipse, col=col, lwd=lwd, lty=lty, ...) 
 	else plot(ellipse, xlab = xlab, ylab = ylab, type ="l", col=col, 
 			lwd=lwd, lty=lty, las=las, ... ) 
-  if(grid) grid(lty=1)	
+  if(grid) grid(lty=1, equilogs=FALSE)	
 	if (center.pch) points(center[1], center[2], pch=center.pch, cex=center.cex, col=col)
   }
 
@@ -43,7 +43,7 @@ dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19,
 		stop("x and y must be vectors of the same length")
 	if (plot.points && !add) plot(x, y, xlab=xlab, ylab=ylab, col=col[1], pch=pch, las=las, ...)
 	if (plot.points && add)  points(x, y, col=col[1], pch=pch, ...)
-	if(grid) grid(lty=1)
+	if(grid) grid(lty=1, equilogs=FALSE)
 	dfn <- 2
 	dfd <- length(x) - 1
 	if (robust) {

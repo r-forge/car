@@ -130,7 +130,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
             id.col=id.col, ...) 
      abline(h=0, lty=2) } else {
      plot(horiz, vert, xlab=lab, ylab=ylab, ...)
-     if(grid) grid(lty=1)
+     if(grid) grid(lty=1, equilogs=FALSE)
      abline(h=0, lty=2)
      if(quadratic==TRUE){
         new <- seq(min(horiz), max(horiz), length=200)
