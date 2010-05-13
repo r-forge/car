@@ -35,10 +35,11 @@ scatter3d(x, ...)
 	  text.col=axis.col, grid.col=if (bg.col == "white") "black" else "gray",
 	  fogtype=c("exp2", "linear", "exp", "none"),
 	  residuals=(length(fit) == 1), surface=TRUE, fill=TRUE, grid=TRUE, 
-    grid.lines=26, df.smooth=NULL, df.additive=NULL,
+      grid.lines=26, df.smooth=NULL, df.additive=NULL,
 	  sphere.size=1, threshold=0.01, speed=1, fov=60, 
 	  fit="linear", groups=NULL, parallel=TRUE, ellipsoid=FALSE, level=0.5,
-	  id.method=c("mahal", "xz", "y", "xyz", "identify", "none"), id.n=3,
+	  id.method=c("mahal", "xz", "y", "xyz", "identify", "none"), 
+	  id.n=if (id.method == "identify") Inf else 0,
 	  labels=as.character(seq(along=x)), offset = ((100/length(x))^(1/3)) * 0.02,
 	  model.summary=FALSE, ...)
     
@@ -119,7 +120,8 @@ You have to install the \code{rgl} and \code{mgcv} packages to produce 3D plots.
   	predictor plane; if \code{y}, identify unusual values of the response; if \code{xyz} identify
   	unusual values of an variable; if \code{"none"}, no point identification.
   	See \code{\link{showLabels}} for more information.}
-  \item{id.n}{Number of relatively extreme points to identify automatically (default, \code{3}).}
+  \item{id.n}{Number of relatively extreme points to identify automatically (default, \code{0} unless
+  	\code{id.method="identify"}).}
   \item{model.summary}{print summary or summaries of the model(s) fit 
     (\code{TRUE} or \code{FALSE}). \code{scatter3d} rescales the three variables 
     internally to fit in the unit cube; this rescaling will affect regression 

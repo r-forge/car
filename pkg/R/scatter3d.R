@@ -1,7 +1,8 @@
 # 3D scatterplots and point identification via rgl
 
 # checked in 23 December 2009 by J. Fox
-# 5 January 2008: fixed axis labeling in scatter3d.formula. J. Fox
+# 5 January 2010: fixed axis labeling in scatter3d.formula. J. Fox
+# 13 May 2010: changed default id.n to conform to showLabels
 
 scatter3d <- function(x, ...){
 	UseMethod("scatter3d")
@@ -46,7 +47,8 @@ scatter3d.default <- function(x, y, z,
 	df.smooth=NULL, df.additive=NULL,
 	sphere.size=1, threshold=0.01, speed=1, fov=60, 
 	fit="linear", groups=NULL, parallel=TRUE, ellipsoid=FALSE, level=0.5,
-	id.method=c("mahal", "xz", "y", "xyz", "identify", "none"), id.n=3,
+	id.method=c("mahal", "xz", "y", "xyz", "identify", "none"), 
+	id.n=if (id.method == "identify") Inf else 0,
 	labels=as.character(seq(along=x)), offset = ((100/length(x))^(1/3)) * 0.02,
 	model.summary=FALSE, ...){
 	if (!require(rgl)) stop("rgl package missing")
@@ -398,7 +400,7 @@ identify3d  <- function (x, y, z, axis.scales=TRUE, groups = NULL, labels = 1:le
 }
 
 showLabels3d <- function(x, y, z, labels,
-	id.method = "mahal", id.n=3, col=c("blue"), 
+	id.method = "identify", id.n=length(x), col=c("blue"), 
 	res=y - mean(y), range.x=range(x), range.z=range(z), 
 	offset = ((100/length(x))^(1/3)) * 0.02) {
 	if (id.method == "none") return(NULL)
