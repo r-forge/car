@@ -5,6 +5,8 @@
 #   2009-12-10: modification by A. Zeileis to allow wider range of coef. names.
 #   2009-12-22: small changes to linearHypothesis.mlm() to handle user-specified
 #               within-subjects designs in Anova()
+#   2010-05-21: linearHypothesis.default() and .lm() changed so that differences
+#               in df, etc. will be postive.
 #-------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -168,22 +170,22 @@ linearHypothesis.default <- function(model, hypothesis.matrix, rhs=NULL,
 	name <- try(formula(model), silent = TRUE)
 	if (inherits(name, "try-error")) name <- substitute(model)
 	title <- "Linear hypothesis test\n\nHypothesis:"
-	topnote <- paste("Model 1: ", paste(deparse(name), collapse = "\n"), "\n",
-		"Model 2: restricted model", sep = "")
+	topnote <- paste("Model 1: restricted model","\n", "Model 2: ", 
+		paste(deparse(name), collapse = "\n"), sep = "")
 	note <- if (is.null(vcov.)) ""
 		else "\nNote: Coefficient covariance matrix supplied.\n"
 	rval <- matrix(rep(NA, 8), ncol = 4)
 	colnames(rval) <- c("Res.Df", "Df", test, paste("Pr(>", test, ")", sep = ""))
 	rownames(rval) <- 1:2
-	rval[,1] <- c(df, df+q)
+	rval[,1] <- c(df+q, df)
 	if (test == "F") {
 		f <- SSH/q
 		p <- pf(f, q, df, lower.tail = FALSE)
-		rval[2,2:4] <- c(-q, f, p)
+		rval[2, 2:4] <- c(q, f, p)
 	}
 	else {
 		p <- pchisq(SSH, q, lower.tail = FALSE)
-		rval[2,2:4] <- c(-q, SSH, p)
+		rval[2, 2:4] <- c(q, SSH, p)
 	}
 	if (!(is.finite(df) && df > 0)) rval <- rval[,-1]
 	structure(as.data.frame(rval),
@@ -217,7 +219,7 @@ linearHypothesis.lm <- function(model, hypothesis.matrix, rhs=NULL,
 		df <- rval[1, "Res.Df"]
 		error.SS <- deviance(model)
 		rval2[,1] <- c(error.SS, error.SS + SSH * error.SS/df)
-		rval2[2,2] <- -diff(rval2[,1])
+		rval2[2,2] <- diff(rval2[,1])
 		rval2 <- cbind(rval, rval2)[,c(1, 5, 2, 6, 3, 4)]
 		class(rval2) <- c("anova", "data.frame")
 		attr(rval2, "heading") <- attr(rval, "heading")

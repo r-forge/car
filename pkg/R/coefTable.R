@@ -1,4 +1,4 @@
-# 20 May 2010: small changes to output when there is just one model. J. Fox 
+# 21 May 2010: small changes to output when there is just one model. J. Fox 
 
 coefTable <- function(..., se=TRUE, digits=3){
     models <- list(...)
@@ -9,7 +9,7 @@ coefTable <- function(..., se=TRUE, digits=3){
     table <- matrix(NA, length(coef.names), n.models*(1 + se))
     rownames(table) <- coef.names
     colnames(table) <- if (se) if (n.models > 1) paste(rep(c("Est.", "SE"), n.models),
-                           rep(1:n.models, each=2)) else c("Estimate", "SE")
+                           rep(1:n.models, each=2)) else c("Estimate", "Std. Error")
         else if (n.models > 1) paste(rep("Est.", n.models), 1:n.models) else "Estimate"
     cat("\nCall:")
     for (i in 1:n.models){
