@@ -1,6 +1,7 @@
 # spread-level plots (J. Fox)
 
-# modified 16 March 2010 by J. Fox: spreadLevelPlot.lm now deletes observations with negative fitted values
+# 16 March 2010 by J. Fox: spreadLevelPlot.lm now deletes observations with negative fitted values
+# 25 May 2010 by J. Fox: corrected errors due to introduction of grid()
 
 slp <- function(...) spreadLevelPlot(...)
 
@@ -40,8 +41,7 @@ spreadLevelPlot.default <- function(x, by, robust.line=TRUE,
 	plot(medians, spreads, type="n", log="xy", main=main, xlab=xlab, ylab=ylab, 
 		las=las, pch=pch, col=col, ...)
 	if(grid) grid(lty=1, equilogs=FALSE)
-	points(medians, spreads, log="xy", main=main, xlab=xlab, ylab=ylab, 
-		las=las, pch=pch, col=col, ...)
+	points(medians, spreads, col=col)
 	pos <- ifelse(medians > median(medians), 2, 4)
 	if (point.labels) text(medians, spreads, as.character(values), pos=pos, ...)
 	mod <- if (robust.line)
@@ -104,10 +104,10 @@ spreadLevelPlot.lm <- function(x, robust.line=TRUE,
 		warning(n.non.pos, " negative", if(n.non.pos > 1) " fitted values" else " fitted value", " removed")
 	}
 	min <- min(fitval)
-	plot(fitval, resid, log="xy", type="n", ...)
+	plot(fitval, resid, log="xy", main=main, xlab=xlab, ylab=ylab, 
+			las=las, col=col, pch=pch, type="n", ...)
 	if(grid) grid(lty=1, equilogs=FALSE)
-	points(fitval, resid, log="xy", main=main, xlab=xlab, ylab=ylab, 
-		las=las, col=col, pch=pch, ...)
+	points(fitval, resid, col=col)
 	mod <- if (robust.line)
 			rlm(log(resid) ~ log(fitval))
 		else lm(log(resid) ~ log(fitval), ...)
