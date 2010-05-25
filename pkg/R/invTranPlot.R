@@ -40,9 +40,11 @@ invTranPlot.default<- function(x, y, lambda=c(-1, 0, 1),
  if (optimal){opt <- invTranEstimate(x, y, family=family, confidence=FALSE)
               lam <- c(opt$lambda, lambda)} else lam <- lambda
  fam <- match.fun(family)
- plot(x, y, type="n", ...)
- if(grid) grid(lty=1, equilogs=FALSE)
- points(x, y, xlab=xlab, ylab=ylab, ...)
+ plot(x, y, xlab=xlab, ylab=ylab, type="n", ...)
+ if(grid){
+    grid(lty=1, equilogs=FALSE)
+    box()}
+ points(x, y, ...)
  rss <- NULL
  new <- seq(min(x, na.rm=TRUE), max(x,na.rm=TRUE), length=100)
  for (j in 1:length(lam)){

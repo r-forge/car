@@ -35,9 +35,11 @@ dfbetasPlots.lm <- function(model, terms= ~ ., intercept=FALSE, layout=NULL, ask
 	dfbetas <- dfbetas(model)
 	for (term in good) {
 		dfbs <- dfbetas[, term]
-		plot(dfbs, type="n", ...)
-		if(grid) grid(lty=1, equilogs=FALSE)
-		points(dfbs, ylab=term,  ...)
+		plot(dfbs, ylab=term, type="n", ...)
+	  if(grid){
+      grid(lty=1, equilogs=FALSE)
+      box()}
+		points(dfbs,  ...)
 		abline(h=c(-1, 0, 1), lty=2)
 		showLabels(seq(along=dfbs), dfbs, id.method=id.method, 
                        id.n=id.n, labels=labels, id.col=id.col,
@@ -86,7 +88,7 @@ dfbetaPlots.lm <- function(model, terms=~., intercept=FALSE, layout=NULL, ask,
 		se <- seb[term]
 		plot(dfb, ylab=term, type="n")
 		if(grid) grid(lty=1, equilogs=FALSE) 
-		points(dfb)
+		points(dfb, ...)
 		abline(h=c(-se, 0, se), lty=2)
 		showLabels(seq(along=dfb), dfb, id.method=id.method, id.n=id.n, 
               labels=labels, id.cex=id.cex, id.col=id.col, ...)

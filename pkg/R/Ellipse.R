@@ -19,10 +19,11 @@ ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5
 	if (logged("x")) ellipse[, "x"] <- exp(ellipse[, "x"])
 	if (logged("y")) ellipse[, "y"] <- exp(ellipse[, "y"])
 	if (add) lines(ellipse, col=col, lwd=lwd, lty=lty, ...) 
-	else {plot(ellipse, type="n" ) 
-        if(grid) grid(lty=1, equilogs=FALSE)
-        lines(ellipse, xlab = xlab, ylab = ylab, type ="l", col=col, 
-			      lwd=lwd, lty=lty, las=las, ... )} 	
+	else {plot(ellipse, type="n", xlab = xlab, ylab = ylab, las=las ) 
+        if(grid){
+             grid(lty=1, equilogs=FALSE)
+             box()}
+        lines(ellipse, col=col, lwd=lwd, lty=lty, ... )} 	
 	if (center.pch) points(center[1], center[2], pch=center.pch, cex=center.cex, col=col)
   }
 
@@ -44,9 +45,11 @@ dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19,
 	else if(!(is.vector(x) && is.vector(y) && length(x) == length(y)))
 		stop("x and y must be vectors of the same length")
 	if (plot.points && !add) {
-      plot(x, y, type="n", ...) 
-      if(grid) grid(lty=1, equilogs=FALSE)
-      points(x, y, xlab=xlab, ylab=ylab, col=col[1], pch=pch, las=las, ...)}
+      plot(x, y, type="n", xlab=xlab, ylab=ylab, las=las, ...) 
+	    if(grid){
+        grid(lty=1, equilogs=FALSE)
+        box()}
+      points(x, y, col=col[1], pch=pch, ...)}
 	if (plot.points && add)  points(x, y, col=col[1], pch=pch, ...)
 	
 	dfn <- 2

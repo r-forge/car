@@ -3,6 +3,7 @@
 # 11 & 20 January 2010: changed lty=3 to lty=1 for fitted curve. J. Fox
 # 14 April 2010: set id.n = 0. J. Fox
 # 15 April 2010; rewrite showLabels
+# 25 May 2010 added grid() to plots, S. Weisberg
 
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
 
@@ -46,15 +47,17 @@ residualPlots.default <- function(model, terms= ~ . ,
         row.names(ans)[nr] <- term}
     } }   
   # Tukey's test
-  if (fitted == TRUE){
+  if (fitted == TRUE){      
    tuk <- residualPlot(model, "fitted", plot=plot, ...)
-   if (class(model)[1] == "lm"){
+   if (!is.null(tuk)  & class(model)[1] == "lm"){
       ans <- rbind(ans, tuk)
       row.names(ans)[nr + 1] <- "Tukey test"
-      ans[nr + 1, 2] <- 2*pnorm(abs(ans[nr + 1, 1]), lower.tail=FALSE)}}
+      ans[nr + 1, 2] <- 2*pnorm(abs(ans[nr + 1, 1]), lower.tail=FALSE)}} 
   if(plot == TRUE) mtext(side=3, outer=TRUE, main, cex=1.2)
-  if(!is.null(ans)) dimnames(ans)[[2]] <- c("Test stat", "Pr(>|t|)")
-  if(is.null(ans)) invisible(ans) else if(tests == TRUE) round(ans, 3)
+  if(!is.null(ans)) {
+     dimnames(ans)[[2]] <- c("Test stat", "Pr(>|t|)")
+     return(if(tests == FALSE) invisible(ans) else round(ans, 3)) } else
+  invisible(NULL)
   }
   
 residualPlots.lm <- function(model, ...) {
@@ -117,8 +120,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
        lab <- paste("Linear part of", lab)
        c(NA, NA)}
    else if (class(horiz) == "factor") c(NA, NA)
-   else if (quadratic | smooth == TRUE) residCurvTest(model, variable)
-   else  c(NA, NA)
+   else residCurvTest(model, variable)
 # ans <- if (class(horiz) != "factor")  else c(NA, NA)
  if(plot==TRUE){
   vert <- switch(type, "rstudent"=rstudent(model), 
@@ -130,7 +132,9 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
             id.col=id.col, ...) 
      abline(h=0, lty=2) } else {
      plot(horiz, vert, xlab=lab, ylab=ylab, ...)
-     if(grid) grid(lty=1, equilogs=FALSE)
+	  if(grid){
+      grid(lty=1, equilogs=FALSE)
+      box()}
      points(horiz, vert, ...)
      abline(h=0, lty=2)
      if(quadratic==TRUE){
@@ -144,7 +148,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
             id.col=id.col)  
         }
       }  
-  if(quadratic | smooth ==TRUE) invisible(ans) else NULL}
+  invisible(ans)}
  
 residCurvTest <- function(model, variable) {UseMethod("residCurvTest")}
 residCurvTest.lm <- function(model, variable) {

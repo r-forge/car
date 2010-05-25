@@ -30,10 +30,11 @@ qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
 	n <- length(ord.x)
 	P <- ppoints(n)
 	z <- q.function(P, ...)
-	plot(z, ord.x, type="n")
-	if(grid) grid(lty=1, equilogs=FALSE)
-	points(z, ord.x, xlab=xlab, ylab=ylab, main=main, las=las, col=col, pch=pch,
-		cex=cex)
+	plot(z, ord.x, type="n", xlab=xlab, ylab=ylab, main=main, las=las)
+	if(grid){
+    grid(lty=1, equilogs=FALSE)
+    box()}
+	points(z, ord.x, col=col, pch=pch, cex=cex)
 	if (line == "quartiles" || line == "none"){
 		Q.x <- quantile(ord.x, c(.25,.75))
 		Q.z <- q.function(c(.25,.75), ...)
