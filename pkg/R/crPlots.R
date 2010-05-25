@@ -82,10 +82,11 @@ crPlot.lm<-function(model, variable,
 		else model.matrix(model)[,var]
 	if (order==1){          # handle first-order separately for efficiency
 		partial.res<-residuals.glm(model,"partial")
-		plot(.x, partial.res[,var], xlab=var, 
+		plot(.x, partial.res[,var], type="n", las=las) 
+		if(grid) grid(lty=1, equilogs=FALSE)
+		points(.x, partial.res[,var], xlab=var, 
 			ylab=paste("Component+Residual(", responseName(model),")", sep=""),
 			las=las, col=col, pch=pch)
-		if(grid) grid(lty=1, equilogs=FALSE)
 		if (line) abline(lm(partial.res[,var]~.x), lty=2, lwd=lwd, col=col)
 		if (smooth) {
 			lines(lowess(.x, partial.res[,var], iter=iter, f=span), lwd=lwd, col=col)

@@ -42,8 +42,9 @@ function (model, variable, mean = TRUE, sd = FALSE,
         labels <- names(residuals(model))
     zpred <- function(...){pmax(predict(...), 0)}
     plot(u, model$model[ , 1], xlab = xlab, ylab = colnames(model$model[1]), 
-        ...)
+        type="n", ...)
     if(grid) grid(lty=1, equilogs=FALSE)
+    points(u, model$model[ , 1], ...)
     if(key){
        outerLegend(c("Data", "Model"), lty=1:2, col=col.line, 
           bty="n", cex=0.75, fill=col.line, border=col.line, horiz=TRUE, 
@@ -96,13 +97,13 @@ mmp.glm <- function (model, variable, mean = TRUE, sd = FALSE,
 {
     if (missing(variable)) {
         xlab <- "Linear Predictor"
-        u <- fitted(update(model, na.action=na.exclude))
+        u <- fitted(update(model, na.action=na.omit))
     }  else {
         u <- variable }
     if(missing(labels)) 
         labels <- names(residuals(model)[!is.na(residuals(model))])
-    na.cases <- attr(model$model, "na.action")
-    if(length(na.cases)>0) u <- u[-na.cases]
+#    na.cases <- attr(model$model, "na.action")
+#    if(length(na.cases)>0) u <- u[-na.cases]
     fr.mmp <- function(family, x) {
         if (family == "binomial")
             pmax(0, pmin(1, x))
@@ -116,9 +117,10 @@ mmp.glm <- function (model, variable, mean = TRUE, sd = FALSE,
     fam <- model$family$family
     if (is.matrix(response))
         response <- response[, 1]/apply(response, 1, sum)
-    plot(u, response, xlab = xlab, ylab = colnames(model$model[1]), 
-        ...)
+    plot(u, response, type="n")
     if(grid) grid(lty=1, equilogs=FALSE)
+    points(u, response, xlab = xlab, ylab = colnames(model$model[1]), 
+        ...)
     if(key){
     outerLegend(c("Data", "Model"), lty=1:2, col=col.line, 
           bty="n", cex=0.75, fill=col.line, border=col.line, 

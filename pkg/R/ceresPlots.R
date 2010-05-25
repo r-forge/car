@@ -137,8 +137,9 @@ ceresPlot.lm<-function(model, variable,
 		aug.mod.mat[,posn] %*% as.matrix(coef[posn])
 	plot(mod.mat[,var], partial.res, xlab=var, col=col, pch=pch,
 		ylab=paste("CERES Residual(",responseName(model),")", sep=""),
-		main=main, las=las)
+		main=main, las=las, type="n")
 	if(grid) grid(lty=1, equilogs=FALSE)
+	points(mod.mat[,var], partial.res, col=col, pch=pch) 
 	showLabels(mod.mat[,var], partial.res, labels=labels, 
             id.method=id.method, id.n=id.n, id.cex=id.cex,
             id.col=id.col)

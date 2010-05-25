@@ -33,14 +33,16 @@ invTranPlot.default<- function(x, y, lambda=c(-1, 0, 1),
         id.method = abs(residuals(lm(y~x))),
         labels, 
         id.n = if(id.method[1]=="identify") Inf else 0, 
-        id.cex=1, id.col=palette()[1], ...){
+        id.cex=1, id.col=palette()[1], grid=TRUE, ...){
  if (missing(labels)) labels <- seq(length(x))
  if (is.factor(x)) stop("Predictor variable may not be a factor")
  if (is.factor(y)) stop("Response variable may not be a factor")
  if (optimal){opt <- invTranEstimate(x, y, family=family, confidence=FALSE)
               lam <- c(opt$lambda, lambda)} else lam <- lambda
  fam <- match.fun(family)
- plot(x, y, xlab=xlab, ylab=ylab, ...)
+ plot(x, y, type="n", ...)
+ if(grid) grid(lty=1, equilogs=FALSE)
+ points(x, y, xlab=xlab, ylab=ylab, ...)
  rss <- NULL
  new <- seq(min(x, na.rm=TRUE), max(x,na.rm=TRUE), length=100)
  for (j in 1:length(lam)){

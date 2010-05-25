@@ -67,10 +67,11 @@ leveragePlot.lm<-function(model, term.name,
 	v.x<-X %*% V %*% t(L) %*% u
 	v.y<-v.x + e
 	plot(v.x, v.y, xlab=paste(term.names[term],"| others"), 
-		ylab=paste(responseName," | others"), 
+		ylab=paste(responseName," | others"), type="n",
 		las=las, col=col, pch=pch)
-	abline(lsfit(v.x, v.y, wt=wt), col=col, lwd=lwd)
 	if(grid) grid(lty=1, equilogs=FALSE)
+  points(v.x, v.y, col=col, pch=pch)	
+	abline(lsfit(v.x, v.y, wt=wt), col=col, lwd=lwd)
   showLabels(v.x, v.y, labels=labels, 
           id.method=id.method, id.n=id.n, id.cex=id.cex, 
           id.col=id.col)

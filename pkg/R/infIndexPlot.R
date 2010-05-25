@@ -34,8 +34,9 @@ infIndexPlot.lm <- function(model,
       y <- switch(j,cooks.distance(model),rstudent(model),
              outlier.t.test, hatvalues(model))
       xa <- if(j==4) "s" else "s"
-      plot(xaxis,y,type="b", ylab=names[j], xlab="", xaxt="n", tck=0.1, ...)
-      if(grid) grid(lty=1, equilogs=FALSE)      
+      plot(xaxis, y, type="n", ...)
+      if(grid) grid(lty=1, equilogs=FALSE) 
+      points(xaxis, y, ylab=names[j], xlab="", xaxt="n", tck=0.1, ...)    
       if (j == 2) abline(h=0, lty=2 )
       axis(1, labels= ifelse(j<length(what), FALSE, TRUE))
       showLabels(xaxis, y, labels=labels,

@@ -69,9 +69,10 @@ function (model, variable,
     xlab <- if(missing(xlab)) paste(var.names[var], "| others") else xlab
     ylab <- if(missing(ylab)) paste(responseName, " | others")  else ylab
     plot(res[, 1], res[, 2], xlab = xlab,
-        ylab = ylab,
+        ylab = ylab, type="n",
         col = col, pch = pch, ...)
     if(grid) grid(lty=1, equilogs=FALSE)
+    points(res[, 1], res[, 2], col=col, pch=pch, ...)
     abline(lsfit(res[, 1], res[, 2], wt = wt), col = col.lines, lwd = lwd)
     showLabels(res[, 1],res[, 2], labels=labels, 
           id.method=id.method, id.n=id.n, id.cex=id.cex, 
@@ -105,9 +106,10 @@ avPlot.glm<-function(model, variable,
         intercept=FALSE)$residuals
     xlab <- if(missing(xlab)) paste(var.names[var], "| others") else xlab
     ylab <- if(missing(ylab)) paste(responseName, " | others") else ylab
-    plot(res.x, res.y, xlab=xlab, 
+    plot(res.x, res.y, xlab=xlab, type="n", 
         ylab=ylab, col=col, pch=pch, main=main, ...)
     if(grid) grid(lty=1, equilogs=FALSE)
+    points(res.x, res.y, col=col, pch=pch, ...)
     abline(lsfit(res.x, res.y, wt=wt), col=col.lines, lwd=lwd)
     showLabels(res.x,res.y, labels=labels, 
           id.method=id.method, id.n=id.n, id.cex=id.cex, 

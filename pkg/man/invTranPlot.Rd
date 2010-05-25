@@ -28,7 +28,7 @@ invTranPlot(x, ...)
         id.method = abs(residuals(lm(y~x))),
         labels, 
         id.n = if(id.method[1]=="identify") Inf else 0,
-        id.cex=1, id.col=palette()[1], ...)
+        id.cex=1, id.col=palette()[1], grid=TRUE, ...)
 
 invTranEstimate(x, y, family="bcPower", confidence=0.95)
 }
@@ -62,6 +62,8 @@ Set to NULL to suppress the legend.}
     \code{\link{showLabels}} for details of these arguments.
 }
   \item{...}{Additional arguments passed to the plot method.}
+\item{grid}{If TRUE, the default, a light-gray background grid is put on the
+graph}
 }
 \value{
 \code{invTranPlot}

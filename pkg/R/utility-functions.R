@@ -222,3 +222,14 @@ outerLegend <- function(..., margin=3, offset=0, adjust=FALSE){
    }
    legend(x0, y0, ... , xpd=TRUE)
    }
+   
+# smoothGLM written 25 May 2010 by S. Weisberg
+# uses b-splines to smooth a 2D plot using a glm.
+# The default is 5 df with gaussian family of errors with
+# identity link.
+
+smoothGLM <- function(x, y, family=gaussian, df=5, length=200){
+  at <- seq(min(x, na.rm=TRUE), max(x, na.rm=TRUE), length=length)
+  suppressWarnings(m <- glm(y ~ bs(x, df=df), family=family))
+  data.frame(xout=at, yout=predict(m, data.frame(x=at), type="response"))
+  }

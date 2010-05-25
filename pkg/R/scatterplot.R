@@ -268,7 +268,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 				with(X, dataEllipse(x, y, plot.points=FALSE, lwd=1, log=log,
 						levels=levels, col=col[i], robust=robust))
 			}
-		if (id.method != "identify") indices <- c(indices,
+		if (id.method[1] != "identify") indices <- c(indices,
      showLabels(.x[subs], .y[subs], labels=labels[subs], id.method=id.method,
 		   id.n=id.n, id.cex=id.cex, id.col=col[i]))
   }}
@@ -282,7 +282,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 			with(X, dataEllipse(x, y, plot.points=FALSE, lwd=1, log=log, levels=levels, col=col[1],
 					robust=robust))
 		}
-		if (id.method != "identify") indices <- showLabels(
+		if (id.method[1] != "identify") indices <- showLabels(
 				.x, .y, labels=labels, 
 				id.method=id.method, id.n=id.n, id.cex=id.cex, id.col=id.col)
 	}
@@ -297,7 +297,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 	}
 	if ("smooth" %in% err) warning("could not fit smooth")
 	if ("spread" %in% err) warning("could not smooth spread")
-	if (id.method == "identify") indices <- showLabels(.x, .y, labels, 
+	if (id.method[1] == "identify") indices <- showLabels(.x, .y, labels, 
        id.method=id.method, id.n=length(.x), id.cex=id.cex, id.col=id.col)
 	if (is.null(indices)) invisible(indices) else if (is.numeric(indices)) sort(indices) else indices
 } 
