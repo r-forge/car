@@ -19,7 +19,7 @@ boxCox(object, ...)
 \method{boxCox}{default}(object, lambda = seq(-2, 2, 1/10), plotit = TRUE,
        interp = (plotit && (m < 100)), eps = 1/50, 
        xlab = expression(lambda),
-       ylab = "log-Likelihood", family="bcPower", ...)
+       ylab = "log-Likelihood", family="bcPower", grid=TRUE, ...)
 
 \method{boxCox}{formula}(object, lambda = seq(-2, 2, 1/10), plotit = TRUE,
        interp = (plotit && (m < 100)), eps = 1/50, 
@@ -61,14 +61,18 @@ Defaults to \code{"bcPower"} for the Box-Cox power family of
 transformations.  If set to \code{"yjPower"} the Yeo-Johnson family that
 permits negative responses is used.
 }
+  \item{grid}{If TRUE, the default, a light-gray background grid is put on the
+graph.
+}
   \item{\dots}{
 additional parameters to be used in the model fitting.
 }
 }
 \details{
 This routine is an elaboration of the \code{\link{boxcox}} function in the
-MASS package.  All arguments are identical, and if the argument 
-\code{family = "bcPower"} is set it gives identical answers.  If 
+MASS package.  All arguments except for \code{family} and \code{grid} are 
+identical, and if the arguments 
+\code{family = "bcPower", grid=FALSE} is set it gives an identical graph.  If 
 \code{family = "yjPower"} then the Yeo-Johnson power transformations that
 allow nonpositive responses will be used.
 }

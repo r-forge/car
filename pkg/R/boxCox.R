@@ -13,8 +13,8 @@ boxCox.formula <- function (object, lambda = seq(-2, 2, 1/10), plotit = TRUE, in
 }
 
 boxCox.lm <- function (object, lambda = seq(-2, 2, 1/10), plotit = TRUE, interp = (plotit &&
-    (m < 100)), eps = 1/50, xlab = expression(lambda), ylab = "log-Likelihood",family="bcPower",
-    ...)
+    (m < 100)), eps = 1/50, xlab = expression(lambda), ylab = "log-Likelihood",
+    family="bcPower", ...)
 {
     m <- length(lambda)
     if (is.null(object$y) || is.null(object$qr))
@@ -28,7 +28,7 @@ boxCox.lm <- function (object, lambda = seq(-2, 2, 1/10), plotit = TRUE, interp 
 boxCox.default <- function(object,
     lambda = seq(-2, 2, 1/10), plotit = TRUE, interp = (plotit &&
         (m < 100)), eps = 1/50, xlab = expression(lambda), ylab = "log-Likelihood",
-        family="bcPower",...)
+        family="bcPower", grid=TRUE, ...)
 {                
     fam <- match.fun(family)
     if (is.null(object$y) || is.null(object$qr))
@@ -52,8 +52,12 @@ boxCox.default <- function(object,
         mx <- (1L:m)[loglik == max(loglik)][1L]
         Lmax <- loglik[mx]
         lim <- Lmax - qchisq(19/20, 1)/2
-        plot(xl, loglik, xlab = xlab, ylab = ylab, type = "l",
+        plot(xl, loglik, xlab = xlab, ylab = ylab, type = "n",
             ylim = range(loglik, lim))
+   	    if(grid){
+          grid(lty=1, equilogs=FALSE)
+          box()}
+        lines(xl, loglik)
         plims <- par("usr")
         abline(h = lim, lty = 2)
         y0 <- plims[3L]
