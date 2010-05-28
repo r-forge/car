@@ -8,6 +8,10 @@
 #   fixed bug  when only one plot is requested --- suppress call to par()
 #   added 'outerLegend' to label lines
 #   modified to work correctly with 
+# 28 May 2010 S. Weisberg, fixed bugs in logistic models
+#   changed line thickness of mean smooths
+#   excluded SD smooth from bernoulli models
+#   added grid lines
 #############################################
 marginalModelPlot <- function(...){mmp(...)}
 mmp <- function(model, ...){UseMethod("mmp")}
@@ -41,8 +45,9 @@ function (model, variable, mean = TRUE, sd = FALSE,
     if(missing(labels)) 
         labels <- names(residuals(model))
     zpred <- function(...){pmax(predict(...), 0)}
-    plot(u, model$model[ , 1], xlab = xlab, ylab = colnames(model$model[1]), 
-        type="n", ...)
+    resp <- model.response(model.frame(model))
+    plot(u, resp, 
+        xlab = xlab, ylab = colnames(model$model[1]), type="n", ...)
 	  if(grid){
       grid(lty=1, equilogs=FALSE)
       box()}
@@ -55,16 +60,16 @@ function (model, variable, mean = TRUE, sd = FALSE,
     deg <- if(length(unique(u)) == 2) 0 else degree
     ow <- options(warn=-1)
     on.exit(options(ow))
-    loess.y <- loess(model$model[, 1] ~ u, degree = deg, 
+    loess.y <- loess(resp ~ u, degree = deg, 
         span = span)
     loess.yhat <- loess(predict(model) ~ u, degree = deg, 
         span = span)
     new <- seq(min(u), max(u), length = 200)
     if (mean == TRUE) {
         lines(new, predict(loess.y, data.frame(u = new)), lty = 1, 
-            col = col.line[1])
+            lwd=2, col = col.line[1])
         lines(new, predict(loess.yhat, data.frame(u = new)), 
-            lty = 2, col = col.line[2])
+            lwd=2, lty = 2, col = col.line[2])
     }
     if (sd == TRUE) {
         loess.y.var <- loess(residuals(loess.y)^2 ~ u, degree = deg, 
@@ -85,7 +90,7 @@ function (model, variable, mean = TRUE, sd = FALSE,
             sqrt(s2 + zpred(loess.yhat.var, data.frame(u = new))), 
             lty = 2, col = col.line[2])
     }    
-    showLabels(u, model$model[, 1], labels=labels, 
+    showLabels(u, resp, labels=labels, 
         id.method=id.method, id.n=id.n, id.cex=id.cex, 
         id.col=id.col)
 }
@@ -115,10 +120,17 @@ mmp.glm <- function (model, variable, mean = TRUE, sd = FALSE,
             pmax(0, x)
         else x
     }
-    response <- model$model[, 1]
+    response <- model.response(model.frame(model))
     fam <- model$family$family
-    if (is.matrix(response))
-        response <- response[, 1]/apply(response, 1, sum)
+    pw <- model$prior.weights # relevant only for binomial 
+# For family = "binomial" we need to figure out the correct response
+# The sample sizes are in  prior.weights
+    bernoulli <- FALSE
+    if(fam == "binomial") {
+        if(!any(pw > 1.1)) bernoulli <- TRUE 
+        if (is.factor(response)) {response <- as.numeric(response) - 1}
+        if (is.matrix(response)){response <- response[, 1]/pw}  
+    }
     plot(u, response, type="n", xlab = xlab, ylab = colnames(model$model[1]))
 	  if(grid){
       grid(lty=1, equilogs=FALSE)
@@ -136,10 +148,10 @@ mmp.glm <- function (model, variable, mean = TRUE, sd = FALSE,
     pred.loess.y <- fr.mmp(fam, predict(loess.y, data.frame(u = new)))
     pred.loess.yhat <- fr.mmp(fam, predict(loess.yhat, data.frame(u = new)))
     if (mean == TRUE) {
-        lines(new, pred.loess.y, lty = 1, col = col.line[1])
-        lines(new, pred.loess.yhat, lty = 2, col = col.line[2])
+        lines(new, pred.loess.y, lty = 1, col = col.line[1], lwd=2)
+        lines(new, pred.loess.yhat, lty = 2, col = col.line[2], lwd=2)
     }
-    if (sd == TRUE) {
+    if (sd == TRUE & bernoulli==FALSE) {
         loess.y.var <- loess(residuals(loess.y)^2 ~ u, degree = degree, 
             span = span)
         pred.loess.y.var <- pmax(0, predict(loess.y.var, data.frame(u = new)))

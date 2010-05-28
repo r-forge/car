@@ -83,7 +83,7 @@ crPlot.lm<-function(model, variable,
 	if (order==1){          # handle first-order separately for efficiency
 		partial.res<-residuals.glm(model,"partial")
 		plot(.x, partial.res[,var], type="n", las=las, xlab=var,
-      ylab=paste("Component+Residual(", responseName(model),")", sep="")) 
+      ylab=paste("Component+Residual(", responseName(model),")", sep=""))
 	  if(grid){
       grid(lty=1, equilogs=FALSE)
       box()}
@@ -105,7 +105,11 @@ crPlot.lm<-function(model, variable,
 		last<-ncol(partial.res)
 		plot(.x, partial.res[,last], xlab=var, 
 			ylab=paste("Component+Residual(", responseName(model),")", sep=""),
-			las=las, col=col, pch=pch)
+			las=las, type="n")
+	  if(grid){
+      grid(lty=1, equilogs=FALSE)
+      box()}
+		points(.x, partial.res[,last], col=col, pch=pch)
 		if (line) abline(lm(partial.res[,last]~.x), lty=2, lwd=lwd, col=col)
 		if (smooth) {
 			lines(lowess(.x, partial.res[,last], iter=iter, f=span), lwd=lwd, col=col)

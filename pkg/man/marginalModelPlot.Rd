@@ -79,7 +79,9 @@ then to \code{plot}.  Users should generally use \code{mmps}.
   you can use \code{mmp} to the the plot for the variable used to define
   the splines.}
 \item{mean}{ If TRUE, compare mean smooths}
-\item{sd}{ If TRUE, compare sd smooths }
+\item{sd}{ If TRUE, compare sd smooths.  For a binomial regression with all
+sample sizes equal to one, this argument is ignored as the SD bounds don't
+make any sense. }
 \item{xlab}{ label for horizontal axis }
 \item{degree}{Degree of the local polynomial, passed to \code{loess}.  The
   usual default for \code{loess} is 2, but the default here is 1.}
@@ -125,6 +127,12 @@ Linear Regression}, Third Edition, Wiley, Chapter 8.
 \examples{
 c1 <- lm(infant.mortality ~ gdp, UN)
 mmps(c1)
+# include SD lines
+p1 <- lm(prestige ~ income + education, Prestige)
+mmps(p1, sd=TRUE)
+# logisitic regression example
+m1 <- glm(lfp ~ ., family=binomial, data=Mroz)
+mmps(m1)
 
 } 
 \keyword{hplot }% at least one, from doc/KEYWORDS
