@@ -35,7 +35,7 @@ boxTidwell(y, ...)
   \item{subset}{an optional vector specifying a subset of observations to be used.}
   \item{na.action}{a function that indicates what should happen when the data contain \code{NA}s. 
     The default is set by the \code{na.action} setting of \code{options}.}
-  \item{verbose}{if \code{TRUE} a record of iterations is printed.}
+  \item{verbose}{if \code{TRUE} a record of iterations is printed; default is \code{FALSE}.}
   \item{tol}{if the maximum relative change in coefficients is less than \code{tol} then
     convergence is declared.}
   \item{max.iter}{maximum number of iterations.}
@@ -64,13 +64,16 @@ boxTidwell(y, ...)
   \emph{Technometrics} \bold{4}, 531-550.
 
   Fox, J. (2008)
-  \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage. 
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \examples{
-data(Prestige, package="car")
 boxTidwell(prestige ~ income + education, ~ type + poly(women, 2), data=Prestige)
 }
 

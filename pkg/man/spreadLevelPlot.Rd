@@ -45,7 +45,7 @@ slp(...)
   \item{subset}{an optional vector specifying a subset of observations to be used.}
   \item{na.action}{a function that indicates what should happen when the data contain \code{NA}s. 
     The default is set by the \code{na.action} setting of \code{options}.}
-  \item{by}{a factor, numeric or character vector defining groups.}
+  \item{by}{a factor, numeric vector, or character vector defining groups.}
   \item{robust.line}{if \code{TRUE} a robust line is fit using the \code{rlm} function in
     the \code{MASS} package; if \code{FALSE} a line is fit using \code{lm}.}
   \item{start}{add the constant \code{start} to each data value.}
@@ -83,7 +83,11 @@ graph}
 }
 \references{ 
   Fox, J. (2008)
-  \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
   
   Hoaglin, D. C., Mosteller, F. and Tukey, J. W. (Eds.) (1983)
   \emph{Understanding Robust and Exploratory Data Analysis.} Wiley.

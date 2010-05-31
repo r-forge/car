@@ -40,7 +40,11 @@ boxCoxVariable(y)
   \emph{JRSS B} \bold{26} 211--246.
   
   Fox, J. (2008)
-  \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage. 
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}}
@@ -48,7 +52,6 @@ boxCoxVariable(y)
 \seealso{\code{\link[MASS]{boxcox}}, \code{\link{powerTransform}}, \code{\link{bcPower}}} % , \code{\link{avPlots}}
 
 \examples{
-data(Ornstein, package="car")
 mod <- lm(interlocks + 1 ~ assets, data=Ornstein)
 mod.aux <- update(mod, . ~ . + boxCoxVariable(interlocks + 1))
 summary(mod.aux)

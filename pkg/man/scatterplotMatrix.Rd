@@ -35,7 +35,7 @@ spm(x, ...)
 }
 
 \arguments{
-  \item{x}{a data matrix, numeric data frame, or a one-side ``model'' formula, of the form 
+  \item{x}{a data matrix, numeric data frame, or a one-sided \dQuote{model} formula, of the form 
     \code{ ~ x1 + x2 + ... + xk} or \code{ ~ x1 + x2 + ... + xk | z} where \code{z}
     evaluates to a factor or other variable to divide the data into groups.}
   \item{data}{for \code{scatterplotMatrix.formula},
@@ -55,19 +55,19 @@ spm(x, ...)
     function.}
   \item{plot.points}{if \code{TRUE} the points are plotted in each 
     off-diagonal panel.}
-  \item{smooth}{if \code{TRUE} a lowess smooth is plotted in each
+  \item{smooth}{if \code{TRUE} a loess smooth is plotted in each
     off-diagonal panel.}
   \item{spread}{if \code{TRUE} (the default when not smoothing by groups), a smoother is applied to
   	the root-mean-square positive and negative residuals from the loess line to display conditional spread and
   	asymmetry.}
-  \item{span}{span for lowess smoother.}
+  \item{span}{span for loess smoother.}
    \item{loess.threshold}{suppress the loess smoother if there are fewer than \code{loess.threshold} unique
   	values (default, 5) of the variable on the vertical axis.}
   \item{reg.line}{if not \code{FALSE} a line is plotted using the
     function given by this argument; e.g., using \code{rlm} in
     package \code{MASS} plots a robust-regression line.}
   \item{transform}{if \code{TRUE}, multivariate normalizing power transformations
-    are computed \code{\link{powerTransform}}, rounding the estimated powers to `nice' values for plotting; 
+    are computed with \code{\link{powerTransform}}, rounding the estimated powers to `nice' values for plotting; 
     if a vector of powers, one for each variable, these are applied prior to plotting. If  there are \code{groups}
     and \code{by.groups} is \code{TRUE}, then the transformations are estimated \emph{conditional} on the
     \code{groups} factor.}
@@ -78,7 +78,7 @@ spm(x, ...)
   \item{levels}{levels or levels at which concentration ellipses are plotted;
     the default is \code{c(.5, .9)}.}
   \item{robust}{if \code{TRUE} use the \code{cov.trob} function in the \code{MASS} package
-    to calculate the center and covariance matrix for the data ellipse.}
+    to calculate the center and covariance matrix for the data ellipses.}
   \item{groups}{a factor or other variable dividing the data into groups; groups are
     plotted with different colors and plotting characters.}
   \item{by.groups}{if \code{TRUE}, regression lines are fit by groups.}
@@ -87,19 +87,18 @@ spm(x, ...)
   \item{col}{colors for points and lines; the default is taken from the color palette, 
   	with \code{palette()[1]} for lines and \code{palette()[2]} for points if there are
   	no groups, and successive colors for the groups if there are groups.}
-  	used for points if there are no groups
   \item{lwd}{width of linear-regression lines (default \code{1}).}
   \item{lwd.smooth}{width for smooth regression lines (default is the same as \code{lwd}).}
   \item{lwd.spread}{width for lines showing spread (default is the same as \code{lwd}).}
-  \item{lty}{type of linear-regression lines (default \{code{1}, solid line).}
+  \item{lty}{type of linear-regression lines (default \code{1}, solid line).}
   \item{lty.smooth}{type of smooth regression lines (default is the same as \code{lty}).}
   \item{lty.spread}{width for lines showing spread (default is \code{2}, broken line).}
-  \item{cex, cex.axis, cex.labels, cex.main}{set sizes of various graphical elements; 
+  \item{cex, cex.axis, cex.labels, cex.main}{set sizes of various graphical elements
     (see \code{\link[graphics]{par}}).}
   \item{legend.plot}{if \code{TRUE} then a legend for the groups is plotted
     in the first diagonal cell.}
   \item{row1attop}{If \code{TRUE} (the default) the first row is at the top, as in a matrix, as
-  	opposed to at the bottom, as in graph.}
+  	opposed to at the bottom, as in graph (argument suggested by Richard Heiberger).}
   \item{...}{arguments to pass down.}
 }
 
@@ -109,6 +108,11 @@ spm(x, ...)
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}}
+
+\references{
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+}
 
 \seealso{\code{\link[graphics]{pairs}}, \code{\link{scatterplot}},
   \code{\link{dataEllipse}}, \code{\link{powerTransform}}, 

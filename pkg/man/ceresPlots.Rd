@@ -41,7 +41,7 @@ component-plus-residual plot is drawn for that predictor only.
 of the graph will have this many rows and columns.  If not set, the program will
 select an appropriate layout.  If the number of graphs exceed nine, you must 
 select the layout yourself, or you will get a maximum of nine per page.}
-  \item{ask}{If TRUE, ask the user before drawing the next plot; FALSE if don't ask.
+  \item{ask}{If \code{TRUE}, ask the user before drawing the next plot; if \code{FALSE}, the default, don't ask.
 This is relevant only if not all the graphs can be drawn in one window.}
   \item{main}{The title of the plot; if missing, one will be supplied.
 }
@@ -98,11 +98,11 @@ graph}
   \emph{Applied Regression, Including Computing and Graphics.} Wiley.
 
   Fox, J. (2008)
-  \emph{Applied Regression, Linear Models, and Related Methods},
-  Second Edition Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
   
-  Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied Regression},
-  Second Edition. Sage.
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
   
   Weisberg, S. (2005)  \emph{Applied Linear Regression}, Third Edition. Wiley.
 }

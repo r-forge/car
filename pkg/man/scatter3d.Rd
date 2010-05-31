@@ -13,8 +13,8 @@
   three-button mouse), drag a 
   rectangle around the points to be identified, and release the button. 
   Repeat this procedure for each point or
-  set of ``nearby'' points to be identified. To exit from point-identification mode,
-  click the right (or centre) button an empty region of the plot.
+  set of \dQuote{nearby} points to be identified. To exit from point-identification mode,
+  click the right (or centre) button in an empty region of the plot.
 }
 
 \usage{
@@ -49,7 +49,7 @@ identify3d(x, y, z, axis.scales=TRUE, groups = NULL, labels = 1:length(x),
 }
 
 \note{
-You have to install the \code{rgl} and \code{mgcv} packages to produce 3D plots. 
+You have to install the \code{rgl} package to produce 3D plots. 
 }
 
 \arguments{
@@ -85,7 +85,7 @@ You have to install the \code{rgl} and \code{mgcv} packages to produce 3D plots.
   \item{surface}{plot surface(s) (\code{TRUE} or \code{FALSE}).}
   \item{fill}{fill the plotted surface(s) with colour (\code{TRUE} or \code{FALSE}).}
   \item{grid}{plot grid lines on the regression surface(s) (\code{TRUE} or \code{FALSE}).}
-  \item{grid.lines}{number of lines (default, 26) forming the grid, in each of the x and y directions.}
+  \item{grid.lines}{number of lines (default, 26) forming the grid, in each of the x and z directions.}
   \item{df.smooth}{degrees of freedom for the two-dimensional smooth regression surface;
     if \code{NULL} (the default), the \code{\link[mgcv]{gam}} function will select the degrees of freedom
     for a smoothing spline by generalized cross-validation; if a positive number, a fixed
@@ -116,8 +116,8 @@ You have to install the \code{rgl} and \code{mgcv} packages to produce 3D plots.
    \item{id.method}{if \code{"mahal"} (the default), relatively extreme points are identified automatically
   	according to their Mahalanobis distances from the centroid (point of means);
   	if \code{"identify"}, points are identified interactively by right-clicking and dragging a box around them; right-click
-  	in an empty area to exit from interactive-point-identification mode; if \code{xz}, identify extreme points in the
-  	predictor plane; if \code{y}, identify unusual values of the response; if \code{xyz} identify
+  	in an empty area to exit from interactive-point-identification mode; if \code{"xz"}, identify extreme points in the
+  	predictor plane; if \code{"y"}, identify unusual values of the response; if \code{"xyz"} identify
   	unusual values of an variable; if \code{"none"}, no point identification.
   	See \code{\link{showLabels}} for more information.}
   \item{id.n}{Number of relatively extreme points to identify automatically (default, \code{0} unless
@@ -126,12 +126,12 @@ You have to install the \code{rgl} and \code{mgcv} packages to produce 3D plots.
     (\code{TRUE} or \code{FALSE}). \code{scatter3d} rescales the three variables 
     internally to fit in the unit cube; this rescaling will affect regression 
     coefficients.}
-  \item{labels}{text labels for the points, one for each point; defaults to
-    the observation indices.}
+  \item{labels}{text labels for the points, one for each point; in the \code{default} method defaults to
+    the observation indices, in the \code{formula} method to the row names of the data.}
   \item{col}{colours for the point labels, given by group. There must be at
     least as many colours as groups; if there are no groups, the first colour is used. Normally, the colours
     would correspond to the \code{plane.col} argument to \code{scatter3d}.}
-  \item{offset}{vertical displacement for point labels (to avoid overplotting by points).}
+  \item{offset}{vertical displacement for point labels (to avoid overplotting the points).}
   \item{\dots}{arguments to be passed down.}
 }
 
@@ -142,6 +142,11 @@ You have to install the \code{rgl} and \code{mgcv} packages to produce 3D plots.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}}
+
+\references{
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+}
 
 \seealso{\code{\link[rgl]{rgl-package}}, \code{\link[mgcv]{gam}}}
 

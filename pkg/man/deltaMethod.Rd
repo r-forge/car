@@ -6,8 +6,8 @@
 \alias{deltaMethod.multinom} 
 \alias{deltaMethod.polr} 
 
-\title{Estimate and standard error of a nonlinear function of estimated regression 
-coefficients}
+\title{Estimate and Standard Error of a Nonlinear Function of Estimated Regression 
+Coefficients}
 \description{
 \code{deltaMethod} is a generic function that uses the delta method to get a 
 first-order approximate 
@@ -71,7 +71,7 @@ have been provided for many common regression models.
 
 For regression models for which methods are not provided, you must extract
 the named vector of coefficient estimates and and estimate of its covariance
-matrix and then apply the default deltaMethod function.
+matrix and then apply the default \code{deltaMethod} function.
 
 In the argument \code{g} you must provide a quoted character string
 that gives the function of interest, for example \code{g="b1/b2"}, where
@@ -84,11 +84,11 @@ corresponding regressors.  For example, in in
 error for the ratio of the coefficient estimates for \code{X1} and the
 \code{(Intercept)}, you could either set \code{g = "X1/(Intercept)"} or
 you could set \code{g = "b1/b0"}.  In general, you
-can refer to the parameters using \dQuote{b0}, \dQuote{b1},...,\dQuote{bp}, 
+can refer to the parameters using \code{b0}, \code{b1}, \ldots, \code{bp}, 
 if \code{parameterPrefix} is
-left at its default value of \dQuote{b}.  In this case, \dQuote{b0} is the 
+left at its default value of \code{"b"}.  In this case, \code{b0} is the 
 intercept (if the model has no intercept, then the numbering of the 
-parameters starts with 1, not 0), \dQuote{b1} is the first estimated parameter
+parameters starts with 1, not 0), \code{b1} is the first estimated parameter
 after the intercept, and so on.  You can also use the names of the corresponding
 regressors in place of the parameter names.  For \code{multinom} objects you 
 can only use the parameter names starting with the prefix, not the names of
@@ -106,7 +106,7 @@ parameter names.
 
 Special characters should be avoided in the names of the elements of \eqn{x} 
 as these can cause problems, and the \code{D} function used to compute derivatives may 
-get confused.  However, embedded spaces or \dQuote{:} are permitted.   
+get confused.  Embedded spaces or \dQuote{:} are permitted, however.   
 }
 
 \value{
@@ -119,13 +119,19 @@ The value of \code{g} is given as a row label.
 by the function \code{\link{D}}.}
 
 \references{
-Fox, J. and Weisberg, S. (2011) \emph{R Companion to Applied Regression},
-Second Edition, Sage.
+  Fox, J. (2008)
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 
-S. Weisberg (2005) \emph{Applied
-Linear Regression}, Third Edition, Wiley, Section 6.1.2}
-\author{Sanford Weisberg, \email{sandy@stat.umn.edu}
-and John Fox,  \email{jfox@mcmaster.ca}}
+  S. Weisberg (2005) \emph{Applied
+  Linear Regression}, Third Edition, Wiley, Section 6.1.2.
+}
+
+\author{Sanford Weisberg, \email{sandy@stat.umn.edu},
+and John Fox \email{jfox@mcmaster.ca}}
 
 \examples{
 m1 <- lm(time ~ t1 + t2, data = Transact) 

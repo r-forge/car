@@ -50,7 +50,8 @@ The value of \code{tfr} for 1973 is misrecorded as 2931; it should be 1931.
 
 \references{
   Fox, J. (2008)
-  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition. Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
 }
 
 \usage{

@@ -11,7 +11,7 @@
 \alias{residCurvTest.lm}
 \alias{residCurvTest.glm}
 \alias{tukeyNonaddTest}
-\title{Residual plots and curvature tests for linear model fits}
+\title{Residual Plots and Curvature Tests for Linear Model Fits}
 \description{
 Plots the residuals versus each term in a mean function and versus
 fitted values.  Also computes a curvature test for each of the plots
@@ -52,16 +52,10 @@ residualPlot(model, ...)
   
 \S3method{residualPlot}{glm}(model, variable = "fitted", type = "pearson", 
                  plot = TRUE, quadratic = FALSE, smooth = TRUE, ...)  
-
-### The following are related functions:  
-                    
-residCurvTest(model,variable)
-
-tukeyNonaddTest(model)
 }
 \arguments{
   \item{model}{ 
-A regression object 
+A regression object.
 }
   \item{terms}{
 A one-sided formula that specifies a subset of the predictors. One
@@ -78,27 +72,27 @@ will select an appropriate layout.  If the number of graphs exceed nine, you
 must select the layout yourself, or you will get a maximum of nine per page.
 }
   \item{ask}{
-If TRUE, ask the user before drawing the next plot; FALSE if don't
+If \code{TRUE}, ask the user before drawing the next plot; if \code{FALSE}, don't
 ask.
 }
   \item{main}{
 Main title for the graphs.  The default is \code{main=""} for no title.
 }
   \item{fitted}{
-If TRUE, the default, include the plot against fitted values.
+If \code{TRUE}, the default, include the plot against fitted values.
 }
   \item{AsIs}{
-If FALSE, the default, terms that use the \code{AsIs} function \code{I}
-are skipped; if TRUE they are included.
+If \code{FALSE}, the default, terms that use the \dQuote{as-is} function \code{I}
+are skipped; if \code{TRUE}, they are included.
 }
   \item{plot}{
-If TRUE, draw the plot(s).
+If \code{TRUE}, draw the plot(s).
 }
   \item{tests}{
-If TRUE, display the curvature tests.
+If \code{TRUE}, display the curvature tests.
 }
   \item{...}{
-Additional arguments passed to \code{residualPlot} and then the
+Additional arguments passed to \code{residualPlot} and then to
 \code{plot}.
 }
   \item{variable}{
@@ -107,25 +101,25 @@ Quoted variable name for the horizontal axis, or
 }
   \item{type}{
 Type of residuals to be used.  Pearson residuals are 
-appropriate for \code{lm} objects since there are equivalent to ordinary residuals
+appropriate for \code{lm} objects since these are equivalent to ordinary residuals
 with ols and correctly weighted residuals with wls.  Any quoted string that
 is an appropriate value of the \code{type} argument to
-\code{\link{residuals.lm}} or \dQuote{rstudent} or \dQuote{rstandard} for 
+\code{\link{residuals.lm}} or \code{"rstudent"} or \code{"rstandard"} for 
 Studentized or standardized residuals.
 }
   \item{quadratic}{
-if TRUE, fits the quadratic regression of the
+if \code{TRUE}, fits the quadratic regression of the
 vertical axis on the horizontal axis and displays a lack of fit test.  Default
-is TRUE for lm and FALSE for glm.  
+is \code{TRUE} for \code{lm} and \code{}FALSE for \code{glm}.  
 }
   \item{smooth}{
 if TRUE fits a loess smooth using the settings given below.  Defaults to FALSE
 for lm objects and TRUE for glm objects.
 }
   \item{span, smooth.lwd, smooth.lty, smooth.col}{
-Should a lowess smooth be added to the figure?  The span is the smoothing
-parameter for lowess, smooth.lwd and smooth.lty are, respectively the width
-type and color of the line drawn on the plot. 
+Should a lowess smooth be added to the figure?  The \code{span} is the smoothing
+parameter for lowess, \code{smooth.lwd}, \code{smooth.lty}, and \code{smooth.col} 
+are, respectively, the width, type, and color of the line drawn on the plot. 
 }
   \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
     points.  The default is \code{id.n=0} for labeling no points.  See
@@ -163,7 +157,7 @@ value of the \code{terms} and \code{fitted} arguments.  If \code{terms = ~ .},
 the default, then a plot is produced of residuals versus each first-order 
 term in the formula used to create the model.  Interaction terms, spline terms,
 and polynomial terms of more than one predictor are 
-skipped.  In addition terms that use the AsIs function, e.g., \code{I(X^2)}
+skipped.  In addition terms that use the \dQuote{as-is} function, e.g., \code{I(X^2)},
 will also be skipped unless you set the argument \code{AsIs=TRUE}.  A plot of 
 residuals versus fitted values is also included unless \code{fitted=FALSE}. 
 
@@ -178,16 +172,14 @@ nonadditivity.  You can suppress the tests with the argument \code{tests=FALSE}.
 \code{residualPlot}, which is called by \code{residualPlots},
 should be viewed as an internal function, and is included here to display its
 arguments, which can be used with \code{residualPlots} as well.  The
-\code{residualPlot} function returns the curvature test as an invisible argument.
+\code{residualPlot} function returns the curvature test as an invisible result.
   
 \code{residCurvTest} computes the curvature test only.  For any factors a
-boxplot will be drawn.  
-
-For any polynomials, plots are against the linear term.
-For other non-standard predictors like B-splines are skipped.
+boxplot will be drawn.  For any polynomials, plots are against the linear term.
+Other non-standard predictors like B-splines are skipped.
 }
 \value{
-For lm objects,
+For \code{lm} objects,
 returns a data.frame with one row for each plot drawn, one column for 
 the curvature test statistic, and a second column for the corresponding
 p-value.  This function is used primarily for its side effect of drawing
@@ -197,7 +189,6 @@ residual plots.
 
 Fox, J. and Weisberg, S. (2011)
 \emph{An R Companion to Applied Regression}, Second Edition.  Sage.
-
 
 Weisberg, S. (2005) \emph{Applied
 Linear Regression}, Third Edition, Wiley, Chapter 8}

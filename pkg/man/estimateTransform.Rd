@@ -1,7 +1,7 @@
 \name{estimateTransform}
 \alias{estimateTransform}
 
-\title{Finding univariate or multivariate power transformations}
+\title{Finding Univariate or Multivariate Power Transformations}
 \description{
   \code{estimateTransform} computes members of families of transformations
 indexed by one
@@ -21,12 +21,12 @@ estimateTransform(X, Y, weights=NULL, family="bcPower", start=NULL,
   \item{X}{A matrix or data.frame giving the \dQuote{right-side variables}.}
   \item{Y}{A vector or matrix or data.frame giving the \dQuote{left-side
 variables.}}
-  \item{weights}{Case weights, as in \sQuote{lm}.}
+  \item{weights}{Case weights, as in \code{lm}.}
   \item{family}{The transformation family to use.  This is the quoted name of a
   function for computing the transformed values.  The default is
-\dQuote{bcPower}
+\code{bcPower}
   for the Box-Cox power family and the most likely alternative is
-  \dQuote{yjPower} for the Yeo-Johnson family of transformations.}
+  \code{yjPower} for the Yeo-Johnson family of transformations.}
   \item{start}{Starting values for the computations.  It is usually adequate
   to leave this at its default value of NULL.}
   \item{method}{The computing alogrithm used by \code{\link{optim}} for the
@@ -59,7 +59,8 @@ of the Royal Statisistical Society, Series B}. 26 211-46.
 Cook, R. D. and Weisberg, S. (1999)  \emph{Applied Regression Including Computing
 and Graphics}.  Wiley.
 
-Fox, J. (2011) \emph{R Companion to Applied Regression}, Second Edition. Sage. 
+Fox, J. and Weisberg, S. (2011) 
+\emph{An R Companion to Applied Regression}, Second Edition, Sage.
 
 Velilla, S. (1993)  A note on the multivariate Box-Cox transformation to 
 normality.  \emph{Statistics and Probability Letters}, 17, 259-263.

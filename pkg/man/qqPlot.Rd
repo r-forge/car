@@ -38,7 +38,7 @@ sep=""), main=NULL,
 
 \arguments{
   \item{x}{vector of numeric values or \code{lm} object.}
-  \item{distribution}{root name of comparison distribution -- e.g., \code{norm} for the
+  \item{distribution}{root name of comparison distribution -- e.g., \code{"norm"} for the
     normal distribution; \code{t} for the t-distribution.}
   \item{ylab}{label for vertical (empirical quantiles) axis.}
   \item{xlab}{label for horizontal (comparison quantiles) axis.}
@@ -55,7 +55,7 @@ sep=""), main=NULL,
   \item{cex}{factor for expanding the size of plotted symbols; the default is
     \code{1}.}
   \item{labels}{vector of text strings to be used to identify points, defaults to
-    \code{names(x)} or observation numbers if \code{names(x)} is NULL.}
+    \code{names(x)} or observation numbers if \code{names(x)} is \code{NULL}.}
   \item{id.method}{point identification method.  The default
 \code{id.method="y"}
     will identify the \code{id.n} points with the largest value of 
@@ -92,8 +92,13 @@ graph}
 }
 \references{
   Fox, J. (2008)
-  \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage.
-
+  \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage.  Fox, J. (2008)
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  
   Atkinson, A. C. (1985)
   \emph{Plots, Transformations, and Regression.} Oxford.
 }
@@ -107,7 +112,8 @@ x<-rchisq(100, df=2)
 qqPlot(x)
 qqPlot(x, dist="chisq", df=2)
 
-qqPlot(lm(prestige ~ income + education + type, data=Duncan), simulate=TRUE, envelope=.99)
+qqPlot(lm(prestige ~ income + education + type, data=Duncan), 
+	simulate=TRUE, envelope=.99)
 }
 
 \keyword{distribution}

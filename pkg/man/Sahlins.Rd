@@ -30,7 +30,8 @@ The observations are households in a Central African village.
 
 \references{
   Fox, J. (2008)
-  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition. Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
 }
 
 

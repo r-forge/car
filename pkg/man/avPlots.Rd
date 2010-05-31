@@ -56,7 +56,7 @@ added-variable plot is drawn for that term only.
   select the layout yourself, or you will get a maximum of nine per page.}
 \item{main}{The title of the plot; if missing, one will be supplied.
 }
-\item{ask}{If TRUE, ask the user before drawing the next plot; FALSE if don't ask.
+\item{ask}{If \code{TRUE}, ask the user before drawing the next plot; if \code{FALSE} don't ask.
 }
 \item{\dots}{\code{avPlots} passes these arguments to \code{avPlot}.  
   \code{avPlot} passes them to \code{plot}. 
@@ -96,7 +96,11 @@ graph}
   \emph{Applied Regression, Including Computing and Graphics.} Wiley.
 
   Fox, J. (2008)
-  \emph{Applied Regression and Generalized Linear Models}, Second Edition. Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
   
   Wang, P C. (1985)
   Adding a variable in generalized linear models.
@@ -107,7 +111,7 @@ graph}
 
 \author{John Fox \email{jfox@mcmaster.ca}, Sanford Weisberg \email{sandy@umn.edu}}
 
-\seealso{\code{\link{residualPlots}} ,\code{\link{crPlots}}, \code{\link{ceresPlots}},
+\seealso{\code{\link{residualPlots}}, \code{\link{crPlots}}, \code{\link{ceresPlots}},
 % \code{\link{leveragePlots}}
 }
 

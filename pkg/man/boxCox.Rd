@@ -10,7 +10,7 @@ Box-Cox Transformations for Linear Models
 \description{
 Computes and optionally plots profile log-likelihoods for the parameter of the 
 Box-Cox power transformation.   This is a slight generalization of the
-boxCox function in the MASS function that allows for families of transformations
+\code{boxcox} function in the \pkg{MASS} package that allows for families of transformations
 other than the Box-Cox power family.
 }
 \usage{
@@ -34,32 +34,32 @@ boxCox(object, ...)
 
 \arguments{
   \item{object}{
-a formula or fitted model object. Currently only lm and aov objects are handled.
+a formula or fitted model object. Currently only \code{lm} and \code{aov} objects are handled.
 }
   \item{lambda}{
-vector of values of lambda default (-2, 2) in steps of 0.1 where the profile
+vector of values of lambda, with default (-2, 2) in steps of 0.1, where the profile
 log-likelihood will be evaluated. 
 }
   \item{plotit}{
-logical which controls whether the result should be plotted. 
+logical which controls whether the result should be plotted; default \code{TRUE}. 
 }
   \item{interp}{
 logical which controls whether spline interpolation is used. Default to 
-TRUE if plotting with lambda of length less than 100.
+\code{TRUE} if plotting with lambda of length less than 100.
 }
   \item{eps}{
 Tolerance for lambda = 0; defaults to 0.02.
 }
   \item{xlab}{
-defaults to "lambda".
+defaults to \code{"lambda"}.
 } 
   \item{ylab}{
-defaults to "log-Likelihood". 
+defaults to \code{"log-Likelihood"}. 
 }
   \item{family}{
 Defaults to \code{"bcPower"} for the Box-Cox power family of
-transformations.  If set to \code{"yjPower"} the Yeo-Johnson family that
-permits negative responses is used.
+transformations.  If set to \code{"yjPower"} the Yeo-Johnson family, which
+permits negative responses, is used.
 }
   \item{grid}{If TRUE, the default, a light-gray background grid is put on the
 graph.
@@ -70,11 +70,11 @@ additional parameters to be used in the model fitting.
 }
 \details{
 This routine is an elaboration of the \code{\link{boxcox}} function in the
-MASS package.  All arguments except for \code{family} and \code{grid} are 
+\pkg{MASS} package.  All arguments except for \code{family} and \code{grid} are 
 identical, and if the arguments 
 \code{family = "bcPower", grid=FALSE} is set it gives an identical graph.  If 
-\code{family = "yjPower"} then the Yeo-Johnson power transformations that
-allow nonpositive responses will be used.
+\code{family = "yjPower"} then the Yeo-Johnson power transformations, which
+allow nonpositive responses, will be used.
 }
 
 \value{
@@ -94,8 +94,12 @@ Cook, R. D. and Weisberg, S. (1999)  \emph{Applied Regression Including
 Computing
 and Graphics}.  Wiley.
 
-Fox, J. and Weisberg, S. (2011)  \emph{R Companion to Applied Regression},
-Second Edition.  Sage. 
+Fox, J. (2008)
+\emph{Applied Regression Analysis and Generalized Linear Models},
+Second Edition. Sage.  
+  
+Fox, J. and Weisberg, S. (2011) 
+\emph{An R Companion to Applied Regression}, Second Edition, Sage.
 
 Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. Wiley.
 

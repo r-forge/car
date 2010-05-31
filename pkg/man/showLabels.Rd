@@ -2,7 +2,7 @@
 \Rdversion{1.1}
 \alias{showLabels}
 \title{
-Utility functions to identify and mark extreme points in a 2D plot.  
+Utility Functions to Identify and Mark Extreme Points in a 2D Plot.  
 }
 \description{
 This function is called by several graphical functions in the \code{car}
@@ -24,8 +24,8 @@ Plotted horizontal coordinates.
 Plotted vertical coordinates.
 }
   \item{labels}{
-Plotting labels.  If NULL, case numbers will be used.  If labels are long, the
-\code{\link{substr}} function can be used to shorten them.
+Plotting labels.  If \code{NULL}, case numbers will be used.  If labels are long, the
+\code{\link{substr}} or \code{\link{abbreviate}} function can be used to shorten them.
 }
   \item{id.method}{
 How points are to be identified.  See Details below.
@@ -34,7 +34,7 @@ How points are to be identified.  See Details below.
 Number of points to be identified.  If set to zero, no points are identified.  
 }
   \item{id.cex}{
-Controls the size of the plotted labels.  The default is 0.75.
+Controls the size of the plotted labels.  The default is \code{1}.
 }
   \item{id.col}{
 Controls the color of the plotted labels. 
@@ -79,10 +79,6 @@ Although intended for use with other functions in the \code{car} package,
 this function can be used directly.
 }
 \references{
-  Fox, J. (2008)
-  \emph{Applied Regression, Linear Models, and Related Methods}, 
-  Second Edition, Sage.
-  
   Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied Regression},
     Second Edition, Sage.
   
@@ -91,21 +87,19 @@ this function can be used directly.
 \author{John Fox \email{jfox@mcmaster.ca}, Sanford Weisberg \email{sandy@umn.edu}}
 
 \seealso{\code{\link{avPlots}}, \code{\link{residualPlots}},
-%\code{\link{mmPlots}}, 
 \code{\link{crPlots}}, \code{\link{leveragePlots}}
 }
 
 \examples{
-plot(education ~ income, Prestige)
-with(Prestige, showLabels(income, education, 
+plot(income ~ education, Prestige)
+with(Prestige, showLabels(education, income, 
      labels = rownames(Prestige), id.method=list("x", "y"), id.n=3))
-m <- lm(education ~ income, Prestige)
-plot(education ~ income, Prestige)
+m <- lm(income ~ education, Prestige)
+plot(income ~ education, Prestige)
 abline(m)
-with(Prestige, showLabels(income, education, 
-     labels=rownames(Prestige), id.method=residuals(m), id.n=4))
+with(Prestige, showLabels(education, income, 
+     labels=rownames(Prestige), id.method=abs(residuals(m)), id.n=4))
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+
 \keyword{ utilities }
 

@@ -34,7 +34,7 @@
   likelihood-ratio chisquare, Wald chisquare, or F-tests are calculated;
   for multinomial logit and proportional-odds logit models, likelihood-ratio
   tests are calculated.  Various test statistics are provided for multivariate
-  linear models produced by \code{lm} or \code{manova}. Partial-ikelihood-ratio tests
+  linear models produced by \code{lm} or \code{manova}. Partial-likelihood-ratio tests
   or Wald tests are provided for Cox models. Wald chi-square or F tests are provided 
   in the default case.
 }
@@ -81,7 +81,7 @@ Manova(mod, ...)
 
 \arguments{
   \item{mod}{\code{lm}, \code{aov}, \code{glm}, \code{multinom}, \code{polr}
-    or \code{mlm} model object.}
+    \code{mlm}, \code{coxph} or other suitable model object.}
   \item{error}{for a linear model, an \code{lm} model object from which the
     error sum of squares and degrees of freedom are to be calculated. For 
     F-tests for a generalized linear model, a \code{glm} object from which the
@@ -102,10 +102,10 @@ Manova(mod, ...)
     objects permits the specification of more than one multivariate
     test statistic, and the default is to report all four.}
   \item{error.estimate}{for F-tests for a generalized linear model, base the
-    dispersion estimate on the Pearson residuals (\code{pearson}, the default); use the
-    dispersion estimate in the model object (\code{dispersion}), which, e.g., is
+    dispersion estimate on the Pearson residuals (\code{"pearson"}, the default); use the
+    dispersion estimate in the model object (\code{"dispersion"}), which, e.g., is
     fixed to 1 for binomial and Poisson models; or base the dispersion estimate on
-    the residual deviance (\code{deviance}).}
+    the residual deviance (\code{"deviance"}).}
   \item{white.adjust}{if not \code{FALSE}, the default, 
   	tests use a heteroscedasticity-corrected coefficient
     covariance matrix; the various values of the argument specify different corrections.
@@ -159,7 +159,7 @@ Manova(mod, ...)
   \code{Anova} finds the test statistics without refitting the model.
   
   The standard R \code{anova} function calculates sequential ("type-I") tests.
-  These rarely test interesting hypotheses.
+  These rarely test interesting hypotheses in unbalanced designs.
   
   A MANOVA for a multivariate linear model (i.e., an object of
   class \code{"mlm"} or \code{"manova"}) can optionally include an 
@@ -188,7 +188,11 @@ Manova(mod, ...)
 }
 \references{ 
   Fox, J. (2008)
-  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition. Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
   
   Hand, D. J., and Taylor, C. C. (1987)
   \emph{Multivariate Analysis of Variance and Repeated Measures: A Practical
@@ -210,7 +214,6 @@ Manova(mod, ...)
 
 ## Two-Way Anova
 
-data(Moore, package="car")
 mod <- lm(conformity ~ fcategory*partner.status, data=Moore, 
   contrasts=list(fcategory=contr.sum, partner.status=contr.sum))
 Anova(mod)
@@ -236,7 +239,6 @@ Anova(mod, type="III")
 ## One-Way MANOVA
 ## See ?Pottery for a description of the data set used in this example.
 
-data(Pottery, package="car")
 summary(Anova(lm(cbind(Al, Fe, Mg, Ca, Na) ~ Site, data=Pottery)))
 
 ## Type II MANOVA Tests:
@@ -273,7 +275,6 @@ summary(Anova(lm(cbind(Al, Fe, Mg, Ca, Na) ~ Site, data=Pottery)))
 ## MANOVA for a randomized block design (example courtesy of Michael Friendly:
 ##  See ?Soils for description of the data set)
 
-data(Soils, package="car")
 soils.mod <- lm(cbind(pH,N,Dens,P,Ca,Mg,K,Na,Conduc) ~ Block + Contour*Depth, 
     data=Soils)
 Manova(soils.mod)
@@ -313,7 +314,6 @@ idata
 ## 14 followup    4
 ## 15 followup    5
 
-data(OBrienKaiser, package="car")
 mod.ok <- lm(cbind(pre.1, pre.2, pre.3, pre.4, pre.5, 
                      post.1, post.2, post.3, post.4, post.5, 
                      fup.1, fup.2, fup.3, fup.4, fup.5) ~  treatment*gender, 

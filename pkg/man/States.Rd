@@ -49,7 +49,7 @@
       }
     \item{pay}{
        Average teacher's salary in the state, 
-      in \$1000s.
+      in $1000s.
       }
     }
   }

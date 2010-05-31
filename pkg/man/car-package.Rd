@@ -6,17 +6,19 @@
 Companion to Applied Regression
 }
 \description{
-This package accompanies Fox, J. and Weisberg, S., An R Companion to Applied Regression,
-Second Edition, Sage, forthcoming.
+This package accompanies Fox, J. and Weisberg, S., \emph{An R Companion to Applied Regression},
+Second Edition, Sage, 2011.
 }
 \details{
 \tabular{ll}{
 Package: \tab car\cr
 Version: \tab 2.0-0\cr
-Date: \tab 2010/05/25\cr
+Date: \tab 2010/05/30\cr
 Depends: \tab R (>= 2.1.1), stats, graphics, MASS, nnet, leaps, survival\cr
 License: \tab GPL (>= 2)\cr
-URL: \tab https://r-forge.r-project.org/projects/car/, http://www.r-project.org, http://socserv.socsci.mcmaster.ca/jfox/\cr
+URL: \tab \url{http://www.r-project.org}, 
+	\url{http://socserv.socsci.mcmaster.ca/jfox/},
+	\url{https://r-forge.r-project.org/projects/car/} \cr
 }
 }
 

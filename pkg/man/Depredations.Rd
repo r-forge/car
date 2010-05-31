@@ -2,12 +2,12 @@
 \alias{Depredations}
 \docType{data}
 \title{
-Minnesota wolf depredation data
+Minnesota Wolf Depredation Data
 }
 \description{
 Wolf depredations of livestock on Minnesota farms, 1976-1998.
 }
-\usage{data(Depredations)}
+\usage{Depredations}
 \format{
   A data frame with 434 observations on the following 5 variables.
   \describe{
@@ -20,10 +20,13 @@ Wolf depredations of livestock on Minnesota farms, 1976-1998.
 }
 
 \references{
+Fox, J. and Weisberg, S. (2011) 
+\emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  
 Harper, Elizabeth K. and Paul, William J. and Mech, L. David and Weisberg, Sanford (2008),
 Effectiveness of Lethal, Directed Wolf-Depredation Control in Minnesota,
 \emph{Journal of Wildlife Management}, 72, 3, 778-784.
-\url{http://pinnacle.allenpress.com/doi/abs/10.2193/2007-273},
+\url{http://pinnacle.allenpress.com/doi/abs/10.2193/2007-273}
 }
 
 \keyword{datasets}

@@ -36,8 +36,7 @@ leveragePlot(model, ...)
 One added-variable plot is drawn for each term.  The default
 \code{~.} is to plot against all numeric predictors.  For example, the
 specification \code{terms = ~ . - X3} would plot against all predictors
-except for \code{X3}.  Factors and nonstandard predictors such as B-splines are 
-skipped.  If this argument is a quoted name of one of the predictors, the 
+except for \code{X3}.  If this argument is a quoted name of one of the predictors, the 
 added-variable plot is drawn for that predictor only.
 }
   \item{layout}{ If set to a value like \code{c(1,1)} or \code{c(4,3)}, the layout
@@ -73,8 +72,7 @@ is omitted for \code{leveragePlots}.}
 graph}
 }
 \details{
-  The function intended for direct use is \code{leveragePlots}. By default, this
-  function is used interactively through a text menu.
+  The function intended for direct use is \code{leveragePlots}. 
   
   The model can contain factors and interactions. A leverage plot can be
   drawn for each term in the model, including the constant.
@@ -95,11 +93,11 @@ Regression. In Stahel, W. and Weisberg, S. (eds.),
 Springer, 47-60.
 
   Fox, J. (2008)
-  \emph{Applied Regression, Linear Models, and Related Methods},
-  Second Edition. Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
   
-  Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied
-  Regression}, Second Edition.  Sage.
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
   
   Sall, J. (1990)
   Leverage plots for general linear hypotheses.

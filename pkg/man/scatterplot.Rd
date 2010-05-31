@@ -18,18 +18,22 @@ scatterplot(x, ...)
 
 \method{scatterplot}{default}(x, y, smooth = TRUE, 
     spread = !by.groups, span = 0.5, 
-    loess.threshold = 5, reg.line = lm, boxplots = if (by.groups) "" else "xy", 
+    loess.threshold = 5, reg.line = lm, 
+    boxplots = if (by.groups) "" else "xy", 
     xlab = deparse(substitute(x)), ylab = deparse(substitute(y)), 
     las = par("las"), lwd = 1, lwd.smooth = lwd, lwd.spread = lwd, 
-    lty = 1, lty.smooth = lty, lty.spread = 2, labels, id.method = "mahal", 
+    lty = 1, lty.smooth = lty, lty.spread = 2, labels, 
+    id.method = "mahal", 
     id.n = if(id.method[1]=="identify") length(x) else 0, 
     id.cex = 1, id.col = palette()[1], log = "", jitter = list(), 
-    xlim = NULL, ylim = NULL, cex = par("cex"), cex.axis = par("cex.axis"), 
+    xlim = NULL, ylim = NULL, cex = par("cex"), 
+    cex.axis = par("cex.axis"), 
     cex.lab = par("cex.lab"), cex.main = par("cex.main"), 
     cex.sub = par("cex.sub"), groups, by.groups = !missing(groups), 
     legend.title = deparse(substitute(groups)), 
     ellipse = FALSE, levels = c(0.5, 0.95), robust = TRUE, 
-    col = if (n.groups == 1) palette()[1:2] else rep(palette(), length = n.groups), 
+    col = if (n.groups == 1) palette()[1:2] else rep(palette(), 
+    length = n.groups), 
     pch = 1:n.groups, legend.plot = !missing(groups), reset.par = TRUE, 
     grid=TRUE, ...)
   
@@ -53,8 +57,8 @@ sp(...)
   	values (default, 5) of \code{y}.}
   \item{reg.line}{function to draw a regression line on the plot
     or \code{FALSE} not to plot a regression line.}
-  \item{boxplots}{if \code{"x"} a boxplot for \code{x} is drawn above the plot;
-    if \code{"y"} a boxplot for \code{y} is drawn to the right of the plot;
+  \item{boxplots}{if \code{"x"} a boxplot for \code{x} is drawn below the plot;
+    if \code{"y"} a boxplot for \code{y} is drawn to the left of the plot;
     if \code{"xy"} both boxplots are drawn; set to \code{""} or \code{FALSE} to
     suppress both boxplots.}
   \item{xlab}{label for horizontal axis.}
@@ -64,7 +68,7 @@ sp(...)
   \item{lwd}{width of linear-regression lines (default \code{1}).}
   \item{lwd.smooth}{width for smooth regression lines (default is the same as \code{lwd}).}
   \item{lwd.spread}{width for lines showing spread (default is the same as \code{lwd}).}
-  \item{lty}{type of linear-regression lines (default \{code{1}, solid line).}
+  \item{lty}{type of linear-regression lines (default \code{1}, solid line).}
   \item{lty.smooth}{type of smooth regression lines (default is the same as \code{lty}).}
   \item{lty.spread}{width for lines showing spread (default is \code{2}, broken line).}
   \item{id.method,id.n,id.cex,id.col}{Arguments for the labelling of
@@ -90,7 +94,7 @@ sp(...)
   \item{levels}{level or levels at which concentration ellipses are plotted;
     the default is \code{c(.5, .95)}.}
   \item{robust}{if \code{TRUE} (the default) use the \code{cov.trob} function in the \code{MASS} package
-    to calculate the center and covariance matrix for the data ellipse.}
+    to calculate the center and covariance matrix for the data ellipses.}
   \item{col}{colors for points and lines; the default is taken from the color palette, 
   	with \code{palette()[1]} for lines and \code{palette()[2]} for points if there are
   	no groups, and successive colors for the groups if there are groups.}
@@ -116,7 +120,7 @@ graph}
 
 
 \seealso{\code{\link[graphics]{boxplot}},
-  \code{\link[base]{jitter}} 
+  \code{\link[base]{jitter}},
   \code{\link{scatterplotMatrix}}, \code{\link{dataEllipse}},
   \code{\link[MASS]{cov.trob}},
   \code{\link{showLabels}}.}

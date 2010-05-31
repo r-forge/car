@@ -118,12 +118,12 @@ lht(model, ...)
 }
 
 \details{
-  Computes either a finite sample F statistic or asymptotic Chi-squared
+  Computes either a finite-sample F statistic or asymptotic Chi-squared
   statistic for carrying out a Wald-test-based comparison between a model
   and a linearly restricted model. The default method will work with any
   model object for which the coefficient vector can be retrieved by 
   \code{coef} and the coefficient-covariance matrix by \code{vcov} (otherwise
-  the argument \code{vcov.} has to be set explicitely). For computing the
+  the argument \code{vcov.} has to be set explicitly). For computing the
   F statistic (but not the Chi-squared statistic) a \code{df.residual} 
   method needs to be available. If a \code{formula} method exists, it is
   used for pretty printing.
@@ -131,14 +131,14 @@ lht(model, ...)
   The method for \code{"lm"} objects calls the default method, but it
   changes the default test to \code{"F"}, supports the convenience argument
   \code{white.adjust} (for backwards compatibility), and enhances the output
-  by residual sums of squares. For \code{"glm"} objects just the default
+  by the residual sums of squares. For \code{"glm"} objects just the default
   method is called (bypassing the \code{"lm"} method).
 
   The function \code{lht} also dispatches to \code{linearHypothesis}.
 
   The hypothesis matrix can be supplied as a numeric matrix (or vector), 
   the rows of which specify linear combinations of the model coefficients, 
-  which are tested equal to the corresponding entries in the righ-hand-side 
+  which are tested equal to the corresponding entries in the right-hand-side 
   vector, which defaults to a vector of zeroes. 
 
   Alternatively, the
@@ -184,7 +184,7 @@ lht(model, ...)
   For a univariate model, an object of class \code{"anova"} 
   which contains the residual degrees of freedom
   in the model, the difference in degrees of freedom, Wald statistic
-  (either \code{"F"} or \code{"Chisq"}) and corresponding p value.
+  (either \code{"F"} or \code{"Chisq"}), and corresponding p value.
   
   For a multivariate linear model, an object of class 
   \code{"linearHypothesis.mlm"}, which contains sums-of-squares-and-product
@@ -198,7 +198,11 @@ lht(model, ...)
 
 \references{
   Fox, J. (2008)
-  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition. Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
   
   Hand, D. J., and Taylor, C. C. (1987)
   \emph{Multivariate Analysis of Variance and Repeated Measures: A Practical
@@ -218,7 +222,6 @@ lht(model, ...)
 }
 
 \examples{
-data(Davis, package="car")
 mod.davis <- lm(weight ~ repwt, data=Davis)
 
 ## the following are equivalent:
@@ -241,7 +244,6 @@ linearHypothesis(mod.davis, c("(Intercept) = 0", "repwt = 1"), vcov = hccm)
 linearHypothesis(mod.davis, c("(Intercept) = 0", "repwt = 1"), 
     vcov = hccm(mod.davis, type = "hc3"))
 
-data(Duncan, package="car")
 mod.duncan <- lm(prestige ~ income + education, data=Duncan)
 
 ## the following are all equivalent:
@@ -265,8 +267,6 @@ linearHypothesis(mod.duncan.2, coefs[grep(":", coefs)], verbose=TRUE)
 
 ## a multivariate linear model for repeated-measures data
 ## see ?OBrienKaiser for a description of the data set used in this example.
-
-data(OBrienKaiser, package="car")
 
 mod.ok <- lm(cbind(pre.1, pre.2, pre.3, pre.4, pre.5, 
                      post.1, post.2, post.3, post.4, post.5, 

@@ -57,7 +57,6 @@ p-values are available only from the \code{lm} method.
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \examples{
-data(Hartnagel, package="car")
 durbinWatsonTest(lm(fconvict ~ tfr + partic + degrees + mconvict, data=Hartnagel))
 }
 

@@ -4,7 +4,7 @@
 \alias{invTranPlot.formula}
 \alias{invTranEstimate}
 
-\title{ Choose a predictor transformation visually or numerically }
+\title{ Choose a Predictor Transformation Visually or Numerically }
 \description{
 \code{invTranPlot}
 draws a two-dimensional scatterplot of \eqn{Y}{Y} versus 
@@ -41,11 +41,11 @@ invTranEstimate(x, y, family="bcPower", confidence=0.95)
   \item{subset}{Optional, as in \code{lm}, select a subset of the cases}
   \item{na.action}{Optional, as in \code{lm}, the action for missing data}
   \item{lambda}{The powers used in the plot.  The optimal power than minimizes
-  the residual sum of squares is always added unless optimal is FALSE. }
+  the residual sum of squares is always added unless optimal is \code{FALSE}. }
   \item{family}{The transformation family to use, \code{"bcPower"}, 
   \code{"yjPower"}, or a user-defined family.}
   \item{confidence}{returns a profile likelihood confidence interval for the optimal 
-transformation with this confidence level.  If FALSE, no interval is returned.}
+	transformation with this confidence level.  If \code{FALSE}, no interval is returned.}
   \item{optimal}{Include the optimal value of lambda?}
   \item{lty.lines}{line types corresponding to the powers}
   \item{lwd.lines}{the width of the plotted lines, defaults to 2 times the standard}
@@ -67,7 +67,7 @@ graph}
 }
 \value{
 \code{invTranPlot}
-  returns a graph and a data.frame with \eqn{\lambda}{lam} in the 
+  plots a graph and returns a data frame with \eqn{\lambda}{lam} in the 
   first column, and the residual sum of squares from the regression
   for that \eqn{\lambda}{lam} in the second column.
 
@@ -78,8 +78,13 @@ graph}
 \seealso{ \code{\link{inverseResponsePlot}},\code{\link{optimize}}}
 
 \references{
+Fox, J. and Weisberg, S. (2011) 
+\emph{An R Companion to Applied Regression}, Second Edition, Sage.
+
 Weisberg, S. (2005)  \emph{Applied Linear Regression}, Third Edition.
-  Wiley. }
+  Wiley. 
+}
+
 \author{Sanford Weisberg, \email{sandy@stat.umn.edu} }
 
 \examples{

@@ -35,15 +35,14 @@ crPlot(model, ...)
 One component-plus-residual plot is drawn for each term.  The default
 \code{~.} is to plot against all numeric predictors.  For example, the
 specification \code{terms = ~ . - X3} would plot against all predictors
-except for \code{X3}.  Factors and nonstandard predictors such as B-splines are 
-skipped.  If this argument is a quoted name of one of the predictors, the 
+except for \code{X3}.  If this argument is a quoted name of one of the predictors, the 
 component-plus-residual plot is drawn for that predictor only.
 }
   \item{layout}{ If set to a value like \code{c(1,1)} or \code{c(4,3)}, the layout
 of the graph will have this many rows and columns.  If not set, the program will
 select an appropriate layout.  If the number of graphs exceed nine, you must 
 select the layout yourself, or you will get a maximum of nine per page.}
-  \item{ask}{If TRUE, ask the user before drawing the next plot; FALSE if don't ask.
+  \item{ask}{If \code{TRUE}, ask the user before drawing the next plot; if \code{FALSE}, the default,  don't ask.
 This is relevant only if not all the graphs can be drawn in one window.}
   \item{main}{The title of the plot; if missing, one will be supplied.}
   \item{\dots}{\code{crPlots} passes these arguments to \code{crPlot}.  
@@ -56,7 +55,7 @@ axis
     points.  The default is \code{id.n=0} for labeling no points.  See
     \code{\link{showLabels}} for details of these arguments.
 }
-  \item{order}{order of polynomial regression performed for predictor to be plotted.}
+  \item{order}{order of polynomial regression performed for predictor to be plotted; default \code{1}.}
   \item{line}{\code{TRUE} to plot least-squares line.}
   \item{smooth}{\code{TRUE} to plot nonparametric-regression (lowess) line.}
   \item{iter}{number of robustness iterations for nonparametric-regression smooth;
@@ -90,11 +89,11 @@ graph}
   \emph{Applied Regression, Including Computing and Graphics.} Wiley.
 
   Fox, J. (2008)
-  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition. Second Edition.
-   Sage.
-   
-  Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied 
-  Regression}, Second Edition.  Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 }
 \author{John Fox \email{jfox@mcmaster.ca}}
 
@@ -104,6 +103,8 @@ graph}
 crPlots(m<-lm(prestige~income+education, data=Prestige)) 
 # get only one plot
 crPlots(m, terms=~ . - education)
+
+crPlots(lm(prestige ~ log2(income) + education + poly(women,2), data=Prestige))
 
 crPlots(glm(partic != "not.work" ~ hincome + children, 
   data=Womenlf, family=binomial))

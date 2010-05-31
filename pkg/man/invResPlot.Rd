@@ -3,7 +3,7 @@
 \alias{inverseResponsePlot}
 \alias{inverseResponsePlot.lm}
 
-\title{Inverse response plots to transform the response}
+\title{Inverse Response Plots to Transform the Response}
 \description{
 For a \code{lm} model, draws an inverse.response plot with the response \eqn{Y}{Y} on the
 vertical axis and the fitted values \eqn{\hat{Y}}{Yhat}
@@ -28,7 +28,7 @@ invResPlot(model, ...)
   \item{lambda}{A vector of values for lambda.  A plot will be produced 
   with curves corresponding to these lambdas and to the least squares 
   estimate of lambda}
-  \item{xlab}{The horizontal axis label.  If NULL, it is constructed by the function.}
+  \item{xlab}{The horizontal axis label.  If \code{NULL}, it is constructed by the function.}
   \item{labels}{Case labels if labeling is turned on; see
 \code{\link{invTranPlot}} and \code{\link{showLabels}} for arguments.}
   \item{\dots}{Other arguments passed to \code{invTranPlot} and then to
@@ -50,8 +50,12 @@ Numeric output is a list with elements
 \seealso{\code{\link{invTranPlot}}, \code{\link{powerTransform}}, 
 \code{\link{showLabels}}}
 
-\references{S. Weisberg (2005) \emph{Applied
-Linear Regression}, Third Edition, Wiley, Chapter 7.}
+\references{
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+
+  Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition, Wiley, Chapter 7.
+}
 
 \author{Sanford Weisberg, \code{sandy@stat.umn.edu}}
 

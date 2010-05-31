@@ -1,9 +1,13 @@
 \name{Highway1}
 \alias{Highway1}
 \docType{data}
-\title{Highway accidents}
+\title{Highway Accidents}
 \description{
-The data comes from a unpublished master's paper by Carl Hoffstedt. They relate the automobile accident rate, in accidents per million vehicle miles to several potential terms.  The data include 39 sections of large highways in the state of Minnesota in 1973.  The goal of this analysis was to understand the impact of design variables, Acpts, Slim, Sig, and Shld that are under the control of the highway department, on accidents.
+The data comes from a unpublished master's paper by Carl Hoffstedt. They relate the automobile accident rate, 
+in accidents per million vehicle miles to several potential terms.  The data include 39 sections of large 
+highways in the state of Minnesota in 1973.  The goal of this analysis was to understand the impact 
+of design variables, \code{Acpts}, \code{Slim}, \code{Sig}, and \code{Shld} that are under the control of 
+the highway department, on accidents.
 }
 \format{This data frame contains the following columns:
  \describe{
@@ -11,7 +15,7 @@ The data comes from a unpublished master's paper by Carl Hoffstedt. They relate 
  1973 accident rate per million vehicle miles
     }
     \item{len}{
- length of the Highway1 segment in miles
+ length of the \code{Highway1} segment in miles
     }
     \item{ADT}{
  average daily traffic count in thousands
@@ -20,7 +24,7 @@ The data comes from a unpublished master's paper by Carl Hoffstedt. They relate 
  truck volume as a percent of the total volume
     }
     \item{sigs1}{
- (number of signalized interchanges per mile time len + 1)/len, the number
+ (number of signalized interchanges per mile times len + 1)/len, the number
 of signals per mile of roadway, adjusted to have no zero values.
     }
     \item{slim}{
@@ -49,13 +53,15 @@ of signals per mile of roadway, adjusted to have no zero values.
 
 \source{Carl Hoffstedt.  This differs from the dataset \code{highway} in the
 \code{alr3} package only by transformation of some of the columns.}
+
 \references{
+Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied
+Regression}, Second Edition, Sage.
+
 Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition.  Wiley, Section 7.2.
+}
 
-Fox, J. and Weisberg, S. (2011) \emph{An R companion to Applied
-Regression}, Second Edition, Sage.}
-
-\examples{
-data(Highway1)
+\usage{
+Highway1
 }
 \keyword{datasets}

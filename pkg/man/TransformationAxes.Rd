@@ -37,7 +37,7 @@ probabilityAxis(scale=c("logit", "probit"),
 }
 
 \arguments{
-  \item{power}{power for Box-Cox or power transformation.}
+  \item{power}{power for Box-Cox, Yeo-Johnson, or simple power transformation.}
   \item{scale}{transformation used for probabilities, \code{"logit"}
     (the default) or \code{"probit"}.}
   \item{side}{side at which the axis is to be drawn; numeric
@@ -96,6 +96,11 @@ probabilityAxis(scale=c("logit", "probit"),
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
+\references{
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+}
+
 \seealso{\code{\link{basicPower}}, \code{\link{bcPower}}, \code{\link{yjPower}}, 
 	\code{\link{logit}}.}
 
@@ -117,10 +122,10 @@ bcPowerAxis(0, side="above",
 bcPowerAxis(0, side="right",
   grid=TRUE, axis.title="infant mortality rate per 1000")
 
-with(UN, qqPlot(logit(infant.mortality/1000), id.n=0))
+with(UN, qqPlot(logit(infant.mortality/1000)))
 probabilityAxis()
 
-with(UN, qqPlot(qnorm(infant.mortality/1000), id.n=0))
+with(UN, qqPlot(qnorm(infant.mortality/1000)))
 probabilityAxis(at=c(.005, .01, .02, .04, .08, .16), scale="probit")
 }
 \keyword{aplot}

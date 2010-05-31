@@ -5,15 +5,10 @@
 
 \title{Regression Influence Plot}
 \description{
-  This function creates a "bubble" plot of studentized residuals by hat values, with the areas of the
+  This function creates a \dQuote{bubble} plot of Studentized residuals by hat values, with the areas of the
   circles representing the observations proportional to Cook's distances. Vertical reference lines are drawn
   at twice and three times the average hat value, horizontal reference lines at -2, 0, and 2 on the
-  studentized-residual scale.
-}
-
-\note{
-  This function used to be named \code{influence.plot}; the name was changed to avoid confusion with
-  the \code{influence} generic function.
+  Studentized-residual scale.
 }
 
 \usage{
@@ -49,8 +44,12 @@ used for its side-effect of drawing a plot.
 }
 
 \references{
-    Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied Regression}, 
-    Second Edition. Sage.
+  Fox, J. (2008)
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}, minor changes by S. Weisberg
@@ -58,7 +57,7 @@ used for its side-effect of drawing a plot.
 
 
 \seealso{\code{\link[stats]{cooks.distance}}, \code{\link[stats]{rstudent}}, 
-\code{\link[stats]{hatvalues}}, \code{link{showLabels}}}
+\code{\link[stats]{hatvalues}}, \code{\link{showLabels}}}
 
 \examples{
 influencePlot(lm(prestige ~ income + education, data=Duncan))

@@ -41,6 +41,15 @@ Third post-test.
   \emph{Introduction to the Practice of Statistics, Second Edition.}
   Freeman, p. 794--795.
 }
+
+\references{
+  Fox, J. (2008)
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+}
 \usage{
 Baumann
 }

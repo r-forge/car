@@ -20,7 +20,7 @@
       \code{parttime}, Working part-time.
       }
     \item{hincome}{
-      Husband's income, \$1000s.
+      Husband's income, $1000s.
       }
     \item{children}{
       Presence of children in the household.
@@ -46,7 +46,11 @@
 
 \references{
   Fox, J. (2008)
-  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition. Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 }
 
 \usage{

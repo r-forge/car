@@ -12,7 +12,7 @@ regLine(mod, col=palette()[2], lwd=2, lty=1,...)
 
 \arguments{
   \item{mod}{a model, such as produced by \code{lm},
-    that responds to the \code{coefficients} function
+    that responds to the \code{coef} function
     by returning a 2-element vector, whose elements are
     interpreted respectively as the
     intercept and slope of a regresison line.}

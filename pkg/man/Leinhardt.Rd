@@ -39,7 +39,7 @@ The observations are nations of the world around 1970.
 The infant-mortality rate for Jamaica is misprinted in
  Leinhardt and Wasserman; the correct value is given here.
  Some of the values given in Leinhardt and Wasserman do not appear
- in the original New York Times table.
+ in the original New York Times table and are of dubious validity.
 }
 
 \source{
@@ -53,7 +53,11 @@ The infant-mortality rate for Jamaica is misprinted in
 
 \references{
   Fox, J. (2008)
-  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition. Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 }
 
 

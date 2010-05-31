@@ -4,7 +4,7 @@
 \alias{powerTransform.lm}
 \alias{powerTransform.formula}
 
-\title{Finding univariate or multivariate power transformations}
+\title{Finding Univariate or Multivariate Power Transformations}
 \description{
   \code{powerTransform} computes members of families of transformations indexed by one
 parameter, the Box-Cox power family, or the Yeo and Johnson (2000) family, or the
@@ -24,15 +24,15 @@ powerTransform(object,...)
 }
 
 \arguments{
-  \item{object}{For powerTransform, this can either be an object of type
-  \sQuote{lm}, a formula or a matrix or vector; see below.}
-  \item{data}{A data frame or environment, as in \sQuote{lm}}
-  \item{subset}{Case indices to be used, as in \sQuote{lm}.}
-  \item{weights}{Case weights, is in \sQuote{lm}.}
+  \item{object}{This can either be an object of class
+  \code{lm}, a formula, or a matrix or vector; see below.}
+  \item{data}{A data frame or environment, as in \code{\link{lm}}.}
+  \item{subset}{Case indices to be used, as in \code{\link{lm}}.}
+  \item{weights}{Case weights, is in \code{\link{lm}}.}
   \item{na.action}{Missing value action, as in \sQuote{lm}.}
-  \item{...}{Additional arguments that are passed to \code{\link{estimateTransform}}
-  that does the actual computing, or the \code{\link{optim}} 
-  function that does the maximization.  See the documentation for these functions
+  \item{...}{Additional arguments that are passed to \code{\link{estimateTransform}},
+  which does the actual computing, or the \code{\link{optim}} 
+  function, which does the maximization.  See the documentation for these functions
   for the arguments that are permitted, including \code{family} for
   setting the power transformation family.}
 }
@@ -78,7 +78,7 @@ and of \eqn{|U|+1} with parameter \eqn{2-\lambda}{2-lambda} for \eqn{U}
 negative.
   
 Other families can be added by writing a function whose first argument is a
-matrix or vector to be transformed, whose second argument is the value of the
+matrix or vector to be transformed, and whose second argument is the value of the
 transformation parameter.  The function must return modified transformations
 so that the Jacobian of the transformation is equal to one; see Cook and
 Weisberg
@@ -96,8 +96,8 @@ summary method for powerTransform objects.
 \value{
 The result of \code{powerTransform} is an object of class \code{powerTransform}
 that gives the estimates of the the transformation parameters and related 
-statistics.  The print method for the object will display the estimates only;
-the summary method provides both the estimates, standard errors, marginal Wald
+statistics.  The \code{print} method for the object will display the estimates only;
+the \code{summary} method provides both the estimates, standard errors, marginal Wald
 confidence intervals and relevant likelihood ratio tests.  
 
 Several helper functions are available.  The \code{coef} method returns 
@@ -111,9 +111,9 @@ transformation parameters.  A \code{print} method is used to
 print the objects and \code{summary} to provide more information.  By default
 the summary method calls \code{testTransform} and provides likelihood ratio type
 tests that all transformation parameters equal one and that all transformation
-parameters equal 0, for log transformations, and for a convenient rounded value
+parameters equal zero, for log transformations, and for a convenient rounded value
 not far from the mle.  The function can be called
-directly to test any other value for lambda.
+directly to test any other value for \eqn{\lambda}{lambda}.
 }
 \references{Box, G. E. P. and Cox, D. R. (1964) An analysis of transformations.
 \emph{Journal
@@ -123,8 +123,8 @@ Cook, R. D. and Weisberg, S. (1999)  \emph{Applied Regression Including
 Computing
 and Graphics}.  Wiley.
 
-Fox, J. (2011)  \emph{R and Companion to Applied Regression}, Second
-Edition.  Sage. 
+Fox, J. and Weisberg, S. (2011) 
+\emph{An R Companion to Applied Regression}, Second Edition, Sage.
 
 Velilla, S. (1993)  A note on the multivariate Box-Cox transformation to 
 normality.  \emph{Statistics and Probability Letters}, 17, 259-263.

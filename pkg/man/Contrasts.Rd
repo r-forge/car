@@ -6,12 +6,12 @@
 
 \title{Functions to Construct Contrasts}
 \description{
-    These are substitutes for similarly named functions in the stats package 
+    These are substitutes for similarly named functions in the \pkg{stats} package 
     (note the uppercase letter starting the second word in each function name).
-    The only difference is that the contrast functions from the car package
+    The only difference is that the contrast functions from the \pkg{car} package
     produce easier-to-read names for the contrasts when they are used in statistical models. 
     
-    The functions and this documentation are adapted from the stats package.
+    The functions and this documentation are adapted from the \pkg{stats} package.
     }
 
 \usage{
@@ -56,6 +56,11 @@ contr.Helmert(n, contrasts = TRUE)
 \value{
     A matrix with \code{n} rows and \code{k} columns, with \code{k = n - 1} if \code{contrasts} is \code{TRUE} 
     and \code{k = n} if \code{contrasts} is \code{FALSE}.
+}
+
+\references{
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}}

@@ -34,21 +34,27 @@ recode(var, recodes, as.factor.result, as.numeric.result=TRUE, levels)
     \item{single value}{For example, \code{0=NA}.}
     \item{vector of values}{For example, \code{c(7,8,9)='high'}.}
     \item{range of values}{For example, \code{7:9='C'}. The special values \code{lo}
-      and \code{hi} may appear in a range. For example, \code{lo:10=1}.}
+      and \code{hi} may appear in a range. For example, \code{lo:10=1}. \emph{Note:} \code{:} is
+      \emph{not} the R sequence operator.}
     \item{\code{else}}{everything that does not fit a previous specification.
       For example, \code{else=NA}. Note that \code{else} matches \emph{all} otherwise
       unspecified values on input, including \code{NA}.}
     }
   If all of the output values are numeric, and if \code{as.factor.result} is 
-  \code{FALSE}, then a numeric result is returned.
+  \code{FALSE}, then a numeric result is returned; if \code{var} is a factor,
+  then by default so is the result.
 }
 
 \value{
-  a recoded vector of the same length as \code{var}; if \code{var} is a factor,
-  then so is the result.
+  a recoded vector of the same length as \code{var}.
 }
  
 \author{John Fox \email{jfox@mcmaster.ca}}
+
+\references{
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+}
 
 \seealso{\code{\link[base]{cut}}, \code{\link[base]{factor}}}
 

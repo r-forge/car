@@ -24,7 +24,9 @@ ncvTest(model, ...)
     the error variance depends on the fitted values.}
   \item{data}{an optional data frame containing the variables in the model. 
     By default the variables are taken from the environment from which 
-    \code{ncvTest} is called.}
+    \code{ncvTest} is called. The \code{data} argument may therefore need to be specified even when
+    the \code{data} argument was specified in the call to \code{lm} when the model was fit 
+    (see the second example below).}
   \item{subset}{an optional vector specifying a subset of observations to be used.}
   \item{na.action}{a function that indicates what should happen when the data contain \code{NA}s. 
     The default is set by the \code{na.action} setting of \code{options}.}
@@ -50,7 +52,11 @@ ncvTest(model, ...)
   \emph{Biometrika} \bold{70}, 1--10.
   
   Fox, J. (2008)
-  \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage. 
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
   
   Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition, Wiley.
 }
@@ -60,7 +66,6 @@ ncvTest(model, ...)
 \seealso{\code{\link{hccm}}, \code{\link[car]{spreadLevelPlot}} }
 
 \examples{
-data(Ornstein, package="car")
 ncvTest(lm(interlocks ~ assets + sector + nation, data=Ornstein))
 
 ncvTest(lm(interlocks ~ assets + sector + nation, data=Ornstein), 

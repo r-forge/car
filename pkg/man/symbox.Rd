@@ -23,7 +23,7 @@ symbox(x, ...)
     \item{data, subset, na.action}{as for statistical modeling functions (see, e.g., \code{\link{lm}}).}
     \item{ylab}{optional label for the vertical axis.}
     \item{powers}{a vector of selected powers to which \code{x} is to be raised. 
-        For meaningful comparison of powers,  1 should be included
+        For meaningful comparison of powers,  \code{1} should be included
         in the vector of powers.}
     \item{start}{a constant to be added to \code{x}.}
     \item{trans}{a transformation function whose first argument is a numeric vector and whose second
@@ -34,7 +34,7 @@ symbox(x, ...)
 
 \value{as returned by \code{boxplot}.}
 
-\author{Gregor Gorjanc, John Fox \email{jfox@mcmaster.ca}}
+\author{Gregor Gorjanc, John Fox \email{jfox@mcmaster.ca}, and Sanford Weisberg.}
 
 \references{
 

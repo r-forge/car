@@ -28,7 +28,9 @@
 \title{Deprecated Functions in car Package}
 
 \description{
-  These functions are provided for compatibility with older versions of car only, and may be removed eventually.
+  These functions are provided for compatibility with older versions of the \pkg{car} package only, 
+  and may be removed eventually. Commands that worked in versions of the \pkg{car} package prior to version 2.0-0
+  will not necessarily work in version 2.0-0 and beyond, or may not work in the same manner.
 }
 
 \usage{

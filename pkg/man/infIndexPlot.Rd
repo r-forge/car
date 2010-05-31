@@ -2,10 +2,10 @@
 \alias{infIndexPlot}
 \alias{influenceIndexPlot}
 \alias{infIndexPlot.lm}
-\title{Influence index plot}
+\title{Influence Index Plot}
 \description{
 Provides index plots of Cook's distances,
-leverages, Studentized residuals and outlier significance levels for a 
+leverages, Studentized residuals, and outlier significance levels for a 
 regression object.
 }
 \usage{
@@ -22,12 +22,12 @@ influenceIndexPlot(model, ...)
 
 }
 \arguments{
-  \item{model}{A regression object of type lm or glm}
+  \item{model}{A regression object of class \code{lm} or \code{glm}.}
   \item{vars}{
-All the quantities listed in this argument are plotted.  Use \dQuote{Cook}
-for Cook's distances, \dQuote{Studentized} for Studentized
-residuals, \dQuote{Bonf} for Bonferroni p-values for an outlier test, and 
-and \dQuote{hat} for hat-values (or leverages).   Capitalization is optional.
+All the quantities listed in this argument are plotted.  Use \code{"Cook"}
+for Cook's distances, \code{"Studentized"} for Studentized
+residuals, \code{"Bonf"} for Bonferroni p-values for an outlier test, and 
+and \code{"hat"} for hat-values (or leverages).   Capitalization is optional.
 All may be abbreviated by the first one or more letters.
 }
   \item{main}{main title for graph}
@@ -50,11 +50,11 @@ p-values for outlier tests, and leverages.
   \emph{Applied Regression, Including Computing and Graphics.} Wiley.
 
   Fox, J. (2008)
-  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition.
-   Sage.
-   
-  Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied 
-  Regression}, Second Edition.  Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
   
   Weisberg, S. (2005) 
   \emph{Applied Linear Regression}, Third Edition. Wiley.

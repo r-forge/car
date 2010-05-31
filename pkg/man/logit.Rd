@@ -29,6 +29,11 @@ logit(p, percents=range.p[2] > 1, adjust)
   a numeric vector or array of the same shape and size as \code{p}.
 }
 
+\references{
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+}
+
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \seealso{\code{\link{probabilityAxis}}}

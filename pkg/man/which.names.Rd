@@ -24,6 +24,11 @@ Returns the index or indices of \code{names} within \code{object}.
 
 \author{John Fox \email{jfox@mcmaster.ca}}
 
+\references{
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+}
+
 \examples{
 which.names(c('minister', 'conductor'), Duncan)
 ## [1]  6 16

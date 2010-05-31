@@ -33,13 +33,18 @@ Boxplot(y, ...)
   \item{xlab, ylab}{text labels for the horizontal and vertical axes; if missing, \code{Boxplot} will use the
     variable names.}
   \item{formula}{a `model' formula, of the form \code{~ y} to produce a boxplot for the variable \code{y}, or
-    of the form \code{y ~ g} to produce parallel boxplots for \code{y} within lavels of the grouping variable
+    of the form \code{y ~ g} to produce parallel boxplots for \code{y} within levels of the grouping variable
     \code{g}, usually a factor.}
   \item{data, subset, na.action}{as for statistical modeling functions (see, e.g., \code{\link{lm}}).}
   \item{\dots}{further arguments to be passed to \code{\link{boxplot}}.}
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}}
+
+\references{
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+}
 
 \seealso{
 \code{\link{boxplot}}

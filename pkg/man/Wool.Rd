@@ -28,8 +28,13 @@ goal is to understand how cycles to failure depends on the factors.
 \source{
 Box, G. E. P. and Cox, D. R. (1964).  An analysis of transformations (with
 discussion).  \emph{J. Royal Statist. Soc.}, B26, 211-46.}
-\references{Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition.  Wiley, Section 6.3.}
-\examples{
-data(wool)
+\references{
+Fox, J. and Weisberg, S. (2011) 
+\emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  
+Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition.  Wiley, Section 6.3.
+}
+\usage{
+Wool
 }
 \keyword{datasets}

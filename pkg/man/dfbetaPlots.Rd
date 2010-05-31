@@ -49,7 +49,7 @@ index plot is drawn for that term only.
   select the layout yourself, or you will get a maximum of nine per page.}
 \item{main}{The title of the graph; if missing, one will be supplied.
 }
-\item{ask}{If TRUE, ask the user before drawing the next plot; FALSE if don't ask.
+\item{ask}{If \code{TRUE}, ask the user before drawing the next plot; if \code{FALSE}, the default, don't ask.
 }
 \item{\dots}{optional additional arguments to be passed to \code{\link{showLabels}}, e.g., \code{id.col}. 
 }
@@ -69,7 +69,11 @@ graph}
 
 \references{
   Fox, J. (2008)
-  \emph{Applied Regression Analysis and Generalized Linear Models, Second Edition.} Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}, Sanford Weisberg \email{sandy@umn.edu}}

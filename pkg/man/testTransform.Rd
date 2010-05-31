@@ -1,8 +1,8 @@
 \name{testTransform}
 \alias{testTransform}
 
-\title{Likelihood ratio tests for univariate or multivariate power transformations
-to normality}
+\title{Likelihood-Ratio Tests for Univariate or Multivariate Power Transformations
+to Normality}
 \description{
   \code{testTransform} computes likelihood ratio tests for particular transformations
 based on \code{powerTransform} objects.
@@ -26,8 +26,8 @@ compulte a likelihood ratio test for values of the transformation parameter
 other than the ml estimate.}
 
 \value{
-A data frame with one row giving the value of the test statsitic, its
-degrees of freedom, and a pvalue.  The test is the likelihood ratio test, 
+A data frame with one row giving the value of the test statistic, its
+degrees of freedom, and a p-value.  The test is the likelihood ratio test, 
 comparing the value of the log-likelihood at the hypothesized value to 
 the value of the log-likelihood at the maximum likelihood estimate.
 }
@@ -36,6 +36,9 @@ of the Royal Statisistical Society, Series B}. 26 211-46.
 
 Cook, R. D. and Weisberg, S. (1999)  \emph{Applied Regression Including Computing
 and Graphics}.  Wiley.
+
+Fox, J. and Weisberg, S. (2011) 
+\emph{An R Companion to Applied Regression}, Second Edition, Sage.
 
 Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. Wiley.
 }

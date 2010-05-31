@@ -14,7 +14,7 @@ on-going effort of the college's administration to monitor salary differences
 between male and female faculty members. 
 }
 
-\usage{data(Salaries)}
+\usage{Salaries}
 \format{
   A data frame with 397 observations on the following 6 variables.
   \describe{

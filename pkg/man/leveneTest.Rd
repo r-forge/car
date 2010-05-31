@@ -16,13 +16,13 @@ leveneTest(y, ...)
 }
 
 \arguments{
-  \item{y}{response variable for the default method, or \code{lm} or 
+  \item{y}{response variable for the default method, or a \code{lm} or 
   \code{formula} object. If \code{y} is a linear-model object or a formula,
   the variables on the right-hand-side of the model must all be factors and
   must be completely crossed.}
   \item{group}{factor defining groups.}
   \item{center}{The name of a function to compute the center of each group;
-  	\code{mean} gives the original Levene's test; the default, \code{median}
+  	\code{mean} gives the original Levene's test; the default, \code{median},
   	provides a more robust test.}
   \item{data}{a data frame for evaluating the \code{formula}.}
   \item{...}{arguments to be passed down, e.g., \code{data} for the
@@ -31,19 +31,17 @@ leveneTest(y, ...)
   	\code{trim=0.1} specify the 10\% trimmed mean).}
 }
 
-\details{
-  The version of Levene's test implemented here is based on absolute
-  deviations from the group medians. Other, less robust, versions, not implemented,
-  are based on absolute deviations from group means or trimmed means.
-}
-
 \value{
     returns an object meant to be printed showing the results of the test.
 }
 
 \references{
   Fox, J. (2008)
-  \emph{Applied Regression, Linear Models, and Related Methods}, Second Edition. Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 }
      
 \author{John Fox \email{jfox@mcmaster.ca}; original generic version 
@@ -51,7 +49,6 @@ leveneTest(y, ...)
 \note{adapted from a response posted by Brian Ripley to the r-help email list.}
 
 \examples{
-data(Moore, package="car")
 with(Moore, leveneTest(conformity, fcategory))
 with(Moore, leveneTest(conformity, interaction(fcategory, partner.status)))
 leveneTest(conformity ~ fcategory*partner.status, data=Moore)

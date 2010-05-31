@@ -12,7 +12,7 @@
 \title{Heteroscedasticity-Corrected Covariance Matrices}
 \description{
   Calculates heteroscedasticity-corrected covariance matrices for
-  unweighted linear models. These are also called ``White-corrected''
+  unweighted linear models. These are also called \dQuote{White-corrected} or \dQuote{White-Huber}
   covariance matrices.
 }
 \usage{
@@ -28,7 +28,7 @@ hccm(model, ...)
   \item{model}{an unweighted linear model, produced by \code{lm}.}
   \item{type}{one of \code{"hc0"}, \code{"hc1"}, \code{"hc2"}, \code{"hc3"}, or \code{"hc4"}; the
     first of these gives the classic White correction. The \code{"hc1"}, \code{"hc2"}, and \code{"hc3"}
-    corrections are described in Long and Ervin (2000)\code{"hc4"} is described in Cribari-Neto (2004).}
+    corrections are described in Long and Ervin (2000); \code{"hc4"} is described in Cribari-Neto (2004).}
   \item{singular.ok}{if \code{FALSE} (the default is \code{TRUE}), a model with aliased coefficients
     produces an error; otherwise, the aliased coefficients are ignored in the coefficient covariance
     matrix that's returned.}
@@ -47,6 +47,13 @@ hccm(model, ...)
   The heteroscedasticity-corrected covariance matrix for the model.
 }
 \references{
+  Fox, J. (2008)
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+
   Cribari-Neto, F. (2004)
   Asymptotic inference under heteroskedasticity of unknown form.
   \emph{Computational Statistics and Data Analysis} \bold{45}, 215--233.
@@ -56,16 +63,13 @@ hccm(model, ...)
   \emph{The American Statistician} \bold{54}, 217--224.
   
   White, H. (1980)
-  A heterskedastic consistent covariance matrix estimator and a direct test of heteroskedasticity.
+  A heteroskedastic consistent covariance matrix estimator and a direct test of heteroskedasticity.
   \emph{Econometrica} \bold{48}, 817--838.
   }
 \author{John Fox \email{jfox@mcmaster.ca}}
 
-%\seealso{\code{\link{ncv.test}}, \code{\link{spread.level.plot}} }
-
 \examples{
 options(digits=4)
-data(Ornstein, package="car")
 mod<-lm(interlocks~assets+nation, data=Ornstein)
 vcov(mod)
 ##             (Intercept)     assets  nationOTH   nationUK   nationUS

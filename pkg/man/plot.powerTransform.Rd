@@ -1,27 +1,26 @@
 \name{plot.powerTransform}
 \Rdversion{1.1}
 \alias{plot.powerTransform}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ plot method for powerTransform objects
+\title{ plot Method for powerTransform Objects
 }
 \description{
 This function provides a simple function for plotting data using power 
-transformations
+transformations.
+
 }
 \usage{
-
 \method{plot}{powerTransform}(x, z = NULL, round = TRUE, plot = pairs, ...)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{x}{name of the power transformation object
 }
   \item{z}{
   Additional variables of the same length as those used to get the transformation
-  to be plotted, default is NULL.
+  to be plotted, default is \code{NULL}.
 }
   \item{round}{
-  If TRUE, the default, use rounded transforms, if FALSE use the mles.
+  If \code{TRUE}, the default, use rounded transforms, if \code{FALSE} use the MLEs.
 }
   \item{plot}{
   Plotting method.  Default is \code{pairs}.  Another possible choice is
@@ -41,14 +40,14 @@ None.  Produces a graph as a side-effect.
 \references{
 Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition. Wiley.
 
-Fox, J. and Weisberg, S. (2011)\emph{An R Companion to Applied Linear Regression},
+Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied Linear Regression},
 Second Edition, Sage.
 }
 \author{ Sanford Weisberg, <sandy@stat.umn.edu> }
 
 
 \seealso{
-See Also as \code{\link{powerTransform}}
+\code{\link{powerTransform}}
 }
 \examples{
 summary(a3 <- powerTransform(cbind(len, ADT, trks, sigs1) ~ hwy, Highway1))

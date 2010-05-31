@@ -7,7 +7,7 @@
 \title{Bonferroni Outlier Test}
 
 \description{
-  Reports the Bonferroni p-values for studentized residuals in
+  Reports the Bonferroni p-values for Studentized residuals in
   linear and generalized linear models, based on a t-test for
   linear models and normal-distribution test for generalized linear models.
 }
@@ -25,10 +25,10 @@ outlierTest(model, ...)
   \item{model}{an \code{lm} or \code{glm} model object.}
   \item{cutoff}{observations with Bonferonni p-values exceeding
   	\code{cutoff} are not reported, unless no observations are
-  	nominated, in which case the one with the largest studentized
+  	nominated, in which case the one with the largest Studentized
   	residual is reported.}
   \item{n.max}{maximum number of observations to report (default, \code{10}).}
-  \item{order}{report studenized residuals in descending order of magnitude? 
+  \item{order}{report Studenized residuals in descending order of magnitude? 
   	(default, \code{TRUE}).}
   \item{labels}{an optional vector of observation names.}
   \item{...}{arguments passed down to methods functions.}
@@ -55,7 +55,11 @@ outlierTest(model, ...)
   \emph{Residuals and Influence in Regression.} Chapman and Hall.
   
   Fox, J. (2008)
-  \emph{Applied Regression Analysis and Generalized LInear Models, Second Edition.} Sage.
+  \emph{Applied Regression Analysis and Generalized Linear Models},
+  Second Edition. Sage.  
+  
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
   
   Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition, Wiley.
   
@@ -64,10 +68,9 @@ outlierTest(model, ...)
   case deletions. \emph{Applied Statistics} \bold{36}, 181--191.
 }
 
-\author{John Fox \email{jfox@mcmaster.ca}}
+\author{John Fox \email{jfox@mcmaster.ca} and Sanford Weisberg}
 
 \examples{
-data(Duncan, package="car")
 outlierTest(lm(prestige ~ income + education, data=Duncan))
 }
 

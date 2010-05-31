@@ -15,13 +15,13 @@ coefTable(..., se = TRUE, digits = 3)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{\dots}{
-The names of one or more regression models.  These may be of class lm, glm,
-nlr, or any other regression method for which the functions \code{coef} and 
+The names of one or more regression models.  These may be of class \code{lm}, \code{glm},
+\code{nlm}, or any other regression method for which the functions \code{coef} and 
 \code{vcov} return appropriate values.
 }
   \item{se}{
-If TRUE, the default, return standard errors as well as estimates, if FALSE
-return only estimates.
+If \code{TRUE}, the default, show standard errors as well as estimates, if \code{FALSE},
+show only estimates.
 }
   \item{digits}{
 Passed to the \code{\link{printCoefmat}} function for printing the result.
