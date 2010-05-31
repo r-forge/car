@@ -5,8 +5,8 @@
 \title{Population of the United States}
 
 \description{
-  The \code{USPop} data frame has 21 rows and 1 columns.
-  This is a decennial time-series, from 1790 to 1990.
+  The \code{USPop} data frame has 22 rows and 1 columns.
+  This is a decennial time-series, from 1790 to 2000.
 }
 
 \format{
@@ -22,9 +22,7 @@
   }
 
 \source{
- United States (1994)
- \emph{Statistical Abstract of the United States.}
- Bureau of the Census.
+U.S.~Census Bureau: \url{http://www.census-charts.com/Population/pop-us-1790-2000.html}, downloaded 1 May 2008.
 }
 
 \references{
