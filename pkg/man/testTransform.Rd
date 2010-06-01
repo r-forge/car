@@ -1,5 +1,6 @@
 \name{testTransform}
 \alias{testTransform}
+\alias{testTransform.powerTransform}
 
 \title{Likelihood-Ratio Tests for Univariate or Multivariate Power Transformations
 to Normality}
@@ -8,7 +9,9 @@ to Normality}
 based on \code{powerTransform} objects.
 }
 \usage{
-testTransform(object,lambda=rep(1,dim(object$y)[2]))
+testTransform(object, lambda)
+
+\S3method{testTransform}{powerTransform}(object, lambda=rep(1, dim(object$y)[2]))
 }
 
 \arguments{
@@ -23,7 +26,8 @@ transformation for a univariate or multivariate sample or multiple linear
 regression problem, using the method of Box and Cox (1964).  It is usual to
 round the estimates to nearby convenient values, and this function is use to
 compulte a likelihood ratio test for values of the transformation parameter
-other than the ml estimate.}
+other than the ml estimate.  This is a generic function, but with only one
+method, for objects of class \code{powerTransform}.}
 
 \value{
 A data frame with one row giving the value of the test statistic, its

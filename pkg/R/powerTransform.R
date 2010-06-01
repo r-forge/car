@@ -152,7 +152,9 @@ estimateTransform <- function(X, Y, weights=NULL,
    res
    }
    
-testTransform <-function(object,lambda=rep(1,dim(object$y)[2])){
+testTransform <- function(object, lambda) UseMethod("testTransform")   
+   
+testTransform.powerTransform <-function(object,lambda=rep(1,dim(object$y)[2])){
    fam <- match.fun(object$family)
    Y <- cbind(object$y) # coerces Y to be a matrix.
    nc <- dim(Y)[2]

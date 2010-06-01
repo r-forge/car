@@ -21,7 +21,7 @@ estimateTransform(X, Y, weights=NULL, family="bcPower", start=NULL,
   \item{X}{A matrix or data.frame giving the \dQuote{right-side variables}.}
   \item{Y}{A vector or matrix or data.frame giving the \dQuote{left-side
 variables.}}
-  \item{weights}{Case weights, as in \code{lm}.}
+  \item{weights}{Weights as in \code{lm}.}
   \item{family}{The transformation family to use.  This is the quoted name of a
   function for computing the transformed values.  The default is
 \code{bcPower}

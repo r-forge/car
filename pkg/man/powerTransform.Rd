@@ -28,7 +28,7 @@ powerTransform(object,...)
   \code{lm}, a formula, or a matrix or vector; see below.}
   \item{data}{A data frame or environment, as in \code{\link{lm}}.}
   \item{subset}{Case indices to be used, as in \code{\link{lm}}.}
-  \item{weights}{Case weights, is in \code{\link{lm}}.}
+  \item{weights}{Weights as in \code{\link{lm}}.}
   \item{na.action}{Missing value action, as in \sQuote{lm}.}
   \item{...}{Additional arguments that are passed to \code{\link{estimateTransform}},
   which does the actual computing, or the \code{\link{optim}} 
