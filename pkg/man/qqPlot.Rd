@@ -30,7 +30,7 @@ qqp(...)
 sep=""), main=NULL,
         distribution=c("t", "norm"), line=c("robust", "quartiles", "none"),
         las=par("las"), simulate=TRUE, envelope=.95,  
-        reps=1000, col=palette()[2], lwd=2, pch=1, cex=par("cex"),
+        reps=100, col=palette()[2], lwd=2, pch=1, cex=par("cex"),
         labels, id.method = "y", 
         id.n = if(id.method[1]=="identify") Inf else 0,
         id.cex=1, id.col=palette()[1], grid=TRUE, ...)

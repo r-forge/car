@@ -28,7 +28,8 @@ subsets(object, ...)
   \item{max.size}{maximum size subset to plot; default is number of predictors.}
   \item{legend}{\code{TRUE} to plot a legend of predictor names; defaults to \code{TRUE} if
     abbreviations are computed for predictor names. The legend is placed on the
-    plot interactively with the mouse.}
+    plot interactively with the mouse. By expanding the left or right plot margin, you can place
+    the legend in the margin, if you wish (see \code{\link{par}}).}
   \item{statistic}{statistic to plot for each predictor subset; one of: 
     \code{"bic"}, Bayes Information Criterion; 
     \code{"cp"}, Mallows's \eqn{C_{p}}{Cp};
@@ -44,8 +45,7 @@ subsets(object, ...)
 }
 
 \value{
-  \code{NULL}. This function is used for its side effect --
-  to create a plot.
+  \code{NULL} if the \code{legend} is \code{TRUE}; otherwise a data frame with the legend.
 }
  
 \author{John Fox}

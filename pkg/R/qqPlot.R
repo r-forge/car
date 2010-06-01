@@ -3,6 +3,7 @@
 # last modified 30 September 2009 by J. Fox
 # November 2009 by S. Weisberg -- changed to use showLabels for point identification
 # 14 April 2010: set id.n = 0. J. Fox
+# 1 June 2010: set reps=100 in qqPlot.lm. J. Fox
 
 qqp <- function(...) qqPlot(...)
 
@@ -65,8 +66,7 @@ qqPlot.default <- function(x, distribution="norm", ylab=deparse(substitute(x)),
 qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 	ylab=paste("Studentized Residuals(", deparse(substitute(x)), ")", sep=""), main=NULL,
 	distribution=c("t", "norm"), line=c("robust", "quartiles", "none"), las=par("las"),
-	simulate=TRUE, envelope=.95,  
-        reps=1000, 
+	simulate=TRUE, envelope=.95,  reps=100, 
 	col=palette()[2], lwd=2, pch=1, cex=par("cex"),
         labels, id.method = "y", 
         id.n = if(id.method[1]=="identify") Inf else 0, id.cex=1, 

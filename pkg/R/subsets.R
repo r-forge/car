@@ -1,7 +1,7 @@
 # Plot optimal subsets regressions -- output from regsubsets
 # function in leaps package
 
-# last modified 20 Feb 2002 by J. Fox
+# last modified 1 June 2010 by J. Fox
 
 subsets <- function(object, ...){
 	UseMethod("subsets")
@@ -42,10 +42,18 @@ subsets.regsubsets <- function(object,
 			do.call("paste", c(as.list(names[incidence[i,]]),sep='-')),
 			cex=cex.subsets, adj=adj)
 	}
-	if (legend) legend(locator(1),
+	if (legend) {
+		legend(locator(1),
 			legend=apply(cbind(names, names(names)), 1, 
-				function(x) do.call("paste", c(as.list(x), sep=": "))))
-	invisible(NULL)
+				function(x) do.call("paste", c(as.list(x), sep=": "))), xpd=TRUE)
+		return(invisible(NULL))
+	}
+	else {
+		Abbreviation <- names
+		return(as.data.frame(Abbreviation))
+	}
+		
+	
 }
 
 
