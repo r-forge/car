@@ -94,9 +94,9 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 		ord.lab <- labels[ord]
 		P <- ppoints(n)
 		z <- if (distribution == 't') qt(P, df=res.df-1) else qnorm(P)
-		plot(z, ord.x, type="n")
+		plot(z, ord.x, type="n", xlab=xlab, ylab=ylab, main=main, las=las)
 		if(grid) grid(lty=1, equilogs=FALSE)
-		points(z, ord.x, xlab=xlab, ylab=ylab, main=main, las=las, pch=pch, col=col, cex=cex)
+		points(z, ord.x, pch=pch, col=col, cex=cex)
     yhat <- na.omit(fitted.values(x))
 		S <- sumry$sigma
 		Y <- matrix(yhat, n, reps) + matrix(rnorm(n*reps, sd=S), n, reps)
