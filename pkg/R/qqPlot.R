@@ -4,6 +4,7 @@
 # November 2009 by S. Weisberg -- changed to use showLabels for point identification
 # 14 April 2010: set id.n = 0. J. Fox
 # 1 June 2010: set reps=100 in qqPlot.lm. J. Fox
+# 28 June 2010: fixed labeling bug S. Weisberg
 
 qqp <- function(...) qqPlot(...)
 
@@ -119,7 +120,7 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
 			b <- coef[2]
 			abline(a, b, col=col, lwd=lwd)
 		}                   
-    result <- showLabels(z, ord.x,labels=ord.lab, id.var=NULL, 
+    result <- showLabels(z, ord.x,labels=ord.lab,  
        id.method = id.method, id.n = id.n, id.cex=id.cex, id.col=id.col)
 	}
 	if (length(result) == 0) invisible(result) else if (is.numeric(result)) sort(result) else result
