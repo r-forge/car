@@ -1,8 +1,8 @@
 
 # Utility functions (J. Fox)
 
-# last modified 25 February 2010 by J. Fox
 # 16 March 2010 changed 'vars' argument to 'terms'
+# 28 June 2010 added df.terms.surveg and model.matrix.survreg
 
 # function to find "nice" numbers
 
@@ -121,6 +121,25 @@ df.terms.polr <- function (model, term, ...){
 		result
 	}
 }
+
+df.terms.survreg <- function(model, term, ...){
+	if (is.aliased(model)) stop("Model has aliased term(s); df ambiguous.")
+	if (!missing(term) && 1 == length(term)){
+		assign <- attr(model.matrix(model, data=model.frame(model)), "assign")
+		which.term <- which(term == labels(terms(model)))
+		if (0 == length(which.term)) stop(paste(term, "is not in the model."))
+		sum(assign == which.term)
+	}
+	else {
+		terms <- if (missing(term)) labels(terms(model)) else term
+		result <- numeric(0)
+		for (term in terms) result <- c(result, Recall(model, term))
+		names(result) <- terms
+		result
+	}
+}
+
+model.matrix.survreg <- function(object, ...) model.matrix.default(object, model.frame(object))
 
 mfrow <- function(n, max.plots=0){
 	# number of rows and columns for array of n plots

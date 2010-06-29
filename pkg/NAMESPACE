@@ -1,4 +1,4 @@
-# last modified 22 June 2010 by J. Fox
+# last modified 28 June 2010 by J. Fox
 
 export(
     basicPowerAxis,
@@ -172,6 +172,7 @@ S3method(linearHypothesis, default)
 S3method(linearHypothesis, glm)
 S3method(linearHypothesis, lm)
 S3method(linearHypothesis, mlm)
+S3method(linearHypothesis, survreg)
 S3method(Manova, mlm)
 S3method(mmp, default)
 S3method(mmp, lm)

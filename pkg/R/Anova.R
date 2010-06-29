@@ -10,6 +10,8 @@
 #             is only an intercept in the between-subjects model
 # 2010-02-17: Fixed bug that caused some models with aliased coefficients to fail. J. Fox
 # 2010-06-14: added wcrossprod and allow use of observation weights in Anova.mlm()
+# 2010-06-28: Fixed Anova() tables for coxph and survreg models 
+#             (failed because of changes in survival package.
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1134,8 +1136,6 @@ Anova.II.LR.coxph <- function(mod, ...){
 	if (n.terms < 2) return(anova(mod, test="Chisq"))
 	X <- model.matrix(mod)
 	asgn <- attr(X, 'assign')
-	asgn <- asgn[asgn != 0]
-	X <- X[, -which(colnames(X) == "(Intercept)")]
 	p <- LR <- rep(0, n.terms)
 	df <- df.terms(mod)
 	for (term in 1:n.terms){
@@ -1168,8 +1168,6 @@ Anova.III.LR.coxph <- function(mod, ...){
 	if (n.terms < 2) return(anova(mod, test="Chisq"))
 	X <- model.matrix(mod)
 	asgn <- attr(X, 'assign')
-	asgn <- asgn[asgn != 0]
-	X <- X[, -which(colnames(X) == "(Intercept)")]
 	df <- df.terms(mod)
 	LR <- p <- rep(0, n.terms)
 	loglik1 <- logLik(mod)
