@@ -5,6 +5,7 @@
 \alias{deltaMethod.nls}
 \alias{deltaMethod.multinom} 
 \alias{deltaMethod.polr} 
+\alias{deltaMethod.survreg}
 
 \title{Estimate and Standard Error of a Nonlinear Function of Estimated Regression 
 Coefficients}

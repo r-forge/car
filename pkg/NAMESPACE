@@ -1,4 +1,4 @@
-# last modified 28 June 2010 by J. Fox
+# last modified 22 June 2010 by J. Fox
 
 export(
     basicPowerAxis,
@@ -21,6 +21,7 @@ export(
     scatter3d,
     scatterplot, 
     scatterplotMatrix,
+    sigmaHat,
     slp,
     some,
     sp,
@@ -108,6 +109,9 @@ S3method(scatterplot, default)
 S3method(scatterplot, formula)       
 S3method(scatterplotMatrix, default)
 S3method(scatterplotMatrix, formula)
+S3method(sigmaHat, default)
+S3method(sigmaHat, lm)
+S3method(sigmaHat, glm)
 S3method(some, data.frame)           
 S3method(some, default)              
 S3method(some, matrix)      
@@ -149,6 +153,7 @@ S3method(deltaMethod, lm)
 S3method(deltaMethod,multinom)
 S3method(deltaMethod,polr)
 S3method(deltaMethod, nls)
+S3method(deltaMethod, survreg)
 S3method(dfbetaPlots, lm)
 S3method(dfbetasPlots, lm)
 S3method(durbinWatsonTest, default)
@@ -172,7 +177,6 @@ S3method(linearHypothesis, default)
 S3method(linearHypothesis, glm)
 S3method(linearHypothesis, lm)
 S3method(linearHypothesis, mlm)
-S3method(linearHypothesis, survreg)
 S3method(Manova, mlm)
 S3method(mmp, default)
 S3method(mmp, lm)

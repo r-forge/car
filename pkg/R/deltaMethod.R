@@ -1,6 +1,7 @@
 #-------------------------------------------------------------------------------
 # Revision history:
 # 2009-10-29: renamed var argument to .vcov; tidied code. John
+# 2010-07-02; added method for survreg objects.
 #-------------------------------------------------------------------------------
 
 deltaMethod <- function (object, ...) {
@@ -23,7 +24,7 @@ deltaMethod.default <- function (object, g, vcov., func=g, ...) {
 	q <- length(coefest)
 	for (i in 1:q) {
 		assign(names(coefest)[i], coefest[i])
-	}
+	}   
 	est <- eval(g)
 	names(est) <- NULL
 	gd <- NULL
@@ -90,6 +91,35 @@ deltaMethod.polr <- function(object,g,vcov.=vcov,...){
 	vcov. <- if(is.function(vcov.)) vcov.(object)[sel, sel]
 	deltaMethod.lm(object, g, vcov., ...)
 }
+
+# new method for survreg objects.
+deltaMethod.survreg <- function (object, g, vcov. = vcov, parameterPrefix = "b", ...) {
+	metas <- c("(", ")", "[", "]", "{", "}", ".", "*", "+", "^", "$", ":", "|")
+	metas2 <- paste("\\", metas, sep="")
+	metas3 <- paste("\\\\", metas, sep="")
+	para <- c(coef(object), object$icoef[2])
+	para.names <- names(para)
+	for (i in seq(along=metas))
+		para.names <- gsub(metas2[i], metas3[i], para.names) # fix up metacharacters
+	para.order <- order(nchar(para.names), decreasing=TRUE) 
+	para.names <- para.names[para.order] # avoid partial-name substitution
+	std.names <- if ("(Intercept)" %in% names(para)) 
+			paste(parameterPrefix, 0:(length(para) - 1), sep = "")
+		else paste(parameterPrefix, 1:length(para), sep = "")
+	std.names.ordered <- std.names[para.order]
+	func <- g
+	for (i in seq(along=para.names)){
+		g <- gsub(para.names[i], std.names.ordered[i], g) 
+	}
+	vcov. <- if (is.function(vcov.)) 
+			vcov.(object)
+		else vcov.
+	names(para) <- std.names
+	deltaMethod.default(para, g, vcov., func)
+}
+
+t2 <- survreg(Surv(durable, durable>0, type='left') ~ -1 + age + quant,
+	            data=tobin, dist='gaussian')
 
 
 
