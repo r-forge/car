@@ -6,6 +6,7 @@
 \alias{deltaMethod.multinom} 
 \alias{deltaMethod.polr} 
 \alias{deltaMethod.survreg}
+\alias{deltaMethod.coxph}
 
 \title{Estimate and Standard Error of a Nonlinear Function of Estimated Regression 
 Coefficients}
@@ -23,6 +24,8 @@ deltaMethod(object, ...)
 \method{deltaMethod}{nls}(object, g, vcov.=vcov, ...)
 \method{deltaMethod}{multinom} (object, g, vcov.=vcov, parameterPrefix="b", ...)
 \method{deltaMethod}{polr} (object, g, vcov.=vcov, ...)
+\method{deltaMethod}{survreg} (object, g, vcov.=vcov, ...)
+\method{deltaMethod}{coxph} (object, g, vcov.=vcov, ...)
 
 }
 \arguments{
@@ -44,7 +47,8 @@ deltaMethod(object, ...)
   \code{func = g} is usually appropriate.}
   \item{parameterPrefix}{Typically a single letter with default
   \code{"b"} giving the prefix of the
-  names of the parameter names used in the argument \code{g}; see details.}
+  names of the parameter names used in the argument \code{g} for some
+  regression models; see details.}
   \item{...}{Additional arguments; not currently used.}
 }
 
@@ -68,30 +72,24 @@ estimates, the argument \code{object} may be the name of a regression
 object from which the vector \eqn{x} will be taken from \code{coef(object)},
 and \eqn{C} will be taken from \code{vcov(object)} unless you provide
 some other estimate of variance, for example, using a sandwich estimator.  Methods
-have been provided for many common regression models.   
+have been provided for several common regression models.   
 
 For regression models for which methods are not provided, you must extract
 the named vector of coefficient estimates and and estimate of its covariance
-matrix and then apply the default \code{deltaMethod} function.
+matrix and then apply the default \code{deltaMethod} function. 
 
 In the argument \code{g} you must provide a quoted character string
-that gives the function of interest, for example \code{g="b1/b2"}, where
-\code{b1} and \code{b2} are names of two of the coefficient estimates. 
+that gives the function of interest.  For example, if you set 
+\code{m2 <- lm(Y ~ X1 + X2)}, then \code{deltaMethod(m2,"X1/X2")} applies the
+delta method to the ratio of the coefficient estimates for \code{X1} and
+\code{X2}.  For the product of the interecpt and the coefficient of \code{X2},
+use \code{deltaMethod(m2, "(Intercept)*X2")}, since the name of the interecpt
+parameter estimate is \code{(Intercept)}. 
 
-For \code{lm}, \code{glm} and \code{polr} objects, the parameters are named for the
-corresponding regressors.  For example, in in
-\code{m2 <- lm(Y ~ X1 + X2)}, \code{names(coef(m2))} returns
-\code{c("(Intercept)", "X1", "X2")}.  If you wanted the estimate and standard 
-error for the ratio of the coefficient estimates for \code{X1} and the
-\code{(Intercept)}, you could either set \code{g = "X1/(Intercept)"} or
-you could set \code{g = "b1/b0"}.  In general, you
-can refer to the parameters using \code{b0}, \code{b1}, \ldots, \code{bp}, 
-if \code{parameterPrefix} is
-left at its default value of \code{"b"}.  In this case, \code{b0} is the 
-intercept (if the model has no intercept, then the numbering of the 
-parameters starts with 1, not 0), \code{b1} is the first estimated parameter
-after the intercept, and so on.  You can also use the names of the corresponding
-regressors in place of the parameter names.  For \code{multinom} objects you 
+For models of type \code{lm}, \code{glm} and \code{polr}, you can replace the
+names in the coefficient vector by \code{b0}, \code{b1}, ..., \code{bp}; you can
+also change the prefix \code{b} using the \code{parameterPrefix} argument.
+For \code{multinom} objects you 
 can only use the parameter names starting with the prefix, not the names of
 the corresponding regressors. 
 
@@ -103,11 +101,7 @@ For example,
 have parameters named  \code{c("theta", "gamma")}.   
 In many other familiar regression methods, such as lm and glm, the names of
 the coefficient estimates are the corresponding variable names, not
-parameter names. 
-
-Special characters should be avoided in the names of the elements of \eqn{x} 
-as these can cause problems, and the \code{D} function used to compute derivatives may 
-get confused.  Embedded spaces or \dQuote{:} are permitted, however.   
+parameter names.    
 }
 
 \value{
@@ -139,6 +133,9 @@ m1 <- lm(time ~ t1 + t2, data = Transact)
 deltaMethod(m1, "b1/b2") # ratio of coefficients
 deltaMethod(m1, "t1/t2") # use names of preds. rather than coefs.
 deltaMethod(m1, "t1/t2", vcov=hccm) # use hccm function to est. vars.
+# The next example calls the default method by extracting the
+# vector of estimates and covariance matrix explicitly
+deltaMethod(coef(m1), "t1/t2", vcov.=vcov(m1)) 
 }
 \keyword{ models }% at least one, from doc/KEYWORDS
 \keyword{ regression }
