@@ -4,6 +4,7 @@
 %		with function renamed from linear.hypothesis)
 %	2009-01-16 updated doc to correspond to changes in linearHypothesis. J. Fox
 %   2009-12-22 updated to reflect changes in linearHypothesis.mlm(). J. Fox
+%   2010-07-09 added linearHypothesis.polr() and coef.multinom(). J. Fox
 %-------------------------------------------------------------------------------
 
 \name{linearHypothesis}
@@ -12,8 +13,10 @@
 \alias{linearHypothesis.lm}
 \alias{linearHypothesis.glm}
 \alias{linearHypothesis.mlm}
+\alias{linearHypothesis.polr}
 \alias{linearHypothesis.default}
 \alias{print.linearHypothesis.mlm}
+\alias{coef.multinom}
 
 \title{Test Linear Hypothesis}
 
@@ -41,9 +44,14 @@ lht(model, ...)
 \method{linearHypothesis}{mlm}(model, hypothesis.matrix, rhs=NULL, SSPE, V,
     test, idata, icontrasts=c("contr.sum", "contr.poly"), idesign, iterms, 
     check.imatrix=TRUE, P=NULL, title="", verbose=FALSE, ...)
+    
+\method{linearHypothesis}{polr}(model, hypothesis.matrix, rhs=NULL, vcov., 
+	verbose=FALSE, ...)
        
 \method{print}{linearHypothesis.mlm}(x, SSP=TRUE, SSPE=SSP, 
     digits=getOption("digits"), ...) 
+    
+\method{coef}{multinom}(object, ...)
 }
 
 \arguments{
@@ -114,6 +122,7 @@ lht(model, ...)
   \item{SSP}{if \code{TRUE} (the default), print the sum-of-squares and 
     cross-products matrix for the hypothesis and the response-transformation matrix.}
   \item{digits}{minimum number of signficiant digits to print.}
+  \item{object}{a \code{multinom} model object.}
   \item{...}{aruments to pass down.}
 }
 
@@ -158,7 +167,7 @@ lht(model, ...)
   If the intra-subject transformation is absent (the default), the multivariate 
   test concerns all of the corresponding coefficients for the response variables. 
   There are two ways to specify the transformation matrix for the
-  repeated meaures: 
+  repeated measures: 
   \enumerate{
     \item The transformation matrix can be specified directly via the \code{P} 
     argument.
@@ -178,6 +187,10 @@ lht(model, ...)
     indeed, most tests of interests can be generated automatically via the
     \code{\link{Anova}} function.
   }
+  
+  The \code{coef} method for \code{multinom} objects masks the standard method in the
+  \pkg{nnet} package to make \code{linearHypothesis} work properly for \code{multinom} 
+  models.
 }
 
 \value{

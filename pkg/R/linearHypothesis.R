@@ -451,5 +451,20 @@ linearHypothesis.survreg <- function(model, hypothesis.matrix, rhs=NULL,
 		p <- nrow(vcov.)
 		vcov. <- vcov.[-p, -p]
 	}
-	linearHypothesis.default(model, hypothesis.matrix, rhs, test, vcov.)
+	linearHypothesis.default(model, hypothesis.matrix, rhs, test, vcov., verbose=verbose, ...)
+}
+
+linearHypothesis.polr <- function (model, hypothesis.matrix, rhs=NULL, vcov., verbose=FALSE, ...){
+	k <- length(coef(model))
+	V <- vcov(model)[1:k, 1:k]
+	linearHypothesis.default(model, hypothesis.matrix, rhs, vcov.=V, verbose=verbose, ...)
+}
+
+coef.multinom <- function(object, ...){
+	b <- nnet:::coef.multinom(object, ...)
+	cn <- colnames(b)
+	rn <- rownames(b)
+	b <- as.vector(t(b))
+	names(b) <- as.vector(outer(cn, rn, function(c, r) paste(r, c, sep=":")))
+	b
 }
