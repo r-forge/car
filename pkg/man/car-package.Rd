@@ -13,7 +13,7 @@ Second Edition, Sage, 2011.
 \tabular{ll}{
 Package: \tab car\cr
 Version: \tab 2.0-1\cr
-Date: \tab 2010/07/27\cr
+Date: \tab 2010/07/28\cr
 Depends: \tab R (>= 2.1.1), stats, graphics, MASS, nnet, leaps, survival\cr
 License: \tab GPL (>= 2)\cr
 URL: \tab \url{http://www.r-project.org}, 
