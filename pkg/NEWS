@@ -1,3 +1,11 @@
+Changes to Version 2.0-3
+
+    o  coefTable() changed to coefs() to avoid name clash with the miscTools package (reported Arne Henningsen).
+
+Changes to Version 2.0-2
+
+    o leaps package demoted from Depends to Suggests to avoid problem for Debian (reported by Dirk Eddelbuettel).
+
 Changes to Version 2.0-1
 
     o  No longer export non-standard coef.multinom() (problem reported by Brian Ripley, Achim Zeileis).
