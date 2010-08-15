@@ -1,5 +1,5 @@
-\name{coefs}
-\alias{coefs}
+\name{compareCoefs}
+\alias{compareCoefs}
 \title{
 Print estimated coefficients and their standard errors in a table
 for several regression models.
@@ -10,7 +10,7 @@ their standard errors from one or more models and prints them in a
 table.
 }
 \usage{
-coefs(..., se = TRUE, digits = 3)
+compareCoefs(..., se = TRUE, digits = 3)
 }
 
 \arguments{
@@ -42,10 +42,10 @@ Second Edition, Sage.
 mod1 <- lm(prestige ~ income + education, data=Duncan)
 mod2 <- update(mod1, subset=-c(6,16))
 mod3 <- update(mod1, . ~ . + type)
-coefs(mod1)
-coefs(mod1, mod2)
-coefs(mod1, mod2, mod3)
-coefs(mod1, mod2, se=FALSE)
+compareCoefs(mod1)
+compareCoefs(mod1, mod2)
+compareCoefs(mod1, mod2, mod3)
+compareCoefs(mod1, mod2, se=FALSE)
 }
 
 \keyword{print }

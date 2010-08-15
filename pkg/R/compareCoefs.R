@@ -1,7 +1,7 @@
 # 21 May 2010: small changes to output when there is just one model. J. Fox 
-# 12 Aug 2010: changed name of function to coefs to avoid name clash. J. Fox
+# 15 Aug 2010: changed name of function to compareCoefs to avoid name clash. J. Fox
 
-coefs <- function(..., se=TRUE, digits=3){
+compareCoefs <- function(..., se=TRUE, digits=3){
     models <- list(...)
     n.models <- length(models)
     if (n.models < 1) return(NULL)
