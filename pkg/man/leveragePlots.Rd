@@ -22,9 +22,9 @@ leveragePlot(model, ...)
     id.method = list(abs(residuals(model, type="pearson")), "x"),
     labels, 
     id.n = if(id.method[1]=="identify") Inf else 0,
-    id.cex=1, id.col=palette()[1], las=par("las"), 
-    col=palette()[2], pch=1, lwd=2, main="Leverage Plot", 
-    grid=TRUE, ...)
+    id.cex=1, id.col=palette()[1], 
+	  las=par("las"), col=palette()[2], col.lines=col[1], pch=1, lwd=2, 
+    main="Leverage Plot", grid=TRUE, ...)
 
 \method{leveragePlot}{glm}(model, ...)
 }
@@ -59,9 +59,8 @@ is omitted for \code{leveragePlots}.}
 \item{las}{if \code{0}, ticks labels are drawn parallel to the
     axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).
 }
-\item{col}{color for points and lines; the default is the \emph{second} entry
-    in the current color palette (see \code{\link[grDevices]{palette}}
-    and \code{\link[graphics]{par}}).
+\item{col}{color(s) of points}
+\item{col.lines}{color of the fitted line; defaults to \code{col}).
 }
 \item{pch}{plotting character for points; default is \code{1} 
     (a circle, see \code{\link[graphics]{par}}).

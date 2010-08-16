@@ -4,6 +4,8 @@
 # modified 25 November for layout and marking points only
 # changed 'vars' to 'terms' 16 March 2010 SW
 # 14 April 2010: set id.n = 0. J. Fox
+# 15 August 2010 S. Weisberg, added col.lines and col arguments
+
 
 # these functions to be rewritten; simply renamed for now
 
@@ -40,7 +42,7 @@ leveragePlot.lm<-function(model, term.name,
     labels, 
     id.n = if(id.method[1]=="identify") Inf else 0,
     id.cex=1, id.col=palette()[1], 
-	  las=par("las"), col=palette()[2], pch=1, lwd=2, 
+	  las=par("las"), col=palette()[2], col.lines=col[1], pch=1, lwd=2, 
     main="Leverage Plot", grid=TRUE, ...){
 	term.name<-if (is.character(term.name) & 1==length(term.name)) term.name
 		else deparse(substitute(term.name))
@@ -73,7 +75,7 @@ leveragePlot.lm<-function(model, term.name,
     grid(lty=1, equilogs=FALSE)
     box()}
   points(v.x, v.y, col=col, pch=pch)	
-	abline(lsfit(v.x, v.y, wt=wt), col=col, lwd=lwd)
+	abline(lsfit(v.x, v.y, wt=wt), col=col.lines, lwd=lwd)
   showLabels(v.x, v.y, labels=labels, 
           id.method=id.method, id.n=id.n, id.cex=id.cex, 
           id.col=id.col)
