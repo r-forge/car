@@ -1,6 +1,8 @@
 Changes to Version 2.0-3
 
     o  coefTable() changed to compareCoefs() to avoid name clash with the miscTools package (reported Arne Henningsen).
+    
+    o  Small changes.
 
 Changes to Version 2.0-2
 
