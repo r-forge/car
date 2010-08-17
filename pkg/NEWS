@@ -1,3 +1,7 @@
+Changes to Version 2.0-4
+
+    o  fix col argument to work to set point colors with residualPlots, leveragePlots, invTranPlot, marginalModelPlots
+
 Changes to Version 2.0-3
 
     o  coefTable() changed to compareCoefs() to avoid name clash with the miscTools package (reported Arne Henningsen).
