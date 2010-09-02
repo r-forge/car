@@ -81,7 +81,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
                  id.method = "xy", 
                  id.n = if(id.method[1]=="identify") Inf else 0,
                  id.cex=1, id.col=palette()[1], 
-                 col = palette()[2], col.lines = col[1], 
+                 col = palette()[1], col.lines = palette()[2], 
                  xlab, ylab, lwd = 1, lty = 1,  
                  grid=TRUE, ...) {
 # two functions modified from 'scatterplot' function:
@@ -108,7 +108,8 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
      paste(toupper(substring(string, 1, 1)), substring(string, 2), sep="")}
  if(missing(labels)) 
       labels <-  names(residuals(model)[!is.na(residuals(model))])
- ylab <- paste(string.capitalize(type), "residuals")
+ ylab <- if(!missing(ylab)) ylab else
+         paste(string.capitalize(type), "residuals")
  column <- match(variable, names(model$model))
  if(is.na(column) && variable != "fitted")
    stop(paste(variable, "is not a term in the mean function"))
@@ -116,6 +117,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
  lab <- if(variable == "fitted") {
     if(inherits(model, "glm")) 
        "Linear Predictor" else "Fitted values"} else variable
+ lab <- if(!missing(xlab)) xlab else lab
  ans <-
    if(inherits(horiz, "poly")) {
        horiz <- horiz[ , 1]

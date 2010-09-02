@@ -23,7 +23,8 @@ leveragePlot(model, ...)
     labels, 
     id.n = if(id.method[1]=="identify") Inf else 0,
     id.cex=1, id.col=palette()[1], 
-	  las=par("las"), col=palette()[2], col.lines=col[1], pch=1, lwd=2, 
+	  las=par("las"), 
+    col=palette()[1], col.lines=palette()[2], pch=1, lwd=2, 
     main="Leverage Plot", grid=TRUE, ...)
 
 \method{leveragePlot}{glm}(model, ...)
@@ -60,7 +61,7 @@ is omitted for \code{leveragePlots}.}
     axis; set to \code{1} for horizontal labels (see \code{\link[graphics]{par}}).
 }
 \item{col}{color(s) of points}
-\item{col.lines}{color of the fitted line; defaults to \code{col}).
+\item{col.lines}{color of the fitted line
 }
 \item{pch}{plotting character for points; default is \code{1} 
     (a circle, see \code{\link[graphics]{par}}).
