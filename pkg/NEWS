@@ -1,9 +1,9 @@
 Changes to Version 2.0-5
 
-    o  add xlab and ylab arguments to crPlots ceresPlots and residualPlots
+    o  add xlab and ylab arguments to avPlots, crPlots, ceresPlots, etc.,
 to override default labeling if desired.
 
-    o  fix col and col.lines arguments in crPlots, ceresPlots so all
+    o  fix col and col.lines arguments in avPlots, crPlots, ceresPlots, etc., so
 graphical functions work the same way.
 
 Changes to Version 2.0-4
