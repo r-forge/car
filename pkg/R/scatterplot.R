@@ -1,6 +1,7 @@
 # fancy scatterplots  (J. Fox)
 
 # last modified 16 August 2010 by J. Fox
+# 2010-09-04: J. Fox: changed color choice
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -54,7 +55,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 	cex.main=par("cex.main"), cex.sub=par("cex.sub"), 
 	groups, by.groups=!missing(groups), legend.title=deparse(substitute(groups)), 
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
-	col=if (n.groups == 1) palette()[1:2] else rep(palette(), length=n.groups),
+	col=if (n.groups == 1) palette()[2:1] else rep(palette(), length=n.groups),
 	pch=1:n.groups, 
 	legend.plot=!missing(groups), reset.par=TRUE, grid=TRUE, ...){
 	logged <- function(axis=c("x", "y")){
