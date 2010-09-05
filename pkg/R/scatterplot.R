@@ -1,7 +1,6 @@
 # fancy scatterplots  (J. Fox)
 
-# last modified 16 August 2010 by J. Fox
-# 2010-09-04: J. Fox: changed color choice
+# 2010-09-05: J. Fox: changed color choice
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -278,7 +277,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 		}}
 	if (!by.groups){
 		if (smooth) lowess.line(.x, .y, col=col[1], span=span)
-		if (is.function(reg.line)) reg(.x, .y, col=col[1])
+		if (is.function(reg.line)) reg(.x, .y, col=col[2])
 		if (ellipse) {
 			X <- na.omit(data.frame(x=.x, y=.y))
 			if (logged("x")) X$x <- log(X$x)

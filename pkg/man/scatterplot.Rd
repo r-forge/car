@@ -95,8 +95,9 @@ sp(...)
     the default is \code{c(.5, .95)}.}
   \item{robust}{if \code{TRUE} (the default) use the \code{cov.trob} function in the \code{MASS} package
     to calculate the center and covariance matrix for the data ellipses.}
-  \item{col}{colors for points and lines; the default is taken from the color palette, 
-  	with \code{palette()[2]} for lines and \code{palette()[1]} for points if there are
+  \item{col}{colors for lines and points; the default is taken from the color palette, 
+  	with \code{palette()[2]} for nonparametric regression lines and \code{palette()[1]} 
+  	for linear regression line and points if there are
   	no groups, and successive colors for the groups if there are groups.}
   \item{pch}{plotting characters for points; default is the plotting characters in
     order (see \code{\link[graphics]{par}}).}

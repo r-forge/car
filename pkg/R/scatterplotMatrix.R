@@ -1,6 +1,6 @@
 # fancy scatterplot matrices (J. Fox)
 
-# last modified: 25 April 2010 by J. Fox
+# 2010-09-04: J. Fox: changed color choice
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
@@ -47,7 +47,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
 	groups=NULL, by.groups=FALSE, 
 	labels, id.method="mahal", id.n=0, id.cex=1, id.col=palette()[1],
-	col=if (n.groups == 1) palette()[1:2] else rep(palette(), length=n.groups),
+	col=if (n.groups == 1) palette()[2:1] else rep(palette(), length=n.groups),
 	pch=1:n.groups, lwd=1, lwd.smooth=lwd, lwd.spread=lwd, lty=1, lty.smooth=lty, lty.spread=2,
 	cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
 	cex.main=par("cex.main"), 
@@ -210,7 +210,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 				}
 			}
 			if (!by.groups){
-				if (is.function(reg.line)) abline(reg.line(y ~ x), lty=lty, lwd=lwd, col=col[1])
+				if (is.function(reg.line)) abline(reg.line(y ~ x), lty=lty, lwd=lwd, col=col[2])
 				if (smooth) lowess.line(x, y, col=col[1], span)
 				if (ellipse) dataEllipse(x, y, plot.points=FALSE, levels=levels, col=col[1],
 						robust=robust, lwd=1)
