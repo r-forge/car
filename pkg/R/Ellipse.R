@@ -1,11 +1,11 @@
 # Ellipses (J. Fox and G. Monette)
 
-# last modified 24 January 2010 by J. Fox
 # added grid lines, 25 May 2010 by S. Weisberg
+# arguments more consistent with other functions; ... passes args to plot, 5 Sept 2010 by J. Fox
 
 ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5, segments=51, add=TRUE, 
-	xlab="", ylab="", las=par("las"), col=palette()[2], lwd=2, lty=1, 
-  grid=TRUE, ...) {
+	xlab="", ylab="", col=palette()[2], lwd=2, 
+  	grid=TRUE, ...) {
 	logged <- function(axis=c("x", "y")){
 		axis <- match.arg(axis)
 		0 != length(grep(axis, log))
@@ -18,12 +18,12 @@ ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5
 	colnames(ellipse) <- c("x", "y")
 	if (logged("x")) ellipse[, "x"] <- exp(ellipse[, "x"])
 	if (logged("y")) ellipse[, "y"] <- exp(ellipse[, "y"])
-	if (add) lines(ellipse, col=col, lwd=lwd, lty=lty, ...) 
-	else {plot(ellipse, type="n", xlab = xlab, ylab = ylab, las=las ) 
+	if (add) lines(ellipse, col=col, lwd=lwd, ...) 
+	else {plot(ellipse, type="n", xlab = xlab, ylab = ylab, ...) 
         if(grid){
              grid(lty=1, equilogs=FALSE)
              box()}
-        lines(ellipse, col=col, lwd=lwd, lty=lty, ... )} 	
+        lines(ellipse, col=col, lwd=lwd, ... )} 	
 	if (center.pch) points(center[1], center[2], pch=center.pch, cex=center.cex, col=col)
   }
 
@@ -31,7 +31,7 @@ dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19,
   center.cex=1.5,
 	plot.points=TRUE, add=!plot.points, segments=51, robust=FALSE, 
 	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), 
-	las=par("las"), col=palette()[2], pch=1, lwd=2, lty=1, grid=TRUE, ...) {
+	col=palette()[1:2], lwd=2,  grid=TRUE, ...) {
 	if (length(col) == 1) col <- rep(col, 2)
 	if(missing(y)){
 		if (is.matrix(x) && ncol(x) == 2) {
@@ -45,12 +45,12 @@ dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19,
 	else if(!(is.vector(x) && is.vector(y) && length(x) == length(y)))
 		stop("x and y must be vectors of the same length")
 	if (plot.points && !add) {
-      plot(x, y, type="n", xlab=xlab, ylab=ylab, las=las, ...) 
+      plot(x, y, type="n", xlab=xlab, ylab=ylab,  ...) 
 	    if(grid){
         grid(lty=1, equilogs=FALSE)
         box()}
-      points(x, y, col=col[1], pch=pch, ...)}
-	if (plot.points && add)  points(x, y, col=col[1], pch=pch, ...)
+      points(x, y, col=col[1],  ...)}
+	if (plot.points && add)  points(x, y, col=col[1], ...)
 	
 	dfn <- 2
 	dfd <- length(x) - 1
@@ -67,7 +67,7 @@ dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19,
 		radius <- sqrt(dfn * qf(level, dfn, dfd ))
 		ellipse(center, shape, radius, log=log,
 			center.pch=center.pch, center.cex=center.cex, segments=segments, 
-			col=col[2], lty=lty, lwd=lwd, ...)
+			col=col[2], lwd=lwd, ...)
 	}
 }
 
@@ -77,7 +77,7 @@ confidenceEllipse <- function (model, ...) {
 
 confidenceEllipse.lm <- function(model, which.coef, levels=0.95, Scheffe=FALSE, 
 	center.pch=19, center.cex=1.5, segments=51, xlab, ylab, 
-	las=par("las"), col=palette()[2], lwd=2, lty=1,  ...){
+	col=palette()[2], lwd=2, ...){
 	which.coef <- if(length(coefficients(model)) == 2) c(1, 2)
 		else{
 			if (missing(which.coef)){
@@ -95,14 +95,14 @@ confidenceEllipse.lm <- function(model, which.coef, levels=0.95, Scheffe=FALSE,
 		add<-!level == max(levels)
 		ellipse(coef, shape, radius, add=add, xlab=xlab, ylab=ylab,
 			center.pch=center.pch, center.cex=center.cex, segments=segments, 
-			col=col, lwd=lwd, lty=lty, las=las, ...)
+			col=col, lwd=lwd, ...)
 	}
 }
 
 
 confidenceEllipse.glm <- function(model, which.coef, levels=0.95, Scheffe=FALSE, 
 	center.pch=19, center.cex=1.5, segments=51, xlab, ylab,
-	las=par("las"), col=palette()[2], lwd=2, lty=1, ...){
+	col=palette()[2], lwd=2, ...){
 	which.coef <- if(length(coefficients(model)) == 2) c(1, 2)
 		else{
 			if (missing(which.coef)){
@@ -120,6 +120,6 @@ confidenceEllipse.glm <- function(model, which.coef, levels=0.95, Scheffe=FALSE,
 		add <- !level==max(levels)
 		ellipse(coef, shape, radius, add=add, xlab=xlab, ylab=ylab,
 			center.pch=center.pch, center.cex=center.cex, segments=segments,
-			col=col, lwd=lwd, lty=lty, las=las, ...)
+			col=col, lwd=lwd, ...)
 	}
 }
