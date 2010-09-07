@@ -132,9 +132,11 @@ mmps(c1)
 p1 <- lm(prestige ~ income + education, Prestige)
 mmps(p1, sd=TRUE)
 # logisitic regression example
+# smoothers return warning messages.
+\dontrun{
 m1 <- glm(lfp ~ ., family=binomial, data=Mroz)
 mmps(m1)
-
+}
 } 
 \keyword{hplot }% at least one, from doc/KEYWORDS
 \keyword{regression}
