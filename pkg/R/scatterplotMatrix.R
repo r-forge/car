@@ -1,6 +1,7 @@
 # fancy scatterplot matrices (J. Fox)
 
 # 2010-09-04: J. Fox: changed color choice
+# 2010-09-16: fixed point color when col is length 1
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
@@ -177,6 +178,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
 	groups <- as.factor(if(missing(groups)) rep(1, length(x[, 1])) else groups)
 	n.groups <- length(levels(groups))
 	if (n.groups > length(col)) stop("number of groups exceeds number of available colors")
+	if (length(col) == 1) col <- rep(col, 2)
 	if (transform != FALSE | length(transform) == ncol(x)){
 		if (transform == TRUE & length(transform) == 1){
 			transform <- if (by.groups) coef(powerTransform(as.matrix(x) ~ groups, family=family), round=TRUE)

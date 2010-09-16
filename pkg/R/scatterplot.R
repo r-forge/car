@@ -1,6 +1,7 @@
 # fancy scatterplots  (J. Fox)
 
 # 2010-09-05: J. Fox: changed color choice
+# 2010-09-16: fixed point color when col is length 1
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -254,6 +255,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 		box()}
 	n.groups <- length(levels(groups))
 	if (n.groups > length(col)) stop("number of groups exceeds number of available colors")
+	if (length(col) == 1) col <- rep(col, 2)
 	indices <- NULL
 	range.x <- if (logged("x")) range(log(.x), na.rm=TRUE) else range(.x, na.rm=TRUE)
 	for (i in 1:n.groups){
