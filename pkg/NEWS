@@ -6,6 +6,8 @@ to override default labeling if desired.
     o  fix col and col.lines arguments in avPlots, crPlots, ceresPlots, etc., so
 graphical functions work the same way.
 
+    o  small fixes to docs.
+
 Changes to Version 2.0-4
 
     o  fix col argument to work to set point colors with residualPlots, leveragePlots, invTranPlot, marginalModelPlots
