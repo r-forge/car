@@ -1,3 +1,6 @@
+Changes to Version 2.0-6
+    o  change influenceIndexPlots to used type="h" rather than type="l"
+
 Changes to Version 2.0-5
 
     o  add xlab and ylab arguments to avPlots, crPlots, ceresPlots, etc.,
