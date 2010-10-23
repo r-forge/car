@@ -25,11 +25,11 @@ confidenceEllipse(model, ...)
 
 \method{confidenceEllipse}{lm}(model, which.coef, levels=0.95, Scheffe=FALSE, 
   center.pch=19, center.cex=1.5, segments=51, xlab, ylab, 
-  col=palette()[2], lwd=2, ...)
+  col=palette()[2], lwd=2, add=FALSE, ...)
 
 \method{confidenceEllipse}{glm}(model, which.coef, levels=0.95, Scheffe=FALSE, 
   center.pch=19, center.cex=1.5, segments=51, xlab, ylab, 
-  col=palette()[2], lwd=2, ...)
+  col=palette()[2], lwd=2, add=FALSE, ...)
 }
 
 \arguments{

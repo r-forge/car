@@ -9,6 +9,8 @@ to override default labeling if desired.
     o  fix col and col.lines arguments in avPlots, crPlots, ceresPlots, etc., so
 graphical functions work the same way.
 
+	o  confidenceEllipse.lm and .glm now have add argument, courtesy of Rafael Laboissiere.
+
     o  small fixes to docs.
 
 Changes to Version 2.0-4

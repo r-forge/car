@@ -2,6 +2,7 @@
 
 # added grid lines, 25 May 2010 by S. Weisberg
 # arguments more consistent with other functions; ... passes args to plot, 5 Sept 2010 by J. Fox
+# confidenceEllipse.lm and .glm can add to current plot, applying patch from Rafael Laboissiere, 17 Oct 2010 by J. Fox
 
 ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5, segments=51, add=TRUE, 
 	xlab="", ylab="", col=palette()[2], lwd=2, 
@@ -77,7 +78,7 @@ confidenceEllipse <- function (model, ...) {
 
 confidenceEllipse.lm <- function(model, which.coef, levels=0.95, Scheffe=FALSE, 
 	center.pch=19, center.cex=1.5, segments=51, xlab, ylab, 
-	col=palette()[2], lwd=2, ...){
+	col=palette()[2], lwd=2, add=FALSE, ...){
 	which.coef <- if(length(coefficients(model)) == 2) c(1, 2)
 		else{
 			if (missing(which.coef)){
@@ -92,8 +93,8 @@ confidenceEllipse.lm <- function(model, which.coef, levels=0.95, Scheffe=FALSE,
 	shape <- vcov(model)[which.coef, which.coef]
 	for (level in rev(sort(levels))){
 		radius <- sqrt(dfn*qf(level, dfn, dfd))
-		add<-!level == max(levels)
-		ellipse(coef, shape, radius, add=add, xlab=xlab, ylab=ylab,
+		add.plot <- !level==max(levels) | add
+		ellipse(coef, shape, radius, add=add.plot, xlab=xlab, ylab=ylab,
 			center.pch=center.pch, center.cex=center.cex, segments=segments, 
 			col=col, lwd=lwd, ...)
 	}
@@ -102,7 +103,7 @@ confidenceEllipse.lm <- function(model, which.coef, levels=0.95, Scheffe=FALSE,
 
 confidenceEllipse.glm <- function(model, which.coef, levels=0.95, Scheffe=FALSE, 
 	center.pch=19, center.cex=1.5, segments=51, xlab, ylab,
-	col=palette()[2], lwd=2, ...){
+	col=palette()[2], lwd=2, add=FALSE, ...){
 	which.coef <- if(length(coefficients(model)) == 2) c(1, 2)
 		else{
 			if (missing(which.coef)){
@@ -117,8 +118,8 @@ confidenceEllipse.glm <- function(model, which.coef, levels=0.95, Scheffe=FALSE,
 	shape <- vcov(model)[which.coef, which.coef]
 	for (level in rev(sort(levels))){
 		radius <- sqrt(qchisq(level, df))
-		add <- !level==max(levels)
-		ellipse(coef, shape, radius, add=add, xlab=xlab, ylab=ylab,
+		add.plot <- !level==max(levels) | add
+		ellipse(coef, shape, radius, add=add.plot, xlab=xlab, ylab=ylab,
 			center.pch=center.pch, center.cex=center.cex, segments=segments,
 			col=col, lwd=lwd, ...)
 	}
