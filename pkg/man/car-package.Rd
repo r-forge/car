@@ -13,12 +13,12 @@ Second Edition, Sage, forthcoming.
 \tabular{ll}{
 Package: \tab car\cr
 Version: \tab 2.0-6\cr
-Date: \tab 2010/10/23\cr
+Date: \tab 2010/11/2\cr
 Depends: \tab R (>= 2.1.1), stats, graphics, MASS, nnet, survival\cr
 Suggests: \tab alr3, leaps, lmtest, sandwich, mgcv, rgl\cr
 License: \tab GPL (>= 2)\cr
 URL: \tab \url{http://CRAN.R-project.org/package=car}, 
-	\url{http://socserv.socsci.mcmaster.ca/jfox/},
+	\url{http://socserv.socsci.mcmaster.ca/jfox/Books/Companion},
 	\url{https://r-forge.r-project.org/projects/car/} \cr
 }
 }
