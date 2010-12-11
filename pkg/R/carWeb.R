@@ -5,9 +5,9 @@ function (page = c("webpage", "errata", "taskviews"), script, data)
     script.page <- "http://socserv.socsci.mcmaster.ca/jfox/Books/Companion/scripts/"
     page = match.arg(page)
     urls = c(webpage = "http://socserv.socsci.mcmaster.ca/jfox/Books/Companion/",
-        errata = "http://socserv.socsci.mcmaster.ca/jfox/Books/Companion/errata.pdf",
+        errata = "http://socserv.socsci.mcmaster.ca/jfox/Books/Companion/errata.html",
         taskviews = "http://cran.r-project.org/web/views")
-    url = urls[page]
+    url <- urls[page]
     if(!missing(data)) {
        dfile <- unlist(strsplit(data, ".", fixed=TRUE))
        if(length(dfile) > 1) dfile <- dfile[1:(length(dfile)-1)]
