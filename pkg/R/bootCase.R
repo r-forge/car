@@ -30,7 +30,9 @@ bootCase.default <- function (object, f=coef, B = 999, rows)
     i <- 0
 #    
     while (i < B) {
-        obj.boot <- try(update(object, subset=sample(rows, replace = TRUE)))
+        Jrr3434z <<- sample(rows, replace=TRUE)
+        obj.boot <- try(update(object, subset=Jrr3434z))
+        rm(Jrr3434z)
         if (is.null(class(obj.boot))) {
             count.error <- 0
             i <- i + 1
