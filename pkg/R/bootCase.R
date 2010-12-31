@@ -30,7 +30,8 @@ bootCase.default <- function (object, f=coef, B = 999, rows)
     i <- 0
 #    
     while (i < B) {
-        Jrr3434z <<- sample(rows, replace=TRUE)
+#        assign("Jrr3434z", sample(rows, replace=TRUE), env=sys.parent())
+        Jrr3434z <- sample(rows, replace=TRUE)
         obj.boot <- try(update(object, subset=Jrr3434z))
         rm(Jrr3434z)
         if (is.null(class(obj.boot))) {
