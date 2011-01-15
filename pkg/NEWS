@@ -1,6 +1,6 @@
 Changes to Version 2.0-9
 
-*** Nothing yet
+    o  scatterplot makes parallel boxplots, calling Boxplot, when x is a factor.
 
 Changes to Version 2.0-8
 
