@@ -1,7 +1,9 @@
 # recode function (J. Fox)
-# last modified 18 November 2010 by J. Fox
+# last modified 18 January 2011 by J. Fox
 
 recode <- function(var, recodes, as.factor.result, as.numeric.result=TRUE, levels){
+	recodes <- sub("\n", " ", recodes)
+	recodes <- sub("\t", " ", recodes)
 	recode.list <- rev(strsplit(recodes, ";")[[1]])
 	is.fac <- is.factor(var)
 	if (missing(as.factor.result)) as.factor.result <- is.fac

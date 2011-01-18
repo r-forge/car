@@ -2,9 +2,11 @@ Changes to Version 2.0-9
 
     o  scatterplot makes parallel boxplots, calling Boxplot, when x is a factor.
     
-    o  mmps (marginal model plots) works better with mulitdimensinal terms like splines and polynomials, and permits plotting against terms in the data frame but not in the model formula.  AsIs argument removed.
+    o  mmps (marginal model plots) works better with multidimensional terms like splines and polynomials, and permits plotting against terms in the data frame but not in the model formula.  AsIs argument removed.
     
     o  residualPlots handles matrix-predictors similarly to mmps, above.
+    
+    o  recode allows the recode-specification string to be split over more than one line.
 
 Changes to Version 2.0-8
 
