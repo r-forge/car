@@ -1,5 +1,9 @@
 Changes to Version 2.0-9
 
+	o  added Anova and linearHypothesis methods for mixed-effects model objects created by lmer in lme4 and lme in nlme.
+	
+	o  added matchCoefs, convenience function to use with linearHypothesis.
+
     o  scatterplot makes parallel boxplots, calling Boxplot, when x is a factor.
     
     o  mmps (marginal model plots) works better with multidimensional terms like splines and polynomials, and permits plotting against terms in the data frame but not in the model formula.  AsIs argument removed.
