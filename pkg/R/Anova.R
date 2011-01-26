@@ -13,6 +13,7 @@
 # 2010-06-28: Fixed Anova() tables for coxph and survreg models 
 #             (failed because of changes in survival package.
 # 2011-01-21: Added functions for mixed models. J. Fox
+# 2011-01-25: Fixed Anova.polr() and Anova.multinom() to work with models with only one term. J. Fox
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -442,7 +443,8 @@ Anova.II.multinom <- function (mod, ...)
 		rels <- names[relatives(names[term], names, fac)]
 		exclude.1 <- as.vector(unlist(sapply(c(names[term], rels),
 								which.nms)))
-		mod.1 <- multinom(y ~ X[, -c(1, exclude.1)], weights=wt, trace=FALSE)
+		mod.1 <-if (n.terms > 1) multinom(y ~ X[, -c(1, exclude.1)], weights=wt, trace=FALSE)
+				else multinom(y ~ 1, weights=wt, race=FALSE)
 		dev.1 <- deviance(mod.1)
 		mod.2 <- if (length(rels) == 0)
 					mod
@@ -476,7 +478,8 @@ Anova.III.multinom <- function (mod, ...)
 	df <- df.terms(mod)
 	deviance <- deviance(mod)
 	for (term in 1:n.terms) {
-		mod.1 <- multinom(y ~ X[, term != asgn][, -1], weights=wt, trace=FALSE)
+		mod.1 <- if (n.terms > 1) multinom(y ~ X[, term != asgn][, -1], weights=wt, trace=FALSE)
+				else multinom(y ~ 1, weights=wt, trace=FALSE)
 		LR[term] <- deviance(mod.1) - deviance
 		p[term] <- pchisq(LR[term], df[term], lower.tail=FALSE)
 	}
@@ -525,7 +528,8 @@ Anova.II.polr <- function (mod, ...)
 		rels <- names[relatives(names[term], names, fac)]
 		exclude.1 <- as.vector(unlist(sapply(c(names[term], rels),
 								which.nms)))
-		mod.1 <- polr(y ~ X[, -c(1, exclude.1)], weights=wt)
+		mod.1 <- if (n.terms > 1) polr(y ~ X[, -c(1, exclude.1)], weights=wt)
+				else polr(y ~ 1, weights=wt)
 		dev.1 <- deviance(mod.1)
 		mod.2 <- if (length(rels) == 0)
 					mod
@@ -558,7 +562,8 @@ Anova.III.polr <- function (mod, ...)
 	df <- df.terms(mod)
 	deviance <- deviance(mod)
 	for (term in 1:n.terms) {
-		mod.1 <- polr(y ~ X[, term != asgn][, -1], weights=wt)
+		mod.1 <- if (n.terms > 1) polr(y ~ X[, term != asgn][, -1], weights=wt)
+				else polr(y ~ 1, weights=wt)
 		LR[term] <- deviance(mod.1) - deviance
 		p[term] <- pchisq(LR[term], df[term], lower.tail=FALSE)
 	}

@@ -11,6 +11,8 @@ Changes to Version 2.0-9
     o  residualPlots handles matrix-predictors similarly to mmps, above.
     
     o  recode allows the recode-specification string to be split over more than one line.
+    
+    o  small fixes.
 
 Changes to Version 2.0-8
 
