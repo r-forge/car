@@ -12,7 +12,7 @@ Changes to Version 2.0-9
     
     o  recode allows the recode-specification string to be split over more than one line.
     
-    o  small fixes.
+    o  small fixes to Anova.multinom, Anova.polr, and leveneTest.
 
 Changes to Version 2.0-8
 
