@@ -8,12 +8,13 @@
 # 15 August 2010, deleted pch= argument, as it wasn't used
 # 17 January 2011, allow spline terms; plot against
 #   predict(model, type="terms")[[term.name]]
+# 1 February 2011 default for AsIs changed to TRUE
 
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
 
 residualPlots.default <- function(model, terms= ~ . , 
      layout=NULL, ask, main="", 
-     fitted=TRUE, AsIs=FALSE, plot=TRUE, tests=TRUE, ...){
+     fitted=TRUE, AsIs=TRUE, plot=TRUE, tests=TRUE, ...){
   mf <- attr(model.frame(model), "terms")
   vform <- update(formula(model), terms)
   if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
