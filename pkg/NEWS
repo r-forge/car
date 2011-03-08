@@ -1,6 +1,8 @@
 Changes to Version 2.0-10
 
-    o  changed the default in residualPlots for AsIs from FALSE to TRUE
+    o  changed the default in residualPlots for AsIs from FALSE to TRUE.
+    
+    o  improved color choice in scatterplot and scatterplotMatrix (at suggestion of Dan Putler).
 
 Changes to Version 2.0-9
 
