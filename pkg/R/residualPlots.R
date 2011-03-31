@@ -122,6 +122,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
     if(inherits(model, "glm")) 
        "Linear Predictor" else "Fitted values"} else variable
  lab <- if(!missing(xlab)) xlab else lab
+ if(class(horiz)[1] == "ordered") horiz <- factor(horiz, ordered=FALSE)
  ans <-
    if(inherits(horiz, "poly")) {
        horiz <- horiz[ , 1]
@@ -190,12 +191,16 @@ residCurvTest.glm <- function(model, variable) {
      
 tukeyNonaddTest <- function(model){
  qr <- model$qr
- fitsq <- qr.resid(qr, predict(model, type="response")^2)
- r <- residuals(model, type="pearson")
- m1 <- lm(r~fitsq, weights=weights(model))
- df.correction <- sqrt((df.residual(model) - 1)/df.residual(m1))
- tukey <- summary(m1)$coef[2, 3] * df.correction
- c(Test=tukey, Pvalue=2*pnorm(-abs(tukey)))
+ psq <- predict(model, type="response")^2
+ if( qr(cbind(qr.Q(qr), psq))$rank == qr$rank){
+    return(c(Test=NA, Pvalue=NA))} else {
+    fitsq <- qr.resid(qr, )
+    r <- residuals(model, type="pearson")
+    m1 <- lm(r~fitsq, weights=weights(model))
+    df.correction <- sqrt((df.residual(model) - 1)/df.residual(m1))
+    tukey <- summary(m1)$coef[2, 3] * df.correction
+    c(Test=tukey, Pvalue=2*pnorm(-abs(tukey)))
+    }
  }
  
 residualPlot.lm <- function(model, ...) {
