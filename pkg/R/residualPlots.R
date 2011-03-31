@@ -9,6 +9,8 @@
 # 17 January 2011, allow spline terms; plot against
 #   predict(model, type="terms")[[term.name]]
 # 1 February 2011 default for AsIs changed to TRUE
+# 31 March 2001 tukeyNonaddTest updated to check that yhat^2 is not 
+#   a linear combination of other predictors (as in 1-way anova).
 
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
 
@@ -190,13 +192,14 @@ residCurvTest.glm <- function(model, variable) {
 }}}
      
 tukeyNonaddTest <- function(model){
+ tol <- model$qr$tol
  qr <- model$qr
- psq <- predict(model, type="response")^2
- if( qr(cbind(qr.Q(qr), psq))$rank == qr$rank){
-    return(c(Test=NA, Pvalue=NA))} else {
-    fitsq <- qr.resid(qr, )
+ fitsq <- qr.resid(qr, predict(model, type="response")^2)
+ if(sum(fitsq^2)/length(fitsq) < tol){
+    return(c(Test=NA, Pvalue=NA))
+ } else {
     r <- residuals(model, type="pearson")
-    m1 <- lm(r~fitsq, weights=weights(model))
+    m1 <- lm(r ~ fitsq, weights=weights(model))
     df.correction <- sqrt((df.residual(model) - 1)/df.residual(m1))
     tukey <- summary(m1)$coef[2, 3] * df.correction
     c(Test=tukey, Pvalue=2*pnorm(-abs(tukey)))
