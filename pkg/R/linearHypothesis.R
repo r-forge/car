@@ -10,6 +10,7 @@
 #   2010-06-12: linearHypothesis.mlm() changed to allow observation weights
 #	2010-06-22: fixed bug in linearHypothesis.lm caused by 2010-05-21 revision
 #   2010-01-21: added methods for mixed models; added matchCoefs() and methods. J. Fox
+#   2011-05-03: fixed bug in displaying numbers starting with "-1" or "+1" in printed representation. J. Fox
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -113,8 +114,10 @@ printHypothesis <- function(L, rhs, cnames){
 		h <- ifelse(h < 0, as.character(h), paste("+", h, sep=""))
 		nms <- cnames[sel]
 		h <- paste(h, nms)
-		h <- gsub("-1", "-", h)
-		h <- gsub("+1", "+", h, fixed=TRUE)
+#		h <- gsub("-1", "-", h)
+#		h <- gsub("+1", "+", h, fixed=TRUE)
+		
+		
 		h <- gsub("-", " - ", h)
 		h <- gsub("+", "  + ", h, fixed=TRUE)
 		h <- paste(h, collapse="")
@@ -122,7 +125,22 @@ printHypothesis <- function(L, rhs, cnames){
 		h <- sub("^\\ \\+", "", h)
 		h <- sub("^\\ ", "", h)
 		h <- sub("^-\\ ", "-", h)
-		hyp[i] <- paste(h, "=", rhs[i])
+		
+		h <- paste(h, "=", rhs[i])
+		
+		h <-gsub("1([^[:alnum:]]+)[ *]*", "", 
+										gsub("-1([^[:alnum:]]+)[ *]*", "-", 
+												gsub("- +1 +", "-1 ",
+														sub("^ *", "", h))))
+		h <- sub("Intercept)", "(Intercept)", h)
+		
+		
+		h <- gsub("-", " - ", h)
+		h <- gsub("+", "  + ", h, fixed=TRUE)
+		h <- gsub("  ", " ", h, fixed=TRUE)
+		
+		hyp[i] <- h
+		
 	}
 	hyp
 }
