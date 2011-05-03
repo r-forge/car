@@ -79,9 +79,12 @@ graph}
   of the data.
 }
 \value{
-  \code{NULL}. These functions are used for their side effect: producing
-  plots.
+   These functions are mainly used for their side effect of producing plots.  For
+   greater flexibility (e.g., adding plot annotations), however, \code{ellipse} returns invisibly the (x, y) coordinates of the calculated ellipse.
+   \code{dataEllipse} and \code{confidenceEllipse} return invisibly the  coordinates of one or more ellipses, in the latter instance a list named by
+   \code{levels}.
 }
+
 \references{ 
   Fox, J. (2008)
   \emph{Applied Regression Analysis and Generalized Linear Models},
