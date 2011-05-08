@@ -44,12 +44,12 @@ confidenceEllipse(model, ...)
   \item{center.pch}{character for plotting ellipse center.}
   \item{center.cex}{relative size of character for plotting ellipse center.}
   \item{segments}{number of line-segments used to draw ellipse.}
-  \item{add}{if \code{TRUE} add ellipse to current plot.}
+  \item{add}{if \code{TRUE} add ellipse(s) to current plot.}
   \item{xlab}{label for horizontal axis.}
   \item{ylab}{label for vertical axis.}
   \item{x}{a numeric vector, or (if \code{y} is missing) a 2-column numeric matrix.}
   \item{y}{a numeric vector, of the same length as \code{x}.}
-  \item{plot.points}{if \code{FALSE} data ellipses are added to the current scatterplot,
+  \item{plot.points}{if \code{FALSE} data ellipses are drawn,
     but points are not plotted.}
   \item{levels}{draw elliptical contours at these (normal) probability or confidence levels.}
   \item{robust}{if \code{TRUE} use the \code{cov.trob} function in the \pkg{MASS} package

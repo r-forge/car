@@ -1,5 +1,7 @@
 Changes to Version 2.0-11
 
+    o  dataEllipse() now allows combination of add=FALSE and plot.points=FALSE (suggested by Michael Friendly, with contributed code).
+
 	o  ellipse(), confidenceEllipse(), and dataEllipse() return coordinates invisibly (suggested by Michael Friendly, with contributed code).
 	
 	o  fixed bug in printed representation of hypotheses with numbers starting with "-1" or "+1" (e.g., "-10") by linearHypothesis() (reported by Vincent Arel-Bundock).

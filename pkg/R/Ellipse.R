@@ -9,6 +9,8 @@
 #   - barf on non-symmetric shape
 #   - return coordinates of ellipse invisibly
 # dataEllipse() and confidenceEllipse() invisibly return coordinates,  3 May 2011 by J. Fox
+# Modified 5 May 2011 by Michael Friendly
+#   - dataEllipse now honors add=FALSE, plot.points=FALSE
 
 ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5, segments=51, add=TRUE, 
 		xlab="", ylab="", col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3,
@@ -57,10 +59,10 @@ ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5
 }
 
 dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19, 
-  center.cex=1.5,
-	plot.points=TRUE, add=!plot.points, segments=51, robust=FALSE, 
-	xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), 
-	col=palette()[1:2], lwd=2, fill=FALSE, fill.alpha=0.3, grid=TRUE, ...) {
+		center.cex=1.5,
+		plot.points=TRUE, add=!plot.points, segments=51, robust=FALSE, 
+		xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), 
+		col=palette()[1:2], lwd=2, fill=FALSE, fill.alpha=0.3, grid=TRUE, ...) {
 	if (length(col) == 1) col <- rep(col, 2)
 	if(missing(y)){
 		if (is.matrix(x) && ncol(x) == 2) {
@@ -73,13 +75,13 @@ dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19,
 	}
 	else if(!(is.vector(x) && is.vector(y) && length(x) == length(y)))
 		stop("x and y must be vectors of the same length")
-	if (plot.points && !add) {
-      plot(x, y, type="n", xlab=xlab, ylab=ylab,  ...) 
-	    if(grid){
-        grid(lty=1, equilogs=FALSE)
-        box()}
-      points(x, y, col=col[1],  ...)}
-	if (plot.points && add)  points(x, y, col=col[1], ...)
+	if (!add) {
+		plot(x, y, type="n", xlab=xlab, ylab=ylab,  ...) 
+		if(grid){
+			grid(lty=1, equilogs=FALSE)
+			box()}
+	}
+	if (plot.points)  points(x, y, col=col[1], ...)
 	
 	dfn <- 2
 	dfd <- length(x) - 1
@@ -98,11 +100,12 @@ dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19,
 		level <- levels[i]
 		radius <- sqrt(dfn * qf(level, dfn, dfd ))
 		result[[i]] <- ellipse(center, shape, radius, log=log,
-			center.pch=center.pch, center.cex=center.cex, segments=segments, 
-			col=col[2], lwd=lwd, fill=fill, fill.alpha=fill.alpha, ...)
+				center.pch=center.pch, center.cex=center.cex, segments=segments, 
+				col=col[2], lwd=lwd, fill=fill, fill.alpha=fill.alpha, ...)
 	}
 	invisible(if (length(levels) == 1) result[[1]] else result)
 }
+
 
 confidenceEllipse <- function (model, ...) {
 	UseMethod("confidenceEllipse")
