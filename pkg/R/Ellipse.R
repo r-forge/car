@@ -11,6 +11,8 @@
 # dataEllipse() and confidenceEllipse() invisibly return coordinates,  3 May 2011 by J. Fox
 # Modified 5 May 2011 by Michael Friendly
 #   - dataEllipse now honors add=FALSE, plot.points=FALSE
+# Modified 16 May 2011 by Michaell Friendly
+#   - corrected bug introduced in dataEllipse via allowing pivot=TRUE 
 
 ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5, segments=51, add=TRUE, 
 		xlab="", ylab="", col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3,
@@ -37,7 +39,10 @@ ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5
 	if (max(abs(shape - t(shape)))/max(abs(shape)) > 1e-10) stop("shape must be a symmetric matrix")
 	angles <- (0:segments)*2*pi/segments 
 	unit.circle <- cbind(cos(angles), sin(angles)) 
-	ellipse <- t(center + radius*t(unit.circle %*% chol(shape,pivot=TRUE))) 
+#	ellipse <- t(center + radius*t(unit.circle %*% chol(shape,pivot=TRUE))) 
+	Q <- chol(shape, pivot=TRUE)
+	order <- order(attr(Q, "pivot"))
+	ellipse <- t( center + radius*t( unit.circle %*% Q[,order]))
 	colnames(ellipse) <- c("x", "y")
 	if (logged("x")) ellipse[, "x"] <- exp(ellipse[, "x"])
 	if (logged("y")) ellipse[, "y"] <- exp(ellipse[, "y"])
@@ -112,14 +117,14 @@ confidenceEllipse <- function (model, ...) {
 }
 
 confidenceEllipse.lm <- function(model, which.coef, levels=0.95, Scheffe=FALSE, 
-	center.pch=19, center.cex=1.5, segments=51, xlab, ylab, 
-	col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3, add=FALSE, ...){
+		center.pch=19, center.cex=1.5, segments=51, xlab, ylab, 
+		col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3, add=FALSE, ...){
 	which.coef <- if(length(coefficients(model)) == 2) c(1, 2)
-		else{
-			if (missing(which.coef)){
-				if (has.intercept(model)) c(2,3) else c(1, 2)
-			} else which.coef
-		}
+			else{
+				if (missing(which.coef)){
+					if (has.intercept(model)) c(2,3) else c(1, 2)
+				} else which.coef
+			}
 	coef <- coefficients(model)[which.coef]
 	xlab <- if (missing(xlab)) paste(names(coef)[1], "coefficient")
 	ylab <- if (missing(ylab)) paste(names(coef)[2], "coefficient")
@@ -134,22 +139,22 @@ confidenceEllipse.lm <- function(model, which.coef, levels=0.95, Scheffe=FALSE,
 		radius <- sqrt(dfn*qf(level, dfn, dfd))
 		add.plot <- !level==max(levels) | add
 		result[[i]] <- ellipse(coef, shape, radius, add=add.plot, xlab=xlab, ylab=ylab,
-			center.pch=center.pch, center.cex=center.cex, segments=segments, 
-			col=col, lwd=lwd, fill=fill, fill.alpha=fill.alpha, ...)
+				center.pch=center.pch, center.cex=center.cex, segments=segments, 
+				col=col, lwd=lwd, fill=fill, fill.alpha=fill.alpha, ...)
 	}
 	invisible(if (length(levels) == 1) result[[1]] else result)
 }
 
 
 confidenceEllipse.glm <- function(model, which.coef, levels=0.95, Scheffe=FALSE, 
-	center.pch=19, center.cex=1.5, segments=51, xlab, ylab,
-	col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3, add=FALSE, ...){
+		center.pch=19, center.cex=1.5, segments=51, xlab, ylab,
+		col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3, add=FALSE, ...){
 	which.coef <- if(length(coefficients(model)) == 2) c(1, 2)
-		else{
-			if (missing(which.coef)){
-				if (has.intercept(model)) c(2, 3) else c(1, 2)
-			} else which.coef
-		}
+			else{
+				if (missing(which.coef)){
+					if (has.intercept(model)) c(2, 3) else c(1, 2)
+				} else which.coef
+			}
 	coef <- coefficients(model)[which.coef]
 	xlab <- if (missing(xlab)) paste(names(coef)[1], "coefficient")
 	ylab <- if (missing(ylab)) paste(names(coef)[2], "coefficient")
@@ -164,8 +169,8 @@ confidenceEllipse.glm <- function(model, which.coef, levels=0.95, Scheffe=FALSE,
 		radius <- sqrt(qchisq(level, df))
 		add.plot <- !level==max(levels) | add
 		result[[i]] <- ellipse(coef, shape, radius, add=add.plot, xlab=xlab, ylab=ylab,
-			center.pch=center.pch, center.cex=center.cex, segments=segments,
-			col=col, lwd=lwd, fill=fill, fill.alpha=fill.alpha, ...)
+				center.pch=center.pch, center.cex=center.cex, segments=segments,
+				col=col, lwd=lwd, fill=fill, fill.alpha=fill.alpha, ...)
 	}
 	invisible(if (length(levels) == 1) result[[1]] else result)
 }
