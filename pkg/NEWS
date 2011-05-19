@@ -5,6 +5,8 @@ Changes to Version 2.0-11
 	o  ellipse(), confidenceEllipse(), and dataEllipse() return coordinates invisibly (suggested by Michael Friendly, with contributed code).
 	
 	o  fixed bug in printed representation of hypotheses with numbers starting with "-1" or "+1" (e.g., "-10") by linearHypothesis() (reported by Vincent Arel-Bundock).
+	
+	o  local version of fixef() to avoid lme4/nlme conflicts that surfaced in some situations with Anova().
 
 Changes to Version 2.0-10
 

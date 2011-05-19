@@ -14,6 +14,7 @@
 #             (failed because of changes in survival package.
 # 2011-01-21: Added functions for mixed models. J. Fox
 # 2011-01-25: Fixed Anova.polr() and Anova.multinom() to work with models with only one term. J. Fox
+# 2011-05-19: local fixef() to avoid nlme/lme4 issues. J. Fox
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1441,6 +1442,12 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
 }
 
 ## functions for mixed models
+
+# the following function, not exported, to make nlme play better with lme4
+
+fixef <- function (object){
+	if (isS4(object)) object@fixef else object$coefficients$fixed
+}
 
 Anova.mer <- function(mod, type=c("II","III", 2, 3),
 		vcov.=vcov(mod), singular.ok, ...){
