@@ -1,4 +1,4 @@
-# last modified 21 January 2011 by J. Fox
+# last modified 6 June 2011 by J. Fox
 
 export(
     basicPowerAxis,
@@ -190,6 +190,7 @@ S3method(Manova, mlm)
 S3method(matchCoefs, default)
 S3method(matchCoefs, lme)
 S3method(matchCoefs, mer)
+S3method(matchCoefs, mlm)
 S3method(mmp, default)
 S3method(mmp, lm)
 S3method(mmp, glm)

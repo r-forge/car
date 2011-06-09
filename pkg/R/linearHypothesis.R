@@ -11,6 +11,7 @@
 #	2010-06-22: fixed bug in linearHypothesis.lm caused by 2010-05-21 revision
 #   2010-01-21: added methods for mixed models; added matchCoefs() and methods. J. Fox
 #   2011-05-03: fixed bug in displaying numbers starting with "-1" or "+1" in printed representation. J. Fox
+#   2011-06-09: added matchCoefs.mlm(). J. Fox
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -606,5 +607,10 @@ matchCoefs.default <- function(model, pattern, coef.=coef, ...){
 matchCoefs.mer <- function(model, pattern, ...) NextMethod(coef.=fixef)
 
 matchCoefs.lme <- function(model, pattern, ...) NextMethod(coef.=fixef)
+
+matchCoefs.mlm <- function(model, pattern, ...){
+	names <- rownames(coef(model))
+	grep(pattern, names, value=TRUE)
+}
 
 
