@@ -1,8 +1,10 @@
 Changes to Version 2.0-11
 
-	o avPlot() now will optionally plot concentration ellipses; avPlot() and avPlots() invisibly return coordinates (suggested by Michael Friendly, with contributed code).
+	o compareCoefs() works with 'mer' objects created by lme4
+  
+  o  avPlot() now will optionally plot concentration ellipses; avPlot() and avPlots() invisibly return coordinates (suggested by Michael Friendly, with contributed code).
 
-    o  dataEllipse() now allows combination of add=FALSE and plot.points=FALSE (suggested by Michael Friendly, with contributed code).
+  o  dataEllipse() now allows combination of add=FALSE and plot.points=FALSE (suggested by Michael Friendly, with contributed code).
 
 	o  ellipse(), confidenceEllipse(), and dataEllipse() return coordinates invisibly (suggested by Michael Friendly, with contributed code).
 	
