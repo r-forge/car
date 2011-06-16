@@ -1,5 +1,7 @@
 Changes to Version 2.0-11
 
+  o the 'layout' argument is used in several graphical functions to deterine the layout of multiple graphs within the same graphical window.  Setting layout=NA in these functions suppresses this behavior and the user can set the layout outside the function (suggested by Steve Milborrow)
+
 	o compareCoefs() works with 'mer' objects created by lme4
   
   o  avPlot() now will optionally plot concentration ellipses; avPlot() and avPlots() invisibly return coordinates (suggested by Michael Friendly, with contributed code).

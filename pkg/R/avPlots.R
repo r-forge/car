@@ -5,51 +5,12 @@
 # 22 April 2010: modified id.n S. Weisberg
 # 10 May 2010:  added gridlines
 # 25 May 2010:  changed default color scheme
-
-avPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask, 
-           main, ...){
-  terms <- if(is.character(terms)) paste("~",terms) else terms
-  vform <- update(formula(model),terms)
-  if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
-     stop("Only predictors in the formula can be plotted.")
-  terms.model <- attr(attr(model.frame(model), "terms"), "term.labels")
-  terms.vform <- attr(terms(vform), "term.labels")
-  terms.used <- match(terms.vform, terms.model)
-  mm <- model.matrix(model) 
-  model.names <- attributes(mm)$dimnames[[2]]
-  model.assign <- attributes(mm)$assign
-  good <- model.names[!is.na(match(model.assign, terms.used))]
-  if (intercept) good <- c("(Intercept)", good)
-  nt <- length(good)
-  if (nt == 0) stop("No plots specified")
-  if (missing(main)) main <- if (nt == 1) "Added-Variable Plot" else "Added-Variable Plots"
-  if(is.null(layout)){
-   layout <- switch(min(nt,9), c(1,1), c(1,2), c(2,2), c(2,2),
-                    c(3,2), c(3,2), c(3,3), c(3,3), c(3,3))}
-  nr <- 0
-  ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
-  if(nt > 1) {
-    op<-par(no.readonly=TRUE, oma=c(0, 0, 1.5, 0), 
-          mar=c(5, 4, 1, 2) + .1, mfrow=layout, ask=ask)
-    on.exit(par(op))}
-  for (term in good) avPlot(model, term, main="", ...)
-  mtext(side=3,outer=TRUE,main, cex=1.2)
-  invisible(NULL)
- }
- 
-avp <- function(...) avPlots(...)
- 
-# October 23, 2009  avPlots by S. Weisberg.  avPlot by John Fox
-# 13 January 2010: changed default id.n=3. J. Fox
-# 13 March 2010: added intercept argument. J. Fox
-# 14 April 2010: set id.n = 0. J. Fox
-# 22 April 2010: modified id.n S. Weisberg
-# 10 May 2010:  added gridlines
-# 25 May 2010:  changed default color scheme
 # 5 June 2011: made several modifications, slightly adapting code contributed by M. Friendly (J. Fox):
 #   added ellipse, ellipse.args arguments 
 #   added main argument to avPlot.lm
 #   return x and y residuals invisibly
+# 16 June 2011 allow layout=NA, in which case the layout is not set in this
+#  function, so it is the responsibility of the user
 
 
 
@@ -70,14 +31,17 @@ avPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask,
 	nt <- length(good)
 	if (nt == 0) stop("No plots specified")
 	if (missing(main)) main <- if (nt == 1) paste("Added-Variable Plot:", good) else "Added-Variable Plots"
-	if(is.null(layout)){
-		layout <- switch(min(nt,9), c(1,1), c(1,2), c(2,2), c(2,2),
-				c(3,2), c(3,2), c(3,3), c(3,3), c(3,3))}
-	nr <- 0
-	ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
-	op<-par(no.readonly=TRUE, oma=c(0, 0, 1.5, 0), 
-			mar=c(5, 4, 1, 2) + .1, mfrow=layout, ask=ask)
-	on.exit(par(op))
+  if (nt == 0) stop("No plots specified")
+  if (nt > 1 & (is.null(layout) || is.numeric(layout))) {
+    if(is.null(layout)){
+         layout <- switch(min(nt, 9), c(1, 1), c(1, 2), c(2, 2), c(2, 2), 
+                             c(3, 2), c(3, 2), c(3, 3), c(3, 3), c(3, 3))
+    }
+    ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
+    op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
+            oma=c(0, 0, 1.5, 0), mar=c(5, 4, 1, 2) + .1)
+    on.exit(par(op))
+    }
 	res <- as.list(NULL)
 	for (term in good) res[[term]] <- avPlot(model, term, main="", ...)
 	mtext(side=3,outer=TRUE,main, cex=1.2)
