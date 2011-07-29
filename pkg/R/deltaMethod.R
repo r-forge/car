@@ -41,6 +41,7 @@ deltaMethod.lm <- function (object, g, vcov. = vcov,
      }
 	para <- coef(object)
 	para.names <- parameterNames
+	para.names[1] <- gsub("\\(Intercept\\)", "Intercept", para.names[1])
 	names(para) <- para.names
 	func <- g
 	vcov. <- if (is.function(vcov.)) 

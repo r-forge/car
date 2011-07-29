@@ -76,7 +76,7 @@ and estimated variance \eqn{h'Ch}, where \eqn{h} is the first derivative of
 \eqn{g(\beta)} with respect to \eqn{\beta} evaluated at \eqn{x}.  This function
 returns both \eqn{g(x)} and its standard error, the square root of the estimated
 variance.
-
+         
 The default method requires that you provide \eqn{x} in the argument
 \code{object}, \eqn{C} in the argument \code{vcov.}, and a text expression
 in argument \code{g} that when evaluated gives the function \eqn{g}.  The
@@ -91,7 +91,7 @@ be extracted.  In most regression models, estimates are returned by the
 \code{coef(object)} and the variance matrix from \code{vcov(object)}.
 You can provide an alternative function for computing the sample variance
 matrix, for example to use a sandwich estimator.
-
+         
 For mixed models using \code{lme4} or \code{nlme}, the coefficient estimates
 are returned by the \code{fixef} function, while for \code{multinom},
 \code{lmList} and \code{nlsList} coefficient estimates are returned by 
@@ -100,19 +100,22 @@ correct estimates and variance matrix.
 
 The argument \code{g} must be a quoted character string
 that gives the function of interest.  For example, if you set 
-\code{m2 <- lm(Y ~ X1 + X2)}, then \code{deltaMethod(m2,"X1/X2")} applies the
+\code{m2 <- lm(Y ~ X1 + X2 + X1:X2)}, then \code{deltaMethod(m2,"X1/X2")} applies the
 delta method to the ratio of the coefficient estimates for \code{X1} and
 \code{X2}.  The argument \code{g} can consist of constants and names 
 associated with the elements of the vector of coefficient estimates.
-
-In some cases the names may include characters including parentheses,
-colons, and regular arithmethic symbols like \code{+} that would confuse the 
+       
+In some cases the names may include characters including such as the colon 
+\code{:} used in interactions, or mathematical symbols like \code{+} or 
+\code{-} signs that would confuse the 
 function that computes numerical derivatives, and for this case you can replace
 the names of the estimates with the \code{parameterNames} argument.  For
-example, for the product of the interecpt and the coefficient of \code{X2},
-use \code{deltaMethod(m2, "b0*b2", parameterNames=c("b0", "b1", "b2"))}, since 
-the name of the interecpt parameter estimate is \code{(Intercept)} includes
-the parentheses.
+example, the ratio of the
+\code{X2} main effect to the interaction term could be computed using
+\code{deltaMethod(m2, "b1*b3", parameterNames=c("b0", "b1", "b2", "b3"))}.
+The name \dQuote{\code{(Intercept)}} used for the intercept in linear and generalized
+linear models is an exception, and it will be correctly interpreted by
+\code{deltaMethod}.
 
 For \code{multinom} objects, the \code{coef} function returns a matrix of
 coefficients, with each row giving the estimates for comparisons of one category
