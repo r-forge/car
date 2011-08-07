@@ -1,15 +1,16 @@
 Changes to Version 2.0-11
-  o the arguments to deltaMethod have changed, with parameterPrefix replaced by parameterNames.  See doucmentation for useage.
-  
-  o deltaMethod methods for lmList, nlsList, and mer objects have been added.  The syntax for the multinom method has been improved.
 
-  o the 'layout' argument is used in several graphical functions to deterine the layout of multiple graphs within the same graphical window.  Setting layout=NA in these functions suppresses this behavior and the user can set the layout outside the function (suggested by Steve Milborrow)
+  	o the arguments to deltaMethod have changed, with parameterPrefix replaced by parameterNames.  See documentation for useage.
+  
+  	o deltaMethod methods for lmList, nlsList, and mer objects have been added.  The syntax for the multinom method has been improved.
+
+  	o the 'layout' argument is used in several graphical functions to deterine the layout of multiple graphs within the same graphical window.  Setting layout=NA in these functions suppresses this behavior and the user can set the layout outside the function (suggested by Steve Milborrow)
 
 	o compareCoefs() works with 'mer' objects created by lme4
   
-  o  avPlot() now will optionally plot concentration ellipses; avPlot() and avPlots() invisibly return coordinates (suggested by Michael Friendly, with contributed code).
+  	o  avPlot() now will optionally plot concentration ellipses; avPlot() and avPlots() invisibly return coordinates (suggested by Michael Friendly, with contributed code).
 
-  o  dataEllipse() now allows combination of add=FALSE and plot.points=FALSE (suggested by Michael Friendly, with contributed code).
+  	o  dataEllipse() now allows combination of add=FALSE and plot.points=FALSE (suggested by Michael Friendly, with contributed code); the ellipse functions have acquired a "draw" argument, which can be used to suppress graphical output (suggestion of Benoit Bruneau).
 
 	o  ellipse(), confidenceEllipse(), and dataEllipse() return coordinates invisibly (suggested by Michael Friendly, with contributed code).
 	

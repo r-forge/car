@@ -13,8 +13,9 @@
 #   - dataEllipse now honors add=FALSE, plot.points=FALSE
 # Modified 16 May 2011 by Michaell Friendly
 #   - corrected bug introduced in dataEllipse via allowing pivot=TRUE 
+# Modified 7 Aug 2011 by J. Fox: added draw argument
 
-ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5, segments=51, add=TRUE, 
+ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5, segments=51, draw=TRUE, add=draw, 
 		xlab="", ylab="", col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3,
 		grid=TRUE, ...) {
 	trans.colors <- function(col, alpha=0.5, names=NULL) {
@@ -47,25 +48,27 @@ ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5
 	if (logged("x")) ellipse[, "x"] <- exp(ellipse[, "x"])
 	if (logged("y")) ellipse[, "y"] <- exp(ellipse[, "y"])
 	fill.col <- trans.colors(col, fill.alpha)
-	if (add) {
-		lines(ellipse, col=col, lwd=lwd, ...) 
-		if (fill) polygon(ellipse, col=fill.col, border=NA)
+	if (draw) {
+		if (add) {
+			lines(ellipse, col=col, lwd=lwd, ...) 
+			if (fill) polygon(ellipse, col=fill.col, border=NA)
+		}
+		else {
+			plot(ellipse, type="n", xlab = xlab, ylab = ylab, ...) 
+			if(grid){
+				grid(lty=1, equilogs=FALSE)
+				box()}
+			lines(ellipse, col=col, lwd=lwd, ... )
+			if (fill) polygon(ellipse, col=fill.col, border=NA)
+		} 	
+		if (center.pch) points(center[1], center[2], pch=center.pch, cex=center.cex, col=col)
 	}
-	else {
-		plot(ellipse, type="n", xlab = xlab, ylab = ylab, ...) 
-		if(grid){
-			grid(lty=1, equilogs=FALSE)
-			box()}
-		lines(ellipse, col=col, lwd=lwd, ... )
-		if (fill) polygon(ellipse, col=fill.col, border=NA)
-	} 	
-	if (center.pch) points(center[1], center[2], pch=center.pch, cex=center.cex, col=col)
 	invisible(ellipse)
 }
 
 dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19, 
-		center.cex=1.5,
-		plot.points=TRUE, add=!plot.points, segments=51, robust=FALSE, 
+		center.cex=1.5, draw=TRUE,
+		plot.points=draw, add=!plot.points, segments=51, robust=FALSE, 
 		xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), 
 		col=palette()[1:2], lwd=2, fill=FALSE, fill.alpha=0.3, grid=TRUE, ...) {
 	if (length(col) == 1) col <- rep(col, 2)
@@ -80,14 +83,15 @@ dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19,
 	}
 	else if(!(is.vector(x) && is.vector(y) && length(x) == length(y)))
 		stop("x and y must be vectors of the same length")
-	if (!add) {
-		plot(x, y, type="n", xlab=xlab, ylab=ylab,  ...) 
-		if(grid){
-			grid(lty=1, equilogs=FALSE)
-			box()}
+	if(draw) {
+		if (!add) {
+			plot(x, y, type="n", xlab=xlab, ylab=ylab,  ...) 
+			if(grid){
+				grid(lty=1, equilogs=FALSE)
+				box()}
+		}
+		if (plot.points)  points(x, y, col=col[1], ...)
 	}
-	if (plot.points)  points(x, y, col=col[1], ...)
-	
 	dfn <- 2
 	dfd <- length(x) - 1
 	if (robust) {
@@ -106,7 +110,7 @@ dataEllipse <- function(x, y, log="", levels=c(0.5, 0.95), center.pch=19,
 		radius <- sqrt(dfn * qf(level, dfn, dfd ))
 		result[[i]] <- ellipse(center, shape, radius, log=log,
 				center.pch=center.pch, center.cex=center.cex, segments=segments, 
-				col=col[2], lwd=lwd, fill=fill, fill.alpha=fill.alpha, ...)
+				col=col[2], lwd=lwd, fill=fill, fill.alpha=fill.alpha, draw=draw, ...)
 	}
 	invisible(if (length(levels) == 1) result[[1]] else result)
 }
@@ -118,7 +122,7 @@ confidenceEllipse <- function (model, ...) {
 
 confidenceEllipse.lm <- function(model, which.coef, levels=0.95, Scheffe=FALSE, 
 		center.pch=19, center.cex=1.5, segments=51, xlab, ylab, 
-		col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3, add=FALSE, ...){
+		col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3, draw=TRUE, add=!draw, ...){
 	which.coef <- if(length(coefficients(model)) == 2) c(1, 2)
 			else{
 				if (missing(which.coef)){
@@ -140,7 +144,7 @@ confidenceEllipse.lm <- function(model, which.coef, levels=0.95, Scheffe=FALSE,
 		add.plot <- !level==max(levels) | add
 		result[[i]] <- ellipse(coef, shape, radius, add=add.plot, xlab=xlab, ylab=ylab,
 				center.pch=center.pch, center.cex=center.cex, segments=segments, 
-				col=col, lwd=lwd, fill=fill, fill.alpha=fill.alpha, ...)
+				col=col, lwd=lwd, fill=fill, fill.alpha=fill.alpha, draw=draw, ...)
 	}
 	invisible(if (length(levels) == 1) result[[1]] else result)
 }
@@ -148,7 +152,7 @@ confidenceEllipse.lm <- function(model, which.coef, levels=0.95, Scheffe=FALSE,
 
 confidenceEllipse.glm <- function(model, which.coef, levels=0.95, Scheffe=FALSE, 
 		center.pch=19, center.cex=1.5, segments=51, xlab, ylab,
-		col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3, add=FALSE, ...){
+		col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3, draw=TRUE, add=!draw, ...){
 	which.coef <- if(length(coefficients(model)) == 2) c(1, 2)
 			else{
 				if (missing(which.coef)){
@@ -170,7 +174,7 @@ confidenceEllipse.glm <- function(model, which.coef, levels=0.95, Scheffe=FALSE,
 		add.plot <- !level==max(levels) | add
 		result[[i]] <- ellipse(coef, shape, radius, add=add.plot, xlab=xlab, ylab=ylab,
 				center.pch=center.pch, center.cex=center.cex, segments=segments,
-				col=col, lwd=lwd, fill=fill, fill.alpha=fill.alpha, ...)
+				col=col, lwd=lwd, fill=fill, fill.alpha=fill.alpha, draw=draw, ...)
 	}
 	invisible(if (length(levels) == 1) result[[1]] else result)
 }
