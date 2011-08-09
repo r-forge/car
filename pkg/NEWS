@@ -1,3 +1,7 @@
+Changes to Version 2.0-12
+
+	o nothing yet!
+
 Changes to Version 2.0-11
 
   	o the arguments to deltaMethod have changed, with parameterPrefix replaced by parameterNames.  See documentation for useage.
