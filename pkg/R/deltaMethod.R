@@ -25,9 +25,9 @@ deltaMethod <- function (object, ...) {
 	}   
 	est <- eval(g)
 	names(est) <- NULL
-	gd <- NULL
+	gd <- rep(0, q)
 	for (i in 1:q) {
-		gd <- c(gd, eval(D(g, names(para)[i])))
+		gd[i] <- eval(D(g, names(para)[i]))
 	}
 	se.est <- as.vector(sqrt(t(gd) %*% vcov. %*% gd))
 	data.frame(Estimate = est, SE = se.est, row.names = c(func))
@@ -81,15 +81,13 @@ deltaMethod.multinom <- function(object, g, vcov.=vcov,
 # method for survreg objects. 
 deltaMethod.survreg <- function(object, g, vcov. = vcov, 
            parameterNames = names(coef(object)), ...) {
- deltaMethod.lm(object, g, vcov. = vcov, 
-           parameterNames = names(coef(object)), ...) }
+ deltaMethod.lm(object, g, vcov., parameterNames , ...) }
 
 
  # method for coxph objects.
 deltaMethod.coxph <- function(object, g, vcov. = vcov, 
            parameterNames = names(coef(object)), ...) {
- deltaMethod.lm(object, g, vcov. = vcov, 
-           parameterNames = names(coef(object)), ...) }
+ deltaMethod.lm(object, g, vcov.,  parameterNames, ...) }
            
 # lmer
 deltaMethod.mer <- function(object, g, vcov. = vcov,
