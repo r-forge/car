@@ -7,6 +7,8 @@
 # 2011-07028  Removed meta-character checks; removed parameterPrefix because
 #   it didn't work and caused problems; added parameterNames to restore the
 #   utility of parameterPrefix
+# 2011-10-02 Fixed bugs in the .survreg and .coxph methods so parameterNames
+#   works correctly
 #-------------------------------------------------------------------------------
 
 deltaMethod <- function (object, ...) {
