@@ -23,11 +23,11 @@ dataEllipse(x, y, log="", levels=c(0.5, 0.95), center.pch=19, center.cex=1.5,
 
 confidenceEllipse(model, ...)
 
-\method{confidenceEllipse}{lm}(model, which.coef, levels=0.95, Scheffe=FALSE, 
+\method{confidenceEllipse}{lm}(model, which.coef, levels=0.95, Scheffe=FALSE, dfn,
   center.pch=19, center.cex=1.5, segments=51, xlab, ylab, 
   col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3, draw=TRUE, add=!draw, ...)
 
-\method{confidenceEllipse}{glm}(model, which.coef, levels=0.95, Scheffe=FALSE, 
+\method{confidenceEllipse}{glm}(model, which.coef, levels=0.95, Scheffe=FALSE,  dfn,
   center.pch=19, center.cex=1.5, segments=51, xlab, ylab, 
   col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3, draw=TRUE, add=!draw, ...)
 }
@@ -61,6 +61,11 @@ confidenceEllipse(model, ...)
     will be selected.}
   \item{Scheffe}{if \code{TRUE} scale the ellipse so that its projections onto the
     axes give Scheffe confidence intervals for the coefficients.}
+  \item{dfn}{``numerator'' degrees of freedom (or just degrees of freedom for a GLM) for
+  	drawing the confidence ellipse. Defaults to the number of coefficients in the model if 
+  	\code{Scheffe} is \code{TRUE}, or to \code{2} otherwise; selecting \code{dfn = 1} will 
+  	draw the ``confidence-interval generating'' ellipse, with projections on the axes
+  	corresponding to individual confidence intervals with the stated level of coverage.}
   \item{col}{color for lines and ellipse center; the default is the \emph{second} entry
     in the current color palette (see \code{\link[grDevices]{palette}}
     and \code{\link[graphics]{par}}). For \code{dataEllipse}, two colors can be given, in

@@ -29,6 +29,7 @@ show only estimates.
 If \code{TRUE}, the defualt, the results are printed in a nice format
 using \code{\link{printCoefmat}}.  If
 \code{FALSE}, the results are returned as a matrix
+}
   \item{digits}{
 Passed to the \code{\link{printCoefmat}} function for printing the result.
 }

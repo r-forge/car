@@ -1,8 +1,10 @@
 Changes to Version 2.0-12
 
-  o fixed bug in deltaMethod.surveg and deltaMethod.coxph to all use of the 'parameterNames' argument.
+    o fixed bug in deltaMethod.surveg and deltaMethod.coxph to all use of the 'parameterNames' argument.
 
 	o compareCoefs:  added an argument 'print' to suppress printing output.  Added support for 'lme' objects.
+	
+	o fixed xlab, ylab arguments and added dfn argument to confidenceEllipse() (suggestions of Michael Friendly).
 
 Changes to Version 2.0-11
 
@@ -10,7 +12,7 @@ Changes to Version 2.0-11
   
   	o deltaMethod methods for lmList, nlsList, and mer objects have been added.  The syntax for the multinom method has been improved.
 
-  	o the 'layout' argument is used in several graphical functions to deterine the layout of multiple graphs within the same graphical window.  Setting layout=NA in these functions suppresses this behavior and the user can set the layout outside the function (suggested by Steve Milborrow)
+  	o the 'layout' argument is used in several graphical functions to determine the layout of multiple graphs within the same graphical window.  Setting layout=NA in these functions suppresses this behavior and the user can set the layout outside the function (suggested by Steve Milborrow)
 
 	o compareCoefs() works with 'mer' objects created by lme4
   
