@@ -62,7 +62,7 @@ confidenceEllipse(model, ...)
   \item{Scheffe}{if \code{TRUE} scale the ellipse so that its projections onto the
     axes give Scheffe confidence intervals for the coefficients.}
   \item{dfn}{``numerator'' degrees of freedom (or just degrees of freedom for a GLM) for
-  	drawing the confidence ellipse. Defaults to the number of coefficients in the model if 
+  	drawing the confidence ellipse. Defaults to the number of coefficients in the model (disregarding the constant) if 
   	\code{Scheffe} is \code{TRUE}, or to \code{2} otherwise; selecting \code{dfn = 1} will 
   	draw the ``confidence-interval generating'' ellipse, with projections on the axes
   	corresponding to individual confidence intervals with the stated level of coverage.}
