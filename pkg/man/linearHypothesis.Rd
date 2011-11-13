@@ -9,6 +9,7 @@
 %   2011-01-21 added linearHypothesis.mer(), linearHypothesis.lme,
 %              matchCoefs() and methods. J. Fox
 %   2011-06-09 added matchCoefs.mlm(). J. Fox
+%   2011-11-13 clarification of test argument in linearHypothesis.mlm(). J. Fox
 %-------------------------------------------------------------------------------
 
 \name{linearHypothesis}
@@ -128,7 +129,7 @@ matchCoefs(model, pattern, ...)
     specifying whether to compute the finite-sample
     F statistic (with approximate F distribution) or the large-sample
     Chi-squared statistic (with asymptotic Chi-squared distribution). For a
-    multivariate linear model, the multivariate test statistic to report --- one of
+    multivariate linear model, the multivariate test statistic to report --- one or more of
     \code{"Pillai"}, \code{"Wilks"}, \code{"Hotelling-Lawley"}, or \code{"Roy"}, 
     with \code{"Pillai"} as the default.}
   \item{title}{an optional character string to label the output.}
