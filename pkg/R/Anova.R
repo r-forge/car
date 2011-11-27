@@ -16,6 +16,7 @@
 # 2011-01-25: Fixed Anova.polr() and Anova.multinom() to work with models with only one term. J. Fox
 # 2011-05-19: local fixef() to avoid nlme/lme4 issues. J. Fox
 # 2011-05-11: changed order of columns in ANOVA tables for mixed models. J. Fox
+# 2011-11-27: added Anova.svyglm(). John
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1655,3 +1656,5 @@ Anova.III.lme <- function(mod, vcov., singular.ok=FALSE, ...){
 			paste("Response:", responseName(mod)))
 	result
 }
+
+Anova.svyglm <- function(mod, ...) Anova.default(mod, ...)

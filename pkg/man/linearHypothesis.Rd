@@ -22,6 +22,7 @@
 \alias{linearHypothesis.default}
 \alias{linearHypothesis.mer}
 \alias{linearHypothesis.lme}
+\alias{linearHypothesis.svyglm}
 \alias{print.linearHypothesis.mlm}
 \alias{matchCoefs}
 \alias{matchCoefs.default}
@@ -69,6 +70,8 @@ lht(model, ...)
     
 \method{linearHypothesis}{mer}(model, hypothesis.matrix, rhs=NULL,
 		vcov.=NULL, singular.ok=FALSE, verbose=FALSE, ...)
+		
+\method{linearHypothesis}{svyglm}(model, ...)
     
 %%\method{coef}{multinom}(object, ...)
 
@@ -172,7 +175,8 @@ matchCoefs(model, pattern, ...)
   changes the default test to \code{"F"}, supports the convenience argument
   \code{white.adjust} (for backwards compatibility), and enhances the output
   by the residual sums of squares. For \code{"glm"} objects just the default
-  method is called (bypassing the \code{"lm"} method).
+  method is called (bypassing the \code{"lm"} method). The \code{svyglm} method
+  also calls the default method.
 
   The function \code{lht} also dispatches to \code{linearHypothesis}.
 

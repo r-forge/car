@@ -12,6 +12,7 @@
 #   2010-01-21: added methods for mixed models; added matchCoefs() and methods. J. Fox
 #   2011-05-03: fixed bug in displaying numbers starting with "-1" or "+1" in printed representation. J. Fox
 #   2011-06-09: added matchCoefs.mlm(). J. Fox
+#   2011-11-27: added linearHypothesis.svyglm(). John
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -593,6 +594,9 @@ linearHypothesis.lme <- function(model, hypothesis.matrix, rhs=NULL,
 			class = c("anova", "data.frame"))
 }
 
+## for svyglm
+
+linearHypothesis.svyglm <- function(model, ...) linearHypothesis.default(model, ...)
 
 
 ## matchCoefs
