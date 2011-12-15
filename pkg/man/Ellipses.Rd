@@ -15,7 +15,7 @@ ellipse(center, shape, radius, log="", center.pch=19, center.cex=1.5,
   segments=51, draw=TRUE, add=draw, xlab="", ylab="", 
    col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3, grid=TRUE, ...)
 
-dataEllipse(x, y, log="", levels=c(0.5, 0.95), center.pch=19, center.cex=1.5, 
+dataEllipse(x, y, weights, log="", levels=c(0.5, 0.95), center.pch=19, center.cex=1.5, 
   draw=TRUE, plot.points=draw, add=!plot.points, segments=51, robust=FALSE,
   xlab=deparse(substitute(x)), 
   ylab=deparse(substitute(y)), 
@@ -50,6 +50,8 @@ confidenceEllipse(model, ...)
   \item{ylab}{label for vertical axis.}
   \item{x}{a numeric vector, or (if \code{y} is missing) a 2-column numeric matrix.}
   \item{y}{a numeric vector, of the same length as \code{x}.}
+  \item{weights}{a numeric vector of weights, of the same length as \code{x} and \code{y} to be used  by \code{\link[stats]{cov.wt}}
+    or \code{\link[MASS]{cov.trob}} in computing a weighted covariance matrix; if absent, weights of \code{1} are used.}
   \item{plot.points}{if \code{FALSE} data ellipses are drawn,
     but points are not plotted.}
   \item{levels}{draw elliptical contours at these (normal) probability or confidence levels.}
@@ -105,15 +107,22 @@ graph}
   \emph{Modern Methods of Data Analysis.} Sage.
  }
  
-\author{Georges Monette \email{Georges.Monette@mathstat.YorkU.CA} 
-  and John Fox \email{jfox@mcmaster.ca}}
+\author{Georges Monette, John Fox \email{jfox@mcmaster.ca}, and Michael Friendly.}
 
-\seealso{\code{\link[MASS]{cov.trob}}.}
+\seealso{\code{\link[MASS]{cov.trob}}, \code{\link[stats]{cov.wt}}.}
   
 \examples{
 dataEllipse(Prestige$income, Prestige$education, levels=0.1*1:9, lty=2, 
 	fill=TRUE, fill.alpha=0.1)
 confidenceEllipse(lm(prestige~income+education, data=Prestige), Scheffe=TRUE)
+
+wts <- rep(1, nrow(Duncan))
+wts[c(6, 16)] <- 0 # delete Minister, Conductor
+with(Duncan, {
+	dataEllipse(income, prestige, levels=0.68)
+	dataEllipse(income, prestige, levels=0.68, robust=TRUE, plot.points=FALSE, col="green3")
+	dataEllipse(income, prestige, weights=wts, levels=0.68, plot.points=FALSE, col="brown")
+	})
 }
 
 \keyword{hplot}
