@@ -122,6 +122,8 @@ with(Duncan, {
 	dataEllipse(income, prestige, levels=0.68)
 	dataEllipse(income, prestige, levels=0.68, robust=TRUE, plot.points=FALSE, col="green3")
 	dataEllipse(income, prestige, weights=wts, levels=0.68, plot.points=FALSE, col="brown")
+	dataEllipse(income, prestige, weights=wts, robust=TRUE, levels=0.68, 
+		plot.points=FALSE, col="blue")
 	})
 }
 

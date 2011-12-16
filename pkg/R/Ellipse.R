@@ -17,7 +17,7 @@
 # Modified 28 Nov 2011  by J. Fox (suggested by Michael Friendly):
 #   - corrected bug in xlab, ylab in confidenceEllipse()
 #   - added dfn argument to .lm and .glm methods for confidenceEllipse()
-# Modified 14 Dec 2011 by J. Fox (suggested by Michael Friendly) to add weights argument to dataEllipse().
+# Modified 14&16 Dec 2011 by J. Fox (suggested by Michael Friendly) to add weights argument to dataEllipse().
 
 ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5, segments=51, draw=TRUE, add=draw, 
 		xlab="", ylab="", col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3,
@@ -101,7 +101,8 @@ dataEllipse <- function(x, y, weights, log="", levels=c(0.5, 0.95), center.pch=1
 	dfn <- 2
 	dfd <- length(x) - 1
 	if (robust) {
-		v <- cov.trob(cbind(x, y), wt=weights)
+		use <- weights > 0
+		v <- cov.trob(cbind(x[use], y[use]), wt=weights[use])
 		shape <- v$cov
 		center <- v$center
 	}
