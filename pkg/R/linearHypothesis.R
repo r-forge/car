@@ -13,6 +13,7 @@
 #   2011-05-03: fixed bug in displaying numbers starting with "-1" or "+1" in printed representation. J. Fox
 #   2011-06-09: added matchCoefs.mlm(). J. Fox
 #   2011-11-27: added linearHypothesis.svyglm(). John
+#   2011-12-27: fixed printing bug in linearHypothesis(). John
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -116,33 +117,24 @@ printHypothesis <- function(L, rhs, cnames){
 		h <- ifelse(h < 0, as.character(h), paste("+", h, sep=""))
 		nms <- cnames[sel]
 		h <- paste(h, nms)
-#		h <- gsub("-1", "-", h)
-#		h <- gsub("+1", "+", h, fixed=TRUE)
-		
-		
 		h <- gsub("-", " - ", h)
 		h <- gsub("+", "  + ", h, fixed=TRUE)
 		h <- paste(h, collapse="")
 		h <- gsub("  ", " ", h, fixed=TRUE)
 		h <- sub("^\\ \\+", "", h)
 		h <- sub("^\\ ", "", h)
-		h <- sub("^-\\ ", "-", h)
-		
-		h <- paste(h, "=", rhs[i])
-		
-		h <-gsub("1([^[:alnum:]]+)[ *]*", "", 
-										gsub("-1([^[:alnum:]]+)[ *]*", "-", 
-												gsub("- +1 +", "-1 ",
-														sub("^ *", "", h))))
-		h <- sub("Intercept)", "(Intercept)", h)
-		
-		
+		h <- sub("^-\\ ", "-", h)	
+		h <- paste(" ", h, sep="")
+		h <- paste(h, "=", rhs[i])		
+		h <- gsub(" 1([^[:alnum:]]+)[ *]*", "", 
+				gsub("-1([^[:alnum:]_]+)[ *]*", "-", 
+						gsub("- +1 +", "-1 ", h)))
+		h <- sub("Intercept)", "(Intercept)", h)		
 		h <- gsub("-", " - ", h)
 		h <- gsub("+", "  + ", h, fixed=TRUE)
 		h <- gsub("  ", " ", h, fixed=TRUE)
-		
+		h <- sub("^ *", "", h)
 		hyp[i] <- h
-		
 	}
 	hyp
 }
