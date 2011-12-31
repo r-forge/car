@@ -12,6 +12,8 @@ Changes to Version 2.0-12
 	
 	o fixed bug in linearHypothesis() that affected printing of some hypotheses (reported by Arne Henningsen).
 	
+	o fixed bug in Anova() for GLMs when F-test used with na.exclude.
+	
 	o package now byte-compiled.
 
 Changes to Version 2.0-11
