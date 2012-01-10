@@ -13,7 +13,7 @@ Second Edition, Sage, 2011.
 \tabular{ll}{
 Package: \tab car\cr
 Version: \tab 2.0-12\cr
-Date: \tab 2011/12/31\cr
+Date: \tab 2012/01/10\cr
 Depends: \tab R (>= 2.1.1), stats, graphics, MASS, nnet\cr
 Suggests: \tab alr3, leaps, lme4, lmtest, sandwich, mgcv, nlme, rgl, survival, survey\cr
 License: \tab GPL (>= 2)\cr
