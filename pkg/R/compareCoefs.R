@@ -2,6 +2,8 @@
 # 15 Aug 2010: changed name of function to compareCoefs to avoid name clash. J. Fox
 # 18 May 2011: check for 'mer' objects, and handle them correctly. S. Weisberg
 #  8 Sep 2011: check for 'lme' objects, and handle them correctly. S. Weisberg
+# 11 Jan 2012: fix to work with any 'S4' object with a coef() method. 
+#   suggested by David Hugh-Jones  University of Warwick http://davidhughjones.googlepages.com 
 
 compareCoefs <- function(..., se=TRUE, print=TRUE, digits=3){
     fixefmer <- function(m) {
@@ -19,7 +21,8 @@ compareCoefs <- function(..., se=TRUE, print=TRUE, digits=3){
           coef(model)
        }
     getcall <- function(model) {
-       if(inherits(model, "mer")) model@call else model$call
+      deparse(if (isS4(model)) model@call else model$call, 
+               width.cutoff =  getOption("width") - 9)
        }
     getvar <- function(model) {
        if(inherits(model, "mer")) as.matrix(vcov(model)) else vcov(model)
