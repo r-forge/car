@@ -1,6 +1,6 @@
 Changes to Version 2.0-12
 
-  o modified compareCoefs to support any S4 object with that responds to the 'coefs' and 'vcov' methods
+    o modified compareCoefs to support any S4 object with that responds to the 'coefs' and 'vcov' methods (suggestion of David Hugh-Jones).
 
     o fixed bug in deltaMethod.surveg and deltaMethod.coxph to all use of the 'parameterNames' argument.
 
