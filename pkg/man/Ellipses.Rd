@@ -41,7 +41,7 @@ confidenceEllipse(model, ...)
     axes; \code{"x"} if the x-axis is logged, \code{"y"} if the y-axis is
     logged, and \code{"xy"} or \code{"yx"} if both axes are logged. The
     default is \code{""}, indicating that neither axis is logged.}
-  \item{center.pch}{character for plotting ellipse center.}
+  \item{center.pch}{character for plotting ellipse center; if \code{FALSE} or \code{NULL} the center point isn't plotted.}
   \item{center.cex}{relative size of character for plotting ellipse center.}
   \item{segments}{number of line-segments used to draw ellipse.}
   \item{draw}{if \code{TRUE} produce graphical output; if \code{FALSE}, only invisibly return coordinates of ellipse(s).}

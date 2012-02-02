@@ -18,6 +18,7 @@
 #   - corrected bug in xlab, ylab in confidenceEllipse()
 #   - added dfn argument to .lm and .glm methods for confidenceEllipse()
 # Modified 14&16 Dec 2011 by J. Fox (suggested by Michael Friendly) to add weights argument to dataEllipse().
+# Modified 2 Feb 2012 by J. Fox: Improved handling of center.pch argument to ellipse() (suggestion of Rob Kushler).
 
 ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5, segments=51, draw=TRUE, add=draw, 
 		xlab="", ylab="", col=palette()[2], lwd=2, fill=FALSE, fill.alpha=0.3,
@@ -65,7 +66,7 @@ ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5
 			lines(ellipse, col=col, lwd=lwd, ... )
 			if (fill) polygon(ellipse, col=fill.col, border=NA)
 		} 	
-		if (center.pch) points(center[1], center[2], pch=center.pch, cex=center.cex, col=col)
+		if ((center.pch != FALSE) && (!is.null(center.pch))) points(center[1], center[2], pch=center.pch, cex=center.cex, col=col)
 	}
 	invisible(ellipse)
 }
