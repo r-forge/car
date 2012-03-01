@@ -18,6 +18,7 @@
 # 2011-05-11: changed order of columns in ANOVA tables for mixed models. J. Fox
 # 2011-11-27: added Anova.svyglm(). J. Fox
 # 2011-12-31: fixed bug in Anova.II(and III).F.glm() when na.exclude used. J. Fox
+# 2012-02-28: added test.statistic argument to Anova.mer(). J.Fox
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1452,20 +1453,21 @@ fixef <- function (object){
 	if (isS4(object)) object@fixef else object$coefficients$fixed
 }
 
-Anova.mer <- function(mod, type=c("II","III", 2, 3),
+Anova.mer <- function(mod, type=c("II","III", 2, 3), test.statistic=c("chisq", "F"),
 		vcov.=vcov(mod), singular.ok, ...){
 	type <- as.character(type)
 	type <- match.arg(type)
+	test.statistic <- match.arg(test.statistic)
 	if (missing(singular.ok))
 		singular.ok <- type == "2" || type == "II"
 	switch(type,
-			II=Anova.II.mer(mod, vcov., singular.ok=singular.ok),
-			III=Anova.III.mer(mod, vcov., singular.ok=singular.ok),
-			"2"=Anova.II.mer(mod, vcov., singular.ok=singular.ok),
-			"3"=Anova.III.mer(mod, vcov., singular.ok=singular.ok))
+			II=Anova.II.mer(mod, test=test.statistic, vcov., singular.ok=singular.ok),
+			III=Anova.III.mer(mod, test=test.statistic,  vcov., singular.ok=singular.ok),
+			"2"=Anova.II.mer(mod, test=test.statistic, vcov., singular.ok=singular.ok),
+			"3"=Anova.III.mer(mod, test=test.statistic, vcov., singular.ok=singular.ok))
 }
 
-Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, ...){
+Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, test=c("chisq", "F"), ...){
 	hyp.term <- function(term){
 		which.term <- which(term==names)
 		subs.term <- which(assign==which.term)
@@ -1484,9 +1486,11 @@ Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, ...){
 		if (nrow(hyp.matrix.term) == 0)
 			return(c(statistic=NA, df=0))            
 		hyp <- linearHypothesis(mod, hyp.matrix.term, 
-				vcov.=vcov., singular.ok=singular.ok, ...)
-		c(statistic=hyp$Chisq[2], df=hyp$Df[2])
+				vcov.=vcov., singular.ok=singular.ok, test=test, ...)
+		if (test == "chisq") return(c(statistic=hyp$Chisq[2], df=hyp$Df[2]))
+		else return(c(statistic=hyp$F[2], df=hyp$Df[2], res.df=hyp$Res.Df[2]))
 	}
+	test <- match.arg(test)
 	not.aliased <- !is.na(fixef(mod))
 	if (!singular.ok && !all(not.aliased))
 		stop("there are aliased coefficients in the model")
@@ -1494,40 +1498,65 @@ Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, ...){
 	intercept <- has.intercept(mod)
 	p <- length(fixef(mod))
 	I.p <- diag(p)
+	if (!missing(vcov.)){
+		vcov. <- if (test == "F"){
+					if (!require(pbkrtest)) stop("pbkrtest package required for F-tests on linear mixed model")
+					as.matrix(vcovAdj(mod, details=0))
+				}
+				else vcov(mod)
+	}
 	assign <- attr(model.matrix(mod), "assign")
 	assign[!not.aliased] <- NA
 	names <- term.names(mod)
 	if (intercept) names <- names[-1]
 	n.terms <- length(names)
-	p <- teststat <- df <- rep(0, n.terms)
+	p <- teststat <- df <- res.df <- rep(0, n.terms)
 	for (i in 1:n.terms){
 		hyp <- hyp.term(names[i])
 		teststat[i] <- abs(hyp["statistic"])
 		df[i] <- abs(hyp["df"])
-		p[i] <- pchisq(teststat[i], df[i], lower.tail=FALSE) 
-	}    
-	result <- data.frame(teststat, df, p)
-	row.names(result) <- names
-	names(result) <- c ("Chisq", "Df", "Pr(>Chisq)")
-	class(result) <- c("anova", "data.frame")
-	attr(result, "heading") <- c("Analysis of Deviance Table (Type II tests)\n", 
-			paste("Response:", responseName(mod)))
+		res.df[i] <- hyp["res.df"]
+		p[i] <- if (test == "chisq") pchisq(teststat[i], df[i], lower.tail=FALSE) 
+				else pf(teststat[i], df[i], res.df[i], lower.tail=FALSE)
+	} 
+	if (test=="chisq"){
+		result <- data.frame(teststat, df, p)
+		row.names(result) <- names
+		names(result) <- c ("Chisq", "Df", "Pr(>Chisq)")
+		class(result) <- c("anova", "data.frame")
+		attr(result, "heading") <- c("Analysis of Deviance Table (Type II Wald chisquare tests)\n", 
+				paste("Response:", responseName(mod)))
+	}
+	else {
+		result <- data.frame(teststat, df, res.df, p)
+		row.names(result) <- names
+		names(result) <- c ("F", "Df", "Df.res", "Pr(>F)")
+		class(result) <- c("anova", "data.frame")
+		attr(result, "heading") <- c("Analysis of Deviance Table (Type II Wald F tests with Kenward-Roger df)\n", 
+				paste("Response:", responseName(mod)))
+	}
 	result
 }
 
-Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, ...){
+Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, test=c("chisq", "F"), ...){
 	intercept <- has.intercept(mod)
 	p <- length(fixef(mod))
 	I.p <- diag(p)
 	names <- term.names(mod)
 	n.terms <- length(names)
 	assign <- attr(model.matrix(mod), "assign")
-	df <- rep(0, n.terms)
+	p <- teststat <- df <- res.df <- rep(0, n.terms)
 	if (intercept) df[1] <- 1
-	p <- teststat <- rep(0, n.terms)
 	not.aliased <- !is.na(fixef(mod))
 	if (!singular.ok && !all(not.aliased))
 		stop("there are aliased coefficients in the model")
+	if (!missing(vcov.)){
+		vcov. <- if (test == "F"){
+					if (!require(pbkrtest)) stop("pbkrtest package required for F-tests on linear mixed model")
+					as.matrix(vcovAdj(mod, details=0))
+				}
+				else vcov(mod)
+	}
 	for (term in 1:n.terms){
 		subs <- which(assign == term - intercept)        
 		hyp.matrix <- I.p[subs,,drop=FALSE]
@@ -1539,19 +1568,37 @@ Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, ...){
 			p[term] <- NA
 		}
 		else {
-			hyp <- linearHypothesis(mod, hyp.matrix, 
+			hyp <- linearHypothesis(mod, hyp.matrix, test=test,
 					vcov.=vcov., singular.ok=singular.ok, ...)
-			teststat[term] <-  hyp$Chisq[2] 
-			df[term] <- abs(hyp$Df[2])
-			p[term] <- pchisq(teststat[term], df[term], lower.tail=FALSE) 
+			if (test == "chisq"){
+				teststat[term] <-  hyp$Chisq[2] 
+				df[term] <- abs(hyp$Df[2])
+				p[term] <- pchisq(teststat[term], df[term], lower.tail=FALSE) 
+			}
+			else{
+				teststat[term] <-  hyp$F[2]
+				df[term] <- abs(hyp$Df[2])
+				res.df[term]=hyp$Res.Df[2]
+				p[term] <- pf(teststat[term], df[term], res.df[term], lower.tail=FALSE)
+			}
 		}
 	}
-	result <- data.frame(teststat, df, p)
-	row.names(result) <- names
-	names(result) <- c ("Chisq", "Df", "Pr(>Chisq)")
-	class(result) <- c("anova", "data.frame")
-	attr(result, "heading") <- c("Analysis of Deviance Table (Type III tests)\n", 
-			paste("Response:", responseName(mod)))
+	if (test == "chisq"){
+		result <- data.frame(teststat, df, p)
+		row.names(result) <- names
+		names(result) <- c ("Chisq", "Df", "Pr(>Chisq)")
+		class(result) <- c("anova", "data.frame")
+		attr(result, "heading") <- c("Analysis of Deviance Table (Type III Wald chisquare tests)\n", 
+				paste("Response:", responseName(mod)))
+	}
+	else {
+		result <- data.frame(teststat, df, res.df, p)
+		row.names(result) <- names
+		names(result) <- c ("F", "Df", "Df.res", "Pr(>F)")
+		class(result) <- c("anova", "data.frame")
+		attr(result, "heading") <- c("Analysis of Deviance Table (Type III Wald F tests with Kenward-Roger df)\n", 
+				paste("Response:", responseName(mod)))
+	}
 	result
 }
 

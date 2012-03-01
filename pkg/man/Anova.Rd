@@ -5,6 +5,7 @@
 %   2009-09-16 updated to reflect new singular.ok argument
 %   2009-09-26 updated for removal from car. J. Fox
 %   2009-12-22 updated to reflect new imatrix argument to Anova.mlm(). J. Fox
+%   2012-02-28 updated to reflect new test.statistic argument to Anova.mer(). J. Fox
 %-------------------------------------------------------------------------------
 
 \name{Anova}
@@ -82,8 +83,8 @@ Manova(mod, ...)
 \method{Anova}{lme}(mod, type=c("II","III", 2, 3),
 		vcov.=vcov(mod), singular.ok, ...)
 
-\method{Anova}{mer}(mod, type=c("II","III", 2, 3),
-		vcov.=vcov(mod), singular.ok, ...)
+\method{Anova}{mer}(mod, type=c("II","III", 2, 3), 
+	test.statistic=c("chisq", "F"), vcov.=vcov(mod), singular.ok, ...)
 		
 \method{Anova}{svyglm}(mod, ...)
 	
@@ -107,7 +108,8 @@ Manova(mod, ...)
   \item{test.statistic}{for a generalized linear model, whether to calculate 
     \code{"LR"} (likelihood-ratio), \code{"Wald"}, or \code{"F"} tests; for a Cox
     model, whether to calculate \code{"LR"} (partial-likelihood ratio) or
-    \code{"Wald"} tests; in the default case, whether to calculate Wald \code{"Chisq"} or
+    \code{"Wald"} tests; in the default case or for linear mixed models fit by
+    \code{lmer}, whether to calculate Wald \code{"Chisq"} or
     \code{"F"} tests.
     For a multivariate linear model, the multivariate test statistic to compute --- one of
     \code{"Pillai"}, \code{"Wilks"}, \code{"Hotelling-Lawley"}, or \code{"Roy"}, 

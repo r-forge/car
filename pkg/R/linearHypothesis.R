@@ -14,6 +14,7 @@
 #   2011-06-09: added matchCoefs.mlm(). J. Fox
 #   2011-11-27: added linearHypothesis.svyglm(). John
 #   2011-12-27: fixed printing bug in linearHypothesis(). John
+#   2012-02-28: added F-test to linearHypothesis.mer(). John
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -485,7 +486,8 @@ coef.multinom <- function(object, ...){
 ## functions for mixed models
 
 linearHypothesis.mer <- function(model, hypothesis.matrix, rhs=NULL,
-		vcov.=NULL, singular.ok=FALSE, verbose=FALSE, ...){
+		vcov.=NULL, test=c("chisq", "F"), singular.ok=FALSE, verbose=FALSE, ...){
+	test <- match.arg(test)
 	V <- as.matrix(if (is.null(vcov.))vcov(model)
 					else if (is.function(vcov.)) vcov.(model) else vcov.)
 	b <- fixef(model)
@@ -514,8 +516,19 @@ linearHypothesis.mer <- function(model, hypothesis.matrix, rhs=NULL,
 		print(drop(L %*% b - rhs))
 		cat("\n")
 	}
-	df <- Inf
-	SSH <- as.vector(t(L %*% b - rhs) %*% solve(L %*% V %*% t(L)) %*% (L %*% b - rhs))
+	if (test == "chisq"){
+		df <- Inf
+		SSH <- as.vector(t(L %*% b - rhs) %*% solve(L %*% V %*% t(L)) %*% (L %*% b - rhs))
+	}
+	else {
+		if (!require(pbkrtest)) stop("pbkrtest package required for F-test on linear mixed model")
+		if (model@dims["REML"] != 1) 
+			stop("F test available only for linear mixed model fit by REML")
+		res <- KRmodcomp(model, L)$stats
+		df <- res[["df2"]]
+		F <- res[["Fstat"]]
+		p <- res[["p.value"]]
+	}
 	name <- try(formula(model), silent = TRUE)
 	if (inherits(name, "try-error")) name <- substitute(model)
 	title <- "Linear hypothesis test\n\nHypothesis:"
@@ -524,12 +537,20 @@ linearHypothesis.mer <- function(model, hypothesis.matrix, rhs=NULL,
 	note <- if (is.null(vcov.)) ""
 			else "\nNote: Coefficient covariance matrix supplied.\n"
 	rval <- matrix(rep(NA, 8), ncol = 4)
-	colnames(rval) <- c("Res.Df", "Df", "Chisq",  paste("Pr(> Chisq)", sep = ""))
-	rownames(rval) <- 1:2
-	rval[,1] <- c(df+q, df)
-	p <- pchisq(SSH, q, lower.tail = FALSE)
-	rval[2, 2:4] <- c(q, SSH, p)
-	rval <- rval[,-1]
+	if (test == "chisq"){
+		colnames(rval) <- c("Res.Df", "Df", "Chisq",  paste("Pr(> Chisq)", sep = ""))
+		rownames(rval) <- 1:2
+		rval[,1] <- c(df+q, df)
+		p <- pchisq(F, q, lower.tail = FALSE)
+		rval[2, 2:4] <- c(q, SSH, p)
+		rval <- rval[,-1]
+	}
+	else{
+		colnames(rval) <- c("Res.Df", "Df", "F",  paste("Pr(> F)", sep = ""))
+		rownames(rval) <- 1:2
+		rval[,1] <- c(df+q, df)
+		rval[2, 2:4] <- c(q, F, p)
+	}
 	structure(as.data.frame(rval),
 			heading = c(title, printHypothesis(L, rhs, names(b)), "", topnote, note),
 			class = c("anova", "data.frame"))

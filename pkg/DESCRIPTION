@@ -1,6 +1,6 @@
 Package: car
 Version: 2.0-13
-Date: 2012/02/14
+Date: 2012/02/29
 Title: Companion to Applied Regression
 Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaster.ca"),
 	person("Sanford", "Weisberg", role = "aut", email = "sandy@stat.umn.edu"),
@@ -17,7 +17,7 @@ Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaste
     person("Brian", "Ripley", role = "ctb"),
     person("Achim", "Zeileis", role = "ctb"))
 Depends: R (>= 2.14.0), stats, graphics, MASS, nnet
-Suggests: alr3, leaps, lme4, lmtest, nlme, sandwich, mgcv, rgl, survival, survey
+Suggests: alr3, leaps, lme4, lmtest, nlme, sandwich, mgcv, pbkrtest, rgl, survival, survey
 ByteCompile: yes
 LazyLoad: yes
 LazyData: yes

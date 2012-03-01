@@ -10,6 +10,7 @@
 %              matchCoefs() and methods. J. Fox
 %   2011-06-09 added matchCoefs.mlm(). J. Fox
 %   2011-11-13 clarification of test argument in linearHypothesis.mlm(). J. Fox
+%   2012-02-28 added test argument to linearHypothesis.mer(). J. Fox
 %-------------------------------------------------------------------------------
 
 \name{linearHypothesis}
@@ -69,7 +70,7 @@ lht(model, ...)
 		vcov.=NULL, singular.ok=FALSE, verbose=FALSE, ...)
     
 \method{linearHypothesis}{mer}(model, hypothesis.matrix, rhs=NULL,
-		vcov.=NULL, singular.ok=FALSE, verbose=FALSE, ...)
+		vcov.=NULL, test=c("chisq", "F"), singular.ok=FALSE, verbose=FALSE, ...)
 		
 \method{linearHypothesis}{svyglm}(model, ...)
     
