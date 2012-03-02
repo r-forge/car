@@ -19,6 +19,8 @@
 # 2011-11-27: added Anova.svyglm(). J. Fox
 # 2011-12-31: fixed bug in Anova.II(and III).F.glm() when na.exclude used. J. Fox
 # 2012-02-28: added test.statistic argument to Anova.mer(). J.Fox
+# 2012-03-02: fixed test abbreviation of test.statistic argument to Anova.default()
+#             called by other Anova() methods. J. Fox
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -68,7 +70,7 @@ Anova.lm <- function(mod, error, type=c("II","III", 2, 3),
 	}
 	if (white.adjust != "FALSE"){
 		if (white.adjust == "TRUE") white.adjust <- "hc3" 
-		return(Anova.default(mod, type=type, vcov.=hccm(mod, type=white.adjust), test="F", 
+		return(Anova.default(mod, type=type, vcov.=hccm(mod, type=white.adjust), test.statistic="F", 
 						singular.ok=singular.ok))
 	}
 	switch(type,
@@ -1127,16 +1129,16 @@ Anova.coxph <- function(mod, type=c("II","III", 2, 3), test.statistic=c("LR", "W
 	switch(type,
 			II=switch(test.statistic,
 					LR=Anova.II.LR.coxph(mod),
-					Wald=Anova.default(mod, type="II", test="Chisq", vcov.=vcov(mod))),
+					Wald=Anova.default(mod, type="II", test.statistic="Chisq", vcov.=vcov(mod))),
 			III=switch(test.statistic,
 					LR=Anova.III.LR.coxph(mod),
-					Wald=Anova.default(mod, type="III", test="Chisq", vcov.=vcov(mod))),
+					Wald=Anova.default(mod, type="III", test.statistic="Chisq", vcov.=vcov(mod))),
 			"2"=switch(test.statistic,
 					LR=Anova.II.LR.coxph(mod),
-					Wald=Anova.default(mod, type="II", test="Chisq", vcov.=vcov(mod))),
+					Wald=Anova.default(mod, type="II", test.statistic="Chisq", vcov.=vcov(mod))),
 			"3"=switch(test.statistic,
 					LR=Anova.III.LR.coxph(mod),
-					Wald=Anova.default(mod, type="III", test="Chisq", vcov.=vcov(mod))))
+					Wald=Anova.default(mod, type="III", test.statistic="Chisq", vcov.=vcov(mod))))
 }
 
 Anova.II.LR.coxph <- function(mod, ...){

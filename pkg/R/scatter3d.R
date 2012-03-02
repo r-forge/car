@@ -5,6 +5,7 @@
 # 13 May 2010: changed default id.n to conform to showLabels
 # 30 July 2010: checks for rgl
 # 23 October 2010: added surface.alpha and ellipsoid.alpha arguments
+# 2012-03-02: fixed some argument abbreviations. J. Fox
 
 scatter3d <- function(x, ...){
 	if (!require(rgl)) stop("rgl package missing")
@@ -77,7 +78,7 @@ scatter3d.default <- function(x, y, z,
 	zlab
 	rgl.clear()
 	rgl.viewpoint(fov=fov)
-	rgl.bg(col=bg.col, fogtype=fogtype)
+	rgl.bg(color=bg.col, fogtype=fogtype)
 	if (id.method == "identify"){
 		xg <- x
 		yg <- y
@@ -339,7 +340,7 @@ car.select3d <- function (...) {
 	}
 	proj <- rgl:::rgl.projection()
 	function(x, y, z) {
-		pixel <- rgl.user2window(x, y, z, proj = proj)
+		pixel <- rgl.user2window(x, y, z, projection = proj)
 		apply(pixel, 1, function(p) (llx <= p[1]) && (p[1] <=
 						urx) && (lly <= p[2]) && (p[2] <= ury) && (0 <= p[3]) &&
 					(p[3] <= 1))

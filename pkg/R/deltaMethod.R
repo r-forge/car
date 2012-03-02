@@ -9,6 +9,7 @@
 #   utility of parameterPrefix
 # 2011-10-02 Fixed bugs in the .survreg and .coxph methods so parameterNames
 #   works correctly
+# 2012-03-02: fixed abbreviation of envir argument. J. Fox
 #-------------------------------------------------------------------------------
 
 deltaMethod <- function (object, ...) {
@@ -39,7 +40,7 @@ deltaMethod.lm <- function (object, g, vcov. = vcov,
            parameterNames = names(coef(object)), ...) {
   if( !exists("deltaMethodMessageFlag")){
      message("deltaMethod arguments have changed, see help(deltaMethod)")
-     assign("deltaMethodMessageFlag", TRUE, env=.GlobalEnv)
+     assign("deltaMethodMessageFlag", TRUE, envir=.GlobalEnv)
      }
 	para <- coef(object)
 	para.names <- parameterNames
