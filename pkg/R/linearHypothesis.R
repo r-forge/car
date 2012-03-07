@@ -15,6 +15,7 @@
 #   2011-11-27: added linearHypothesis.svyglm(). John
 #   2011-12-27: fixed printing bug in linearHypothesis(). John
 #   2012-02-28: added F-test to linearHypothesis.mer(). John
+#   2012-03-07: singular.ok argument added to linearHypothesis.mlm(). J. Fox
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -259,7 +260,7 @@ check.imatrix <- function(X, terms){
 
 linearHypothesis.mlm <- function(model, hypothesis.matrix, rhs=NULL, SSPE, V,
 		test, idata, icontrasts=c("contr.sum", "contr.poly"), idesign, iterms,
-		check.imatrix=TRUE, P=NULL, title="", verbose=FALSE, ...){
+		check.imatrix=TRUE, P=NULL, title="", singular.ok=FALSE, verbose=FALSE, ...){
 	if (missing(test)) test <- c("Pillai", "Wilks", "Hotelling-Lawley", "Roy")
 	test <- match.arg(test, c("Pillai", "Wilks", "Hotelling-Lawley", "Roy"),
 			several.ok=TRUE)
@@ -312,7 +313,7 @@ linearHypothesis.mlm <- function(model, hypothesis.matrix, rhs=NULL, SSPE, V,
 		B <- B %*% P
 	}
 	rank <- sum(eigen(SSPE, only.values=TRUE)$values >= sqrt(.Machine$double.eps))
-	if (rank < ncol(SSPE))
+	if (!singular.ok && rank < ncol(SSPE))
 		stop("The error SSP matrix is apparently of deficient rank = ",
 				rank, " < ", ncol(SSPE))
 	r <- ncol(B)
@@ -331,11 +332,10 @@ linearHypothesis.mlm <- function(model, hypothesis.matrix, rhs=NULL, SSPE, V,
 	}
 	SSPH <- t(L %*% B - rhs) %*% solve(L %*% V %*% t(L)) %*% (L %*% B - rhs)
 	rval <- list(SSPH=SSPH, SSPE=SSPE, df=q, r=r, df.residual=df.residual, P=P,
-			title=title, test=test)
+			title=title, test=test, singular=rank < ncol(SSPE))
 	class(rval) <- "linearHypothesis.mlm"
 	rval
 }
-
 
 #linearHypothesis.mlm <- function(model, hypothesis.matrix, rhs=NULL, SSPE, V,
 #   test, idata, icontrasts=c("contr.sum", "contr.poly"), idesign, iterms,
@@ -430,6 +430,10 @@ print.linearHypothesis.mlm <- function(x, SSP=TRUE, SSPE=SSP,
 	if (SSPE){
 		cat("\nSum of squares and products for error:\n")
 		print(x$SSPE, digits=digits)
+	}
+	if ((!is.null(x$singular)) && x$singular){
+		warning("the error SSP matrix is singular; multivariate tests are unavailable")
+		return(invisible(x))
 	}
 	SSPE.qr <- qr(x$SSPE)
 	# the following code is adapted from summary.manova
