@@ -1,5 +1,7 @@
 Changes to Version 2.0-13
 
+    o Modified 'bootCase' to return a matrix of class c("bootCase", "matrix") so generic functions can be written to summarize these objects.
+
     o Minor changes to the returned value of showLabels to give both the label and the corresponding row number.  showLabels documentation tweaked.
 
     o Improved handling of center.pch argument to ellipse() (suggestion of Rob Kushler).
