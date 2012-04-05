@@ -9,6 +9,8 @@ Changes to Version 2.0-13
     o New test argument for linearHypothesis.mer()  and test.statistic argument for Anova.mer() for F-tests with Kenward/Roger df, provided by pbkrtest package.
     
     o Anova.mlm() now will do univariate repeated-measures ANOVA even if the error SSP matrix is singular.
+    
+    o hccm() will now accept a weighted linear models (suggestion of Stefan Holst Bache).
 
 Changes to Version 2.0-12
 
