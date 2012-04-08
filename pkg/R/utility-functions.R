@@ -5,6 +5,7 @@
 # 28 June 2010 added df.terms.surveg and model.matrix.survreg
 # 15 November 2010 added squeezeBlanks
 # 21 January 2011 added functions to support mixed models
+# 2012-04-08 added exists.method
 
 # function to find "nice" numbers
 
@@ -262,4 +263,14 @@ has.intercept.mer <- function(model){
 	
 model.matrix.lme <- function(object, ...){
 	model.matrix(as.formula(object$call$fixed), eval(object$call$data))
+}
+
+# added by J. Fox 2012-04-08 to use in deltaMethod.default()
+
+exists.method <- function(generic, object, default=TRUE, strict=FALSE){
+	classes <- class(object)
+	if (default) classes <- c(classes, "default")
+	if (strict) classes <- classes[1]
+	any(paste(generic, ".", classes, sep="") %in%
+					as.character(methods(generic)))
 }

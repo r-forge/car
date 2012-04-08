@@ -10,22 +10,29 @@
 # 2011-10-02 Fixed bugs in the .survreg and .coxph methods so parameterNames
 #   works correctly
 # 2012-03-02: fixed abbreviation of envir argument. J. Fox
+# 2012-04-08: modfied deltaMethod.default() to use coef and vcov
 #-------------------------------------------------------------------------------
 
 deltaMethod <- function (object, ...) {
 	UseMethod("deltaMethod")
 }
 
- deltaMethod.default <- function (object, g, vcov., func=g, ...) {
+deltaMethod.default <- function (object, g, vcov., func = g, ...) {
 	if (!is.character(g)) 
 		stop("The argument 'g' must be a character string")
+	if ((exists.method("coef", object, default=FALSE) || 
+				(!is.atomic(object) && !is.null(object$coefficients))) 
+			&& exists.method("vcov", object, default=FALSE)){
+		if (missing(vcov.)) vcov. <- vcov(object)
+		object <- coef(object)
+	}
 	para <- object
-	para.names <- names(para) 
+	para.names <- names(para)
 	g <- parse(text = g)
 	q <- length(para)
 	for (i in 1:q) {
 		assign(names(para)[i], para[i])
-	}   
+	}
 	est <- eval(g)
 	names(est) <- NULL
 	gd <- rep(0, q)
