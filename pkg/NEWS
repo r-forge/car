@@ -13,6 +13,8 @@ Changes to Version 2.0-13
     o hccm() will now accept a weighted linear models (suggestion of Stefan Holst Bache).
     
     o deltaMethod.default() now applies coef() and vcov() to a model for which these are supported (generalizing a suggestion by Scott Kostyshak).
+    
+    o Fixed handling of labels argument in scatterplot.formula() and scatterplotMatrix.formula().
 
 Changes to Version 2.0-12
 

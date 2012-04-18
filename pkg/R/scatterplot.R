@@ -5,6 +5,7 @@
 # 2010-12-19: J. Fox: added argument legend.coords to place legend.
 # 2011-01-15: J. Fox: If x is a factor, calls Boxplot()
 # 2011-03-08: J. Fox: changed col argument
+# 2012-04-18: J. Fox: fixed labels argument in scatterplot.formula().
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -30,19 +31,17 @@ scatterplot.formula <- function (x, data, subset, xlab, ylab, legend.title, lege
 		if (missing(labels)) labels <- gsub("X", "", row.names(X)) 
 	}
 	else{
-		if (!missing(labels)) row.names(data) <- labels
 		X <- eval(m, parent.frame())
-		labels <- row.names(X)
 	}
 	names <- names(X)
 	if (missing(xlab)) xlab <- names[2]
 	if (missing(ylab)) ylab <- names[1]
 	if (ncol(X) == 2) scatterplot(X[,2], X[,1], xlab=xlab, ylab=ylab, 
-			labels=labels, ...)
+				labels=labels, ...)
 	else {
 		if (missing(legend.title)) legend.title <- names[3]
 		scatterplot(X[,2], X[,1], groups=X[,3], xlab=xlab, ylab=ylab,  
-			legend.title=legend.title, legend.coords=legend.coords, labels=labels, ...)
+				legend.title=legend.title, legend.coords=legend.coords, labels=labels, ...)
 	}
 }
 
