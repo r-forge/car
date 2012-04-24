@@ -6,6 +6,7 @@
 # 2011-01-15: J. Fox: If x is a factor, calls Boxplot()
 # 2011-03-08: J. Fox: changed col argument
 # 2012-04-18: J. Fox: fixed labels argument in scatterplot.formula().
+# 2012-04-24: J. Fox: further fix to labels
 
 scatterplot <- function(x, ...){
 	UseMethod("scatterplot", x)
@@ -32,6 +33,7 @@ scatterplot.formula <- function (x, data, subset, xlab, ylab, legend.title, lege
 	}
 	else{
 		X <- eval(m, parent.frame())
+		if (missing(labels)) labels <- row.names(X)
 	}
 	names <- names(X)
 	if (missing(xlab)) xlab <- names[2]
@@ -74,7 +76,7 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 		ord <- order(x)
 		x <- x[ord]
 		y <- y[ord]
-#		if (length(unique(x)) < lowess.threshold || length(unique(y)) < lowess.threshold) return()
+		#		if (length(unique(x)) < lowess.threshold || length(unique(y)) < lowess.threshold) return()
 		if (length(unique(y)) < loess.threshold) return()
 		warn <- options(warn=-1)
 		if (!spread){
@@ -249,10 +251,10 @@ scatterplot.default <- function(x, y, smooth=TRUE, spread=!by.groups, span=.5, l
 				widths=100, heights=100)
 	par(mar=c(mar[1], 0, top, 0))
 	if (ybox > 0) vbox(.y) 
-#	else plot(0, 0, xlab="", ylab="", axes=FALSE, type="n", xlim=xlim, ylim=ylim)
+	#	else plot(0, 0, xlab="", ylab="", axes=FALSE, type="n", xlim=xlim, ylim=ylim)
 	par(mar=c(0, mar[2], 0, mar[4]))
 	if (xbox > 0) hbox(.x) 
-#	else plot(0, 0, xlab="", ylab="", axes=FALSE, type="n", xlim=xlim, ylim=ylim)
+	#	else plot(0, 0, xlab="", ylab="", axes=FALSE, type="n", xlim=xlim, ylim=ylim)
 	par(mar=c(mar[1:2], top, mar[4]))
 	plot(.x, .y, xlab=xlab, ylab=ylab, las=las, log=log, cex=cex, cex.axis=cex.axis, cex.lab=cex.lab,
 			cex.main=cex.main, cex.sub=cex.sub, type="n", xlim=xlim, ylim=ylim, ...)
