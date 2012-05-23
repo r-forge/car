@@ -68,6 +68,7 @@ export(
     subsets,
     compareCoefs,
     matchCoefs,
+    Boot,
     
     # deprecated functions
     av.plot,
@@ -229,3 +230,13 @@ S3method(vcov, powerTransform)
 S3method(vif, lm)
 S3method(symbox, formula)
 S3method(symbox, default)
+
+# methods related to Boot
+S3method(Boot, default)
+S3method(Boot, lm)
+S3method(Boot, glm)
+S3method(hist, Boot)
+S3method(confint, Boot)
+S3method(summary, Boot)
+S3method(print, summary.Boot)
+S3method(print, confint.Boot)
