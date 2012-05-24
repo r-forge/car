@@ -1,6 +1,6 @@
 # March 9, 2012 modified by SW as suggested by Derek Ogle to return an object
-# of class c("bootCase", "matrix").  Methods like summary.bootCase can then
-# be written to act on these matrices
+# of class c("bootCase", "matrix").  
+# May 2012 added methods for 'bootCase'
 
 nextBoot <- function(object, sample){UseMethod("nextBoot")}
 nextBoot.default <- function(object, sample){
@@ -61,3 +61,46 @@ bootCase.default <- function (object, f=coef, B = 999, rows)
 	attr(coefBoot, "pointEstimate") <- pointEstimate
     return(coefBoot)
 }
+
+summary.bootCase <- function(boot, conf.level=0.95, ci.method="naive") {
+  ci.naive <- function(x) {
+    quantile(x, c( (1 - conf.level)/2, 1 - (1 - conf.level)/2))} 
+  b.mean <- apply(boot, 2, mean)
+  b.sd <- apply(boot, 2, sd)
+  b.ci <- t(apply(boot, 2, function(x) switch(ci.method, naive=ci.naive(x))))
+  ans <- cbind(attr(boot, "pointEstimate"),  b.mean, b.sd, b.ci)
+  colnames(ans)[1:3] <- c("Point Estimate", "boot ave", "boot sd")
+  ans
+  }
+
+histogram.bootCase <- function(boot, ...) {
+  panel2 <- function(x, ...) {
+     est <- attr(boot, "pointEstimate")[panel.number()]
+     panel.histogram(x, ...)
+     abline(v=est)
+     }
+  boot1 <- stack(as.data.frame(boot))
+  histogram( ~ values | ind, boot1, panel = panel2)
+  }
+
+  
+  
+  
+histogram.bootCase <- function(boot, xlab="value", ...) {
+  require(latticeExtra)
+  panel <- function(x, ...) {
+    est <- as.numeric(attr(boot, "pointEstimate")[panel.number()] )
+    panel.histogram(x, ...)
+    print(est)
+    abline(v=est)
+    }
+  xyplot.list(as.data.frame(betahat.boot), FUN=histogram, panel=panel, ...) 
+  }
+  
+
+
+  
+  
+
+  
+  

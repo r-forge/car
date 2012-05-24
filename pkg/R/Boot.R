@@ -33,8 +33,11 @@ Boot.default <- function(object, f=coef, labels=names(coef(object)),
      }
     } else {
     boot.f <- function(data, indices, f) {
-      res <- residuals(object, type="pearson")/sqrt(1 - hatvalues(object))
-      val <- fitted(object) + (res - mean(res))[indices]
+      first <- all(indices == seq(length(indices)))
+      res <- if(first) object$residuals else
+                  residuals(object, type="pearson")/sqrt(1 - hatvalues(object))
+      res <- if(!first) (res - mean(res)) else res
+      val <- fitted(object) + res[indices]
       if (!is.null(object$na.action)){
             pad <- object$na.action
             attr(pad, "class") <- "exclude" 
@@ -78,7 +81,7 @@ confint.Boot <- function(object, parm, level = 0.95,
   type <- match.arg(type)
   if(type=="all") stop("Use 'boot.ci' if you want to see 'all' types")
   types <-   c("bca", "norm", "basic", "perc")
-  typelab <- c("bca", "norm",   "basic", "percent")[match(type, types)]
+  typelab <- c("bca", "normal",   "basic", "percent")[match(type, types)]
   nn <- colnames(object$t)
   names(nn) <- nn
   parm <- if(missing(parm)) seq(length(nn)) else parm
@@ -90,7 +93,8 @@ confint.Boot <- function(object, parm, level = 0.95,
   ints <- matrix(0, nrow=length(parm), ncol=length(levs))
   rownames(ints) <- nn[parm]
   for (j in 1:length(parm)){
-    ints[j, ] <- as.vector(t(out[[j]][[typelab]][, 4:5]))
+    which <- if(typelab=="normal") 2:3 else 4:5
+    ints[j, ] <- as.vector(t(out[[j]][[typelab]][, which]))
   }
   or <- order(levs)
   levs <- levs[or]
@@ -159,6 +163,7 @@ hist.Boot <- function(x, parm, layout=NULL, ask, main="", freq=FALSE,
   ci <- match.arg(ci)
   legend <- match.arg(legend)
   pe <- x$t0
+  if(is.null(names(pe))) names(pe) <- colnames(x$t)
   if(missing(parm)) parm <- 1:length(pe)
   nt <- length(parm) + if(legend == "separate") 1 else 0
   if (nt > 1 & (is.null(layout) || is.numeric(layout))) {
@@ -174,7 +179,7 @@ hist.Boot <- function(x, parm, layout=NULL, ask, main="", freq=FALSE,
     on.exit(par(op))
     }
   if(ci != "none") clim <- confint(x, method=ci, level=level)
-  pn <- names(pe)
+  pn <- colnames(x$t)
   names(pn) <- pn
   what <- c(estNormal & !freq, estDensity & !freq, ci != "none", estPoint)
   for (j in parm){
@@ -230,24 +235,5 @@ hist.Boot <- function(x, parm, layout=NULL, ask, main="", freq=FALSE,
   invisible(NULL)
   }
   
-outerLegend1 <- function(..., margin=3, offset=0, adjust=FALSE){
-   lims <- par("usr")
-   if (margin == 3) {
-      x0 <- lims[1] + offset*(lims[2]-lims[1])
-      y0 <- lims[4] }
-   else {
-      x0 <- lims[2] + offset*(lims[2]-lims[1])
-      y0 <- lims[4]
-   }
-   leg <- legend(x0, y0, ... , xpd=TRUE, plot=FALSE)
-   if (margin == 3) {
-      y0 <- y0 + leg$rect$h
-      if(adjust == TRUE) x0 <- x0 - leg$text$x[1]
-   }
-   legend(x0, y0, ... , xpd=TRUE)
-   }
-  
-
-
 
   
