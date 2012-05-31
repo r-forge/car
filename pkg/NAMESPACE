@@ -1,4 +1,4 @@
-# last modified 2012-02-28 by J. Fox
+# last modified 2012-05-31 by J. Fox
 
 export(
     basicPowerAxis,
@@ -99,7 +99,8 @@ export(
 )    
 
 # methods
-    
+
+S3method(confidenceEllipse, default)    
 S3method(confidenceEllipse, glm)    
 S3method(confidenceEllipse, lm)     
 S3method(print, spreadLevelPlot)   
