@@ -14,6 +14,7 @@
 # Boot.glm method="case" as for lm
 #             method="residual" not implemented.  Too problematic.
 # May 23, 2012 Sanford Weisberg sandy@umn.edu
+# June 1, 2012:  changed from class c("Boot", "boot") to just class "boot"
 
 Boot <- function(object, f, labels, R=999, method){UseMethod("Boot")}
 
@@ -52,7 +53,6 @@ Boot.default <- function(object, f=coef, labels=names(coef(object)),
   colnames(b$t) <- labels
   if(exists(".y.boot")) remove(".y.boot", envir=.GlobalEnv)
   if(exists(".boot.indices")) remove(".boot.indices", envir=.GlobalEnv)
-  class(b) <- c("Boot", class(b))
   b
   }
   
@@ -75,7 +75,7 @@ Boot.glm <- function(object, f=coef, labels=names(coef(object)),
    }
   }
 
-confint.Boot <- function(object, parm, level = 0.95,
+confint.boot <- function(object, parm, level = 0.95,
     type = c("bca", "norm", "basic", "perc", "all"), ...){
   cl <- match.call()
   type <- match.arg(type)
@@ -101,16 +101,16 @@ confint.Boot <- function(object, parm, level = 0.95,
   ints <- ints[, or, drop=FALSE]
   colnames(ints) <- paste(round(100*levs, 1), " %",sep="")
   attr(ints,"type") <- typelab
-  class(ints) <- c("confint.Boot", class(ints))
+  class(ints) <- c("confint.boot", class(ints))
   ints
 }
-print.confint.Boot <- function(x, ...) {
+print.confint.boot <- function(x, ...) {
   cat("Bootstrap quantiles, type = ", attr(x, "type"), "\n\n")
   print(as.data.frame(x), ...)
   }
 
 
-summary.Boot <- function (object, parm, high.moments = FALSE, 
+summary.boot <- function (object, parm, high.moments = FALSE, 
     extremes=FALSE, ...)
 {
     cl <- match.call()
@@ -141,20 +141,20 @@ summary.Boot <- function (object, parm, high.moments = FALSE,
       "R", "original", "bootBias", "bootSE", "bootMed", "bootMin",
      "bootMax", "bootRange", "bootSkew", "bootKurtosis")
     stats <- as.data.frame(stats)
-    class(stats) <- c("summary.Boot", "data.frame")
+    class(stats) <- c("summary.boot", "data.frame")
     use <- rep(TRUE, 10)
     if (high.moments == FALSE) use[9:10] <- FALSE
     if (extremes==FALSE) use[6:8] <- FALSE
     parm <- if(missing(parm)) 1:dim(stats)[1] else parm
     return(stats[parm , use])
 }
-print.summary.Boot <- 
+print.summary.boot <- 
    function(x, digits = max(getOption("digits") - 2, 3), ...)
 {
     print.data.frame(x, digits=digits, ...)
 }
 
-hist.Boot <- function(x, parm, layout=NULL, ask, main="", freq=FALSE,
+hist.boot <- function(x, parm, layout=NULL, ask, main="", freq=FALSE,
       estPoint = TRUE, point.col="black", point.lty=2, point.lwd=2,
       estDensity = !freq, den.col="blue", den.lty=1, den.lwd=2,
       estNormal = !freq,  nor.col="red",   nor.lty=2, nor.lwd=2,

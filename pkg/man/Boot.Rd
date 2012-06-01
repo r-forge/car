@@ -84,9 +84,9 @@ Wiley, Chapters 4 and 11.}
 \code{\link[boot]{plot.boot}} and
 \code{\link[boot]{empinf}}.  Additional
 functions in the \code{car} package are 
-\code{\link{summary.Boot}},
-\code{\link{confint.Boot}}, and 
-\code{\link{hist.Boot}}.
+\code{\link{summary.boot}},
+\code{\link{confint.boot}}, and 
+\code{\link{hist.boot}}.
 }
 
 
