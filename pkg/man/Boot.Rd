@@ -59,11 +59,8 @@ will need to write your own call to \code{boot}.
 This function may fail if the model fit to any of the bootstrap samples is of lower rank than the model fit to the original data.  This will occur, for example, if the model includes factors and interactions with a very small number of observations per cell.  In this case bootstrap samples may have zero counts in some cells and lose rank.
 }
 \value{
-An object of type \code{c("Boot", "boot")} is produced.  Any of the generic
-functions that work with \code{boot} objects will will work in exactly the
-same way with these objects.
-
-See \code{\link[boot]{boot}} for the returned value from this function.
+See \code{\link[boot]{boot}} for the returned value from this function.  The car
+package includes additional generic functions, as listed below.
 }
 \references{
 Davison, A, and Hinkley, D.  (1997)  \emph{Bootstrap Methods and their
@@ -71,6 +68,9 @@ Applications}.  Oxford:  Oxford University Press.
 
 Fox, J. and Weisberg, S. (2011) \emph{Companion to Applied Regression}, Second Edition.
 Thousand Oaks:  Sage.
+
+Fox, J. and Weisberg, S. (2012) \emph{Bootstrapping}, 
+\url{http://socserv.mcmaster.ca/jfox/Books/Companion/appendix/Appendix-Bootstrapping.pdf}.
 
 S. Weisberg (2005) \emph{Applied Linear Regression}, Third Edition.   
 Wiley, Chapters 4 and 11.}
