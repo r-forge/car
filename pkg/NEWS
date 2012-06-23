@@ -23,6 +23,8 @@ Changes to Version 2.0-13
     o Fixed qqPlot.default() so that it honors line="none" (bug reported by Rob Kushler).
     
     o Added new default method for confidenceEllipse(), which now can construct confidence ellipses for linear functions of coefficients.
+    
+    o globalVariables() called for R 2.15.1 or later.
 
 Changes to Version 2.0-12
 

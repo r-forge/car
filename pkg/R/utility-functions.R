@@ -6,6 +6,9 @@
 # 15 November 2010 added squeezeBlanks
 # 21 January 2011 added functions to support mixed models
 # 2012-04-08 added exists.method
+# 20120-06-23: added call to globalVariables(). John
+
+if (getRversion() >= "2.15.1") globalVariables(c(".boot.sample", ".boot.indices"))
 
 # function to find "nice" numbers
 
