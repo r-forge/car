@@ -25,6 +25,9 @@ Changes to Version 2.0-13
     o Added new default method for confidenceEllipse(), which now can construct confidence ellipses for linear functions of coefficients.
     
     o globalVariables() called for R 2.15.1 or later.
+    
+    o Fixed bug in logit() when percents=TRUE and largest percent is 1 (reported by Eric Goodwin).
+    
 
 Changes to Version 2.0-12
 
