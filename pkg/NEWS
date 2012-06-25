@@ -28,6 +28,10 @@ Changes to Version 2.0-13
     
     o Fixed bug in logit() when percents=TRUE and largest percent is 1 (reported by Eric Goodwin).
     
+    o Added radius argument to scatter3d() (suggestion of Antonino Messina).
+    
+    o Fixed spurious errors message in scatter3d() when groups present but surface=FALSE (reported by David L. Carlson).
+    
 
 Changes to Version 2.0-12
 
