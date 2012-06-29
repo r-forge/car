@@ -1,6 +1,7 @@
 #-------------------------------------------------------------------------------
 # Revision history:
 # 2009-09-28 by J. Fox (/renamed)
+# 2012-06-29 Rewritted by S. Weisberg.  The 'data' argument is now ignored but kept for compatibility
 #-------------------------------------------------------------------------------
 
 # score test of nonconstant variance (J. Fox)
@@ -9,36 +10,40 @@ ncvTest <- function(model, ...){
 	UseMethod("ncvTest")
 }
 
-ncvTest.lm <- function (model, var.formula, data=NULL, subset, na.action, ...) {
-	if ((!is.null(class(model$na.action))) && class(model$na.action) == 'exclude') 
+getModelFrame <- function(model, terms) {
+  model <- update(model, data=model.frame(model))
+  if ((!is.null(class(model$na.action))) && class(model$na.action) == 'exclude') 
 		model <- update(model, na.action=na.omit)
+  mf2 <- try(update(model, as.formula(terms), method="model.frame"),
+     silent=TRUE)
+# This second test is used for models like m1 <- lm(longley) which
+# fail the first test becasue update doesn't work
+  if(class(mf2) == "try-error")
+       mf2 <- try(update(model, as.formula(terms),
+               method="model.frame", data=model.frame(model)), silent=TRUE)
+  if(class(mf2) == "try-error") stop("argument 'terms' not interpretable.")
+  mf2
+}
+
+
+ncvTest.lm <- function (model, var.formula, ...) {
+	if ((!is.null(class(model$na.action))) && class(model$na.action) == 'exclude') 
+		  model <- update(model, na.action=na.omit)
 	sumry <- summary(model)
 	residuals <- residuals(model, type="pearson") # suggested by S. Weisberg
 	S.sq <- df.residual(model)*(sumry$sigma)^2/sum(!is.na(residuals))
-	U <- (residuals^2)/S.sq
+	.U <- (residuals^2)/S.sq
 	if (missing(var.formula)) {
-		mod <- lm(U ~ fitted.values(model))
+		mod <- lm(.U ~ fitted.values(model))
 		varnames <- "fitted.values"
 		var.formula <- ~fitted.values
 		df <- 1
 	}
-	else {
-		if (missing(na.action)){
-			na.action <- if (is.null(model$na.action)) options()$na.action
-				else parse(text=paste('na.',class(model$na.action), sep=''))
-		}
-		m <- match.call(expand.dots = FALSE)
-		if (is.matrix(eval(m$data, sys.frame(sys.parent())))) 
-			m$data <- as.data.frame(data)
-		m$formula<-var.formula
-		m$var.formula <- m$model <- m$... <- NULL
-		m[[1]] <- as.name("model.frame")
-		mf <- eval(m, sys.frame(sys.parent()))
-		response <- attr(attr(mf, "terms"), "response")
-		if (response) stop(paste("Variance formula contains a response."))
-		.X <- model.matrix(as.formula(paste("~",as.character(var.formula)[2],"-1")), data=mf)
-		common.obs <- intersect(names(U), rownames(.X))
-		mod <- lm(U[common.obs] ~ .X[common.obs,])
+	else {  
+                mf2 <- getModelFrame(model, var.formula)
+                mf2$.U <- .U
+                form <- as.formula(paste(".U ~ ", as.character(var.formula)[[2]], sep=""))         
+                mod <- update(model, form, data=mf2, weights=NULL)
 		df <- sum(!is.na(coefficients(mod))) - 1
 	}
 	SS <- anova(mod)$"Sum Sq"
