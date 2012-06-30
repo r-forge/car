@@ -11,26 +11,22 @@ ncvTest <- function(model, ...){
 }
 
 getModelFrame <- function(model, terms) {
-  model <- update(model, data=model.frame(model))
-  if ((!is.null(class(model$na.action))) && class(model$na.action) == 'exclude') 
-		model <- update(model, na.action=na.omit)
-  mf2 <- try(update(model, as.formula(terms), method="model.frame"),
-     silent=TRUE)
+# locate missing values
+  mf2 <- try(update(model, as.formula(terms), method="model.frame",
+     na.action=na.exclude), silent=TRUE)
 # This second test is used for models like m1 <- lm(longley) which
 # fail the first test becasue update doesn't work
   if(class(mf2) == "try-error")
-       mf2 <- try(update(model, as.formula(terms),
+       mf2 <- try(update(model, as.formula(terms), na.action=na.exclude,
                method="model.frame", data=model.frame(model)), silent=TRUE)
   if(class(mf2) == "try-error") stop("argument 'terms' not interpretable.")
   mf2
 }
 
-
 ncvTest.lm <- function (model, var.formula, ...) {
-	if ((!is.null(class(model$na.action))) && class(model$na.action) == 'exclude') 
-		  model <- update(model, na.action=na.omit)
+  model <- update(model, na.action="na.exclude")
 	sumry <- summary(model)
-	residuals <- residuals(model, type="pearson") # suggested by S. Weisberg
+	residuals <- residuals(model, type="pearson")
 	S.sq <- df.residual(model)*(sumry$sigma)^2/sum(!is.na(residuals))
 	.U <- (residuals^2)/S.sq
 	if (missing(var.formula)) {
@@ -40,11 +36,12 @@ ncvTest.lm <- function (model, var.formula, ...) {
 		df <- 1
 	}
 	else {  
-                mf2 <- getModelFrame(model, var.formula)
-                mf2$.U <- .U
-                form <- as.formula(paste(".U ~ ", as.character(var.formula)[[2]], sep=""))         
-                mod <- update(model, form, data=mf2, weights=NULL)
-		df <- sum(!is.na(coefficients(mod))) - 1
+        mf2 <- getModelFrame(model, var.formula)
+        mf2 <- as.data.frame(naresid(attr(mf2, "na.action"), as.matrix(mf2)))       
+        mf2$.U <- .U
+        form <- as.formula(paste(".U ~ ", as.character(var.formula)[[2]], sep=""))         
+        mod <- update(model, form, data=mf2, weights=NULL)
+		    df <- sum(!is.na(coefficients(mod))) - 1
 	}
 	SS <- anova(mod)$"Sum Sq"
 	RegSS <- sum(SS) - SS[length(SS)]
