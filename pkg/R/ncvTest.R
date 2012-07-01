@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------------
 # Revision history:
 # 2009-09-28 by J. Fox (/renamed)
-# 2012-06-29 Rewritted by S. Weisberg.  The 'data' argument is now ignored but kept for compatibility
+# 2012-07-01 Rewritted by S. Weisberg.  The 'data' gone
 #-------------------------------------------------------------------------------
 
 # score test of nonconstant variance (J. Fox)
@@ -9,7 +9,6 @@
 ncvTest <- function(model, ...){
 	UseMethod("ncvTest")
 }
-
 
 ncvTest.lm <- function(model, var.formula, ...) {
   model <- update(model, na.action="na.exclude")
