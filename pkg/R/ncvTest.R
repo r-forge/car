@@ -10,20 +10,8 @@ ncvTest <- function(model, ...){
 	UseMethod("ncvTest")
 }
 
-getModelFrame <- function(model, terms) {
-# locate missing values
-  mf2 <- try(update(model, as.formula(terms), method="model.frame",
-     na.action=na.exclude), silent=TRUE)
-# This second test is used for models like m1 <- lm(longley) which
-# fail the first test becasue update doesn't work
-  if(class(mf2) == "try-error")
-       mf2 <- try(update(model, as.formula(terms), na.action=na.exclude,
-               method="model.frame", data=model.frame(model)), silent=TRUE)
-  if(class(mf2) == "try-error") stop("argument 'terms' not interpretable.")
-  mf2
-}
 
-ncvTest.lm <- function (model, var.formula, ...) {
+ncvTest.lm <- function(model, var.formula, ...) {
   model <- update(model, na.action="na.exclude")
 	sumry <- summary(model)
 	residuals <- residuals(model, type="pearson")
@@ -35,14 +23,17 @@ ncvTest.lm <- function (model, var.formula, ...) {
 		var.formula <- ~fitted.values
 		df <- 1
 	}
-	else {  
-        mf2 <- getModelFrame(model, var.formula)
-        mf2 <- as.data.frame(naresid(attr(mf2, "na.action"), as.matrix(mf2)))       
-        mf2$.U <- .U
-        form <- as.formula(paste(".U ~ ", as.character(var.formula)[[2]], sep=""))         
-        mod <- update(model, form, data=mf2, weights=NULL)
-		    df <- sum(!is.na(coefficients(mod))) - 1
-	}
+	else 
+  { 
+   form <- as.formula(paste(".U ~ ", as.character(var.formula)[[2]], sep=""))
+   data <- getCall(model)$data
+   if(!is.null(data)){
+        data <- eval(data)
+        data$.U <- .U 
+   }
+   mod <- update(model, form, data=data, weights=NULL) 
+   df <- sum(!is.na(coefficients(mod))) - 1    
+  }	    
 	SS <- anova(mod)$"Sum Sq"
 	RegSS <- sum(SS) - SS[length(SS)]
 	Chisq <- RegSS/2
@@ -50,7 +41,7 @@ ncvTest.lm <- function (model, var.formula, ...) {
 		p=pchisq(Chisq, df, lower.tail=FALSE), test="Non-constant Variance Score Test")
 	class(result) <- "chisqTest"
 	result
-}
+}  
 
 ncvTest.glm <- function(model, ...){
 	stop("requires lm object")
