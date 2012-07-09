@@ -87,7 +87,7 @@ invTranEstimate <- function(x, y, family="bcPower", confidence=0.95,
   if (is.factor(y)) stop("Response variable may not be a factor")
   if (robust) confidence <- FALSE
   fam <- match.fun(family)
-  f <- if(robust)
+  f <- if(robust==FALSE)
     function(lambda,x,y,family){deviance(lm(y~fam(x,lambda)))}  else
     function(lambda,x,y,family){sum(residuals(rlm(y ~ fam(x,lambda)))^2)}
   lhat <- optimize(f = function(lambda) f(lambda,x,y,family),interval=c(-10,10))
