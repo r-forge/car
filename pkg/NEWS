@@ -1,5 +1,7 @@
 Changes to Version 2.0-13
 
+    o Changed the default for id.method with the invTranPlot to "x".
+    
     o The ncvTest has been rewritten for stability, and unneeded 'data', 'subset' and 'na.action' argument have been removed
 
     o Added new function 'Boot' that is a simple front-end to boot::boot that will be useful when bootstrapping regression models.  Implemented for lm and glm, but this is likely to work for many other S3 regression models with and 'update' method, 'subset' argument.

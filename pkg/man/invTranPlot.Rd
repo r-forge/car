@@ -25,7 +25,7 @@ invTranPlot(x, ...)
         col=palette()[1], col.lines=palette(),
         xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
         family="bcPower", optimal=TRUE, key="auto",
-        id.method = abs(residuals(lm(y~x))),
+        id.method = "x",
         labels, 
         id.n = if(id.method[1]=="identify") Inf else 0,
         id.cex=1, id.col=palette()[1], grid=TRUE, ...)
