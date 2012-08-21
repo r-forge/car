@@ -16,6 +16,7 @@
 #   2011-12-27: fixed printing bug in linearHypothesis(). John
 #   2012-02-28: added F-test to linearHypothesis.mer(). John
 #   2012-03-07: singular.ok argument added to linearHypothesis.mlm(). J. Fox
+#   2012-08-20: Fixed p-value bug for chisq test in .mer method. John
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -545,7 +546,7 @@ linearHypothesis.mer <- function(model, hypothesis.matrix, rhs=NULL,
 		colnames(rval) <- c("Res.Df", "Df", "Chisq",  paste("Pr(> Chisq)", sep = ""))
 		rownames(rval) <- 1:2
 		rval[,1] <- c(df+q, df)
-		p <- pchisq(F, q, lower.tail = FALSE)
+		p <- pchisq(SSH, q, lower.tail = FALSE)
 		rval[2, 2:4] <- c(q, SSH, p)
 		rval <- rval[,-1]
 	}
