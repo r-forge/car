@@ -1,4 +1,5 @@
 \name{ScatterplotSmoothers}
+\alias{ScatterplotSmoothers}
 \alias{gamLine}
 \alias{quantregLine}
 \alias{loessLine}

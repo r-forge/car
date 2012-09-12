@@ -7,7 +7,7 @@
 # 2011-03-08: J. Fox: changed col argument
 # 2012-04-18: J. Fox: fixed labels argument in scatterplot.formula().
 # 2012-04-24: J. Fox: further fix to labels
-# 2012-09-11: J. Fox: modified treatment of smoother; added loessLine(), gamLine(), quantregLine(). 
+# 2012-09-12: J. Fox: modified treatment of smoother; added loessLine(), gamLine(), quantregLine(). 
 
 default.arg <- function(args.list, arg, default){
     if (is.null(args.list[[arg]])) default else args.list[[arg]]
@@ -35,6 +35,7 @@ loessLine <- function(x, y, col, log.x, log.y, by.groups, smoother.args) {
     if (!spread){
         fit <- try(loess.smooth(x, y, span=span), silent=TRUE)
         if (class(fit) == "try-error"){
+            options(warn)
             warning("could not fit smooth")
             return()
         }
@@ -45,6 +46,7 @@ loessLine <- function(x, y, col, log.x, log.y, by.groups, smoother.args) {
     else{
         fit <- try(loess(y ~ x, degree=1, family="symmetric", span=span), silent=TRUE)
         if (class(fit) == "try-error"){
+            options(warn)
             warning("could not fit smooth")
             return()
         }
@@ -54,6 +56,7 @@ loessLine <- function(x, y, col, log.x, log.y, by.groups, smoother.args) {
         pos.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="gaussian", subset=pos), silent=TRUE)
         neg.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="gaussian", subset=!pos), silent=TRUE)
         if (class(pos.fit) == "try-error" || class(neg.fit) == "try.error"){
+            options(warn)
             warning("could not smooth spread")
             return()
         }
@@ -91,6 +94,8 @@ gamLine <- function(x, y, col, log.x, log.y, by.groups, smoother.args) {
     y <- y[ord]
     w <-if (is.null(weights)) rep(1, length(y))
     else weights[valid][ord]
+    warn <- options(warn=-1)
+    on.exit(options(warn))
     if (!spread){
         fit <- if (is.null(link)) gam(y ~ s(x), weights=w, family=family)
         else gam(y ~ s(x), weights=w, family=family(link=link))

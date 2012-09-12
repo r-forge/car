@@ -45,13 +45,12 @@ sp(...)
     are produced using the \code{\link{Boxplot}} function.}
   \item{data}{data frame within which to evaluate the formula.}
   \item{subset}{expression defining a subset of observations.}
-  \item{smoother}{a function to draw a nonparametric-regression smooth; the default is \code{gamLine}, which
-    uses the \code{\link[mgcv]{gam}} function in the \pkg{mgcv} package. Other smoothers provided are
-    \code{loessLine}, which uses the \code{\link[stats]{loess}} function in the \pkg{stats} package, and
-    and \code{quantregLine}, which uses the \code{\link[quantreg]{rqss}} function in the \pkg{quantreg} package.
+  \item{smoother}{a function to draw a nonparametric-regression smooth; the default is \code{\link{gamLine}}, which
+    uses the \code{\link[mgcv]{gam}} function in the \pkg{mgcv} package. For this and other smoothers,
+    see \code{\link{ScatterplotSmoothers}}.
     Setting this argument to something other than a function, e.g., \code{FALSE} suppresses the smoother.}
   \item{smoother.args}{a list of named values to be passed to the smoother function; the specified elements of the
-    list depend upon the smoother (see \emph{Details} below).}
+    list depend upon the smoother (see \code{\link{ScatterplotSmoothers}}).}
   \item{reg.line}{function to draw a regression line on the plot
     or \code{FALSE} not to plot a regression line.}
   \item{boxplots}{if \code{"x"} a boxplot for \code{x} is drawn below the plot;
@@ -108,10 +107,6 @@ sp(...)
 graph}
 }
 
-\details{
-  *** to be added ***
-}
-
 \value{
   If points are identified, their labels are returned; otherwise \code{NULL} is returned invisibly.
 }
@@ -123,7 +118,7 @@ graph}
   \code{\link[base]{jitter}}, \code{\link{legend}},
   \code{\link{scatterplotMatrix}}, \code{\link{dataEllipse}}, \code{\link{Boxplot}},
   \code{\link[MASS]{cov.trob}},
-  \code{\link{showLabels}}.}
+  \code{\link{showLabels}}, \code{\link{ScatterplotSmoothers}}.}
 
 \examples{
 scatterplot(prestige ~ income, data=Prestige, ellipse=TRUE)
