@@ -17,7 +17,7 @@ scatterplot(x, ...)
 	labels, ...)
 
 \method{scatterplot}{default}(x, y, 
-    smoother=gamLine, smoother.args=list(), reg.line=lm, 
+    smoother=loessLine, smoother.args=list(), spread=!by.groups, reg.line=lm,
     boxplots=if (by.groups) "" else "xy",
     xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
     lwd=1, lty=1,
@@ -45,12 +45,18 @@ sp(...)
     are produced using the \code{\link{Boxplot}} function.}
   \item{data}{data frame within which to evaluate the formula.}
   \item{subset}{expression defining a subset of observations.}
-  \item{smoother}{a function to draw a nonparametric-regression smooth; the default is \code{\link{gamLine}}, which
-    uses the \code{\link[mgcv]{gam}} function in the \pkg{mgcv} package. For this and other smoothers,
-    see \code{\link{ScatterplotSmoothers}}.
+  \item{smoother}{a function to draw a nonparametric-regression smooth; the default is \code{\link{loessLine}},
+    which does loess smoothing.  The function \code{\link{gamLine}} fits a generalized additive model and
+    allows including a link and error function.
+    See \code{\link{ScatterplotSmoothers}}.
     Setting this argument to something other than a function, e.g., \code{FALSE} suppresses the smoother.}
   \item{smoother.args}{a list of named values to be passed to the smoother function; the specified elements of the
     list depend upon the smoother (see \code{\link{ScatterplotSmoothers}}).}
+  \item{spread}{if TRUE, estimate the (square root) of the variance function.  For \code{loessLine} and
+    for \code{gamLine}, this is done by separately smoothing the squares of the postive and negative
+    residuals from the mean fit, and then adding the square root of the fitted values to the mean fit.  For
+    \code{quantregLine}, fit the .25 and .75 quantiles with a quantile regression additive model.
+    The default is TRUE if \code{by.groups=FALSE} and FALSE is \code{by.groups=TRUE}.}
   \item{reg.line}{function to draw a regression line on the plot
     or \code{FALSE} not to plot a regression line.}
   \item{boxplots}{if \code{"x"} a boxplot for \code{x} is drawn below the plot;

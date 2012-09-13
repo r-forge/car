@@ -1,8 +1,10 @@
 Changes to Version 2.0-14
 
-    o Smoothers now given as arguments to scatterplot() and scatterplotMatrix(); gamLine() (default), loessLine(), and quantregLine() smoothers provided.
+    o Smoothers now given as arguments to scatterplot() and scatterplotMatrix(); gamLine(), loessLine() (default), and quantregLine() smoothers provided.
 
 Changes to Version 2.0-13
+
+    o Added point marking (id.n, etc.) to dataEllipse
 
     o Changed the default for id.method with the invTranPlot to "x".
     

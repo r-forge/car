@@ -13,13 +13,12 @@ default.arg <- function(args.list, arg, default){
     if (is.null(args.list[[arg]])) default else args.list[[arg]]
 }
 
-loessLine <- function(x, y, col, log.x, log.y, by.groups, smoother.args) {
+loessLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args) {
     lty <- default.arg(smoother.args, "lty", 1)
     lwd <- default.arg(smoother.args, "lwd", 2)
     lty.spread <- default.arg(smoother.args, "lty.spread", 2)
     lwd.spread <- default.arg(smoother.args, "lwd.spread", 1)
     span <- default.arg(smoother.args, "span", 0.5)
-    spread <- default.arg(smoother.args, "spread", !by.groups)
     loess.threshold <- default.arg(smoother.args, "loess.threshold", 5)
     if (log.x) x <- log(x)
     if (log.y) y <- log(y)
@@ -31,11 +30,11 @@ loessLine <- function(x, y, col, log.x, log.y, by.groups, smoother.args) {
     y <- y[ord]
     if (length(unique(y)) < loess.threshold) return()
     warn <- options(warn=-1)
-    on.exit(options(warn))
+    on.exit(options(warn)) 
     if (!spread){
         fit <- try(loess.smooth(x, y, span=span), silent=TRUE)
-        if (class(fit) == "try-error"){
-            options(warn)
+        if (class(fit)[1] == "try-error"){ 
+             (warn)
             warning("could not fit smooth")
             return()
         }
@@ -73,17 +72,19 @@ loessLine <- function(x, y, col, log.x, log.y, by.groups, smoother.args) {
     options(warn)
 }
 
-gamLine <- function(x, y, col, log.x, log.y, by.groups, smoother.args) {
+gamLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args) {
     if (!require(mgcv)) stop("mgcv package missing")
     lty <- default.arg(smoother.args, "lty", 1)
     lwd <- default.arg(smoother.args, "lwd", 2)
     lty.spread <- default.arg(smoother.args, "lty.spread", 2)
     lwd.spread <- default.arg(smoother.args, "lwd.spread", 1)
     family <- default.arg(smoother.args, "family", gaussian)
+    k <- default.arg(smoother.args, "k", -1)
+    bs <- default.arg(smoother.args, "bs", "tp")
     if (is.character(family)) family <- eval(parse(text=family))
     link <- default.arg(smoother.args, "link", NULL)
     weights <- default.arg(smoother.args, "weights", NULL)
-    spread <- default.arg(smoother.args, "spread", !by.groups && identical(family, gaussian) && is.null(link))
+    spread <- spread && identical(family, gaussian) && is.null(link)
     if (log.x) x <- log(x)
     if (log.y) y <- log(y)
     valid <- complete.cases(x, y)
@@ -96,42 +97,49 @@ gamLine <- function(x, y, col, log.x, log.y, by.groups, smoother.args) {
     else weights[valid][ord]
     warn <- options(warn=-1)
     on.exit(options(warn))
-    if (!spread){
-        fit <- if (is.null(link)) gam(y ~ s(x), weights=w, family=family)
-        else gam(y ~ s(x), weights=w, family=family(link=link))
-        if (log.x)  x <- exp(x)
-        y <-if (log.y) exp(predict(fit, type="response")) else predict(fit, type="response")
-        lines(x, y, lwd=lwd, col=col, lty=lty)
-    }
-    else{
-        if (!identical(family, gaussian)) stop("spreads only available for gaussian family")
-        fit <- gam(y ~ s(x), weights=w)
+    fit <- try(if (is.null(link)) gam(y ~ s(x, k=k, bs=bs), weights=w, family=family)
+                 else gam(y ~ s(x, k=k, bs=bs), weights=w, family=family(link=link)),
+                 silent=TRUE)
+    if (class(fit)[1] != "try-error"){
+            if (log.x) x <- exp(x)
+            y <- if (log.y) exp(fitted(fit)) else fitted(fit) 
+            lines(x, y, lwd=lwd, col=col, lty=lty)
+            }
+    else{ options(warn)
+          warning("could not fit smooth") 
+          return()}
+    if(spread) {        
         res <- residuals(fit)
         pos <- res > 0
-        pos.fit <- gam(res^2 ~ s(x), subset=pos)
-        neg.fit <- gam(res^2 ~ s(x), subset=!pos)
-        if (log.x) x <- exp(x)
-        y <- if (log.y) exp(fitted(fit)) else fitted(fit) 
-        lines(x, y, lwd=lwd, col=col, lty=lty)
-        y.pos <- if (log.y) exp(fitted(fit)[pos] + sqrt(fitted(pos.fit)))  
-        else fitted(fit)[pos] + sqrt(fitted(pos.fit))
-        lines(x[pos], y.pos, lwd=lwd.spread, lty=lty.spread, col=col)
-        y.neg <- if (log.y) exp(fitted(fit)[!pos] - sqrt(fitted(neg.fit)))
-        else fitted(fit)[!pos] - sqrt(fitted(neg.fit))
-        lines(x[!pos], y.neg, lwd=lwd.spread, lty=lty.spread, col=col)
+        pos.fit <- try(gam(res^2 ~ s(x, k=k, bs=bs), subset=pos), silent=TRUE)
+        neg.fit <- try(gam(res^2 ~ s(x, k=k, bs=bs), subset=!pos), silent=TRUE)
+        if(class(pos.fit)[1] != "try-error"){
+            y.pos <- if (log.y) exp(fitted(fit)[pos] + sqrt(fitted(pos.fit)))  
+            else fitted(fit)[pos] + sqrt(fitted(pos.fit))
+            lines(x[pos], y.pos, lwd=lwd.spread, lty=lty.spread, col=col)
+            }
+        else{ options(warn)
+            warning("coud not fit positive part of the spread")
+            }
+        if(class(neg.fit)[1] != "try-error"){
+            y.neg <- if (log.y) exp(fitted(fit)[!pos] - sqrt(fitted(neg.fit)))
+            else fitted(fit)[!pos] - sqrt(fitted(neg.fit))
+            lines(x[!pos], y.neg, lwd=lwd.spread, lty=lty.spread, col=col)
+            }
+        else {options(warn)
+            warning("cound not fit negative part of the spread") }
+        }
     }
-}
 
-quantregLine <- function(x, y, col, log.x, log.y, by.groups, smoother.args) {
-    if (!require(quantreg)) stop("gam package missing")
+quantregLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args) {
+    if (!require(quantreg)) stop("quantreg package missing")
     lty <- default.arg(smoother.args, "lty", 1)
     lwd <- default.arg(smoother.args, "lwd", 2)
     lty.spread <- default.arg(smoother.args, "lty.spread", 2)
     lwd.spread <- default.arg(smoother.args, "lwd.spread", 1)
-    spread <- default.arg(smoother.args, "spread", !by.groups)
-    lambda <- default.arg(smoother.args, "lambda", IQR(x))
     if (log.x) x <- log(x)
     if (log.y) y <- log(y)
+    lambda <- default.arg(smoother.args, "lambda", IQR(x))
     valid <- complete.cases(x, y)
     x <- x[valid]
     y <- y[valid]
@@ -224,7 +232,8 @@ scatterplot.formula <- function (formula, data, subset, xlab, ylab, legend.title
     }
 }
 
-scatterplot.default <- function(x, y, smoother=gamLine, smoother.args=list(), reg.line=lm, 
+scatterplot.default <- function(x, y, smoother=loessLine, smoother.args=list(),
+                                spread=!by.groups, reg.line=lm,
                                 boxplots=if (by.groups) "" else "xy",
                                 xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
                                 lwd=1, lty=1,
@@ -368,7 +377,7 @@ scatterplot.default <- function(x, y, smoother=gamLine, smoother.args=list(), re
                pch=pch[i], col=col[if (n.groups == 1) 3 else i], cex=cex)
         if (by.groups){
             if (is.function(smoother)) smoother(.x[subs], .y[subs], col=col[i], 
-                                                log.x=logged("x"), log.y=logged("y"), by.groups=by.groups, smoother.args=smoother.args)
+                                                log.x=logged("x"), log.y=logged("y"), spread=spread, smoother.args=smoother.args)
             if (is.function(reg.line)) reg(reg.line, .x[subs], .y[subs], lty=lty, lwd=lwd, log.x=logged("x"), log.y=logged("y"), col=col[i])
             if (ellipse) {
                 X <- na.omit(data.frame(x=.x[subs], y=.y[subs]))
@@ -383,7 +392,7 @@ scatterplot.default <- function(x, y, smoother=gamLine, smoother.args=list(), re
         }}
     if (!by.groups){
         if (is.function(smoother)) smoother(.x, .y, col=col[2], 
-                                            log.x=logged("x"), log.y=logged("y"), by.groups=by.groups, smoother.args=smoother.args)
+                                            log.x=logged("x"), log.y=logged("y"), spread, smoother.args=smoother.args)
         if (is.function(reg.line)) reg(reg.line, .x, .y, lty=lty, lwd=lwd, log.x=logged("x"), log.y=logged("y"), col=col[1])
         if (ellipse) {
             X <- na.omit(data.frame(x=.x, y=.y))

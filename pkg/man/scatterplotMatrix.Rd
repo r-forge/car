@@ -18,7 +18,8 @@ scatterplotMatrix(x, ...)
 \method{scatterplotMatrix}{default}(x, var.labels=colnames(x), 
     diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), 
     adjust=1, nclass,
-    plot.points=TRUE, smoother=gamLine, smoother.args=list(), reg.line=lm, 
+    plot.points=TRUE, smoother=loessLine, smoother.args=list(),
+    spread = !by.groups, reg.line=lm,
     transform=FALSE, family=c("bcPower", "yjPower"),
     ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
     groups=NULL, by.groups=FALSE, 
@@ -60,6 +61,11 @@ spm(x, ...)
     Setting this argument to something other than a function, e.g., \code{FALSE} suppresses the smoother.}
   \item{smoother.args}{a list of named values to be passed to the smoother function; the specified elements of the
     list depend upon the smoother (see \code{\link{ScatterplotSmoothers}}).}
+  \item{spread}{if TRUE, estimate the (square root) of the variance function.  For \code{loessLine} and
+    for \code{gamLine}, this is done by separately smoothing the squares of the postive and negative
+    residuals from the mean fit, and then adding the square root of the fitted values to the mean fit.  For
+    \code{quantregLine}, fit the .25 and .75 quantiles with a quantile regression additive model.
+    The default is TRUE if \code{by.groups=FALSE} and FALSE is \code{by.groups=TRUE}.}
   \item{reg.line}{if not \code{FALSE} a line is plotted using the
     function given by this argument; e.g., using \code{rlm} in
     package \code{MASS} plots a robust-regression line.}

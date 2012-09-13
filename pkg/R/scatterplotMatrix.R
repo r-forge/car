@@ -49,7 +49,8 @@ scatterplotMatrix.formula <- function (formula, data=NULL, subset, labels, ...) 
 
 scatterplotMatrix.default <- function(x, var.labels=colnames(x), 
                                       diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
-                                      plot.points=TRUE, smoother=gamLine, smoother.args=list(), reg.line=lm, 
+                                      plot.points=TRUE, smoother=loessLine, smoother.args=list(),
+                                      spread = !by.groups, reg.line=lm,
                                       transform=FALSE, family=c("bcPower", "yjPower"),
                                       ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
                                       groups=NULL, by.groups=FALSE, 
@@ -154,7 +155,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
                   if (plot.points) points(x[subs], y[subs], pch=pch[i], col=col[if (n.groups == 1) 3 else i], cex=cex)
                   if (by.groups){
                       if (is.function(smoother)) smoother(x[subs], y[subs], col=col[i],
-                                                          log.x=FALSE, log.y=FALSE, by.groups=by.groups, smoother.args=smoother.args)
+                                                          log.x=FALSE, log.y=FALSE, spread=spread, smoother.args=smoother.args)
                       if (is.function(reg.line)) reg(reg.line, x[subs], y[subs], lty=lty, lwd=lwd, log.x=FALSE, log.y=FALSE, col=col[i])
                       if (ellipse) dataEllipse(x[subs], y[subs], plot.points=FALSE, 
                                                levels=levels, col=col[i], robust=robust, lwd=1)
@@ -165,7 +166,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
               if (!by.groups){
                   if (is.function(reg.line)) abline(reg.line(y ~ x), lty=lty, lwd=lwd, col=col[1])
                   if (is.function(smoother)) smoother(x, y, col=col[2], 
-                                                      log.x=FALSE, log.y=FALSE, by.groups=by.groups, smoother.args=smoother.args)
+                                                      log.x=FALSE, log.y=FALSE, spread=spread, smoother.args=smoother.args)
                   if (ellipse) dataEllipse(x, y, plot.points=FALSE, levels=levels, col=col[1],
                                            robust=robust, lwd=1)
                   showLabels(x, y, labs, id.method=id.method, 
