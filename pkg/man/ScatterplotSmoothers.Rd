@@ -57,10 +57,11 @@ additional arguments to the smoother.
 
 For \code{loessLine} the default value is
 \code{smoother.args=list(lty=1, lwd=2, lty.spread=2, lwd.spread=1, span=0.5,
+degree=2, family="symmetric",
 loess.threshold=5)}.  The arguments \code{lty} and \code{lwd} are the type and width 
 respectively of the mean or median smooth, \code{smooth.lty}
 and \code{smooth.lwd} are the type and color of the spread smooths if requested.
-The \code{span} is
+The arguments \code{span}, \code{degree} and \code{family} are
 passed to the \code{\link{loess}} function, and \code{loess.threshold} is the minimum
 number of support points needed to compute the smooth.
 

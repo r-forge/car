@@ -19,6 +19,8 @@ loessLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args) {
     lty.spread <- default.arg(smoother.args, "lty.spread", 2)
     lwd.spread <- default.arg(smoother.args, "lwd.spread", 1)
     span <- default.arg(smoother.args, "span", 0.5)
+    family <- default.arg(smoother.args, "family", "symmetric")
+    degree <- default.arg(smoother.args, "degree", 2)
     loess.threshold <- default.arg(smoother.args, "loess.threshold", 5)
     if (log.x) x <- log(x)
     if (log.y) y <- log(y)
@@ -32,7 +34,7 @@ loessLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args) {
     warn <- options(warn=-1)
     on.exit(options(warn)) 
     if (!spread){
-        fit <- try(loess.smooth(x, y, span=span), silent=TRUE)
+        fit <- try(loess.smooth(x, y, span=span, family=family, degree=degree), silent=TRUE)
         if (class(fit)[1] == "try-error"){ 
              (warn)
             warning("could not fit smooth")
@@ -43,7 +45,7 @@ loessLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args) {
         lines(x, y, lwd=lwd, col=col, lty=lty)
     }
     else{
-        fit <- try(loess(y ~ x, degree=1, family="symmetric", span=span), silent=TRUE)
+        fit <- try(loess(y ~ x, degree=degree, family="symmetric", span=span), silent=TRUE)
         if (class(fit) == "try-error"){
             options(warn)
             warning("could not fit smooth")
@@ -52,8 +54,8 @@ loessLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args) {
         res <- residuals(fit)
         pos <- res > 0
         if (sum(pos) < loess.threshold || sum(!pos) < loess.threshold) return
-        pos.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="gaussian", subset=pos), silent=TRUE)
-        neg.fit <- try(loess(res^2 ~ x, span=span, degree=0, family="gaussian", subset=!pos), silent=TRUE)
+        pos.fit <- try(loess(res^2 ~ x, span=span, degree=0, family=family, subset=pos), silent=TRUE)
+        neg.fit <- try(loess(res^2 ~ x, span=span, degree=0, family=family, subset=!pos), silent=TRUE)
         if (class(pos.fit) == "try-error" || class(neg.fit) == "try.error"){
             options(warn)
             warning("could not smooth spread")
