@@ -12,6 +12,7 @@
 # and boxplot.
 # 16 June 2011 allow layout=NA, in which case the layout is not set in this
 #  function, so it is the responsibility of the user
+# 14 Sept 2012 use the ScatterplotSmoothers in car
 
 # these functions to be rewritten; simply renamed for now
 
@@ -58,8 +59,8 @@ crPlot.lm<-function(model, variable,
   labels, 
   id.n = if(id.method[1]=="identify") Inf else 0,
   id.cex=1, id.col=palette()[1],
-  order=1, line=TRUE, smooth=TRUE,
-	iter, span=.5, 
+  order=1, line=TRUE, smoother=loessLine,
+  smoother.args=list(),
   col=palette()[1], col.lines=palette()[-1],
   xlab, ylab, pch=1, lwd=2, grid=TRUE, ...) { 
 	# method also works for glm objects
@@ -83,12 +84,6 @@ crPlot.lm<-function(model, variable,
 			ylab=ylab, ...)
 		return(invisible())
 	}
-	if (missing(iter)){
-		iter<-if(("glm"==class(model)[1]) &&
-				("gaussian"!=as.character(family(model))[1]))
-				0
-			else 3
-	}    # use nonrobust smooth for non-gaussian glm
 	.x<-if (df.terms(model, var)>1) predict(model, type="terms", term=var)
 		else model.matrix(model)[,var]
 	if (order==1){          # handle first-order separately for efficiency
@@ -100,9 +95,9 @@ crPlot.lm<-function(model, variable,
       box()}
 		points(.x, partial.res[,var], col=col, pch=pch)
 		if (line) abline(lm(partial.res[,var]~.x), lty=2, lwd=lwd, col=col.lines[1])
-		if (smooth) {
-			lines(lowess(.x, partial.res[,var], iter=iter, f=span), lwd=lwd, 
-            col=col.lines[2])
+	if (is.function(smoother)) {
+    smoother(.x, partial.res[,var], col=col.lines[2], log.x=FALSE,
+       log.y=FALSE, spread=FALSE, smoother.args=smoother.args)
 		}
 		showLabels(.x, partial.res[,var], labels=labels, 
             id.method=id.method, id.n=id.n, id.cex=id.cex,
@@ -122,9 +117,9 @@ crPlot.lm<-function(model, variable,
       box()}
 		points(.x, partial.res[,last], col=col, pch=pch)
 		if (line) abline(lm(partial.res[,last]~.x), lty=2, lwd=lwd, col=col.lines[1])
-		if (smooth) {
-			lines(lowess(.x, partial.res[,last], iter=iter, f=span), lwd=lwd, 
-         col=col.lines[2])
+ 	  if (is.function(smoother)) {
+      smoother(.x, partial.res[, last], col=col.lines[2], log.x=FALSE,
+         log.y=FALSE, spread=FALSE, smoother.args=smoother.args)
 		}
 		showLabels(.x, partial.res[,last], labels=labels, 
             id.method=id.method, id.n=id.n, id.cex=id.cex,

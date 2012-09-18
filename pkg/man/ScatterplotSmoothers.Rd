@@ -57,15 +57,26 @@ additional arguments to the smoother.
 
 For \code{loessLine} the default value is
 \code{smoother.args=list(lty=1, lwd=2, lty.spread=2, lwd.spread=1, span=0.5,
-degree=2, family="symmetric",
-loess.threshold=5)}.  The arguments \code{lty} and \code{lwd} are the type and width 
+degree=2, family="symmetric", iterations=4)}.  
+The arguments \code{lty} and \code{lwd} are the type and width 
 respectively of the mean or median smooth, \code{smooth.lty}
 and \code{smooth.lwd} are the type and color of the spread smooths if requested.
 The arguments \code{span}, \code{degree} and \code{family} are
-passed to the \code{\link{loess}} function, and \code{loess.threshold} is the minimum
-number of support points needed to compute the smooth.
+passed to the \code{\link{loess}} function, \code{iterations=0} by default
+specifies no robustness iterations.
 
 For \code{gamLine} the default is
+\code{smoother.args=list(lty=1, lwd=2, lty.spread=2, lwd.spread=1,
+k=-1, bs="tp", family="gaussian", link=NULL, weights=NULL)}
+The first for arguments are as for \code{loessLine}.  The next two 
+arguments are passed to the \code{gam} function to control the smoothing:
+\code{k=-1} allows \code{gam} to choose the number of splines in the basis
+function; \code{bs="tp"} provides the type of spline basis to be used with \code{"tp"} 
+for the default thin-plate splines.  The last three arguments allow providing
+a family, link and weights as in generalized linear models.  See examples
+below.
+
+For \code{quantregLine} the default is
 \code{smoother.args=list(lty=1, lwd=2, lty.spread=2, lwd.spread=1,
 lambda=IQR(x)}.  The first four
 arguments are as for \code{loessLine}.  The last argument is passed to the
