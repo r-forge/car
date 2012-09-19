@@ -9,7 +9,7 @@
 # 2012-04-24: J. Fox: further fix to labels
 # 2012-09-12: J. Fox: modified treatment of smoother; added loessLine(), gamLine(), quantregLine(). 
 # 2012-09-17: S. Weisberg:  smoothers moved to scatterplotSmoothers.R, defaults changed
-
+# 2012-09-19: J. Fox: stored smooth and span arguments for backwards compatibility
 
 reg <- function(reg.line, x, y, col, lwd, lty, log.x, log.y){
     if(log.x) x <- log(x)
@@ -77,7 +77,7 @@ scatterplot.formula <- function (formula, data, subset, xlab, ylab, legend.title
     }
 }
 
-scatterplot.default <- function(x, y, smoother=loessLine, smoother.args=list(),
+scatterplot.default <- function(x, y, smoother=loessLine, smoother.args=list(), smooth, span,
                                 spread=!by.groups, reg.line=lm,
                                 boxplots=if (by.groups) "" else "xy",
                                 xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
@@ -153,6 +153,11 @@ scatterplot.default <- function(x, y, smoother=loessLine, smoother.args=list(),
     by.groups
     legend.plot
     legend.title
+    # smooth and span for backwards compatibility
+    if (!missing(smooth)) {
+        smoother <- if (isTRUE(smooth)) loessLine else FALSE
+    }
+    if (!missing(span)) smoother.args$span <- span
     if (is.character(family)) family <- eval(parse(text=family))
     if (missing(labels)){
         labels <- if (is.null(names(y)))

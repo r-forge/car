@@ -17,7 +17,8 @@ scatterplot(x, ...)
 	labels, ...)
 
 \method{scatterplot}{default}(x, y, 
-    smoother=loessLine, smoother.args=list(), spread=!by.groups, reg.line=lm,
+    smoother=loessLine, smoother.args=list(), smooth, span,
+    spread=!by.groups, reg.line=lm,
     boxplots=if (by.groups) "" else "xy",
     xlab=deparse(substitute(x)), ylab=deparse(substitute(y)), las=par("las"),
     lwd=1, lty=1,
@@ -52,6 +53,8 @@ sp(...)
     Setting this argument to something other than a function, e.g., \code{FALSE} suppresses the smoother.}
   \item{smoother.args}{a list of named values to be passed to the smoother function; the specified elements of the
     list depend upon the smoother (see \code{\link{ScatterplotSmoothers}}).}
+  \item{smooth, span}{these arguments are included for backwards compatility: if \code{smooth=TRUE} then \code{smoother} is set to \code{loessLine},
+  and if \code{span} is specified, it is added to \code{smoother.args}.}
   \item{spread}{if TRUE, estimate the (square root) of the variance function.  For \code{loessLine} and
     for \code{gamLine}, this is done by separately smoothing the squares of the postive and negative
     residuals from the mean fit, and then adding the square root of the fitted values to the mean fit.  For

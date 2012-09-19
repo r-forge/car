@@ -18,7 +18,7 @@ scatterplotMatrix(x, ...)
 \method{scatterplotMatrix}{default}(x, var.labels=colnames(x), 
     diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), 
     adjust=1, nclass,
-    plot.points=TRUE, smoother=loessLine, smoother.args=list(),
+    plot.points=TRUE, smoother=loessLine, smoother.args=list(), smooth, span,
     spread = !by.groups, reg.line=lm,
     transform=FALSE, family=c("bcPower", "yjPower"),
     ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
@@ -61,6 +61,8 @@ spm(x, ...)
     Setting this argument to something other than a function, e.g., \code{FALSE} suppresses the smoother.}
   \item{smoother.args}{a list of named values to be passed to the smoother function; the specified elements of the
     list depend upon the smoother (see \code{\link{ScatterplotSmoothers}}).}
+  \item{smooth, span}{these arguments are included for backwards compatility: if \code{smooth=TRUE} then \code{smoother} is set to \code{loessLine},
+  and if \code{span} is specified, it is added to \code{smoother.args}.}
   \item{spread}{if TRUE, estimate the (square root) of the variance function.  For \code{loessLine} and
     for \code{gamLine}, this is done by separately smoothing the squares of the postive and negative
     residuals from the mean fit, and then adding the square root of the fitted values to the mean fit.  For

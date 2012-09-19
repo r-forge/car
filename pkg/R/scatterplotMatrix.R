@@ -5,6 +5,7 @@
 # 2011-03-08: J. Fox: changed col argument
 # 2012-04-18: J. Fox: fixed labels argument in scatterplotMatrix.formula()
 # 2012-09-12: J. Fox: smoother now given as function
+# 2012-09-19: J. Fox: restored smooth and span args for backwards compatibility
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
@@ -50,6 +51,7 @@ scatterplotMatrix.formula <- function (formula, data=NULL, subset, labels, ...) 
 scatterplotMatrix.default <- function(x, var.labels=colnames(x), 
                                       diagonal=c("density", "boxplot", "histogram", "oned", "qqplot", "none"), adjust=1, nclass,
                                       plot.points=TRUE, smoother=loessLine, smoother.args=list(),
+                                      smooth, span,
                                       spread = !by.groups, reg.line=lm,
                                       transform=FALSE, family=c("bcPower", "yjPower"),
                                       ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
@@ -126,6 +128,11 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
         if (do.legend) legendPlot()
         do.legend <<- FALSE
     }
+    # smooth and span for backwards compatibility
+    if (!missing(smooth)) {
+        smoother <- if (isTRUE(smooth)) loessLine else FALSE
+    }
+    if (!missing(span)) smoother.args$span <- span    
     which.fn <- match(match.arg(diagonal),
                       c("density", "boxplot", "histogram", "oned", "qqplot", "none"))
     diag <- list(panel.density, panel.boxplot, panel.histogram, panel.oned, panel.qqplot, panel.blank)[[which.fn]]
