@@ -9,7 +9,7 @@
 # 2012-04-24: J. Fox: further fix to labels
 # 2012-09-12: J. Fox: modified treatment of smoother; added loessLine(), gamLine(), quantregLine(). 
 # 2012-09-17: S. Weisberg:  smoothers moved to scatterplotSmoothers.R, defaults changed
-# 2012-09-19: J. Fox: stored smooth and span arguments for backwards compatibility
+# 2012-09-19: J. Fox: restored smooth and span arguments for backwards compatibility
 
 reg <- function(reg.line, x, y, col, lwd, lty, log.x, log.y){
     if(log.x) x <- log(x)

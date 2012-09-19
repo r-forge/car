@@ -13,6 +13,7 @@
 # 16 June 2011 allow layout=NA, in which case the layout is not set in this
 #  function, so it is the responsibility of the user
 # 14 Sept 2012 use the ScatterplotSmoothers in car
+# 19 Sept 2012 restore smooth and span args
 
 # these functions to be rewritten; simply renamed for now
 
@@ -60,11 +61,16 @@ crPlot.lm<-function(model, variable,
   id.n = if(id.method[1]=="identify") Inf else 0,
   id.cex=1, id.col=palette()[1],
   order=1, line=TRUE, smoother=loessLine,
-  smoother.args=list(),
+  smoother.args=list(), smooth, span,
   col=palette()[1], col.lines=palette()[-1],
   xlab, ylab, pch=1, lwd=2, grid=TRUE, ...) { 
 	# method also works for glm objects
 	if(missing(labels)) labels <- names(residuals(model))
+    # smooth and span for backwards compatibility
+    if (!missing(smooth)) {
+        smoother <- if (isTRUE(smooth)) loessLine else FALSE
+    }
+    if (!missing(span)) smoother.args$span <- span
 	if(!is.null(class(model$na.action)) && 
 		class(model$na.action) == 'exclude') class(model$na.action) <- 'omit'
 	var<-if (is.character(variable) & 1==length(variable)) variable

@@ -14,6 +14,7 @@
 # 16 June 2011 allow layout=NA, in which case the layout is not set in this
 #  function, so it is the responsibility of the user
 # 14 Sept 2012 use the ScatterplotSmoothers in car
+# 18 Sept 2012 restore smooth and span args
 
 ceresPlots<-function(model, terms= ~ ., layout=NULL, ask, main, ...){
   terms <- if(is.character(terms)) paste("~", terms) else terms
@@ -64,12 +65,17 @@ ceresPlot.lm<-function(model, variable,
   labels, 
   id.n = if(id.method[1]=="identify") Inf else 0,
   id.cex=1, id.col=palette()[1],
-  line=TRUE, smoother=loessLine, smoother.args=list(),
+  line=TRUE, smoother=loessLine, smoother.args=list(), smooth, span,
 	col=palette()[1], col.lines=palette()[-1],
   xlab, ylab, pch=1, lwd=2,  
   grid=TRUE, ...){
 	# the lm method works with glm's too              
-	if(missing(labels)) labels <- names(residuals(model))	
+	if(missing(labels)) labels <- names(residuals(model))
+    # smooth and span for backwards compatibility
+    if (!missing(smooth)) {
+        smoother <- if (isTRUE(smooth)) loessLine else FALSE
+    }
+    if (!missing(span)) smoother.args$span <- span
 	expand.model.frame <- function (model, extras, envir = environment(formula(model)),
 		na.expand = FALSE){  # modified version of R base function
 		f <- formula(model)
