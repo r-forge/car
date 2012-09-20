@@ -1,3 +1,7 @@
+Changes to Version 2.0-15
+
+    o Nothing yet!
+
 Changes to Version 2.0-14
 
     o Smoothers now given as arguments to scatterplot(), scatterplotMatrix(), residualPlots() and other functions; gamLine(), loessLine() (default), and quantregLine() smoothers provided.
