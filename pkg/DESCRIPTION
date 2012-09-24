@@ -1,6 +1,6 @@
 Package: car
 Version: 2.0-15
-Date: 2012/09/19
+Date: 2012/09/24
 Title: Companion to Applied Regression
 Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaster.ca"),
 	person("Sanford", "Weisberg", role = "aut", email = "sandy@umn.edu"),
@@ -15,7 +15,8 @@ Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaste
     person("Henric", "Nilsson", role = "ctb"),
     person("Derek", "Ogle", role = "ctb"),
     person("Brian", "Ripley", role = "ctb"),
-    person("Achim", "Zeileis", role = "ctb"))
+    person("Achim", "Zeileis", role = "ctb"),
+    person("R-Core", role="ctb"))
 Depends: R (>= 2.14.0), stats, graphics, MASS, nnet
 Suggests: alr3, boot, leaps, lme4, lmtest, nlme, quantreg, sandwich, mgcv, pbkrtest (>= 0.3-2), rgl, survival, survey
 ByteCompile: yes
