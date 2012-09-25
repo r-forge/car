@@ -1,5 +1,7 @@
 Changes to Version 2.0-15
 
+    o residualPlots for glms now ignore starting values for the computing algorithm when computing lack of fit tests; starting values previously caused an error.
+
     o Marginal Model Plots now allow conditioning on a categorical variable.
 
 Changes to Version 2.0-14
