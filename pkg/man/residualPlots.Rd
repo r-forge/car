@@ -101,7 +101,7 @@ are skipped; if \code{TRUE}, the default, they are included.
 If \code{TRUE}, draw the plot(s).
 }
   \item{tests}{
-If \code{TRUE}, display the curvature tests.  With glm's, the argument \code{start]
+If \code{TRUE}, display the curvature tests.  With glm's, the argument \code{start}
 is ignored in computing the curvature tests.
 }
   \item{...}{

@@ -1,4 +1,4 @@
-# last modified 2012-09-11 by J. Fox
+# last modified 2012-09-30 by J. Fox
 
 export(
     basicPowerAxis,
@@ -17,6 +17,7 @@ export(
     qqPlot,
     qqp,
     recode,
+    Recode,
     regLine,
     scatter3d,
     scatterplot, 
