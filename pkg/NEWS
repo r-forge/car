@@ -1,5 +1,7 @@
 Changes to Version 2.0-15
 
+    o Added an nls method for Boot
+
     o Recode() introduced as alias for recode() to avoid name clash with Hmisc.
 
     o residualPlots for glms now ignore starting values for the computing algorithm when computing lack of fit tests; starting values previously caused an error.
