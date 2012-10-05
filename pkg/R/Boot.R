@@ -89,7 +89,7 @@ Boot.nls <- function(object, f=coef, labels=names(coef(object)),
   if(method=="case") {
      boot.f <- function(data, indices, f) {
          assign(".boot.indices", indices, envir=.GlobalEnv)
-         mod <- try(update(object, subset=.boot.indices))
+         mod <- try(update(object, subset=.boot.indices, start=coef(object)))
          if(class(mod) == "try-error"){
             out <- f(object)
             out <- rep(NA, length(out)) } else  {out <- f(mod)}
@@ -106,7 +106,7 @@ Boot.nls <- function(object, f=coef, labels=names(coef(object)),
             val <- naresid(pad, val)
             }
       assign(".y.boot", val, envir=.GlobalEnv)
-      mod <- try(update(object, .y.boot ~ .))
+      mod <- try(update(object, .y.boot ~ ., start=coef(object)))
       if(class(mod) == "try-error"){
             out <- f(object)
             out <- rep(NA, length(out)) } else  {out <- f(mod)}
