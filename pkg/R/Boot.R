@@ -133,7 +133,7 @@ confint.boot <- function(object, parm, level = 0.95,
   typelab <- c("bca", "normal",   "basic", "percent")[match(type, types)]
   nn <- colnames(object$t)
   names(nn) <- nn
-  parm <- if(missing(parm)) seq(length(nn)) else parm
+  parm <- if(missing(parm)) which(!is.na(object$t0)) else parm
   out <- list()
   for (j in 1:length(parm)){
    out[[j]] <- boot.ci(object, conf=level, type=type, index=parm[j], ...)
@@ -173,11 +173,12 @@ summary.boot <- function (object, parm, high.moments = FALSE,
        xbar <- mean(x)
        sum((x - xbar)^4)/(length(x) * sd(x)^4) - 3
        }
-    boots <- object$t
+    not.aliased <-  !is.na(object$t0)
+    boots <- object$t[ , not.aliased ]
     stats <- matrix(rep(NA, ncol(boots) * 10), ncol = 10)
     rownames(stats) <- colnames(boots)
     stats[, 1] <- apply(boots, 2, function(x) sum(!is.na(x))) # num. obs
-    stats[, 2] <- object$t0  # point estimate
+    stats[, 2] <- object$t0[not.aliased]  # point estimate
     stats[, 3] <- apply(boots, 2, function(x) mean(x, na.rm=TRUE)) - stats[, 2]
     stats[, 5] <- apply(boots, 2, function(x) median(x, na.rm=TRUE))
     stats[, 4] <- apply(boots, 2, function(x) sd(x, na.rm=TRUE))
@@ -209,11 +210,12 @@ hist.boot <- function(x, parm, layout=NULL, ask, main="", freq=FALSE,
       estNormal = !freq,  nor.col="red",   nor.lty=2, nor.lwd=2,
       ci=c("bca", "none", "percentile"), level=0.95,
       legend=c("top", "none", "separate"), box=TRUE, ...){
+  not.aliased <- which(!is.na(x$t0))
   ci <- match.arg(ci)
   legend <- match.arg(legend)
-  pe <- x$t0
+  pe <- x$t0[not.aliased]
   if(is.null(names(pe))) names(pe) <- colnames(x$t)
-  if(missing(parm)) parm <- 1:length(pe)
+  if(missing(parm)) parm <- not.aliased
   nt <- length(parm) + if(legend == "separate") 1 else 0
   if (nt > 1 & (is.null(layout) || is.numeric(layout))) {
     if(is.null(layout)){
