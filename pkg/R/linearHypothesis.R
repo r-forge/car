@@ -148,14 +148,31 @@ linearHypothesis <- function (model, ...)
 
 lht <- function (model, ...)
 	UseMethod("linearHypothesis")
+	
+linearHypothesis.nlsList <- function(model,  ..., vcov., coef.){
+   vcov.nlsList <- function(object, ...) {
+       vlist <- lapply(object, vcov)
+       ng <- length(vlist)
+       nv <- dim(vlist[[1]])[1]
+       v <- matrix(0, nrow=ng*nv, ncol=ng*nv)
+       for (j in 1:ng){
+          cells <- ((j-1)*nv + 1):(j*nv)
+          v[cells, cells] <- vlist[[j]]
+        }
+      v
+      }
+   linearHypothesis.default(model, vcov.=vcov.nlsList(model), 
+       coef.=unlist(lapply(model, coef)), ...)}
+
 
 linearHypothesis.default <- function(model, hypothesis.matrix, rhs=NULL,
-		test=c("Chisq", "F"), vcov.=NULL, singular.ok=FALSE, verbose=FALSE, ...){
+		test=c("Chisq", "F"), vcov.=NULL, singular.ok=FALSE, verbose=FALSE, 
+    coef. = coef(model), ...){
 	df <- df.residual(model)
 	if (is.null(df)) df <- Inf ## if no residual df available
 	V <- if (is.null(vcov.)) vcov(model)
 			else if (is.function(vcov.)) vcov.(model) else vcov.
-	b <- coef(model)
+	b <- coef.
 	if (any(aliased <- is.na(b)) && !singular.ok)
 		stop("there are aliased coefficients in the model")
 	b <- b[!aliased]

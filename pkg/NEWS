@@ -4,6 +4,10 @@ Changes to Version 2.0-16
 
 Changes to Version 2.0-15
 
+    o Added an argument coef. to linearHypothesis so tests of the linear hypohtesis form canbe computed without reference to a fitted model
+
+    o Added a linearHypothesis.nlsList method
+    
     o Added an nls method for Boot
 
     o Recode() introduced as alias for recode() to avoid name clash with Hmisc.

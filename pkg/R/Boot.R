@@ -174,8 +174,9 @@ summary.boot <- function (object, parm, high.moments = FALSE,
        sum((x - xbar)^4)/(length(x) * sd(x)^4) - 3
        }
     not.aliased <-  !is.na(object$t0)
-    boots <- object$t[ , not.aliased ]
-    stats <- matrix(rep(NA, ncol(boots) * 10), ncol = 10)
+    boots <- object$t[ , not.aliased, drop=FALSE ]
+    nc <- if(is.matrix(boots)) ncol(boots) else 1
+    stats <- matrix(rep(NA, nc * 10), ncol = 10)
     rownames(stats) <- colnames(boots)
     stats[, 1] <- apply(boots, 2, function(x) sum(!is.na(x))) # num. obs
     stats[, 2] <- object$t0[not.aliased]  # point estimate
