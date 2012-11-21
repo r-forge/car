@@ -18,6 +18,7 @@
 #   2012-03-07: singular.ok argument added to linearHypothesis.mlm(). J. Fox
 #   2012-08-20: Fixed p-value bug for chisq test in .mer method. John
 #   2012-09-17: updated linearHypothesis.mer for pkrtest 0.3-2. John
+#   2012-11-21: test for NULL rhs to avoid warning in R 2.16.0. John
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -72,7 +73,7 @@ makeHypothesis <- function(cnames, hypothesis, rhs = NULL){
 		rv
 	}
 	
-	rhs <- rep(rhs, length.out = length(hypothesis))
+	if (!is.null(rhs)) rhs <- rep(rhs, length.out = length(hypothesis))
 	if (length(hypothesis) > 1)
 		return(rbind(Recall(cnames, hypothesis[1], rhs[1]),
 						Recall(cnames, hypothesis[-1], rhs[-1])))
