@@ -1,6 +1,7 @@
 # March 9, 2012 modified by SW as suggested by Derek Ogle to return an object
 # of class c("bootCase", "matrix").  
 # May 2012 added methods for 'bootCase'
+# 2012-12-10 replaced .GlobalEnv by .carEnv to suppress warnings
 
 nextBoot <- function(object, sample){UseMethod("nextBoot")}
 nextBoot.default <- function(object, sample){
@@ -36,8 +37,8 @@ bootCase.default <- function (object, f=coef, B = 999, rows)
     count.error <- 0
     i <- 0
     while (i < B) {
-		assign(".boot.sample", sample(rows, replace=TRUE), envir=.GlobalEnv)
-        obj.boot <- try(update(object, subset=.boot.sample))
+		assign(".boot.sample", sample(rows, replace=TRUE), envir=.carEnv)
+        obj.boot <- try(update(object, subset=get(".boot.sample", envir=.carEnv)))
         if (is.null(class(obj.boot))) {
             count.error <- 0
             i <- i + 1
@@ -57,7 +58,7 @@ bootCase.default <- function (object, f=coef, B = 999, rows)
             options(show.error.messages = TRUE)
             stop("25 consecutive bootstraps did not converge.  Bailing out.")}
     }
-	remove(".boot.sample", envir=.GlobalEnv)
+	remove(".boot.sample", envir=.carEnv)
 	attr(coefBoot, "pointEstimate") <- pointEstimate
     return(coefBoot)
 }

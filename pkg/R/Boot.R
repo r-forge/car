@@ -15,6 +15,7 @@
 #             method="residual" not implemented.  Too problematic.
 # May 23, 2012 Sanford Weisberg sandy@umn.edu
 # June 1, 2012:  changed from class c("Boot", "boot") to just class "boot"
+# 2012-12-10 replaced .GlobalEnv with .carEnv to avoid warnings
 
 Boot <- function(object, f, labels, R=999, method){UseMethod("Boot")}
 
@@ -26,8 +27,8 @@ Boot.default <- function(object, f=coef, labels=names(coef(object)),
   method <- match.arg(method)
   if(method=="case") {
      boot.f <- function(data, indices, f) {
-      assign(".boot.indices", indices, envir=.GlobalEnv)
-      mod <- update(object, subset=.boot.indices)
+      assign(".boot.indices", indices, envir=.carEnv)
+      mod <- update(object, subset=get(".boot.indices", envir=.carEnv))
       if(mod$qr$rank != object$qr$rank){
             out <- f(object)
             out <- rep(NA, length(out)) } else  {out <- f(mod)}
@@ -45,8 +46,8 @@ Boot.default <- function(object, f=coef, labels=names(coef(object)),
             attr(pad, "class") <- "exclude" 
             val <- naresid(pad, val)
             }
-      assign(".y.boot", val, envir=.GlobalEnv)
-      mod <- update(object, .y.boot ~ .)
+      assign(".y.boot", val, envir=.carEnv)
+      mod <- update(object, get(".y.boot", envir=.carEnv) ~ .)
       if(mod$qr$rank != object$qr$rank){
             out <- f(object)
             out <- rep(NA, length(out)) } else  {out <- f(mod)}
@@ -55,8 +56,8 @@ Boot.default <- function(object, f=coef, labels=names(coef(object)),
   }
   b <- boot(data.frame(update(object, model=TRUE)$model), boot.f, R, f=f)
   colnames(b$t) <- labels
-  if(exists(".y.boot")) remove(".y.boot", envir=.GlobalEnv)
-  if(exists(".boot.indices")) remove(".boot.indices", envir=.GlobalEnv)
+  if(exists(".y.boot", envir=.carEnv)) remove(".y.boot", envir=.carEnv)
+  if(exists(".boot.indices", envir=.carEnv)) remove(".boot.indices", envir=.carEnv)
   b
   }
   
@@ -88,8 +89,9 @@ Boot.nls <- function(object, f=coef, labels=names(coef(object)),
   opt<-options(show.error.messages = FALSE)
   if(method=="case") {
      boot.f <- function(data, indices, f) {
-         assign(".boot.indices", indices, envir=.GlobalEnv)
-         mod <- try(update(object, subset=.boot.indices, start=coef(object)))
+         assign(".boot.indices", indices, envir=.carEnv)
+         mod <- try(update(object, subset=get(".boot.indices", envir=.carEnv),
+                 start=coef(object)))
          if(class(mod) == "try-error"){
             out <- f(object)
             out <- rep(NA, length(out)) } else  {out <- f(mod)}
@@ -105,8 +107,9 @@ Boot.nls <- function(object, f=coef, labels=names(coef(object)),
             attr(pad, "class") <- "exclude"
             val <- naresid(pad, val)
             }
-      assign(".y.boot", val, envir=.GlobalEnv)
-      mod <- try(update(object, .y.boot ~ ., start=coef(object)))
+      assign(".y.boot", val, envir=.carEnv)
+      mod <- try(update(object, get(".y.boot", envir-.carEnv) ~ .,
+             start=coef(object)))
       if(class(mod) == "try-error"){
             out <- f(object)
             out <- rep(NA, length(out)) } else  {out <- f(mod)}
@@ -115,8 +118,8 @@ Boot.nls <- function(object, f=coef, labels=names(coef(object)),
   }
   b <- boot(data.frame(update(object, model=TRUE)$model), boot.f, R, f=f)
   colnames(b$t) <- labels
-  if(exists(".y.boot")) remove(".y.boot", envir=.GlobalEnv)
-  if(exists(".boot.indices")) remove(".boot.indices", envir=.GlobalEnv)
+  if(exists(".y.boot", envir=.carEnv)) remove(".y.boot", envir=.carEnv)
+  if(exists(".boot.indices", envir=.carEnv)) remove(".boot.indices", envir=.carEnv)
   options(opt)
   d <- dim(na.omit(b$t))[1]
   if(d != R)
