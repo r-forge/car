@@ -1,5 +1,7 @@
 Changes to Version 2.0-16
 
+    o two bugs fixed in Boot  (found by David Pain)
+
     o summary.Boot, confint.Boot and hist.Boot handle aliases correctly.
 
     o Boxplot.formula() now accepts more than one conditioning variable (suggestion of Christina Yassouridis).

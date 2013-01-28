@@ -26,16 +26,16 @@ Boot.default <- function(object, f=coef, labels=names(coef(object)),
   if(length(labels) != length(f0)) labels <- paste("V", seq(length(f0)), sep="")
   method <- match.arg(method)
   if(method=="case") {
-     boot.f <- function(data, indices, f) {
+     boot.f <- function(data, indices, .fn) {
       assign(".boot.indices", indices, envir=.carEnv)
       mod <- update(object, subset=get(".boot.indices", envir=.carEnv))
       if(mod$qr$rank != object$qr$rank){
-            out <- f(object)
-            out <- rep(NA, length(out)) } else  {out <- f(mod)}
+            out <- .fn(object)
+            out <- rep(NA, length(out)) } else  {out <- .fn(mod)}
      out
      }
     } else {
-    boot.f <- function(data, indices, f) {
+    boot.f <- function(data, indices, .fn) {
       first <- all(indices == seq(length(indices)))
       res <- if(first) object$residuals else
                   residuals(object, type="pearson")/sqrt(1 - hatvalues(object))
@@ -49,12 +49,12 @@ Boot.default <- function(object, f=coef, labels=names(coef(object)),
       assign(".y.boot", val, envir=.carEnv)
       mod <- update(object, get(".y.boot", envir=.carEnv) ~ .)
       if(mod$qr$rank != object$qr$rank){
-            out <- f(object)
-            out <- rep(NA, length(out)) } else  {out <- f(mod)}
+            out <- .fn(object)
+            out <- rep(NA, length(out)) } else  {out <- .fn(mod)}
       out
       }
   }
-  b <- boot(data.frame(update(object, model=TRUE)$model), boot.f, R, f=f)
+  b <- boot(data.frame(update(object, model=TRUE)$model), boot.f, R, .fn=f)
   colnames(b$t) <- labels
   if(exists(".y.boot", envir=.carEnv)) remove(".y.boot", envir=.carEnv)
   if(exists(".boot.indices", envir=.carEnv)) remove(".boot.indices", envir=.carEnv)
@@ -72,7 +72,7 @@ Boot.glm <- function(object, f=coef, labels=names(coef(object)),
   if(length(labels) != length(f0)) labels <- paste("V", seq(length(f0)), sep="")
   method <- match.arg(method)
   require(boot)
-  if(method=="case") { Boot.lm(object, f, R, method)
+  if(method=="case") { Boot.lm(object, f, labels, R, method)
     } else {
     stop("Residual bootstrap not implemented in the 'car' function Boot.
   Use the 'boot' function in the 'boot' package to write
@@ -88,17 +88,17 @@ Boot.nls <- function(object, f=coef, labels=names(coef(object)),
   method <- match.arg(method)
   opt<-options(show.error.messages = FALSE)
   if(method=="case") {
-     boot.f <- function(data, indices, f) {
+     boot.f <- function(data, indices, .fn) {
          assign(".boot.indices", indices, envir=.carEnv)
          mod <- try(update(object, subset=get(".boot.indices", envir=.carEnv),
                  start=coef(object)))
          if(class(mod) == "try-error"){
-            out <- f(object)
-            out <- rep(NA, length(out)) } else  {out <- f(mod)}
+            out <- .fn(object)
+            out <- rep(NA, length(out)) } else  {out <- .fn(mod)}
      out
      }
     } else {
-    boot.f <- function(data, indices, f) {
+    boot.f <- function(data, indices, .fn) {
       first <- all(indices == seq(length(indices)))
       res <- residuals(object)
       val <- fitted(object) + res[indices]
@@ -111,12 +111,12 @@ Boot.nls <- function(object, f=coef, labels=names(coef(object)),
       mod <- try(update(object, get(".y.boot", envir-.carEnv) ~ .,
              start=coef(object)))
       if(class(mod) == "try-error"){
-            out <- f(object)
-            out <- rep(NA, length(out)) } else  {out <- f(mod)}
+            out <- .fn(object)
+            out <- rep(NA, length(out)) } else  {out <- .fn(mod)}
       out
       }
   }
-  b <- boot(data.frame(update(object, model=TRUE)$model), boot.f, R, f=f)
+  b <- boot(data.frame(update(object, model=TRUE)$model), boot.f, R, .fn=f)
   colnames(b$t) <- labels
   if(exists(".y.boot", envir=.carEnv)) remove(".y.boot", envir=.carEnv)
   if(exists(".boot.indices", envir=.carEnv)) remove(".boot.indices", envir=.carEnv)
