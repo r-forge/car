@@ -19,6 +19,7 @@
 #   2012-08-20: Fixed p-value bug for chisq test in .mer method. John
 #   2012-09-17: updated linearHypothesis.mer for pkrtest 0.3-2. John
 #   2012-11-21: test for NULL rhs to avoid warning in R 2.16.0. John
+#   2013-01-28: hypotheses can now contain newlines and tabs
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -38,6 +39,8 @@ makeHypothesis <- function(cnames, hypothesis, rhs = NULL){
 		component
 	}
 	stripchars <- function(x) {
+	  x <- gsub("\\n", " ", x)
+	  x <- gsub("\\t", " ", x)
 		x <- gsub(" ", "", x, fixed = TRUE)
 		x <- gsub("*", "", x, fixed = TRUE)
 		x <- gsub("-", "+-", x, fixed = TRUE)

@@ -207,7 +207,8 @@ matchCoefs(model, pattern, ...)
   numeric constants multiplying coefficient names (in which case the number
   precedes the coefficient, and may be separated from it by spaces or an
   asterisk); constants of 1 or -1 may be omitted.  Spaces are always optional.
-  Components are separated by plus or minus signs. See the examples below.
+  Components are separated by plus or minus signs. Newlines or tabs in
+  hypotheses will be treated as spaces. See the examples below.
   
   If the user sets the arguments \code{coef.} and \code{vcov.}, then the computations
   are done without reference to the \code{model} argument.  This is like assuming
