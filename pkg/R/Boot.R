@@ -67,12 +67,8 @@ Boot.lm <- function(object, f=coef, labels=names(coef(object)),
   
 Boot.glm <- function(object, f=coef, labels=names(coef(object)),
                      R=999, method=c("case", "residual")) {
-  if(!(require(boot))) stop("The 'boot' package is missing")
-  f0 <- f(object)
-  if(length(labels) != length(f0)) labels <- paste("V", seq(length(f0)), sep="")
   method <- match.arg(method)
-  require(boot)
-  if(method=="case") { Boot.lm(object, f, labels, R, method)
+  if(method=="case") { Boot.default(object, f, labels, R, method)
     } else {
     stop("Residual bootstrap not implemented in the 'car' function Boot.
   Use the 'boot' function in the 'boot' package to write

@@ -2,36 +2,37 @@
 # of class c("bootCase", "matrix").  
 # May 2012 added methods for 'bootCase'
 # 2012-12-10 replaced .GlobalEnv by .carEnv to suppress warnings
+# 2013-01-28 Changed argument f to f.
 
 nextBoot <- function(object, sample){UseMethod("nextBoot")}
 nextBoot.default <- function(object, sample){
    update(object, subset=sample)
    }
 nextBoot.lm <- function(object, sample) nextBoot.default(object, sample)
-nextBoot.nls <- function(object,sample){
+nextBoot.nls <- function(object, sample){
 # modify to assure resampling only rows in the original subset 9/1/2005
    update(object,subset=sample,start=coef(object),
     data=data.frame(update(object,model=TRUE)$model))}
 
-bootCase <- function(object, f=coef, B=999){UseMethod("bootCase")}
-bootCase.lm <- function(object, f=coef, B=999) {
-    bootCase.default(object, f, B, names(resid(object)))
+bootCase <- function(object, f.=coef, B=999){UseMethod("bootCase")}
+bootCase.lm <- function(object, f.=coef, B=999) {
+    bootCase.default(object, f., B, names(resid(object)))
 #    bootCase.default(update(object, 
 #             data=na.omit(model.frame(object))), f, B)
     }
-bootCase.glm <- function(object, f=coef, B=999) {
-    bootCase.lm(object, f, B)
+bootCase.glm <- function(object, f.=coef, B=999) {
+    bootCase.lm(object, f., B)
     }
-bootCase.nls <- function(object, f=coef, B=999) {
-    bootCase.default(object, f, B, seq(length(resid(object))))
+bootCase.nls <- function(object, f.=coef, B=999) {
+    bootCase.default(object, f., B, seq(length(resid(object))))
     }
-bootCase.default <- function (object, f=coef, B = 999, rows)
+bootCase.default <- function (object, f.=coef, B = 999, rows)
 {       
     n <- length(resid(object))
     opt<-options(show.error.messages = FALSE)
     on.exit(options(opt))
-    pointEstimate <- f(object)
-    coefBoot <- matrix(0, nrow=B, ncol=length(f(object)))
+    pointEstimate <- f.(object)
+    coefBoot <- matrix(0, nrow=B, ncol=length(f.(object)))
     colnames(coefBoot) <- names(pointEstimate)  # adds names if they exist
     class(coefBoot) <- c("bootCase", "matrix")
     count.error <- 0
@@ -42,13 +43,13 @@ bootCase.default <- function (object, f=coef, B = 999, rows)
         if (is.null(class(obj.boot))) {
             count.error <- 0
             i <- i + 1
-            coefBoot[i, ] <- f(obj.boot)
+            coefBoot[i, ] <- f.(obj.boot)
         }
         else {
             if (class(obj.boot)[1] != "try-error") {
                 count.error <- 0
                 i <- i + 1
-                coefBoot[i, ] <- f(obj.boot)
+                coefBoot[i, ] <- f.(obj.boot)
             }
             else {
                 count.error <- count.error + 1
