@@ -21,9 +21,9 @@ showLabels1 <- function(x, y, labels=NULL, id.method="identify",
 		labels <- paste(seq_along(x))
 # id.method can be a character string like "x" or "y", or it can be
 # a vector like abs(rstudent(model)) or c(1, 2, 4) or a vector of labels
-  use.built.in.method <- is.character(id.method) & length(id.method) == 1
-  if(use.built.in.method==TRUE) 
-	  match.arg(id.method, c("mahal", "x", "y", "identify")) 
+  id.meth <- pmatch(id.method[1], c("x", "y", "mahal", "identify"))
+  id.method <- if(!is.na(id.meth)) id.meth else id.method
+  use.built.in.method <- !is.na(id.meth) & length(id.method)==1 
 # label color
 	if (is.null(id.col))
 		id.col <- palette()[1]
@@ -45,8 +45,8 @@ showLabels1 <- function(x, y, labels=NULL, id.method="identify",
     if(length(id.method) == length(x)) id.var <- id.method else {
       id.var <- rep(0, length(x))
       names(id.var) <- labels
-      id.var[id.method] <- 1
-      id.n <- length(id.method)
+      id.var[labels %in% id.method] <- 1
+      id.n <- sum(labels %in% id.method)
       }}
 # missing values need to be removed   
 	ismissing <- is.na(x) | is.na(y) | is.na(labels) 
@@ -82,7 +82,7 @@ showLabels1 <- function(x, y, labels=NULL, id.method="identify",
 								      rowSums( qr.Q(qr(cbind(1, x, log(y))))^2 ) else 
                       return(invisible(NULL)))  } else {
                   rowSums( qr.Q(qr(cbind(1, x, y)))^2 ) }}})      
-     }    
+     }   
 # criterion
   ind <-  order(-id.var)[1L:id.n]
   mid <- mean(if(par("xlog")==TRUE) 10^(par("usr")[1:2]) else 

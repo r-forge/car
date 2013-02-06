@@ -1,5 +1,7 @@
 Changes to Version 2.0-16
 
+    o  fixed a bug in showLabels with multiple groups in the scatterplot function
+    
     o linearHypothesisTest() now tolerates newlines and tabs in hypotheses (suggestion of David Hugh-Jones).
 
     o two bugs fixed in Boot() (found by David Pain) changed argument f to f. in bootCase().
