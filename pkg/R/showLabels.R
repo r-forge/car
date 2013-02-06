@@ -1,5 +1,6 @@
 # last modified 25 Februrary 2010 by J. Fox
 # rewritten 15 April 2010 S Weisberg
+# 2013-02-06 S. Weisberg bug fix for use with 'scatterplot' with groups.
 
 showLabels <- function(x, y, labels=NULL, id.method="identify",  
   id.n = length(x), id.cex=1, id.col=palette()[1],  ...) {
