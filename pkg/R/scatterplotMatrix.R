@@ -6,6 +6,7 @@
 # 2012-04-18: J. Fox: fixed labels argument in scatterplotMatrix.formula()
 # 2012-09-12: J. Fox: smoother now given as function
 # 2012-09-19: J. Fox: restored smooth and span args for backwards compatibility
+# 2013-02-08: S. Weisberg: bug-fix for showLabels with groups 
 
 scatterplotMatrix <- function(x, ...){
 	UseMethod("scatterplotMatrix")
