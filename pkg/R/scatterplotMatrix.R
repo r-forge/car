@@ -167,7 +167,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
                       if (ellipse) dataEllipse(x[subs], y[subs], plot.points=FALSE, 
                                                levels=levels, col=col[i], robust=robust, lwd=1)
                       showLabels(x[subs], y[subs], labs[subs], id.method=id.method, 
-                                 id.n=id.n, id.col=col[i], id.cex=id.cex)
+                                 id.n=id.n, id.col=col[i], id.cex=id.cex, all=list(labels=labs, subs=subs))
                   }
               }
               if (!by.groups){

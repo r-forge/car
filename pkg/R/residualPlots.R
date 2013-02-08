@@ -131,8 +131,10 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
  if(plot==TRUE){
   vert <- switch(type, "rstudent"=rstudent(model), 
        "rstandard"=rstandard(model), residuals(model, type=type))
-  if(class(horiz) == "factor") {
-     idm <- switch(id.method, xy="y", x="y", y="y", "none")  
+  if(class(horiz) == "factor") {    
+     idm <- if(is.list(id.method)) {
+            lapply(id.method, function(x) if(x[1]=="xy") "y" else x)} else {
+            if(id.method[1] == "xy") "y"}    
      Boxplot(vert, horiz, xlab=lab, ylab=ylab, labels=labels, 
             id.method=idm, id.n=id.n, id.cex=id.cex,  
             id.col=id.col, ...) 
@@ -148,7 +150,6 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
         lm2 <- lm(residuals(model, type="pearson")~poly(horiz, 2))
         lines(new, predict(lm2, list(horiz=new)), lty=1, lwd=2, col=col.quad)
         }
-     #browser()
      if(is.function(smoother))
        smoother(horiz, vert, col.smooth, log.x=FALSE, log.y=FALSE,
           spread=FALSE, smoother.args=smoother.args)
