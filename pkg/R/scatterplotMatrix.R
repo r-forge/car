@@ -63,7 +63,7 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
                                       cex=par("cex"), cex.axis=par("cex.axis"), cex.labels=NULL, 
                                       cex.main=par("cex.main"), 
                                       legend.plot=length(levels(groups)) > 1, row1attop=TRUE, ...){
-    if (id.method == "identify") stop("interactive point identification not permitted")
+    if (id.method[1] == "identify") stop("interactive point identification not permitted")
     family <- match.arg(family)
     if (missing(labels)){
         labels <- rownames(x)

@@ -1,12 +1,12 @@
 Changes to Version 2.0-16
 
-    o  fixed a bug in showLabels with multiple groups in the scatterplot function
+    o fixed a bug in showLabels() with multiple groups in the scatterplot() and scatterplotMatrix() function
     
     o linearHypothesisTest() now tolerates newlines and tabs in hypotheses (suggestion of David Hugh-Jones).
 
     o two bugs fixed in Boot() (found by David Pain) changed argument f to f. in bootCase().
 
-    o summary.Boot, confint.Boot and hist.Boot handle aliases correctly.
+    o summary.Boot(), confint.Boot() and hist.Boot() handle aliases correctly.
 
     o Boxplot.formula() now accepts more than one conditioning variable (suggestion of Christina Yassouridis).
 
