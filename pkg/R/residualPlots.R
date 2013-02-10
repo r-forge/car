@@ -14,6 +14,7 @@
 # 6 April 2011 omit printing lack-of-fit if no lack-of-fit test is possible
 # 16 June 2011 allow layout=NA, in which case the layout is not set in this
 #  function, so it is the responsibility of the user
+# 10 Feb 2013:  adjusted colinearity check in tukeyNonaddTest
 
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
 
@@ -187,7 +188,7 @@ tukeyNonaddTest <- function(model){
  qr <- model$qr
  fitsq <- predict(model, type="response")^2
  fitsq <- qr.resid(qr, fitsq/sqrt(sum(fitsq^2)))
- if(sum(fitsq^2) < tol){
+ if(sd(fitsq) < tol) {
     return(c(Test=NA, Pvalue=NA))
  } else {
     r <- residuals(model, type="pearson")
