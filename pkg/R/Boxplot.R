@@ -15,7 +15,7 @@ Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"),
 		y <- y[valid]
 		labels <- labels[valid]
 		b <- boxplot(y, ylab=ylab, ...)
-		if (id.method == "none") return(invisible(NULL))
+		if (id.method == "none" | id.n==0) return(invisible(NULL))
 		else if (id.method == "identify"){
 			res <- identify(rep(1, length(y)), y, labels)
 			return(if(length(res) == 0) invisible(NULL) else labels[res])
@@ -55,7 +55,7 @@ Boxplot.default <- function(y, g, labels, id.method=c("y", "identify", "none"),
 		b <- boxplot(split(y, g), ylab=ylab, xlab=xlab, ...)
 		levels <- if (is.factor(g)) levels(g) else sort(unique(g))
 		gg <- as.numeric(g)
-		if (id.method == "none") return(invisible(NULL))
+		if (id.method == "none" | id.n==0) return(invisible(NULL))
 		else if (id.method == "identify"){
 			res <- identify(gg, y, labels)
 			return(if(length(res) == 0) invisible(NULL) else labels[res])
