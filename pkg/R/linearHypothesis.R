@@ -20,6 +20,7 @@
 #   2012-09-17: updated linearHypothesis.mer for pkrtest 0.3-2. John
 #   2012-11-21: test for NULL rhs to avoid warning in R 2.16.0. John
 #   2013-01-28: hypotheses can now contain newlines and tabs
+#   2013-02-14: fixed bug in printing constants of the form 1.x*. John
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -134,8 +135,8 @@ printHypothesis <- function(L, rhs, cnames){
 		h <- sub("^-\\ ", "-", h)	
 		h <- paste(" ", h, sep="")
 		h <- paste(h, "=", rhs[i])		
-		h <- gsub(" 1([^[:alnum:]]+)[ *]*", "", 
-				gsub("-1([^[:alnum:]_]+)[ *]*", "-", 
+		h <- gsub(" 1([^[:alnum:]_.]+)[ *]*", "", 
+				gsub("-1([^[:alnum:]_.]+)[ *]*", "-", 
 						gsub("- +1 +", "-1 ", h)))
 		h <- sub("Intercept)", "(Intercept)", h)		
 		h <- gsub("-", " - ", h)
