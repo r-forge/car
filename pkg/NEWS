@@ -1,3 +1,7 @@
+Changes to Version 2.0-17
+
+   o Nothing yet!
+
 Changes to Version 2.0-16
   
     o Fixed bug in printing of hypotheses by linearHypothesis(), where numeric
