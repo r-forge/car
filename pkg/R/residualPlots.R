@@ -148,9 +148,10 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
      abline(h=0, lty=2)
      if(quadratic==TRUE){
         new <- seq(min(horiz), max(horiz), length=200)
-        lm2 <- lm(residuals(model, type="pearson")~poly(horiz, 2))
-        lines(new, predict(lm2, list(horiz=new)), lty=1, lwd=2, col=col.quad)
-        }
+        if(length(unique(horiz)) > 2){
+           lm2 <- lm(residuals(model, type="pearson")~poly(horiz, 2))
+           lines(new, predict(lm2, list(horiz=new)), lty=1, lwd=2, col=col.quad)
+        }}
      if(is.function(smoother))
        smoother(horiz, vert, col.smooth, log.x=FALSE, log.y=FALSE,
           spread=FALSE, smoother.args=smoother.args)
