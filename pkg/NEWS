@@ -1,5 +1,7 @@
 Changes to Version 2.0-17
 
+    o Add a variable to AMSsurvey
+
     o Fix to residualPlots to compute lack of fit tests with missing values and glms
     
     o Fix to residualPlots with a 0/1 variable not declared a factor
