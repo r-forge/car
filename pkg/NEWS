@@ -7,6 +7,8 @@ Changes to Version 2.0-17
     o Fix to residualPlots with a 0/1 variable not declared a factor.
 
     o Boxplot() now works properly with at argument passed to boxplot() via ... (contribution of Steve Ellison).
+
+    o qqPlot.lm() now works with "aov" objects (fixing problem reported by Thomas Burk).
     
     o Small fixes to code and docs.
 
