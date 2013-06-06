@@ -1,21 +1,26 @@
-# checked in 2013-06-04 by J. Fox
+# checked in 2013-06-05 by J. Fox
 
 densityPlot <- function(x, ...){
     UseMethod("densityPlot")
 }
 
-densityPlot.default <- function (x, g, bw="SJ", adjust=1, 
+densityPlot.default <- function (x, g, bw="SJ", adjust=1,
+    kernel = c("gaussian", "epanechnikov", "rectangular", 
+               "triangular", "biweight", "cosine", "optcosine"),
     xlab=deparse(substitute(x)), ylab="Density", 
-    col=palette(), lty=seq_along(col), lwd=2,
+    col=palette(), lty=seq_along(col), lwd=2, grid=TRUE,
     legend.location="topright", legend.title=deparse(substitute(g)), show.bw=FALSE,
     rug=TRUE, ...) {
     ylab
     if (!is.numeric(x)) stop("argument x must be numeric")
+    kernel <- match.arg(kernel)
     if (missing(g)) {
-        density <- density(x, bw=bw, adjust=adjust, ...)
+        density <- density(x, bw=bw, adjust=adjust, kernel=kernel)
         if (show.bw) xlab <- paste(xlab, " (bandwidth = ", format(density$bw), ")", sep="")
-        plot(density, xlab=xlab, ylab=ylab, main="", lwd=lwd)
+        plot(density, xlab=xlab, ylab=ylab, main="", type="n", ...)
         if (rug) rug(x)
+        if (grid) grid()
+        lines(density, lwd=lwd)
     }
     else {
         if (!is.factor(g)) stop("argument g must be a factor")
@@ -31,11 +36,13 @@ densityPlot.default <- function (x, g, bw="SJ", adjust=1,
         densities <- vector(length(levels), mode="list") 
         names(bw) <- names(adjust) <- names(densities) <- levels
         for (group in levels){
-            densities[[group]] <- density(x[g == group], bw=bw[group], adjust=adjust[group], ...)
+            densities[[group]] <- density(x[g == group], bw=bw[group], 
+                                          adjust=adjust[group], kernel=kernel)
         }
         range.x <- range(unlist(lapply(densities, function(den) range(den$x))))
         max.y <- max(sapply(densities, function(den) max(den$y)))
-        plot(range.x, c(0, max.y), xlab=xlab, ylab=ylab, type="n")
+        plot(range.x, c(0, max.y), xlab=xlab, ylab=ylab, type="n", ...)
+        if (grid) grid()
         for (i in 1:length(levels)){
             lines(densities[[i]]$x, densities[[i]]$y, lty=lty[i], col=col[i], lwd=lwd)
         }
@@ -44,7 +51,8 @@ densityPlot.default <- function (x, g, bw="SJ", adjust=1,
             legend <- paste(levels, " (bw = ", format(bws), ")", sep="")
         }
         else legend <- levels
-        legend(legend.location, legend=legend, col=col[1:length(levels)], lty=lty, title=legend.title)
+        legend(legend.location, legend=legend, col=col[1:length(levels)], 
+               lty=lty, title=legend.title, inset=0.02)
         abline(h=0, col="gray")
         if (rug){
             for (i in 1:length(levels)) rug(x[g == levels[i]], col=col[i])
