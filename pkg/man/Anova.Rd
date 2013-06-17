@@ -7,6 +7,7 @@
 %   2009-12-22 updated to reflect new imatrix argument to Anova.mlm(). J. Fox
 %   2012-02-28 updated to reflect new test.statistic argument to Anova.mer(). J. Fox
 %   2012-03-01 removed commented-out output listings. J. Fox
+%   2013-06-17 update for summary.Anova.mlm and print.summary.Anova.mlm. J. Fox
 %-------------------------------------------------------------------------------
 
 \name{Anova}
@@ -24,6 +25,7 @@
 \alias{Manova.mlm}
 \alias{print.Anova.mlm}
 \alias{summary.Anova.mlm}
+\alias{print.summary.Anova.mlm}
 \alias{Anova.coxph}
 \alias{Anova.svyglm}
 \alias{Anova.default}
@@ -75,8 +77,10 @@ Manova(mod, ...)
     
 \method{print}{Anova.mlm}(x, ...)
 
-\method{summary}{Anova.mlm}(object, test.statistic, multivariate=TRUE, 
-    univariate=TRUE, digits=getOption("digits"), ...)
+\method{summary}{Anova.mlm}(object, test.statistic, univariate=TRUE, 
+    multivariate=TRUE, ...)
+    
+\method{print}{summary.Anova.mlm}(x, digits = getOption("digits"), ... )
     
 \method{Anova}{coxph}(mod, type=c("II","III", 2, 3), 
 	test.statistic=c("LR", "Wald"), ...)
@@ -148,7 +152,7 @@ Manova(mod, ...)
   	have as many rows as there are responses; the columns of the within-subject model
   	matrix for different terms must be mutually orthogonal.}
   \item{x, object}{object of class \code{"Anova.mlm"} to print or summarize.}
-  \item{multivariate, univariate}{print multivariate and univariate tests for a repeated-measures
+  \item{multivariate, univariate}{compute and print multivariate and univariate tests for a repeated-measures
     ANOVA; the default is \code{TRUE} for both.}
   \item{digits}{minimum number of significant digits to print.}
   \item{vcov.}{an optional coefficient-covariance matrix, computed by default by applying the 
@@ -221,7 +225,8 @@ Manova(mod, ...)
 }
 \author{John Fox \email{jfox@mcmaster.ca}; the code for the Mauchly test and Greenhouse-Geisser and Huynh-Feldt
 corrections for non-spericity in repeated-measures ANOVA are adapted from the functions 
-\code{stats:::stats:::mauchly.test.SSD} and \code{stats:::sphericity} by R Core.}
+\code{stats:::stats:::mauchly.test.SSD} and \code{stats:::sphericity} by R Core; \code{summary.Anova.mlm}
+and \code{print.summary.Anova.mlm} incorporates code contributed by Gabriel Baud-Bovy.}
 
 \section{Warning}{Be careful of type-III tests.}
 
