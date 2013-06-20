@@ -8,6 +8,7 @@
 \alias{deltaMethod.survreg}
 \alias{deltaMethod.coxph}
 \alias{deltaMethod.mer}
+\alias{deltaMethod.merMod}
 \alias{deltaMethod.lme}
 \alias{deltaMethod.lmList}
 
@@ -35,6 +36,8 @@ deltaMethod(object, ...)
 \method{deltaMethod}{coxph} (object, g, vcov. = vcov, 
            parameterNames = names(coef(object)), ...)
 \method{deltaMethod}{mer} (object, g, vcov. = vcov,
+           parameterNames = names(fixef(object)), ...)
+\method{deltaMethod}{merMod} (object, g, vcov. = vcov,
            parameterNames = names(fixef(object)), ...)
 \method{deltaMethod}{lme} (object, g, vcov. = vcov,
            parameterNames = names(fixef(object)), ...)

@@ -8,6 +8,7 @@
 # 2012-04-08 added exists.method
 # 2012-06-23: added call to globalVariables(). John
 # 2012-12-10: added .carEnv to avoid warnings in R > 2.16.0
+# 2013-06020: added .merMod methods to df.residual() and has.intercept(). John
 
 #if (getRversion() >= "2.15.1") globalVariables(c(".boot.sample", ".boot.indices"))
 
@@ -261,10 +262,16 @@ squeezeBlanks <- function(text){
 
 df.residual.mer <- function(object, ...) NULL
 
+df.residual.merMod <- function(object, ...) NULL
+
 df.residual.lme <- function(object, ...) Inf
 
 has.intercept.mer <- function(model){
 	any(names(fixef(model))=="(Intercept)")
+}
+
+has.intercept.merMod <- function(model){
+    any(names(fixef(model))=="(Intercept)")
 }
 	
 model.matrix.lme <- function(object, ...){

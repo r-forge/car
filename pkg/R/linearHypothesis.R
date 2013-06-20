@@ -21,6 +21,7 @@
 #   2012-11-21: test for NULL rhs to avoid warning in R 2.16.0. John
 #   2013-01-28: hypotheses can now contain newlines and tabs
 #   2013-02-14: fixed bug in printing constants of the form 1.x*. John
+#   2013-06-20: added .merMod() method. John
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -513,6 +514,14 @@ coef.multinom <- function(object, ...){
 
 ## functions for mixed models
 
+linearHypothesis.merMod <- function(model, hypothesis.matrix, rhs=NULL,
+                                 vcov.=NULL, test=c("chisq", "F"), 
+                                 singular.ok=FALSE, verbose=FALSE, ...){
+    linearHypothesis.mer(model=model, hypothesis.matrix=hypothesis.matrix,
+                         vcov.=vcov., test=test, singular.ok=singular.ok,
+                         verbose=verbose, ...)
+}
+
 linearHypothesis.mer <- function(model, hypothesis.matrix, rhs=NULL,
                                  vcov.=NULL, test=c("chisq", "F"), singular.ok=FALSE, verbose=FALSE, ...){
     test <- match.arg(test)
@@ -650,6 +659,8 @@ matchCoefs.default <- function(model, pattern, coef.=coef, ...){
 }
 
 matchCoefs.mer <- function(model, pattern, ...) NextMethod(coef.=fixef)
+
+matchCoefs.merMod <- function(model, pattern, ...) NextMethod(coef.=fixef)
 
 matchCoefs.lme <- function(model, pattern, ...) NextMethod(coef.=fixef)
 

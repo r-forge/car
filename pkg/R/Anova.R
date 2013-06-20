@@ -22,7 +22,8 @@
 # 2012-03-02: fixed test abbreviation of test.statistic argument to Anova.default()
 #             called by other Anova() methods. J. Fox
 # 2013-06-17: modified summary.Anova.mlm(), introduced print.summary.Anova.mlm(),
-#             adapting code contributed by Gabriel Baud-Bovy
+#             adapting code contributed by Gabriel Baud-Bovy. J. Fox
+# 2013-06-20: added Anova.merMod() method. J. Fox
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1349,6 +1350,18 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
 
 fixef <- function (object){
 	if (isS4(object)) object@fixef else object$coefficients$fixed
+}
+
+Anova.merMod <- function(mod, type=c("II","III", 2, 3), 
+                         test.statistic=c("chisq", "F"),
+                         vcov.=vcov(mod), singular.ok, ...){
+    type <- as.character(type)
+    type <- match.arg(type)
+    test.statistic <- match.arg(test.statistic)
+    if (missing(singular.ok))
+        singular.ok <- type == "2" || type == "II"
+    Anova.mer(mod=mod, type=type, test.statistic=test.statistic, vcov.=vcov.,
+              singular.ok=singular.ok, ...)
 }
 
 Anova.mer <- function(mod, type=c("II","III", 2, 3), test.statistic=c("chisq", "F"),
