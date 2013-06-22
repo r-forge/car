@@ -24,6 +24,8 @@
 # 2013-06-17: modified summary.Anova.mlm(), introduced print.summary.Anova.mlm(),
 #             adapting code contributed by Gabriel Baud-Bovy. J. Fox
 # 2013-06-20: added Anova.merMod() method. J. Fox
+# 2013-06-22: tweaks to local fixef(). J. Fox
+# 2013-06-22: test argument uniformly uses "Chisq" rather than "chisq". J. Fox
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1346,14 +1348,18 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
 
 ## functions for mixed models
 
-# the following function, not exported, to make nlme play better with lme4
+# the following function, not exported, to make car consistent with CRAN and development versions of lme4 and with nlme
 
 fixef <- function (object){
-	if (isS4(object)) object@fixef else object$coefficients$fixed
+	if (isS4(object)) {
+        if (!inherits(object, "merMod")) object@fixef
+        else lme4::fixef(object)
+	}
+    else object$coefficients$fixed
 }
 
 Anova.merMod <- function(mod, type=c("II","III", 2, 3), 
-                         test.statistic=c("chisq", "F"),
+                         test.statistic=c("Chisq", "F"),
                          vcov.=vcov(mod), singular.ok, ...){
     type <- as.character(type)
     type <- match.arg(type)
@@ -1364,7 +1370,7 @@ Anova.merMod <- function(mod, type=c("II","III", 2, 3),
               singular.ok=singular.ok, ...)
 }
 
-Anova.mer <- function(mod, type=c("II","III", 2, 3), test.statistic=c("chisq", "F"),
+Anova.mer <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq", "F"),
 		vcov.=vcov(mod), singular.ok, ...){
 	type <- as.character(type)
 	type <- match.arg(type)
@@ -1378,7 +1384,7 @@ Anova.mer <- function(mod, type=c("II","III", 2, 3), test.statistic=c("chisq", "
 			"3"=Anova.III.mer(mod, test=test.statistic, vcov., singular.ok=singular.ok))
 }
 
-Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, test=c("chisq", "F"), ...){
+Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, test=c("Chisq", "F"), ...){
 	hyp.term <- function(term){
 		which.term <- which(term==names)
 		subs.term <- which(assign==which.term)
@@ -1398,7 +1404,7 @@ Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, test=c("chisq", "F"), ...
 			return(c(statistic=NA, df=0))            
 		hyp <- linearHypothesis(mod, hyp.matrix.term, 
 				vcov.=vcov., singular.ok=singular.ok, test=test, ...)
-		if (test == "chisq") return(c(statistic=hyp$Chisq[2], df=hyp$Df[2]))
+		if (test == "Chisq") return(c(statistic=hyp$Chisq[2], df=hyp$Df[2]))
 		else return(c(statistic=hyp$F[2], df=hyp$Df[2], res.df=hyp$Res.Df[2]))
 	}
 	test <- match.arg(test)
@@ -1427,10 +1433,10 @@ Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, test=c("chisq", "F"), ...
 		teststat[i] <- abs(hyp["statistic"])
 		df[i] <- abs(hyp["df"])
 		res.df[i] <- hyp["res.df"]
-		p[i] <- if (test == "chisq") pchisq(teststat[i], df[i], lower.tail=FALSE) 
+		p[i] <- if (test == "Chisq") pchisq(teststat[i], df[i], lower.tail=FALSE) 
 				else pf(teststat[i], df[i], res.df[i], lower.tail=FALSE)
 	} 
-	if (test=="chisq"){
+	if (test=="Chisq"){
 		result <- data.frame(teststat, df, p)
 		row.names(result) <- names
 		names(result) <- c ("Chisq", "Df", "Pr(>Chisq)")
@@ -1449,7 +1455,7 @@ Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, test=c("chisq", "F"), ...
 	result
 }
 
-Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, test=c("chisq", "F"), ...){
+Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, test=c("Chisq", "F"), ...){
 	intercept <- has.intercept(mod)
 	p <- length(fixef(mod))
 	I.p <- diag(p)
@@ -1481,7 +1487,7 @@ Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, test=c("chisq", "F"), .
 		else {
 			hyp <- linearHypothesis(mod, hyp.matrix, test=test,
 					vcov.=vcov., singular.ok=singular.ok, ...)
-			if (test == "chisq"){
+			if (test == "Chisq"){
 				teststat[term] <-  hyp$Chisq[2] 
 				df[term] <- abs(hyp$Df[2])
 				p[term] <- pchisq(teststat[term], df[term], lower.tail=FALSE) 
@@ -1494,7 +1500,7 @@ Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, test=c("chisq", "F"), .
 			}
 		}
 	}
-	if (test == "chisq"){
+	if (test == "Chisq"){
 		result <- data.frame(teststat, df, p)
 		row.names(result) <- names
 		names(result) <- c ("Chisq", "Df", "Pr(>Chisq)")

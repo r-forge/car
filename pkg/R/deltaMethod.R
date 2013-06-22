@@ -12,7 +12,8 @@
 # 2012-03-02: fixed abbreviation of envir argument. J. Fox
 # 2012-04-08: modfied deltaMethod.default() to use coef and vcov
 # 2012-12-10: removed the 'deltaMethodMessageFlag'
-# 2013-06-20: added deltaMethod.merMod(). J.fox
+# 2013-06-20: added deltaMethod.merMod(). J. Fox
+# 2013-06-20: tweaks for lme4. J. Fox
 #-------------------------------------------------------------------------------
 
 deltaMethod <- function (object, ...) {
@@ -105,7 +106,7 @@ deltaMethod.coxph <- function(object, g, vcov. = vcov,
 
 deltaMethod.merMod <- function(object, g, vcov. = vcov,
                             parameterNames = names(fixef(object)), ...) {
-    deltaMethod.merMod(object=object, g=g, vcov.=vcov, 
+    deltaMethod.mer(object=object, g=g, vcov.=vcov, 
                        parameterNames=parameterNames, ...)
 }
     

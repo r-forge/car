@@ -79,10 +79,10 @@ lht(model, ...)
 		vcov.=NULL, singular.ok=FALSE, verbose=FALSE, ...)
     
 \method{linearHypothesis}{mer}(model, hypothesis.matrix, rhs=NULL,
-		vcov.=NULL, test=c("chisq", "F"), singular.ok=FALSE, verbose=FALSE, ...)
+		vcov.=NULL, test=c("Chisq", "F"), singular.ok=FALSE, verbose=FALSE, ...)
         
 \method{linearHypothesis}{merMod}(model, hypothesis.matrix, rhs=NULL,
-    	vcov.=NULL, test=c("chisq", "F"), singular.ok=FALSE, verbose=FALSE, ...)
+    	vcov.=NULL, test=c("Chisq", "F"), singular.ok=FALSE, verbose=FALSE, ...)
 		
 \method{linearHypothesis}{svyglm}(model, ...)
     
@@ -375,7 +375,7 @@ linearHypothesis(mod.ok, c("treatment1:gender1", "treatment2:gender1"),
 
 \dontrun{
 	library(lme4)
-	example(lmer)
+	example(glmer)
 	linearHypothesis(gm1, matchCoefs(gm1, "period"))
 }
 

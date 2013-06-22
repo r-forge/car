@@ -91,10 +91,10 @@ Manova(mod, ...)
 		vcov.=vcov(mod), singular.ok, ...)
 
 \method{Anova}{mer}(mod, type=c("II","III", 2, 3), 
-	test.statistic=c("chisq", "F"), vcov.=vcov(mod), singular.ok, ...)
+	test.statistic=c("Chisq", "F"), vcov.=vcov(mod), singular.ok, ...)
     
 \method{Anova}{merMod}(mod, type=c("II","III", 2, 3), 
-    test.statistic=c("chisq", "F"), vcov.=vcov(mod), singular.ok, ...)
+    test.statistic=c("Chisq", "F"), vcov.=vcov(mod), singular.ok, ...)
 		
 \method{Anova}{svyglm}(mod, ...)
 	
@@ -304,7 +304,7 @@ Anova(wl.mod, imatrix=imatrix, test="Roy")
 
 \dontrun{
 	library(lme4)
-	example(lmer)
+	example(glmer)
 	Anova(gm1)
 }
 

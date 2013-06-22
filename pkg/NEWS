@@ -1,9 +1,12 @@
 Changes to Version 2.0-19
+
     o slight modification to documentation of Boot
 
     o summary() method for "Anova.mlm" objects now returns an object, printed by a corresponding print() method (adapting code contributed by Gabriel Baud-Bovy).
 
-    o added .merMod methods to Anova(), deltaMethod(), linearHypothesis(), matchCoefs(), and unexported utilities df.residual() and has.intercept().
+    o added .merMod methods to Anova(), deltaMethod(), linearHypothesis(), matchCoefs(), and unexported utilities df.residual() and has.intercept(); insured compatibility with nlme and CRAN and developments versions of lme4.
+
+    o small changes.
 
 Changes to Version 2.0-18
 

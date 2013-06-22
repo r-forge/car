@@ -22,6 +22,8 @@
 #   2013-01-28: hypotheses can now contain newlines and tabs
 #   2013-02-14: fixed bug in printing constants of the form 1.x*. John
 #   2013-06-20: added .merMod() method. John
+#   2013-06-22: tweaks for lme4. John
+#   2013-06-22: test argument uniformly uses "Chisq" rather than "chisq". J. Fox
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -515,7 +517,7 @@ coef.multinom <- function(object, ...){
 ## functions for mixed models
 
 linearHypothesis.merMod <- function(model, hypothesis.matrix, rhs=NULL,
-                                 vcov.=NULL, test=c("chisq", "F"), 
+                                 vcov.=NULL, test=c("Chisq", "F"), 
                                  singular.ok=FALSE, verbose=FALSE, ...){
     linearHypothesis.mer(model=model, hypothesis.matrix=hypothesis.matrix,
                          vcov.=vcov., test=test, singular.ok=singular.ok,
@@ -523,7 +525,7 @@ linearHypothesis.merMod <- function(model, hypothesis.matrix, rhs=NULL,
 }
 
 linearHypothesis.mer <- function(model, hypothesis.matrix, rhs=NULL,
-                                 vcov.=NULL, test=c("chisq", "F"), singular.ok=FALSE, verbose=FALSE, ...){
+                                 vcov.=NULL, test=c("Chisq", "F"), singular.ok=FALSE, verbose=FALSE, ...){
     test <- match.arg(test)
     V <- as.matrix(if (is.null(vcov.))vcov(model)
                    else if (is.function(vcov.)) vcov.(model) else vcov.)
@@ -553,13 +555,13 @@ linearHypothesis.mer <- function(model, hypothesis.matrix, rhs=NULL,
         print(drop(L %*% b - rhs))
         cat("\n")
     }
-    if (test == "chisq"){
+    if (test == "Chisq"){
         df <- Inf
         SSH <- as.vector(t(L %*% b - rhs) %*% solve(L %*% V %*% t(L)) %*% (L %*% b - rhs))
     }
     else {
         if (!require(pbkrtest) || packageVersion("pbkrtest") < "0.3.2") stop("pbkrtest package version >= 0.3.2 required for F-test on linear mixed model")
-        if (model@dims["REML"] != 1) 
+        if (!isREML(model)) 
             stop("F test available only for linear mixed model fit by REML")
         res <- KRmodcomp(model, L)$test
         df <- res["Ftest", "ddf"]
@@ -574,8 +576,8 @@ linearHypothesis.mer <- function(model, hypothesis.matrix, rhs=NULL,
     note <- if (is.null(vcov.)) ""
     else "\nNote: Coefficient covariance matrix supplied.\n"
     rval <- matrix(rep(NA, 8), ncol = 4)
-    if (test == "chisq"){
-        colnames(rval) <- c("Res.Df", "Df", "Chisq",  paste("Pr(> Chisq)", sep = ""))
+    if (test == "Chisq"){
+        colnames(rval) <- c("Res.Df", "Df", "Chisq",  paste("Pr(>Chisq)", sep = ""))
         rownames(rval) <- 1:2
         rval[,1] <- c(df+q, df)
         p <- pchisq(SSH, q, lower.tail = FALSE)
@@ -583,7 +585,7 @@ linearHypothesis.mer <- function(model, hypothesis.matrix, rhs=NULL,
         rval <- rval[,-1]
     }
     else{
-        colnames(rval) <- c("Res.Df", "Df", "F",  paste("Pr(> F)", sep = ""))
+        colnames(rval) <- c("Res.Df", "Df", "F",  paste("Pr(>F)", sep = ""))
         rownames(rval) <- 1:2
         rval[,1] <- c(df+q, df)
         rval[2, 2:4] <- c(q, F, p)
@@ -633,7 +635,7 @@ linearHypothesis.lme <- function(model, hypothesis.matrix, rhs=NULL,
 	note <- if (is.null(vcov.)) ""
 			else "\nNote: Coefficient covariance matrix supplied.\n"
 	rval <- matrix(rep(NA, 8), ncol = 4)
-	colnames(rval) <- c("Res.Df", "Df", "Chisq",  paste("Pr(> Chisq)", sep = ""))
+	colnames(rval) <- c("Res.Df", "Df", "Chisq",  paste("Pr(>Chisq)", sep = ""))
 	rownames(rval) <- 1:2
 	rval[,1] <- c(df+q, df)
 	p <- pchisq(SSH, q, lower.tail = FALSE)
