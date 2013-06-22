@@ -19,14 +19,14 @@ for \code{marginalModelPlots}, and \code{mmp} is an alias for \code{marginalMode
 marginalModelPlots(...)
 
 mmps(model, terms= ~ ., fitted=TRUE, layout=NULL, ask,
-        main, ...)
+        main, groups, key=TRUE, ...)
 
 marginalModelPlot(...)
 
 \method{mmp}{lm}(model, variable, sd = FALSE,
     xlab = deparse(substitute(variable)),
     smoother = loessLine, smoother.args=list(span=2/3),
-    key=TRUE, groups=NULL, ...)
+    key=TRUE, pch, groups=NULL, ...)
     
 \method{mmp}{default}(model, variable, sd = FALSE,
     xlab = deparse(substitute(variable)), smoother=loessLine,
