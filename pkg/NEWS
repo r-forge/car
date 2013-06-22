@@ -1,4 +1,5 @@
 Changes to Version 2.0-19
+    o slight modification to documentation of Boot
 
     o summary() method for "Anova.mlm" objects now returns an object, printed by a corresponding print() method (adapting code contributed by Gabriel Baud-Bovy).
 
