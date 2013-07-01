@@ -23,7 +23,7 @@ with known or estimated covariance matrix.
 \usage{
 deltaMethod(object, ...)
 
-\method{deltaMethod}{default}(object, g, vcov., func=g, ...)
+\method{deltaMethod}{default}(object, g, vcov., func=g, args, ...)
 \method{deltaMethod}{lm} (object, g, vcov.=vcov, 
            parameterNames=names(coef(object)), ...)
 \method{deltaMethod}{nls}(object, g, vcov.=vcov, ...)
@@ -70,7 +70,11 @@ deltaMethod(object, ...)
   vector of estimates include special characters, like \code{I(x2^2)}, or 
   \code{x1:x2} that will confuse the numerical differentiation function.  See
   details below.}
-  \item{...}{Additional arguments; not currently used.}
+  \item{args}{This argument is a named vector whose elements are constants that
+  are used in the \code{f} argument.  This is needed only when the function is
+  called from within another function to comply to R scoping rules.  See
+  example below.}
+  \item{...}{Used to pass args to the generic method.}
 }
 
 \details{
@@ -187,7 +191,28 @@ deltaMethod(m1, "t1/t2", vcov=hccm) # use hccm function to est. vars.
 deltaMethod(m1, "1/b0", parameterNames= paste("b", 0:2, sep=""))
 # The next example calls the default method by extracting the
 # vector of estimates and covariance matrix explicitly
-deltaMethod(coef(m1), "t1/t2", vcov.=vcov(m1)) 
+deltaMethod(coef(m1), "t1/t2", vcov.=vcov(m1))
+# the following works:
+a <- 5
+deltaMethod(m1, "(t1 + a)/t2")
+# ...but embedded in a function this will fail
+f1 <- function(mod, ...) {
+ z <- 3
+ deltaMethod(m1, "(t1+z)/t2", ...)
+ }
+\dontrun{f1(m1)}
+# if z is defined globally f1 could even return the wrong answer.
+# the following function works
+f2 <- function(mod, ...) {
+ deltaMethod(m1, "(t1+z)/t2", ...)
+ }
+f2(m1, args=c(z=3))
+# as does
+f3 <- function(mod) {
+ a <- 3
+ deltaMethod(m1, "(t1+z)/t2", args=c(z=a))
+ }
+f3(m1)
 }
 \keyword{ models }% at least one, from doc/KEYWORDS
 \keyword{ regression }

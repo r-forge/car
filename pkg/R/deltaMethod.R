@@ -14,18 +14,19 @@
 # 2012-12-10: removed the 'deltaMethodMessageFlag'
 # 2013-06-20: added deltaMethod.merMod(). J. Fox
 # 2013-06-20: tweaks for lme4. J. Fox
+# 2013-07-01: New 'args' argument for use when called from within a function.
 #-------------------------------------------------------------------------------
 
 deltaMethod <- function (object, ...) {
 	UseMethod("deltaMethod")
 }
 
-deltaMethod.default <- function (object, g, vcov., func = g, ...) {
+deltaMethod.default <- function (object, g, vcov., func = g, args, ...) {
 	if (!is.character(g)) 
 		stop("The argument 'g' must be a character string")
-	if ((exists.method("coef", object, default=FALSE) || 
+	if ((car:::exists.method("coef", object, default=FALSE) ||
 				(!is.atomic(object) && !is.null(object$coefficients))) 
-			&& exists.method("vcov", object, default=FALSE)){
+			&& car:::exists.method("vcov", object, default=FALSE)){
 		if (missing(vcov.)) vcov. <- vcov(object)
 		object <- coef(object)
 	}
@@ -36,6 +37,8 @@ deltaMethod.default <- function (object, g, vcov., func = g, ...) {
 	for (i in 1:q) {
 		assign(names(para)[i], para[i])
 	}
+	if(!missing(args)){
+     for (i in seq_along(args)) assign(names(args[i]), args[i])}
 	est <- eval(g)
 	names(est) <- NULL
 	gd <- rep(0, q)
@@ -60,7 +63,7 @@ deltaMethod.lm <- function (object, g, vcov. = vcov,
 	vcov. <- if (is.function(vcov.)) 
 			vcov.(object)
 		else vcov.
-	deltaMethod.default(para, g, vcov., func)
+	deltaMethod.default(para, g, vcov., func, ...)
 }
 
 # nls has named parameters so parameterNames is ignored

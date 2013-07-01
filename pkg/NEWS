@@ -1,5 +1,7 @@
 Changes to Version 2.0-19
 
+    o added an argument to deltaMethod for passing arguments to get scoping right when calling linearHypothesis in another function
+
     o slight modification to documentation of Boot
 
     o summary() method for "Anova.mlm" objects now returns an object, printed by a corresponding print() method (adapting code contributed by Gabriel Baud-Bovy).
