@@ -14,19 +14,19 @@
 # 2012-12-10: removed the 'deltaMethodMessageFlag'
 # 2013-06-20: added deltaMethod.merMod(). J. Fox
 # 2013-06-20: tweaks for lme4. J. Fox
-# 2013-07-01: New 'args' argument for use when called from within a function.
+# 2013-07-01: New 'constants' argument for use when called from within a function.
 #-------------------------------------------------------------------------------
 
 deltaMethod <- function (object, ...) {
 	UseMethod("deltaMethod")
 }
 
-deltaMethod.default <- function (object, g, vcov., func = g, args, ...) {
+deltaMethod.default <- function (object, g, vcov., func = g, constants, ...) {
 	if (!is.character(g)) 
 		stop("The argument 'g' must be a character string")
-	if ((car:::exists.method("coef", object, default=FALSE) ||
+	if ((exists.method("coef", object, default=FALSE) ||
 				(!is.atomic(object) && !is.null(object$coefficients))) 
-			&& car:::exists.method("vcov", object, default=FALSE)){
+			&& exists.method("vcov", object, default=FALSE)){
 		if (missing(vcov.)) vcov. <- vcov(object)
 		object <- coef(object)
 	}
@@ -37,8 +37,8 @@ deltaMethod.default <- function (object, g, vcov., func = g, args, ...) {
 	for (i in 1:q) {
 		assign(names(para)[i], para[i])
 	}
-	if(!missing(args)){
-     for (i in seq_along(args)) assign(names(args[i]), args[i])}
+	if(!missing(constants)){
+     for (i in seq_along(constants)) assign(names(constants[i]), constants[i])}
 	est <- eval(g)
 	names(est) <- NULL
 	gd <- rep(0, q)

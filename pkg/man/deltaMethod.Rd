@@ -23,7 +23,7 @@ with known or estimated covariance matrix.
 \usage{
 deltaMethod(object, ...)
 
-\method{deltaMethod}{default}(object, g, vcov., func=g, args, ...)
+\method{deltaMethod}{default}(object, g, vcov., func=g, constants, ...)
 \method{deltaMethod}{lm} (object, g, vcov.=vcov, 
            parameterNames=names(coef(object)), ...)
 \method{deltaMethod}{nls}(object, g, vcov.=vcov, ...)
@@ -70,11 +70,11 @@ deltaMethod(object, ...)
   vector of estimates include special characters, like \code{I(x2^2)}, or 
   \code{x1:x2} that will confuse the numerical differentiation function.  See
   details below.}
-  \item{args}{This argument is a named vector whose elements are constants that
+  \item{constants}{This argument is a named vector whose elements are constants that
   are used in the \code{f} argument.  This is needed only when the function is
   called from within another function to comply to R scoping rules.  See
   example below.}
-  \item{...}{Used to pass args to the generic method.}
+  \item{...}{Used to pass arguments to the generic method.}
 }
 
 \details{
@@ -206,11 +206,11 @@ f1 <- function(mod, ...) {
 f2 <- function(mod, ...) {
  deltaMethod(m1, "(t1+z)/t2", ...)
  }
-f2(m1, args=c(z=3))
+f2(m1, constants=c(z=3))
 # as does
 f3 <- function(mod) {
  a <- 3
- deltaMethod(m1, "(t1+z)/t2", args=c(z=a))
+ deltaMethod(m1, "(t1+z)/t2", constants=c(z=a))
  }
 f3(m1)
 }
