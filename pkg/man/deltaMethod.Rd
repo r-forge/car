@@ -179,7 +179,7 @@ by the function \code{\link{D}}.}
   Linear Regression}, Third Edition, Wiley, Section 6.1.2.
 }
 
-\author{Sanford Weisberg, \email{sandy@stat.umn.edu},
+\author{Sanford Weisberg, \email{sandy@umn.edu},
 and John Fox \email{jfox@mcmaster.ca}}
 
 \examples{
