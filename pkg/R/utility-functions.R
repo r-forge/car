@@ -292,14 +292,15 @@ exists.method <- function(generic, object, default=TRUE, strict=FALSE){
 # Used by marginalModelPlots, residualPlots added 2012-09-24
 plotArrayLegend <- function(
       location=c("top", "none", "separate"),
-      items, col.items, lty.items, lwd.items, title="legend") {
+      items, col.items, lty.items, lwd.items, title="legend",
+      pch=1:length(items)) {
    if(location== "none") return()
    n <- length(items)
    if(location == "top" ) { # add legend
       usr <- par("usr")
       coords <-list(x=usr[1], y=usr[3])
       leg <- legend( coords, items,
-                col=col.items, pch=1:length(col.items),
+                col=col.items, pch=pch,
                 bty="n", cex=1, xpd=NA, plot=FALSE)
       coords <- list(x = usr[1], y=usr[4] + leg$rect$h)
       legend( coords, items,
