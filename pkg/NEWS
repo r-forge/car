@@ -2,7 +2,7 @@ Changes to Version 2.0-19
 
     o fixed scoping problems in Boot, bootCase, and ncvTest
 
-    o added an argument to deltaMethod for passing arguments to get scoping right when calling linearHypothesis in another function
+    o added an argument to deltaMethod for passing arguments to get scoping right when calling linearHypothesis in another function; other deltaMethod bugs fixed
 
     o slight modification to documentation of Boot
 

@@ -15,6 +15,7 @@
 # 2013-06-20: added deltaMethod.merMod(). J. Fox
 # 2013-06-20: tweaks for lme4. J. Fox
 # 2013-07-01: New 'constants' argument for use when called from within a function.
+# 2013-07-18: fixed a bug in passing the 'func' argument
 #-------------------------------------------------------------------------------
 
 deltaMethod <- function (object, ...) {
@@ -69,7 +70,7 @@ deltaMethod.lm <- function (object, g, vcov. = vcov,
 # nls has named parameters so parameterNames is ignored
 deltaMethod.nls <- function(object, g, vcov.=vcov,...){
 	vcov. <- if(is.function(vcov.)) vcov.(object)
-	deltaMethod.default(coef(object), g, vcov.)   
+	deltaMethod.default(coef(object), g, vcov., ...)   
 }
 
 deltaMethod.polr <- function(object,g,vcov.=vcov,...){
@@ -88,7 +89,7 @@ deltaMethod.multinom <- function(object, g, vcov.=vcov,
 	nc <- dim(coefs)[2]
 	for (i in 1:dim(coefs)[1]){
 		para <- coefs[i, ]
-		ans <- deltaMethod(para, g, vcov.(object)[(i - 1) + 1:nc, (i - 1) + 1:nc])
+		ans <- deltaMethod(para, g, vcov.(object)[(i - 1) + 1:nc, (i - 1) + 1:nc], ...)
 		rownames(ans)[1] <- paste(rownames(coefs)[i], rownames(ans)[1])
 		out <- rbind(out,ans)
 	}
@@ -120,7 +121,7 @@ deltaMethod.mer <- function(object, g, vcov. = vcov,
  	vcov. <- if (is.function(vcov.)) 
 			vcov.(object)
 		else vcov.
-  deltaMethod(para, g, vcov.)
+  deltaMethod(para, g, vcov., ...)
   }
 
 
@@ -132,7 +133,7 @@ deltaMethod.lme <- function(object, g, vcov. = vcov,
  	vcov. <- if (is.function(vcov.)) 
 			vcov.(object)
 		else vcov.
-  deltaMethod(para, g, vcov.)
+  deltaMethod(para, g, vcov., ...)
   }
   
 # nlsList  lsList
