@@ -31,7 +31,7 @@ deltaMethod.default <- function (object, g, vcov., func = g, constants, ...) {
 		if (missing(vcov.)) vcov. <- vcov(object)
 		object <- coef(object)
 	}
-	para <- object
+	para <- object         
 	para.names <- names(para)
 	g <- parse(text = g)
 	q <- length(para)
@@ -39,7 +39,7 @@ deltaMethod.default <- function (object, g, vcov., func = g, constants, ...) {
 		assign(names(para)[i], para[i])
 	}
 	if(!missing(constants)){
-     for (i in seq_along(constants)) assign(names(constants[i]), constants[i])}
+     for (i in seq_along(constants)) assign(names(constants[i]), constants[[i]])}
 	est <- eval(g)
 	names(est) <- NULL
 	gd <- rep(0, q)
@@ -60,11 +60,10 @@ deltaMethod.lm <- function (object, g, vcov. = vcov,
 	para.names <- parameterNames
 	para.names[1] <- gsub("\\(Intercept\\)", "Intercept", para.names[1])
 	names(para) <- para.names
-	func <- g
 	vcov. <- if (is.function(vcov.)) 
 			vcov.(object)
 		else vcov.
-	deltaMethod.default(para, g, vcov., func, ...)
+	deltaMethod.default(para, g, vcov.,  ...)
 }
 
 # nls has named parameters so parameterNames is ignored
