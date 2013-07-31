@@ -104,14 +104,41 @@ In this case the model \texttt{m3} is defined in the environment of the function
 <<>>=
 f4 <- function(meanmod, dta, varmod) {
    assign(".dta", dta, envir=.GlobalEnv)
-   m1 <- lm(meanmod, .dta)
+   assign(".meanmod", meanmod, envir=.GlobalEnv)
+   m1 <- lm(.meanmod, .dta)
    ans <- ncvTest(m1, varmod)
    remove(".dta", envir=.GlobalEnv)
+   remove(".meanmod", envir=.GlobalEnv)
    ans
    }
 f4(prestige ~ education, Prestige, ~income)
+f4(prestige ~ education, Prestige, ~income)
 @
-The \code{assign} function copies the \code{dta} argument to the global environment where \code{ncvTest} will be evaluated, and the \code{remove} function removes it before exiting the function. This is an inherently problematic strategy, because an object assigned in the global environment will replace an existing object of the same name. Consequently we renamed the \code{dta} argument \code{.dta}, with an initial period, but this is not a \emph{guarantee} that there was no preexisting object with this name.
+The \code{assign} function copies the \code{dta} and \code{meanmod} arguments to the global environment where \code{ncvTest} will be evaluated, and the \code{remove} function removes them before exiting the function. This is an inherently problematic strategy, because an object assigned in the global environment will replace an existing object of the same name. Consequently we renamed the \code{dta} argument \code{.dta}, with an initial period, but this is not a \emph{guarantee} that there was no preexisting object with this name.
+
+This same method can be used with functions in the \code{effects} package.  Suppose, for example, you want to write a function that will fit a model, provide printed summaries and also draw a effects plot.  The following function will fail:
+<<eval=FALSE>>=
+library(effects)
+fc <- function(dta, formula, terms) {
+ print(m1 <- lm(formula, .dta))
+ Effect(terms, m1)
+ }
+form <- prestige ~ income*type + education
+terms <- c("income", "type")
+fc(Duncan, form, terms)
+@
+As with \code{ncvTest}, \code{dta} will not be in the correct environment when \code{Effect} is evaluated.  The solution is to copy \code{dta} to the global environment:
+<<eval=FALSE>>=
+library(effects)
+fc.working <- function(dta, formula, terms) {
+ assign(".dta", dta, env=.GlobalEnv)
+ print(m1 <- lm(formula, .dta))
+ Effect(terms, m1)
+ remove(".dta", envir=.GlobalEnv)
+ }
+fc.working(Duncan, form, terms)
+@
+Assigning \code{formula} to the global environment is not necessary here because it is used by \code{lm} but not by \code{Effect}.
 
 \section{\code{Boot}}
 The \code{Boot} function in \car{} provides a convenience front-end for the function \code{boot} in the \texttt{boot} package \citep{cantyRipley13,FoxWeisberg12}.  With no arguments beyond the name of a regression object and the number of replications \texttt{R}, \code{Boot} creates the proper arguments for \code{boot} for case resampling bootstraps, and returns the coefficient vector for each sample:
@@ -125,18 +152,15 @@ The returned object \texttt{b1} is of class \texttt{"boot"}, as are objects crea
 confint(b1)
 @
 
-The \code{Boot} function would have scoping problems even without the user embedding it in a function because the \code{boot} function called by \code{Boot} tries to evaluate the model defined in the global environment in a local environment.  We solve this problem, and avoid assigning in a global environment and possibly overwriting an existing object, by defining a our own environment,
+The \code{Boot} function would have scoping problems even without the user embedding it in a function because the \code{boot} function called by \code{Boot} tries to evaluate the model defined in the global environment in a local environment.  In \code{car} we define an environment 
 <<eval=FALSE>>=
 .carEnv <- new.env(parent=emptyenv())
 @
-and then evaluating the model in the environment \code{.carEnv}.  This turns out to fail as well in certain circumstances.  For example,
-<<eval=FALSE>>=
-meanmod <- time ~ t1 + t2
-m2 <- lm(meanmod, Transact)
-Boot(m2, R=999)
+and then evaluate the model in the environment \code{.carEnv}.  This environment is not exported, so to see that it exists you would need to enter
+<<>>=
+car:::.carEnv
 @
-Here \texttt{meanmod} is in the global environment and \code{Boot} is evaluating in the \code{.carEnv} environment.  We solved this problem by making \code{.carEnv} globally available by using the code
-\code{car:::.carEnv} in place of \code{.carEnv}, as in the function \code{Boot.default}:
+We use this same trick in the \code{Boot.default} function so that \code{.carEnv} is globally visible. Here is a copy of \code{Boot.default} to show how this works.
 <<eval=FALSE>>=
 Boot.default <- function(object, f=coef, labels=names(coef(object)),
                      R=999, method=c("case", "residual")) {
