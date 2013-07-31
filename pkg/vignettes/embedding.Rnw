@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{url,Sweave}
 \usepackage{fpage}
-%%\VignetteIndexEntry{Using car functions inside functions}
+%\VignetteIndexEntry{Using car functions inside user functions}
 \newcommand{\R}{{\normalfont\textsf{R}}{}}
 \newcommand{\car}{\texttt{car}}
 \newcommand{\effects}{\texttt{effects}}
@@ -152,7 +152,7 @@ The returned object \texttt{b1} is of class \texttt{"boot"}, as are objects crea
 confint(b1)
 @
 
-The \code{Boot} function would have scoping problems even without the user embedding it in a function because the \code{boot} function called by \code{Boot} tries to evaluate the model defined in the global environment in a local environment.  In \code{car} we define an environment 
+The \code{Boot} function would have scoping problems even without the user embedding it in a function because the \code{boot} function called by \code{Boot} tries to evaluate the model defined in the global environment in a local environment.  In \code{car} we define an environment
 <<eval=FALSE>>=
 .carEnv <- new.env(parent=emptyenv())
 @
