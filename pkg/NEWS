@@ -10,7 +10,7 @@ Changes to Version 2.0-19
 
     o added .merMod methods to Anova(), deltaMethod(), linearHypothesis(), matchCoefs(), and unexported utilities df.residual() and has.intercept(); insured compatibility with nlme and CRAN and developments versions of lme4.
 
-    o small changes.
+    o small changes and fixes.
 
 Changes to Version 2.0-18
 

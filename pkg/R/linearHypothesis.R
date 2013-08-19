@@ -24,6 +24,7 @@
 #   2013-06-20: added .merMod() method. John
 #   2013-06-22: tweaks for lme4. John
 #   2013-06-22: test argument uniformly uses "Chisq" rather than "chisq". J. Fox
+#   2013-08-19: removed calls to unexported functions in stats. J. Fox
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -468,13 +469,13 @@ print.linearHypothesis.mlm <- function(x, SSP=TRUE, SSPE=SSP,
 	tests <- matrix(NA, 4, 4)
 	rownames(tests) <- c("Pillai", "Wilks", "Hotelling-Lawley", "Roy")
 	if ("Pillai" %in% test)
-		tests[1, 1:4] <- stats:::Pillai(eigs, x$df, x$df.residual)
+		tests[1, 1:4] <- Pillai(eigs, x$df, x$df.residual)
 	if ("Wilks" %in% test)
-		tests[2, 1:4] <- stats:::Wilks(eigs, x$df, x$df.residual)
+		tests[2, 1:4] <- Wilks(eigs, x$df, x$df.residual)
 	if ("Hotelling-Lawley" %in% test)
-		tests[3, 1:4] <- stats:::HL(eigs, x$df, x$df.residual)
+		tests[3, 1:4] <- HL(eigs, x$df, x$df.residual)
 	if ("Roy" %in% test)
-		tests[4, 1:4] <- stats:::Roy(eigs, x$df, x$df.residual)
+		tests[4, 1:4] <- Roy(eigs, x$df, x$df.residual)
 	tests <- na.omit(tests)
 	ok <- tests[, 2] >= 0 & tests[, 3] > 0 & tests[, 4] > 0
 	ok <- !is.na(ok) & ok
@@ -506,7 +507,26 @@ linearHypothesis.polr <- function (model, hypothesis.matrix, rhs=NULL, vcov., ve
 }
 
 coef.multinom <- function(object, ...){
-	b <- nnet:::coef.multinom(object, ...)
+    # the following local function is copied from nnet:::coef.multinom
+    coef.m <- function (object, ...) {
+            r <- length(object$vcoefnames)
+            if (length(object$lev) == 2L) {
+                coef <- object$wts[1L + (1L:r)]
+                names(coef) <- object$vcoefnames
+            }
+            else {
+                coef <- matrix(object$wts, nrow = object$n[3L], byrow = TRUE)[, 
+                                                                              1L + (1L:r), drop = FALSE]
+                if (length(object$lev)) 
+                    dimnames(coef) <- list(object$lev, object$vcoefnames)
+                if (length(object$lab)) 
+                    dimnames(coef) <- list(object$lab, object$vcoefnames)
+                coef <- coef[-1L, , drop = FALSE]
+            }
+            coef
+        }
+    
+	b <- coef.m(object, ...)
 	cn <- colnames(b)
 	rn <- rownames(b)
 	b <- as.vector(t(b))

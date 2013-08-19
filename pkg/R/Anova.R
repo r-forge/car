@@ -26,6 +26,7 @@
 # 2013-06-20: added Anova.merMod() method. J. Fox
 # 2013-06-22: tweaks to local fixef(). J. Fox
 # 2013-06-22: test argument uniformly uses "Chisq" rather than "chisq". J. Fox
+# 2013-08-19: replaced calls to print.anova(). J. Fox
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -590,6 +591,51 @@ Anova.III.polr <- function (mod, ...)
 
 # multivariate linear models
 
+# the following 3 functions copied from the stats package (not exported from stats)
+
+Pillai <- function (eig, q, df.res) {
+    test <- sum(eig/(1 + eig))
+    p <- length(eig)
+    s <- min(p, q)
+    n <- 0.5 * (df.res - p - 1)
+    m <- 0.5 * (abs(p - q) - 1)
+    tmp1 <- 2 * m + s + 1
+    tmp2 <- 2 * n + s + 1
+    c(test, (tmp2/tmp1 * test)/(s - test), s * tmp1, s * tmp2)
+}
+
+Wilks <- function (eig, q, df.res) {
+    test <- prod(1/(1 + eig))
+    p <- length(eig)
+    tmp1 <- df.res - 0.5 * (p - q + 1)
+    tmp2 <- (p * q - 2)/4
+    tmp3 <- p^2 + q^2 - 5
+    tmp3 <- if (tmp3 > 0) 
+        sqrt(((p * q)^2 - 4)/tmp3)
+    else 1
+    c(test, ((test^(-1/tmp3) - 1) * (tmp1 * tmp3 - 2 * tmp2))/p/q, 
+      p * q, tmp1 * tmp3 - 2 * tmp2)
+}
+
+HL <- function (eig, q, df.res) {
+    test <- sum(eig)
+    p <- length(eig)
+    m <- 0.5 * (abs(p - q) - 1)
+    n <- 0.5 * (df.res - p - 1)
+    s <- min(p, q)
+    tmp1 <- 2 * m + s + 1
+    tmp2 <- 2 * (s * n + 1)
+    c(test, (tmp2 * test)/s/s/tmp1, s * tmp1, tmp2)
+}
+
+Roy <- function (eig, q, df.res) {
+    p <- length(eig)
+    test <- max(eig)
+    tmp1 <- max(p, q)
+    tmp2 <- df.res - tmp1 + q
+    c(test, (tmp2 * test)/tmp1, tmp1, tmp2)
+}
+
 has.intercept.mlm <- function (model, ...) 
 	any(row.names(coefficients(model)) == "(Intercept)")
 
@@ -829,10 +875,10 @@ print.Anova.mlm <- function(x, ...){
 		eigs <- Re(eigen(qr.coef(if (repeated) qr(x$SSPE[[term]]) else SSPE.qr,
 								x$SSP[[term]]), symmetric = FALSE)$values)
 		tests[term, 1:4] <- switch(test,
-				Pillai = stats:::Pillai(eigs, x$df[term], x$error.df),
-				Wilks = stats:::Wilks(eigs, x$df[term], x$error.df),
-				"Hotelling-Lawley" = stats:::HL(eigs, x$df[term], x$error.df),
-				Roy = stats:::Roy(eigs, x$df[term], x$error.df))
+				Pillai = Pillai(eigs, x$df[term], x$error.df),
+				Wilks = Wilks(eigs, x$df[term], x$error.df),
+				"Hotelling-Lawley" = HL(eigs, x$df[term], x$error.df),
+				Roy = Roy(eigs, x$df[term], x$error.df))
 	}
 	ok <- tests[, 2] >= 0 & tests[, 3] > 0 & tests[, 4] > 0
 	ok <- !is.na(ok) & ok
@@ -953,6 +999,7 @@ summary.Anova.mlm <- function (object, test.statistic, univariate=TRUE, multivar
             table2 <- na.omit(table2)
             if (any(table2[, "HF eps"] > 1)) warning("HF eps > 1 treated as 1")
         }
+        class(table3) <- class(table) <- "anova"
         summary.object$univariate.tests <- table
         summary.object$pval.adjustments <- table2
         summary.object$sphericity.tests <- table3
@@ -977,15 +1024,19 @@ print.summary.Anova.mlm <- function(x, digits = getOption("digits"), ... ) {
     }
     if  (!is.null(x$univariate.tests)) {
         cat("\nUnivariate Type", x$type, "Repeated-Measures ANOVA Assuming Sphericity\n\n")
-        print.anova(x$univariate.tests)
+        print(x$univariate.tests)
         if (nrow(x$sphericity.tests) > 0) {
             cat("\n\nMauchly Tests for Sphericity\n\n")
-            print.anova(x$sphericity.tests)
+            print(x$sphericity.tests)
             cat("\n\nGreenhouse-Geisser and Huynh-Feldt Corrections\n", 
                 "for Departure from Sphericity\n\n")
-            print.anova(x$pval.adjustments[, 1:2, drop = FALSE])
+            table <- x$pval.adjustments[, 1:2, drop = FALSE]
+            class(table) <- "anova"
+            print(table)
             cat("\n")
-            print.anova(x$pval.adjustments[, 3:4, drop = FALSE])
+            table <- x$pval.adjustments[, 3:4, drop = FALSE]
+            class(table)
+            print(table)
         }
     }
     invisible(x)
