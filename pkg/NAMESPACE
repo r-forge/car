@@ -1,4 +1,7 @@
-# last modified 2013-06-20 by J. Fox
+# last modified 2013-08-20 by J. Fox
+
+importFrom(MASS, cov.trob, rlm)
+importFrom(nnet, multinom)
 
 export(
     basicPowerAxis,
@@ -159,8 +162,6 @@ S3method(boxTidwell, default)
 S3method(boxTidwell, formula)
 S3method(ceresPlot, glm)            
 S3method(ceresPlot, lm)
-# S3method(coef, multinom)
-S3method(crPlot, glm)               
 S3method(crPlot, lm)              
 S3method(deltaMethod, default)
 S3method(deltaMethod, lm)
