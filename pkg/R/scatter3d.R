@@ -7,6 +7,7 @@
 # 23 October 2010: added surface.alpha and ellipsoid.alpha arguments
 # 2012-03-02: fixed some argument abbreviations. J. Fox
 # 2013-02-20: fixed error message, docs for surface.col argument. J. Fox
+# 2013-08-20: changed rgl:::rgl.projection to rgl::rgl.projection; more such fixes to come. J. Fox
 
 scatter3d <- function(x, ...){
 	if (!require(rgl)) stop("rgl package missing")
@@ -346,7 +347,7 @@ car.select3d <- function (...) {
 		lly <- ury
 		ury <- temp
 	}
-	proj <- rgl:::rgl.projection()
+	proj <- rgl::rgl.projection()
 	function(x, y, z) {
 		pixel <- rgl.user2window(x, y, z, projection = proj)
 		apply(pixel, 1, function(p) (llx <= p[1]) && (p[1] <=
