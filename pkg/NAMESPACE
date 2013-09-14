@@ -1,4 +1,4 @@
-# last modified 2013-08-20 by J. Fox
+# last modified 2013-09-14 by J. Fox
 
 importFrom(MASS, cov.trob, rlm)
 importFrom(nnet, multinom)
@@ -77,6 +77,9 @@ export(
     gamLine,
     loessLine,
     quantregLine,
+    
+    # method explicitly exported for import in other packages
+    linearHypothesis.default,
     
     # deprecated functions
     av.plot,

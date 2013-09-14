@@ -12,6 +12,8 @@ Changes to Version 2.0-19
 
     o added use argument to scatterplotMatrix() (suggstion of Antoine Lizee).
 
+    o export linearHypothesis.default() for use in other packages (suggestion of Achim Zeileis).
+
     o small changes and fixes.
 
 Changes to Version 2.0-18
