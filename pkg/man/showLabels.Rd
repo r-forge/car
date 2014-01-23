@@ -87,7 +87,7 @@ the car package, this function can be used directly.
   Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied Regression},
     Second Edition, Sage.
   
-  Weisberg, S. (2005) \emph{Applied Linear Regression}, Third Edition, Wiley.
+  Weisberg, S. (2014) \emph{Applied Linear Regression}, Fourth Edition, Wiley.
 }
 \author{John Fox \email{jfox@mcmaster.ca}, Sanford Weisberg \email{sandy@umn.edu}}
 
