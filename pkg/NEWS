@@ -4,6 +4,8 @@ Changes to Version 2.0-20
 
     o Accommodate numeric variables consisting entirely of NAs in recode() (suggestion of Karl Ove Hufthammer).
 
+    o Prevent dataEllipse() from opening a graphics device when draw=FALSE (fixing bug reported by Rafael Laboissiere).
+
 Changes to Version 2.0-19
 
     o fixed axis labelling probelm in influenceIndexPlot
