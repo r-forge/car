@@ -1,5 +1,7 @@
 Changes to Version 2.0-20
 
+    o Added new id.method="r" to showLabels for labeling plots of residuals; default id.method changed in residualPlots.
+
     o Fixed handling of labels argument to outlierTest() (bug report by Stephane Laurent).
 
     o Accommodate numeric variables consisting entirely of NAs in recode() (suggestion of Karl Ove Hufthammer).
@@ -7,6 +9,8 @@ Changes to Version 2.0-20
     o Prevent dataEllipse() from opening a graphics device when draw=FALSE (fixing bug reported by Rafael Laboissiere).
 
 Changes to Version 2.0-19
+
+    o allow a grouping variable for color, symbol and fits in residualPlots
 
     o fixed axis labelling probelm in influenceIndexPlot
 
