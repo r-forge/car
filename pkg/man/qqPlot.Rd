@@ -87,8 +87,8 @@ graph}
   
   Any distribution for which quantile and
   density functions exist in R (with prefixes \code{q} and \code{d}, respectively) may be used. 
-  Studentized residuals from linear models are plotted against the appropriate t-distribution.
-  
+  Studentized residuals from linear models are plotted against the appropriate t-distribution with a point-wise confidence envelope computed by default by a parametric bootstrap,
+  as described by Atkinson (1985).
   The function \code{qqp} is an abbreviation for \code{qqPlot}.
 }
 \value{
