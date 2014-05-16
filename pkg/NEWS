@@ -1,6 +1,6 @@
 Changes to Version 2.0-21
 
-    o Nothing yet!
+    o Added has.intercept.multinom() to make Anova() work with multinom objects fit to a dichotomous response (after bug report by Kristian Hovde Liland).
 
 Changes to Version 2.0-20
 
