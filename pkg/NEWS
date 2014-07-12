@@ -1,5 +1,7 @@
 Changes to Version 2.0-21
 
+    o Minor change to `recode` documentation
+
     o Fixed a bug in gamLine with non-canonical links. (Thanks to Hani Christoph)
 
     O Added has.intercept.multinom() to make Anova() work with multinom objects fit to a dichotomous response (after bug report by Kristian Hovde Liland).
