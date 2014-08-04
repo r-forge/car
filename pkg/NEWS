@@ -2,7 +2,7 @@ Changes to Version 2.0-21
 
     o residualPlot error when using 'type="rstudent" has been fixed.
 
-    o Minor change to `recode` documentation
+    o Minor change to "recode" documentation; improved error checking in recode().
 
     o Fixed a bug in gamLine with non-canonical links. (Thanks to Hani Christoph)
 
