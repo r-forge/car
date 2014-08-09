@@ -12,6 +12,8 @@ Changes to Version 2.0-21
 
     o Diagonal panels in scatterplotMatrix() (except for histograms) show groups separately when plotted by groups (suggestion by Erich Neuwirth).
 
+    o Added vcov. argument to Anova.lm().
+
 Changes to Version 2.0-20
 
     o Added new id.method="r" to showLabels for labeling plots of residuals; default id.method changed in residualPlots.
