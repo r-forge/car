@@ -9,6 +9,8 @@
 # 2013-02-08: S. Weisberg: bug-fix for showLabels with groups 
 # 2013-08-26: J. Fox: added use argument
 # 2014-08-07: J. Fox: plot univariate distributions by group (except for histogram)
+# 2014-08-17: J. Fox: report warning rather than error if not enough points in a group
+#                     to compute density
 
 scatterplotMatrix <- function(x, ...){
   UseMethod("scatterplotMatrix")
@@ -101,9 +103,13 @@ scatterplotMatrix.default <- function(x, var.labels=colnames(x),
       levs <- levels(groups)
       for (i in 1:n.groups){
         xx <- x[levs[i] == groups]
-        dens.x <- density(xx, adjust = adjust, na.rm=TRUE)
-        lines(dens.x$x, min(x, na.rm=TRUE) + dens.x$y * 
-                diff(range(x, na.rm=TRUE))/diff(range(dens.x$y, na.rm=TRUE)), col=col[i])
+        dens.x <- try(density(xx, adjust = adjust, na.rm=TRUE), silent=TRUE)
+        if (!inherits(dens.x, "try-error")){
+          lines(dens.x$x, min(x, na.rm=TRUE) + dens.x$y * 
+                  diff(range(x, na.rm=TRUE))/diff(range(dens.x$y, na.rm=TRUE)), col=col[i])
+        }
+        else warning("cannot estimate density for group ", levs[i], "\n",
+                     dens.x, "\n")
         rug(xx, col=col[i])
       }
     }
