@@ -2,6 +2,7 @@
 
 # Sept 17, 2012 moved from scatterplot.R to scatterplotSmoothers.R
 # June 18, 2014 Fixed bug in gamLine so the smoother.arg link="linkname" works; thanks to Hani Christoph
+# 2014-08-19: Make sure that Matrix and MatrixModels packages are available to quantregLine(). John
 
 default.arg <- function(args.list, arg, default){
     if (is.null(args.list[[arg]])) default else args.list[[arg]]
@@ -147,6 +148,9 @@ gamLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
 quantregLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
                    draw=TRUE) {
     if (!require(quantreg)) stop("quantreg package missing")
+    if (!package.installed("Matrix")) stop("the Matrix package is missing")
+    if (!package.installed("MatrixModels")) stop("the MatrixModels package is missing")
+    if (!package.installed("SparseM")) stop("the SparseM package is missing")
     lty <- default.arg(smoother.args, "lty", 1)
     lwd <- default.arg(smoother.args, "lwd", 2)
     lty.spread <- default.arg(smoother.args, "lty.spread", 2)

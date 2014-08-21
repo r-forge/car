@@ -10,6 +10,7 @@
 # 2012-12-10: added .carEnv to avoid warnings in R > 2.16.0
 # 2013-06020: added .merMod methods to df.residual() and has.intercept(). John
 # 2014-05-16: added .multinom method for has.intercept(). John
+# 2014-08-19: added package.installed() function, unexported. John
 
 #if (getRversion() >= "2.15.1") globalVariables(c(".boot.sample", ".boot.indices"))
 
@@ -358,3 +359,11 @@ termsToMf <- function(model, terms){
   } else {mf.groups <- NULL}
   list(mf.vars=mf.vars, mf.groups=mf.groups)
   }
+
+# the following function isn't exported, tests for existance of a package:
+
+package.installed <- function(package){
+  package <- as.character(substitute(package))
+  result <- try(find.package(package), silent=TRUE)
+  !class(result) ==  "try-error"
+}
