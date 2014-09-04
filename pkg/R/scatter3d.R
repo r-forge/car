@@ -11,6 +11,7 @@
 # 2013-08-31: rgl functions used now exported; got rid of ::: and ::. J. Fox
 # 2014-08-04: changed name of identify3d() to Identify3d(). J. Fox
 # 2014-08-17: added calls to requireNamespace and :: as needed. J. Fox
+# 2014-09-04: J. Fox: empty groups produce warning rather than error
 
 scatter3d <- function(x, ...){
 	if (!requireNamespace("rgl")) stop("rgl package missing")
@@ -79,6 +80,12 @@ scatter3d.default <- function(x, y, z,
 		stop(sprintf("Number of groups (%d) exceeds number of colors (%d)",
 				nlevels(groups), length(surface.col)))
 	if ((!is.null(groups)) && (!is.factor(groups))) stop("groups variable must be a factor")
+    counts <- table(groups)
+    if (any(counts == 0)){
+        levels <- levels(groups)
+        warning("the following groups are empty: ", paste(levels[counts == 0], collapse=", "))
+        groups <- factor(groups, levels=levels[counts != 0])
+    }
 	bg.col <- match.arg(bg.col)
 	fogtype <- match.arg(fogtype)
 	if ((length(fit) > 1) && residuals && surface)
@@ -164,8 +171,8 @@ scatter3d.default <- function(x, y, z,
 			ell.radius <- sqrt(dfn * qf(level, dfn, dfd))
 			ellips <- ellipsoid(center=c(mean(x), mean(y), mean(z)),
 					shape=cov(cbind(x,y,z)), radius=ell.radius)
-			if (fill) shade3d(ellips, col=surface.col[1], alpha=ellipsoid.alpha, lit=FALSE)
-			if (grid) wire3d(ellips, col=surface.col[1], lit=FALSE)
+			if (fill) rgl::shade3d(ellips, col=surface.col[1], alpha=ellipsoid.alpha, lit=FALSE)
+			if (grid) rgl::wire3d(ellips, col=surface.col[1], lit=FALSE)
 		}
 		else{
 			levs <- levels(groups)
@@ -197,9 +204,9 @@ scatter3d.default <- function(x, y, z,
 						linear = lm(y ~ x + z),
 						quadratic = lm(y ~ (x + z)^2 + I(x^2) + I(z^2)),
 						smooth = if (is.null(df.smooth)) mgcv::gam(y ~ s(x, z))
-								else gam(y ~ s(x, z, fx=TRUE, k=df.smooth)),
-						additive = if (is.null(df.additive)) gam(y ~ s(x) + s(z))
-								else gam(y ~ s(x, fx=TRUE, k=df.additive[1]+1) +
+								else mgcv::gam(y ~ s(x, z, fx=TRUE, k=df.smooth)),
+						additive = if (is.null(df.additive)) mgcv::gam(y ~ s(x) + s(z))
+								else mgcv::gam(y ~ s(x, fx=TRUE, k=df.additive[1]+1) +
 													s(z, fx=TRUE, k=(rev(df.additive+1)[1]+1)))
 				)
 				if (model.summary) summaries[[f]] <- summary(mod)
@@ -228,10 +235,10 @@ scatter3d.default <- function(x, y, z,
 					mod <- switch(f,
 							linear = lm(y ~ x + z + groups),
 							quadratic = lm(y ~ (x + z)^2 + I(x^2) + I(z^2) + groups),
-							smooth = if (is.null(df.smooth)) gam(y ~ s(x, z) + groups)
-									else gam(y ~ s(x, z, fx=TRUE, k=df.smooth) + groups),
-							additive = if (is.null(df.additive)) gam(y ~ s(x) + s(z) + groups)
-									else gam(y ~ s(x, fx=TRUE, k=df.additive[1]+1) +
+							smooth = if (is.null(df.smooth)) mgcv::gam(y ~ s(x, z) + groups)
+									else mgcv::gam(y ~ s(x, z, fx=TRUE, k=df.smooth) + groups),
+							additive = if (is.null(df.additive)) mgcv::gam(y ~ s(x) + s(z) + groups)
+									else mgcv::gam(y ~ s(x, fx=TRUE, k=df.additive[1]+1) +
 														s(z, fx=TRUE, k=(rev(df.additive+1)[1]+1)) + groups)
 					)
 					if (model.summary) summaries[[f]] <- summary(mod)
@@ -271,10 +278,10 @@ scatter3d.default <- function(x, y, z,
 						mod <- switch(f,
 								linear = lm(y ~ x + z, subset=select.obs),
 								quadratic = lm(y ~ (x + z)^2 + I(x^2) + I(z^2), subset=select.obs),
-								smooth = if (is.null(df.smooth)) gam(y ~ s(x, z), subset=select.obs)
-										else gam(y ~ s(x, z, fx=TRUE, k=df.smooth), subset=select.obs),
-								additive = if (is.null(df.additive)) gam(y ~ s(x) + s(z), subset=select.obs)
-										else gam(y ~ s(x, fx=TRUE, k=df.additive[1]+1) +
+								smooth = if (is.null(df.smooth)) mgcv::gam(y ~ s(x, z), subset=select.obs)
+										else mgcv::gam(y ~ s(x, z, fx=TRUE, k=df.smooth), subset=select.obs),
+								additive = if (is.null(df.additive)) mgcv::gam(y ~ s(x) + s(z), subset=select.obs)
+										else mgcv::gam(y ~ s(x, fx=TRUE, k=df.additive[1]+1) +
 															s(z, fx=TRUE, k=(rev(df.additive+1)[1]+1)), subset=select.obs)
 						)
 						if (model.summary) summaries[[paste(f, ".", group, sep="")]] <- summary(mod)
@@ -364,6 +371,14 @@ Identify3d  <- function (x, y, z, axis.scales=TRUE, groups = NULL, labels = 1:le
 		col = c("blue", "green", "orange", "magenta", "cyan", "red", "yellow", "gray"),
 		offset = ((100/length(x))^(1/3)) * 0.02){
   if (!requireNamespace("rgl")) stop("rgl package is missing")
+    if (!is.null(groups)){
+        counts <- table(groups)
+        if (any(counts == 0)){
+            levels <- levels(groups)
+            warning("the following groups are empty: ", paste(levels[counts == 0], collapse=", "))
+            groups <- factor(groups, levels=levels[counts != 0])
+        }
+    }
 	valid <- if (is.null(groups))
 				complete.cases(x, y, z)
 			else complete.cases(x, y, z, groups)

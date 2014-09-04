@@ -2,7 +2,8 @@
 
 # Sept 17, 2012 moved from scatterplot.R to scatterplotSmoothers.R
 # June 18, 2014 Fixed bug in gamLine so the smoother.arg link="linkname" works; thanks to Hani Christoph
-# 2014-08-19: Make sure that Matrix and MatrixModels packages are available to quantregLine(). John
+# 2014-08-19: Make sure that Matrix and MatrixModels packages are available to quantregLine(). 
+#             Can't substitute requireNamespace() for require() for gam and quantreg packages. John
 
 default.arg <- function(args.list, arg, default){
     if (is.null(args.list[[arg]])) default else args.list[[arg]]
@@ -76,7 +77,7 @@ loessLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
 
 gamLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
               draw=TRUE) {
-    if (!require(mgcv)) stop("mgcv package missing")
+    if (!require("mgcv")) stop("mgcv package missing")
     lty <- default.arg(smoother.args, "lty", 1)
     lwd <- default.arg(smoother.args, "lwd", 2)
     lty.spread <- default.arg(smoother.args, "lty.spread", 2)
@@ -106,7 +107,7 @@ gamLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
     on.exit(options(warn))
 # new June 18, 2014
     fam1 <- if(is.null(link)) fam else fam(link)
-    fit <- try(gam(y ~ s(x, k=k, bs=bs), weights=w, family=fam1))
+    fit <- try(mgcv::gam(y ~ s(x, k=k, bs=bs), weights=w, family=fam1))
 # end bug fix.
     if (class(fit)[1] != "try-error"){
             if (log.x) x <- exp(x)
@@ -120,8 +121,8 @@ gamLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
     if(spread) { 
         res <- residuals(fit)
         pos <- res > 0
-        pos.fit <- try(gam(res^2 ~ s(x, k=k, bs=bs), subset=pos), silent=TRUE)
-        neg.fit <- try(gam(res^2 ~ s(x, k=k, bs=bs), subset=!pos), silent=TRUE)
+        pos.fit <- try(mgcv::gam(res^2 ~ s(x, k=k, bs=bs), subset=pos), silent=TRUE)
+        neg.fit <- try(mgcv::gam(res^2 ~ s(x, k=k, bs=bs), subset=!pos), silent=TRUE)
         if(class(pos.fit)[1] != "try-error"){
             y.pos <- if (log.y) exp(fitted(fit)[pos] + sqrt(fitted(pos.fit)))
             else fitted(fit)[pos] + sqrt(fitted(pos.fit))
@@ -147,7 +148,7 @@ gamLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
 
 quantregLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
                    draw=TRUE) {
-    if (!require(quantreg)) stop("quantreg package missing")
+    if (!require("quantreg")) stop("quantreg package missing")
     if (!package.installed("Matrix")) stop("the Matrix package is missing")
     if (!package.installed("MatrixModels")) stop("the MatrixModels package is missing")
     if (!package.installed("SparseM")) stop("the SparseM package is missing")
@@ -165,16 +166,16 @@ quantregLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
     x <- x[ord]
     y <- y[ord]
     if (!spread){
-        fit <- rqss(y ~ qss(x, lambda=lambda))
+        fit <- quantreg::rqss(y ~ qss(x, lambda=lambda))
         if (log.x)  x <- exp(x)
         y <-if (log.y) exp(fitted(fit)) else fitted(fit)
         if(draw) lines(x, y, lwd=lwd, col=col, lty=lty)  else
            out <- list(x=x, y=x)
     }
     else{
-        fit <- rqss(y ~ qss(x, lambda=lambda))
-        q1fit <- rqss(y ~ qss(x, lambda=lambda), tau=0.25)
-        q3fit <- rqss(y ~ qss(x, lambda=lambda), tau=0.75)
+        fit <- quantreg::rqss(y ~ qss(x, lambda=lambda))
+        q1fit <- quantreg::rqss(y ~ qss(x, lambda=lambda), tau=0.25)
+        q3fit <- quantreg::rqss(y ~ qss(x, lambda=lambda), tau=0.75)
         if (log.x) x <- exp(x)
         y <- if (log.y) exp(fitted(fit)) else fitted(fit)
         if(draw) lines(x, y, lwd=lwd, col=col, lty=lty) else

@@ -1497,7 +1497,7 @@ Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, test=c("Chisq", "F"), ...
 	if (!missing(vcov.)){
 		vcov. <- if (test == "F"){
 					if (!require("pbkrtest")) stop("pbkrtest package required for F-tests on linear mixed model")
-					as.matrix(vcovAdj(mod, details=0))
+					as.matrix(pbkrtest::vcovAdj(mod, details=0))
 				}
 				else vcov(mod)
 	}
@@ -1548,8 +1548,8 @@ Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, test=c("Chisq", "F"), .
 		stop("there are aliased coefficients in the model")
 	if (!missing(vcov.)){
 		vcov. <- if (test == "F"){
-					if (!requireNamespace("pbkrtest")) stop("pbkrtest package required for F-tests on linear mixed model")
-					as.matrix(vcovAdj(mod, details=0))
+					if (!require("pbkrtest")) stop("pbkrtest package required for F-tests on linear mixed model")
+					as.matrix(pbkrtest::vcovAdj(mod, details=0))
 				}
 				else vcov(mod)
 	}
