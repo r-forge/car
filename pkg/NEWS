@@ -6,6 +6,8 @@ Changes to Version 2.0-22
 
     o The following functions now produce warnings rather than errors when there are empty groups: scatterplot(), scatterplotMatrix(), scatter3d(), densityPlot().
 
+    o Corrected name of "Blackmoor" dataset to "Blackmore".
+
     o Small bug fixes.
 
 Changes to Version 2.0-21
