@@ -29,6 +29,7 @@
 # 2013-08-19: replaced calls to print.anova(). J. Fox
 # 2014-08-17: added calls to requireNamespace() and :: where needed (doesn't work for pbkrtest). J. Fox
 # 2014-08-18: fixed bugs in Anova.survreg() for types II, III LR tests and Wald tests. J. Fox
+# 2014--09-23: added Anova.rlm(). J. Fox
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1702,3 +1703,5 @@ Anova.III.lme <- function(mod, vcov., singular.ok=FALSE, ...){
 }
 
 Anova.svyglm <- function(mod, ...) Anova.default(mod, ...)
+
+Anova.rlm <- function(mod, ...) Anova.default(mod, test="F", ...)

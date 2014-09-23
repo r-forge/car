@@ -27,6 +27,7 @@
 #   2013-08-19: removed calls to unexported functions in stats. J. Fox
 #   2014-08-17: added call to requireNamespace() and :: as needed (doesn't work for pbkrtest). J. Fox
 #   2014-08-18: fixed bug in linearHypothesis.survreg(). J. Fox
+#   2014-09-23: added linearHypothesis.rlm. J. Fox
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -672,6 +673,19 @@ linearHypothesis.lme <- function(model, hypothesis.matrix, rhs=NULL,
 ## for svyglm
 
 linearHypothesis.svyglm <- function(model, ...) linearHypothesis.default(model, ...)
+
+## for rlm
+
+df.residual.rlm <- function(object, ...){
+  p <- length(coef(object))
+  wt.method <- object$call$wt.method
+  if (!is.null(wt.method) && wt.method == "case") {
+    sum(object$weights) - p
+  }
+  else length(object$wresid) - p
+}
+
+linearHypothesis.rlm <- function(model, ...) linearHypothesis.default(model, test="F", ...)
 
 
 ## matchCoefs

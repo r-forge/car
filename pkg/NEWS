@@ -1,6 +1,6 @@
 Changes to Version 2.0-22
 
-    o two new functions marginalPlot to display a marginal plot of an lm response versus a regressor and mcPlot to draw a pair of plots given by a marginal plot and the corresponding added-variable plot.  Primarily pedigogical to illustrate that marginal plot display more variation than do conditional onees.
+    o two new functions marginalPlot to display a marginal plot of an lm response versus a regressor and mcPlot to draw a pair of plots given by a marginal plot and the corresponding added-variable plot.  Primarily pedigogical to illustrate that marginal plot display more variation than do conditional ones.
 
     o added argument marginal.scale to avPlots to scale the added-variable plot for Y on X|Z using the scale from the marginal plot of Y vs X ignoring X.  The default is FALSE, corresponding to using scaling to maximize resolution or use xlim and ylim to set user scaling.
 
@@ -11,6 +11,8 @@ Changes to Version 2.0-22
     o The following functions now produce warnings rather than errors when there are empty groups: scatterplot(), scatterplotMatrix(), scatter3d(), densityPlot().
 
     o Corrected name of "Blackmoor" dataset to "Blackmore".
+
+    o introduced linearHypothesis.rlm() for rlm models (suggestion of Matthieu Stigler).
 
     o Small bug fixes.
 
