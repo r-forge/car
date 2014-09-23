@@ -49,8 +49,8 @@
 Generic function for testing a linear hypothesis, and methods
 for linear models, generalized linear models, multivariate linear
 models, linear and generalized linear mixed-effects models, 
-generalized linear models fit with \code{\link{svyglm}} in the \pkg{survey} package,
-and robust linear models fit with \code{\link{rlm}} in the \pkg{MASS} package.
+generalized linear models fit with \code{svyglm} in the \pkg{survey} package,
+robust linear models fit with \code{rlm} in the \pkg{MASS} package,
 and other models that have methods for \code{coef} and \code{vcov}. 
 For mixed-effects models, the tests are Wald chi-square tests for the fixed effects.
 }

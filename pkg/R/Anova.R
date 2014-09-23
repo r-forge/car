@@ -1704,4 +1704,4 @@ Anova.III.lme <- function(mod, vcov., singular.ok=FALSE, ...){
 
 Anova.svyglm <- function(mod, ...) Anova.default(mod, ...)
 
-Anova.rlm <- function(mod, ...) Anova.default(mod, test="F", ...)
+Anova.rlm <- function(mod, ...) Anova.default(mod, test.statistic="F", ...)
