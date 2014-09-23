@@ -109,9 +109,7 @@ will be drawing one-pair-at-a-time, with user input required between pairs of gr
 
 \examples{
 m1 <- lm(partic ~ tfr + menwage + womwage + debt + parttime, data = Bfox)
-marginalPlot(m1, "womwage")
 mcPlot(m1, "womwage")
-mcPlots(m1, ~ . - debt) # avoids "asking" to draw the graph
 }
 
 \keyword{hplot}
