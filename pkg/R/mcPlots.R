@@ -2,10 +2,12 @@
 # 'mc' stands for Marginal and Conditional:  for the specified regressor X in model, 
 # the marginal plot of Y vs X with both centered is plotted at the left and
 # e(Y|Z) vs e(X|Z) on the right in the same scale.
-
+# 2014-09-23: added style argument to mcPlot.lm() and mcPlots(); marginalPlot.lm()
+#   returns coordinates invisibly if add=TRUE. J. Fox
 
 mcPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask, 
-		main, ...){
+		main, style=c("side.by.side", "overlayed"), ...){
+  style <- match.arg(style)
 	terms <- if(is.character(terms)) paste("~",terms) else terms
 	vform <- update(formula(model),terms)
 	if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
@@ -39,13 +41,21 @@ mcPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask,
 	invisible(res)
 }
 
-mcPlot <- function(model, ..., marginal.scale=TRUE, new=TRUE){
-  if(new){
+mcPlot <- function(model, ..., marginal.scale=TRUE, new=TRUE, style=c("side.by.side", "overlayed")){
+  style <- match.arg(style)
+  if(new && style == "side.by.side"){
     op <- par(mfrow=c(1, 2))
     on.exit(par(op))
   }
-  marginalPlot(model, ...)
-  avPlot(model, ..., marginal.scale=marginal.scale)
+  if (style == "side.by.side"){
+    marginalPlot(model, ...)
+    avPlot(model, ..., marginal.scale=marginal.scale)
+  }
+  else {
+    coords.avp <- avPlot(model, ..., pch=16, col="red", marginal.scale=TRUE)
+    coords.mp <- marginalPlot(model, add=TRUE, pch=16, col="blue", col.lines="blue", ...)
+    arrows(coords.mp[, 1], coords.mp[, 2], coords.avp[, 1], coords.avp[, 2], length=0.125)
+  }
 }
 
 marginalPlot <-  function(model, ...) UseMethod("marginalPlot")
@@ -57,7 +67,7 @@ marginalPlot.lm <- function(model, variable,
 		id.cex=1, id.col=palette()[1],
 		col = palette()[1], col.lines = palette()[2],
 		xlab, ylab, pch = 1, lwd = 2, main=paste("Centered Marginal Plot:", variable), grid=TRUE,
-		ellipse=FALSE, ellipse.args=NULL, ...){
+		ellipse=FALSE, ellipse.args=NULL, add=FALSE, ...){
 	variable <- if (is.character(variable) & 1 == length(variable))
 				variable
 			else deparse(substitute(variable))
@@ -77,19 +87,22 @@ marginalPlot.lm <- function(model, variable,
   res <- lm(cbind(mod.mat[, var], response) ~ 1, weights=wt)$residuals
 	xlab <- if(missing(xlab)) paste(var.names[var], " (centered)") else xlab
 	ylab <- if(missing(ylab)) paste(responseName, " (centered)")  else ylab
-	plot(res[, 1], res[, 2], xlab = xlab, ylab = ylab, type="n", main=main, ...)
-	if(grid){
-		grid(lty=1, equilogs=FALSE)
-		box()}
+	if (!add) {
+	  plot(res[, 1], res[, 2], xlab = xlab, ylab = ylab, type="n", main=main, ...)
+	  if(grid){
+	    grid(lty=1, equilogs=FALSE)
+	    box()}
+	}
 	points(res[, 1], res[, 2], col=col, pch=pch, ...)
 	abline(lsfit(res[, 1], res[, 2], wt = wt), col = col.lines, lwd = lwd)
 	if (ellipse) {
-		ellipse.args <- c(list(res, add=TRUE, plot.points=FALSE), ellipse.args)
+		ellipse.args <- c(list(res, add=TRUE, plot.points=FALSE, col=col.lines), ellipse.args)
 		do.call(dataEllipse, ellipse.args)
 	}
-	showLabels(res[, 1],res[, 2], labels=labels, 
+	labs <- showLabels(res[, 1],res[, 2], labels=labels, 
 			id.method=id.method, id.n=id.n, id.cex=id.cex, 
-			id.col=id.col) 
+			id.col=id.col)
+  if (add) return(res) else labs
 }
 
 

@@ -11,9 +11,10 @@
 }
 
 \usage{
-mcPlots(model, terms=~., intercept=FALSE, layout=NULL, ask, main, ...)
+mcPlots(model, terms=~., intercept=FALSE, layout=NULL, ask, main, 
+  style=c("side.by.side", "overlayed"), ...)
 
-mcPlot(model, ..., marginal.scale=TRUE, new=TRUE)
+mcPlot(model, ..., marginal.scale=TRUE, new=TRUE, style=c("side.by.side", "overlayed"))
 
 marginalPlot(model, ...)
 
@@ -24,7 +25,7 @@ marginalPlot(model, ...)
 		id.cex=1, id.col=palette()[1],
 		col = palette()[1], col.lines = palette()[2],
 		xlab, ylab, pch = 1, lwd = 2, main=paste("Centered Marginal Plot:", variable), grid=TRUE,
-		ellipse=FALSE, ellipse.args=NULL, ...)
+		ellipse=FALSE, ellipse.args=NULL, add=FALSE, ...)
 
 }
 \arguments{
@@ -76,6 +77,10 @@ will be drawing one-pair-at-a-time, with user input required between pairs of gr
     a robust covariance-matrix.}
   \item{marginal.scale}{Consider an added-variable plot of Y versus X given Z.  If this argument is \code{FALSE} then the limits on the horizontal axis are determined by the range of the residuals from the regression of X on Z and the limits on the vertical axis are determined by the range of the residuals from the regressnio of Y on Z.  If the argument is \code{TRUE}, then the limits on the horizontal axis are determined by the range of X minus it mean, and on the vertical axis by the range of Y minus its means; adjustment is made if necessary to include outliers.  This scaling allows visualization of the correlations between Y and Z and between X and Z.  For example, if the X and Z are highly correlated, then the points will be concentrated on the middle of the plot.}
   \item{new}{if \code{TRUE}, the default, the plot window is reset using \code{par{mfrow=c(1, 2)}}.  If \code{FALSE}, the layout of the plot window is not reset.}  
+  \item{style}{one of \code{"side.by.side"} or \code{"overlayed"}, with the former the default,
+    determining whether the two plots are shown in separate panels or on top of one-another.}
+  \item{add}{if \code{TRUE} points and other graphical elements are added to the current plot;
+    the default is \code{FALSE}.}
 }
 
 \details{
