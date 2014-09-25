@@ -24,7 +24,8 @@ marginalPlot(model, ...)
 		id.n = if(id.method[1]=="identify") Inf else 0,
 		id.cex=1, id.col=palette()[1],
 		col = palette()[1], col.lines = palette()[2],
-		xlab, ylab, pch = 1, lwd = 2, main=paste("Centered Marginal Plot:", variable), grid=TRUE,
+		xlab, ylab, pch = 1, lwd = 2, 
+        main=paste("Centered Marginal Plot:", variable), grid=TRUE,
 		ellipse=FALSE, ellipse.args=NULL, add=FALSE, ...)
 
 }

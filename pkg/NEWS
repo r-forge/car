@@ -12,6 +12,8 @@ Changes to Version 2.0-22
 
     o Corrected name of "Blackmoor" dataset to "Blackmore".
 
+    o Added KosteckiDillon migraines dataset (contributed by Georges Monette).
+
     o introduced linearHypothesis.rlm() for rlm models (suggestion of Matthieu Stigler).
 
     o Small bug fixes.
