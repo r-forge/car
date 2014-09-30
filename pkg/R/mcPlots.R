@@ -1,13 +1,15 @@
-# September 22, 2014 mcPlots, by S. Weisberg
-# 'mc' stands for Marginal and Conditional:  for the specified regressor X in model, 
-# the marginal plot of Y vs X with both centered is plotted at the left and
-# e(Y|Z) vs e(X|Z) on the right in the same scale.
-# 2014-09-23: added style argument to mcPlot.lm() and mcPlots(); marginalPlot.lm()
-#   returns coordinates invisibly if add=TRUE. J. Fox
+# October 1, 2014 mcPlots, by S. Weisberg and J. Fox
+# 'mc' stands for Marginal and Conditional:  for the specified regressor X in model 
+# The 'marginal' plot is of Y vs X with Y and X both centered
+# The 'conditional plot is the added-variable plot e(Y|rest) vs e(X|rest)
+# If 'overlaid=TRUE', the default, both plots are overlayed
+# If 'overlaid=FALSE', then the plots are side-by-side
+# The 'overlaid' plot is similar to the initial and final frame of an ARES plot
+# Cook and Weisberg (1989), "Regression diagnostics with dynamic graphics", Technometrics, 31, 277.
+# This plot would benefit from animation.
 
 mcPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask, 
-		main, style=c("side.by.side", "overlayed"), ...){
-  style <- match.arg(style)
+		main, overlaid=TRUE, ...){
 	terms <- if(is.character(terms)) paste("~",terms) else terms
 	vform <- update(formula(model),terms)
 	if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
@@ -24,85 +26,128 @@ mcPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask,
 	if (nt == 0) stop("No plots specified")
 	if (missing(main)) main <- if (nt == 1) paste("Added-Variable Plot:", good) else "Added-Variable Plots"
   if (nt == 0) stop("No plots specified")
-  if (nt > 1 & (is.null(layout) || is.numeric(layout))) {
-    if(is.null(layout)){
-         layout <- switch(min(nt, 4), c(1, 2), c(2, 2), c(3, 2), c(4, 2))
-#        layout <- switch(min(nt, 9), c(1, 1), c(1, 2), c(2, 2), c(2, 2), 
-#                            c(3, 2), c(3, 2), c(3, 3), c(3, 3), c(3, 3))
+  if(overlaid){
+    if (nt > 1 & (is.null(layout) || is.numeric(layout))) {
+      if(is.null(layout)){
+        layout <- switch(min(nt, 9), c(1, 1), c(1, 2), c(2, 2), c(2, 2), 
+                         c(3, 2), c(3, 2), c(3, 3), c(3, 3), c(3, 3))
+      }
+      ask <- if(missing(ask) || is.null(ask)) prod(layout)<nt else ask
+      op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
+                oma=c(0, 0, 1.5, 0), mar=c(5, 4, 1, 2) + .1)
+      on.exit(par(op))
     }
-    ask <- if(missing(ask) || is.null(ask)) layout[1] < nt else ask
-    op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
-            oma=c(0, 0, 1.5, 0), mar=c(5, 4, 1, 2) + .1)
-    on.exit(par(op))
+  } else{
+    if (nt >= 1 & (is.null(layout) || is.numeric(layout))) {
+      if(is.null(layout)){
+        layout <- switch(min(nt, 4), c(1, 2), c(2, 2), c(3, 2), c(4, 2))
+      }
+      ask <- if(missing(ask) || is.null(ask)) layout[1] < nt else ask
+      op <- par(mfrow=layout, ask=ask, no.readonly=TRUE, 
+                oma=c(0, 0, 1.5, 0), mar=c(5, 4, 1, 2) + .1)
+      on.exit(par(op))
     }
-	res <- as.list(NULL)
-	for (term in good) res[[term]] <- mcPlot(model, term, new=FALSE, ...)
+  }
+	for (term in good) mcPlot(model, term, new=FALSE, ...)
 	mtext(side=3,outer=TRUE,main, cex=1.2)
-	invisible(res)
 }
 
-mcPlot <- function(model, ..., marginal.scale=TRUE, new=TRUE, style=c("side.by.side", "overlayed")){
-  style <- match.arg(style)
-  if(new && style == "side.by.side"){
-    op <- par(mfrow=c(1, 2))
+
+
+mcPlot <-  function(model, ...) UseMethod("mcPlot")
+
+mcPlot.lm <- function(model, variable,
+                      id.method = list(abs(residuals(model, type="pearson")), "x"),
+                      labels, 
+                      id.n = if(id.method[1]=="identify") Inf else 0,
+                      id.cex=1, id.col=palette()[1],
+                      col.marginal="blue", col.conditional="red", col.arrows="gray",
+                      pch = c(16,1), lwd = 2, grid=TRUE,   ###removed arg main
+                      ellipse=FALSE, ellipse.args=list(levels=0.5), 
+                      overlaid=TRUE, new=TRUE, ...){
+  variable <- if (is.character(variable) & 1 == length(variable))
+                 variable  else deparse(substitute(variable))
+  if(new && !overlaid) {
+    op <- par(mfrow=c(1,2))
     on.exit(par(op))
   }
-  if (style == "side.by.side"){
-    marginalPlot(model, ...)
-    avPlot(model, ..., marginal.scale=marginal.scale)
-  }
-  else {
-    coords.avp <- avPlot(model, ..., pch=16, col="red", marginal.scale=TRUE)
-    coords.mp <- marginalPlot(model, add=TRUE, pch=16, col="blue", col.lines="blue", ...)
-    arrows(coords.mp[, 1], coords.mp[, 2], coords.avp[, 1], coords.avp[, 2], length=0.125)
-  }
+  if(missing(labels)) 
+    labels <- names(residuals(model)[!is.na(residuals(model))])
+  else deparse(substitute(variable))
+  mod.mat <- model.matrix(model)
+  var.names <- colnames(mod.mat)
+  var <- which(variable == var.names)
+  if (0 == length(var))
+    stop(paste(variable, "is not a column of the model matrix."))
+  response <- response(model)
+  responseName <- responseName(model)
+  if (is.null(weights(model)))
+    wt <- rep(1, length(response))
+  else wt <- weights(model)
+  res0 <- lm(cbind(mod.mat[, var], response) ~ 1, weights=wt)$residual
+  res  <- lsfit(mod.mat[, -var], cbind(mod.mat[, var], response),
+               wt = wt, intercept = FALSE)$residuals
+  xlab <- paste(var.names[var], "| others") 
+  ylab <- paste(responseName, " | others")  
+  xlm <- c( min(res0[, 1], res[, 1]), max(res0[, 1], res[, 1]))
+  ylm <- c( min(res0[, 2], res[, 2]), max(res0[, 2], res[, 2]))
+  if(overlaid){ 
+     plot(res[, 1], res[, 2], xlab = xlab, ylab = ylab, type="n", 
+          main=paste("Marginal/Conditional plot of", var.names[var]),
+          xlim=xlm, ylim=ylm,  ...)
+     if(grid){
+       grid(lty=1, equilogs=FALSE)
+       box()}     
+     points(res0[, 1], res0[, 2], pch=pch[1], col=col.marginal)
+     points(res[, 1], res[, 2], col=col.conditional, pch=pch[2], ...)
+     arrows(res0[, 1], res0[, 2], res[, 1], res[, 2], length=0.125, col=col.arrows)
+     abline(lsfit(res0[, 1], res0[, 2], wt = wt), col = col.marginal, lwd = lwd)
+     abline(lsfit(res[, 1], res[, 2], wt = wt), col = col.conditional, lwd = lwd)
+     if (ellipse) {
+       ellipse.args1 <- c(list(res0, add=TRUE, plot.points=FALSE, col=col.marginal), ellipse.args)
+       do.call(dataEllipse, ellipse.args1)
+       ellipse.args1 <- c(list(res, add=TRUE, plot.points=FALSE, col=col.conditional), ellipse.args)
+       do.call(dataEllipse, ellipse.args1)
+     }
+#    showLabels(res[, 1],res[, 2], labels=labels, 
+#             id.method=id.method, id.n=id.n, id.cex=id.cex, 
+#             id.col=id.col)
+    colnames(res) <- c(var.names[var], responseName)
+    rownames(res) <- rownames(mod.mat)
+    invisible(res)} 
+  else { # side.by.side plots
+    plot(res0[, 1], res0[, 2], xlab = xlab, ylab = ylab, type="n", 
+          main=paste("Marginal plot of", var.names[var]),
+          xlim=xlm, ylim=ylm,  ...)
+    if(grid){
+       grid(lty=1, equilogs=FALSE)
+       box()}     
+    points(res0[, 1], res0[, 2], pch=pch[1], col=col.marginal)
+    abline(lsfit(res0[, 1], res0[, 2], wt = wt), col = col.marginal, lwd = lwd)
+    if (ellipse) {
+      ellipse.args1 <- c(list(res0, add=TRUE, plot.points=FALSE, col=col.marginal), ellipse.args)
+      do.call(dataEllipse, ellipse.args1)
+    }
+    showLabels(res0[, 1],res0[, 2], labels=labels, 
+               id.method=id.method, id.n=id.n, id.cex=id.cex, 
+               id.col=id.col)
+    colnames(res) <- c(var.names[var], responseName)
+    rownames(res) <- rownames(mod.mat)    
+    plot(res[, 1], res[, 2], xlab = xlab, ylab = ylab, type="n", 
+         main=paste("Added-Variable plot of", var.names[var]),
+         xlim=xlm, ylim=ylm,  ...)
+    if(grid){
+      grid(lty=1, equilogs=FALSE)
+      box()}
+    points(res[, 1], res[, 2], col=col.conditional, pch=pch[2], ...)
+    abline(lsfit(res[, 1], res[, 2], wt = wt), col = col.conditional, lwd = lwd)
+    if (ellipse) {
+       ellipse.args1 <- c(list(res, add=TRUE, plot.points=FALSE, col=col.conditional), ellipse.args)
+       do.call(dataEllipse, ellipse.args1)
+     }
+    showLabels(res[, 1],res[, 2], labels=labels, 
+                id.method=id.method, id.n=id.n, id.cex=id.cex, 
+                id.col=id.col)
+    invisible(res)}      
 }
-
-marginalPlot <-  function(model, ...) UseMethod("marginalPlot")
-
-marginalPlot.lm <- function(model, variable,
-		id.method = list(abs(residuals(model, type="pearson"))),
-		labels, 
-		id.n = if(id.method[1]=="identify") Inf else 0,
-		id.cex=1, id.col=palette()[1],
-		col = palette()[1], col.lines = palette()[2],
-		xlab, ylab, pch = 1, lwd = 2, main=paste("Centered Marginal Plot:", variable), grid=TRUE,
-		ellipse=FALSE, ellipse.args=NULL, add=FALSE, ...){
-	variable <- if (is.character(variable) & 1 == length(variable))
-				variable
-			else deparse(substitute(variable))
-	if(missing(labels)) 
-		labels <- names(residuals(model)[!is.na(residuals(model))])
-	else deparse(substitute(variable))
-	mod.mat <- model.matrix(model)
-	var.names <- colnames(mod.mat)
-	var <- which(variable == var.names)
-	if (0 == length(var))
-		stop(paste(variable, "is not a column of the model matrix."))
-	response <- response(model)
-	responseName <- responseName(model)
-	if (is.null(weights(model)))
-		wt <- rep(1, length(response))
-	else wt <- weights(model)
-  res <- lm(cbind(mod.mat[, var], response) ~ 1, weights=wt)$residuals
-	xlab <- if(missing(xlab)) paste(var.names[var], " (centered)") else xlab
-	ylab <- if(missing(ylab)) paste(responseName, " (centered)")  else ylab
-	if (!add) {
-	  plot(res[, 1], res[, 2], xlab = xlab, ylab = ylab, type="n", main=main, ...)
-	  if(grid){
-	    grid(lty=1, equilogs=FALSE)
-	    box()}
-	}
-	points(res[, 1], res[, 2], col=col, pch=pch, ...)
-	abline(lsfit(res[, 1], res[, 2], wt = wt), col = col.lines, lwd = lwd)
-	if (ellipse) {
-		ellipse.args <- c(list(res, add=TRUE, plot.points=FALSE, col=col.lines), ellipse.args)
-		do.call(dataEllipse, ellipse.args)
-	}
-	labs <- showLabels(res[, 1],res[, 2], labels=labels, 
-			id.method=id.method, id.n=id.n, id.cex=id.cex, 
-			id.col=id.col)
-  if (add) return(res) else labs
-}
-
 

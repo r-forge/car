@@ -77,7 +77,6 @@ export(
     gamLine,
     loessLine,
     quantregLine,
-    marginalPlot,
     mcPlot,
     mcPlots,
     
@@ -218,7 +217,7 @@ S3method(matchCoefs, lme)
 S3method(matchCoefs, mer)
 S3method(matchCoefs, merMod)
 S3method(matchCoefs, mlm)
-S3method(marginalPlot, lm)
+S3method(mcPlot, lm)
 S3method(mmp, default)
 S3method(mmp, lm)
 S3method(mmp, glm)
