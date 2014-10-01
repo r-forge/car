@@ -8,8 +8,7 @@
 # Cook and Weisberg (1989), "Regression diagnostics with dynamic graphics", Technometrics, 31, 277.
 # This plot would benefit from animation.
 
-mcPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask, 
-		main, overlaid=TRUE, ...){
+mcPlots <- function(model, terms=~., layout=NULL, ask, overlaid=TRUE, ...){
 	terms <- if(is.character(terms)) paste("~",terms) else terms
 	vform <- update(formula(model),terms)
 	if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
@@ -21,10 +20,13 @@ mcPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask,
 	model.names <- attributes(mm)$dimnames[[2]]
 	model.assign <- attributes(mm)$assign
 	good <- model.names[!is.na(match(model.assign, terms.used))]
-	if (intercept) good <- c("(Intercept)", good)
+#	if (intercept) good <- c("(Intercept)", good)
+  if(attr(attr(model.frame(model), "terms"), "intercept") == 0)
+    stop("Error---the 'lm' object must have an intercept")
 	nt <- length(good)
 	if (nt == 0) stop("No plots specified")
-	if (missing(main)) main <- if (nt == 1) paste("Added-Variable Plot:", good) else "Added-Variable Plots"
+#	if (missing(main)) main <- if (nt == 1) paste("Marginal/Conditional Plot:", good) else 
+#                                                "Marginal/Conditional Plots"
   if (nt == 0) stop("No plots specified")
   if(overlaid){
     if (nt > 1 & (is.null(layout) || is.numeric(layout))) {
@@ -48,8 +50,8 @@ mcPlots <- function(model, terms=~., intercept=FALSE, layout=NULL, ask,
       on.exit(par(op))
     }
   }
-	for (term in good) mcPlot(model, term, new=FALSE, ...)
-	mtext(side=3,outer=TRUE,main, cex=1.2)
+	for (term in good) mcPlot(model, term, new=FALSE, overlaid=overlaid, ...)
+#	mtext(side=3,outer=TRUE,main, cex=1.2)
 }
 
 
@@ -74,6 +76,8 @@ mcPlot.lm <- function(model, variable,
   if(missing(labels)) 
     labels <- names(residuals(model)[!is.na(residuals(model))])
   else deparse(substitute(variable))
+  if(attr(attr(model.frame(model), "terms"), "intercept") == 0)
+    stop("Error---the 'lm' object must have an intercept")
   mod.mat <- model.matrix(model)
   var.names <- colnames(mod.mat)
   var <- which(variable == var.names)
@@ -109,9 +113,9 @@ mcPlot.lm <- function(model, variable,
        ellipse.args1 <- c(list(res, add=TRUE, plot.points=FALSE, col=col.conditional), ellipse.args)
        do.call(dataEllipse, ellipse.args1)
      }
-#    showLabels(res[, 1],res[, 2], labels=labels, 
-#             id.method=id.method, id.n=id.n, id.cex=id.cex, 
-#             id.col=id.col)
+     showLabels(res0[, 1],res0[, 2], labels=labels, 
+              id.method=id.method, id.n=id.n, id.cex=id.cex, 
+              id.col=id.col)
     colnames(res) <- c(var.names[var], responseName)
     rownames(res) <- rownames(mod.mat)
     invisible(res)} 
