@@ -242,6 +242,15 @@ residCurvTest.glm <- function(model, variable) {
      m2 <- update(model, newmod, start=NULL)
      c(Test= test<-deviance(model)-deviance(m2), Pvalue=1-pchisq(test, 1))
 }}}
+
+residCurvTest.negbin <- function(model, variable) {
+  if(variable == "fitted") c(NA, NA) else {
+    if(is.na(match(variable, attr(model$terms, "term.labels"))))
+      stop(paste(variable, "is not a term in the mean function")) else {
+        newmod <- paste(" ~ . + I(", variable, "^2)")
+        m2 <- update(model, newmod, start=NULL)
+        c(Test= test<-m2$twologlik - model$twologlik, Pvalue=1-pchisq(test, 1))
+      }}}
      
 tukeyNonaddTest <- function(model){
  tol <- model$qr$tol
