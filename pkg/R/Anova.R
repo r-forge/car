@@ -29,7 +29,8 @@
 # 2013-08-19: replaced calls to print.anova(). J. Fox
 # 2014-08-17: added calls to requireNamespace() and :: where needed (doesn't work for pbkrtest). J. Fox
 # 2014-08-18: fixed bugs in Anova.survreg() for types II, III LR tests and Wald tests. J. Fox
-# 2014--09-23: added Anova.rlm(). J. Fox
+# 2014-09-23: added Anova.rlm(). J. Fox
+# 2014-10-10: removed MASS:: from calls to polr(). John
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -547,14 +548,14 @@ Anova.II.polr <- function (mod, ...)
 		rels <- names[relatives(names[term], names, fac)]
 		exclude.1 <- as.vector(unlist(sapply(c(names[term], rels),
 								which.nms)))
-		mod.1 <- if (n.terms > 1) MASS::polr(y ~ X[, -c(1, exclude.1)], weights=wt)
-				else MASS::polr(y ~ 1, weights=wt)
+		mod.1 <- if (n.terms > 1) polr(y ~ X[, -c(1, exclude.1)], weights=wt)
+				else polr(y ~ 1, weights=wt)
 		dev.1 <- deviance(mod.1)
 		mod.2 <- if (length(rels) == 0)
 					mod
 				else {
 					exclude.2 <- as.vector(unlist(sapply(rels, which.nms)))
-					MASS::polr(y ~ X[, -c(1, exclude.2)], weights=wt)
+					polr(y ~ X[, -c(1, exclude.2)], weights=wt)
 				}
 		dev.2 <- deviance(mod.2)
 		LR[term] <- dev.1 - dev.2
@@ -582,8 +583,8 @@ Anova.III.polr <- function (mod, ...)
 	df <- df.terms(mod)
 	deviance <- deviance(mod)
 	for (term in 1:n.terms) {
-		mod.1 <- if (n.terms > 1) MASS::polr(y ~ X[, term != asgn][, -1], weights=wt)
-				else MASS::polr(y ~ 1, weights=wt)
+		mod.1 <- if (n.terms > 1) polr(y ~ X[, term != asgn][, -1], weights=wt)
+				else polr(y ~ 1, weights=wt)
 		LR[term] <- deviance(mod.1) - deviance
 		p[term] <- pchisq(LR[term], df[term], lower.tail=FALSE)
 	}
