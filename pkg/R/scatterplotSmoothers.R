@@ -59,7 +59,7 @@ loessLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
                       out$y.pos <- y.pos}
             }
         else{ options(warn)
-            warning("coud not fit positive part of the spread")
+            warning("could not fit positive part of the spread")
             }
         if(class(neg.fit)[1] != "try-error"){
             y.neg <- if (log.y) exp(fitted(fit)[!pos] - sqrt(fitted(neg.fit)))
@@ -69,7 +69,7 @@ loessLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
                       out$y.neg <- y.neg}
             }
         else {options(warn)
-            warning("cound not fit negative part of the spread") }
+            warning("could not fit negative part of the spread") }
         }
     if(!draw) return(out)
     }
@@ -131,7 +131,7 @@ gamLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
                      out$y.pos <- y.pos}
             }
         else{ options(warn)
-            warning("coud not fit positive part of the spread")
+            warning("could not fit positive part of the spread")
             }
         if(class(neg.fit)[1] != "try-error"){
             y.neg <- if (log.y) exp(fitted(fit)[!pos] - sqrt(fitted(neg.fit)))
@@ -141,7 +141,7 @@ gamLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
                      out$y.neg <- y.neg}
             }
         else {options(warn)
-            warning("cound not fit negative part of the spread") }
+            warning("could not fit negative part of the spread") }
         }
     if(!draw) return(out)
     }
