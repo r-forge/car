@@ -29,7 +29,7 @@ ByteCompile: yes
 LazyLoad: yes
 LazyData: yes
 Description:
-  This package accompanies J. Fox and S. Weisberg, An R Companion to Applied Regression,
+  This package accompanies J. Fox and S. Weisberg, An R Companion to Applied Regression, 
   Second Edition, Sage, 2011.
 License: GPL (>= 2)
 URL: https://r-forge.r-project.org/projects/car/, http://CRAN.R-project.org/package=car, http://socserv.socsci.mcmaster.ca/jfox/Books/Companion/index.html
