@@ -1,5 +1,7 @@
 Changes to Version 2.0-22
 
+    o corrected bug in 'terms' argument in residualPlots, and other graphic functions with a 'terms' argument
+
     o added residual curvature tests for glm.nb
 
     o mcPlot and mcPlot draw 'marginal/conditional' plots for lm objects.  The marginal plot is of the centered response versus a centered regressor; the conditional plot is the corresponding added-variable plot.  The plots can be overlaid or viewed side-by-side.
