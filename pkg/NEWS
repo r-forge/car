@@ -1,6 +1,6 @@
 Changes to Version 2.0-23
 
-    o Nothing yet!
+    o Fixed labels on mcPlot with overlay=FALSE
 
 
 Changes to Version 2.0-22
@@ -9,7 +9,7 @@ Changes to Version 2.0-22
 
     o added residual curvature tests for glm.nb
 
-    o mcPlot and mcPlot draw 'marginal/conditional' plots for lm objects.  The marginal plot is of the centered response versus a centered regressor; the conditional plot is the corresponding added-variable plot.  The plots can be overlaid or viewed side-by-side.
+    o mcPlot and mcPlots draw 'marginal/conditional' plots for lm objects.  The marginal plot is of the centered response versus a centered regressor; the conditional plot is the corresponding added-variable plot.  The plots can be overlaid or viewed side-by-side.
 
     o added argument marginal.scale to avPlots to scale the added-variable plot for Y on X|Z using the scale from the marginal plot of Y vs X ignoring X.  The default is FALSE, corresponding to using scaling to maximize resolution or use xlim and ylim to set user scaling.
 
