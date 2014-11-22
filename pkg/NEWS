@@ -1,5 +1,7 @@
 Changes to Version 2.0-23
 
+    o Modified ScatterplotSmoothers to add an 'offset' to the vertical axis of spread smooths.  This are requires in the marginal model plot functions.  
+
     o Fixed labels on mcPlot with overlay=FALSE
 
 

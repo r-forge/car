@@ -4,13 +4,15 @@
 # June 18, 2014 Fixed bug in gamLine so the smoother.arg link="linkname" works; thanks to Hani Christoph
 # 2014-08-19: Make sure that Matrix and MatrixModels packages are available to quantregLine(). 
 #             Can't substitute requireNamespace() for require() for gam and quantreg packages. John
+# 2014-11-21: Added 'offset' argument with default 0:  offset= sigmaHat(model) for use with
+#             marginal model plots.  Fixed spread smooths as well
 
 default.arg <- function(args.list, arg, default){
     if (is.null(args.list[[arg]])) default else args.list[[arg]]
 }
 
 loessLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
-               draw=TRUE) {
+               draw=TRUE, offset=0) {
     lty <- default.arg(smoother.args, "lty", 1)
     lwd <- default.arg(smoother.args, "lwd", 2)
     lty.spread <- default.arg(smoother.args, "lty.spread", 2)
@@ -45,27 +47,27 @@ loessLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
     if(spread) {
         res <- residuals(fit)
         pos <- res > 0
-        pos.fit <- try(loess(res^2 ~ x, span=span, degree=0, family=family, subset=pos,
+        pos.fit <- try(loess(I(res^2) ~ x, span=span, degree=0, family=family, subset=pos,
                         control=loess.control(iterations=1)),
                         silent=TRUE)
-        neg.fit <- try(loess(res^2 ~ x, span=span, degree=0, family=family, subset=!pos,
+        neg.fit <- try(loess(I(res^2) ~ x, span=span, degree=0, family=family, subset=!pos,
                         control=loess.control(iterations=1)),
                         silent=TRUE)
         if(class(pos.fit)[1] != "try-error"){
-            y.pos <- if (log.y) exp(fitted(fit)[pos] + sqrt(fitted(pos.fit)))
-                     else fitted(fit)[pos] + sqrt(fitted(pos.fit))
-            if(draw) lines(x[pos], y.pos, lwd=lwd.spread, lty=lty.spread, col=col)
-                else {out$x.pos <- x[pos]
+            y.pos <- if (log.y) exp(fitted(fit) + sqrt(offset^2 + predict(pos.fit, newdata=data.frame(x=x))))
+                     else fitted(fit) + sqrt(offset^2 + predict(pos.fit, newdata=data.frame(x=x)))
+            if(draw) {lines(x, y.pos, lwd=lwd.spread, lty=lty.spread, col=col)}
+                else {out$x.pos <- x
                       out$y.pos <- y.pos}
             }
         else{ options(warn)
             warning("could not fit positive part of the spread")
             }
         if(class(neg.fit)[1] != "try-error"){
-            y.neg <- if (log.y) exp(fitted(fit)[!pos] - sqrt(fitted(neg.fit)))
-                     else fitted(fit)[!pos] - sqrt(fitted(neg.fit))
-            if(draw) lines(x[!pos], y.neg, lwd=lwd.spread, lty=lty.spread, col=col)
-                 else {out$x.neg <- x[!pos]
+            y.neg <- if (log.y) exp(fitted(fit) - sqrt(offset^2 + predict(neg.fit, data.frame(x=x))))
+                     else fitted(fit) - sqrt(offset^2 + predict(neg.fit, data.frame(x=x)))
+            if(draw) lines(x, y.neg, lwd=lwd.spread, lty=lty.spread, col=col)
+                 else {out$x.neg <- x
                       out$y.neg <- y.neg}
             }
         else {options(warn)
@@ -76,7 +78,7 @@ loessLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
 
 
 gamLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
-              draw=TRUE) {
+              draw=TRUE, offset=0) {
     if (!require("mgcv")) stop("mgcv package missing")
     lty <- default.arg(smoother.args, "lty", 1)
     lwd <- default.arg(smoother.args, "lwd", 2)
@@ -121,23 +123,23 @@ gamLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
     if(spread) { 
         res <- residuals(fit)
         pos <- res > 0
-        pos.fit <- try(mgcv::gam(res^2 ~ s(x, k=k, bs=bs), subset=pos), silent=TRUE)
-        neg.fit <- try(mgcv::gam(res^2 ~ s(x, k=k, bs=bs), subset=!pos), silent=TRUE)
+        pos.fit <- try(mgcv::gam(I(res^2) ~ s(x, k=k, bs=bs), subset=pos), silent=TRUE)
+        neg.fit <- try(mgcv::gam(I(res^2) ~ s(x, k=k, bs=bs), subset=!pos), silent=TRUE)
         if(class(pos.fit)[1] != "try-error"){
-            y.pos <- if (log.y) exp(fitted(fit)[pos] + sqrt(fitted(pos.fit)))
-            else fitted(fit)[pos] + sqrt(fitted(pos.fit))
-            if(draw) lines(x[pos], y.pos, lwd=lwd.spread, lty=lty.spread, col=col)
-               else {out$x.pos <- x[pos]
+            y.pos <- if (log.y) exp(fitted(fit) + sqrt(offset^2 + predict(pos.fit, data.frame(x=x))))
+            else fitted(fit) + sqrt(offset^2 + predict(pos.fit, data.frame(x=x)))
+            if(draw) lines(x, y.pos, lwd=lwd.spread, lty=lty.spread, col=col)
+               else {out$x.pos <- x
                      out$y.pos <- y.pos}
             }
         else{ options(warn)
             warning("could not fit positive part of the spread")
             }
         if(class(neg.fit)[1] != "try-error"){
-            y.neg <- if (log.y) exp(fitted(fit)[!pos] - sqrt(fitted(neg.fit)))
-            else fitted(fit)[!pos] - sqrt(fitted(neg.fit))
-            if(draw) lines(x[!pos], y.neg, lwd=lwd.spread, lty=lty.spread, col=col)
-               else {out$x.neg <- x[!pos]
+            y.neg <- if (log.y) exp(fitted(fit) - sqrt(offset^2 + predict(neg.fit, data.frame(x=x))))
+            else fitted(fit) - sqrt(offset^2 + predict(neg.fit, data.frame(x=x)))
+            if(draw) lines(x, y.neg, lwd=lwd.spread, lty=lty.spread, col=col)
+               else {out$x.neg <- x
                      out$y.neg <- y.neg}
             }
         else {options(warn)
@@ -147,7 +149,7 @@ gamLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
     }
 
 quantregLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
-                   draw=TRUE) {
+                   draw=TRUE, offset=0) {
     if (!require("quantreg")) stop("quantreg package missing")
     if (!package.installed("Matrix")) stop("the Matrix package is missing")
     if (!package.installed("MatrixModels")) stop("the MatrixModels package is missing")
@@ -177,14 +179,17 @@ quantregLine <- function(x, y, col, log.x, log.y, spread=FALSE, smoother.args,
         q1fit <- quantreg::rqss(y ~ qss(x, lambda=lambda), tau=0.25)
         q3fit <- quantreg::rqss(y ~ qss(x, lambda=lambda), tau=0.75)
         if (log.x) x <- exp(x)
-        y <- if (log.y) exp(fitted(fit)) else fitted(fit)
+        y <- if(log.y) exp(fitted(fit)) else fitted(fit)
+        y.q1 <- if(log.y) exp(fitted(q1fit)) else fitted(q1fit)
+        y.q3 <- if(log.y) exp(fitted(q3fit)) else fitted(q3fit)
+# 11/22/14:  adjust for offset
+        y.q1 <- y - sqrt( (y-y.q1)^2 + offset^2)
+        y.q3 <- y + sqrt( (y-y.q3)^2 + offset^2)
         if(draw) lines(x, y, lwd=lwd, col=col, lty=lty) else
            out <- list(x=x, y=y)
-        y.q1 <- if (log.y) exp(fitted(q1fit)) else fitted(q1fit)
         if(draw) lines(x, y.q1, lwd=lwd.spread, lty=lty.spread, col=col) else
            {out$x.neg <- x
             out$y.neg <- y.q1}
-        y.q3 <- if (log.y) exp(fitted(q3fit)) else fitted(q3fit)
         if(draw) lines(x, y.q3, lwd=lwd.spread, lty=lty.spread, col=col) else
            {out$x.neg <- x
             out$y.neg <- y.q1}

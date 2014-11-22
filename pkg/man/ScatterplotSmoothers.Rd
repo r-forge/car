@@ -20,11 +20,11 @@ the contents of which vary by the smoother (see \emph{Details} below). The \code
 }
 
 \usage{
-gamLine(x, y, col, log.x, log.y, spread=FALSE, smoother.args, draw=TRUE)
+gamLine(x, y, col, log.x, log.y, spread=FALSE, smoother.args, draw=TRUE, offset=0)
 
-loessLine(x, y, col, log.x, log.y, spread=FALSE, smoother.args, draw=TRUE)
+loessLine(x, y, col, log.x, log.y, spread=FALSE, smoother.args, draw=TRUE, offset=0)
 
-quantregLine(x, y, col, log.x, log.y, spread=FALSE, smoother.args, draw=TRUE)
+quantregLine(x, y, col, log.x, log.y, spread=FALSE, smoother.args, draw=TRUE, offset=0)
 }
 
 \arguments{
@@ -41,6 +41,7 @@ quantregLine(x, y, col, log.x, log.y, spread=FALSE, smoother.args, draw=TRUE)
     If FALSE, return a list with coordinates \code{x} and \code{y} for the points 
     that make up the smooth and if requested \code{x.pos, y.pos, x.neg, y.neg} for the
     spread smooths.}
+  \item{offset}{For use when \code{spread=TRUE}, the vertical axis is \code{sqrt(offset^2 + variance smooth)}.}
 }
 
 \details{
