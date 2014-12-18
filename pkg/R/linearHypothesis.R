@@ -28,6 +28,8 @@
 #   2014-08-17: added call to requireNamespace() and :: as needed (doesn't work for pbkrtest). J. Fox
 #   2014-08-18: fixed bug in linearHypothesis.survreg(). J. Fox
 #   2014-09-23: added linearHypothesis.rlm. J. Fox
+#   2014-12-18: check that residual df nonzero in Anova.lm() and Anova.default
+#               and residual SS nonzero in Anova.lm(). John
 #---------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
@@ -181,6 +183,7 @@ linearHypothesis.default <- function(model, hypothesis.matrix, rhs=NULL,
 		test=c("Chisq", "F"), vcov.=NULL, singular.ok=FALSE, verbose=FALSE, 
     coef. = coef(model), ...){
 	df <- df.residual(model)
+    if (df == 0) stop("residual df = 0")
 	if (is.null(df)) df <- Inf ## if no residual df available
 	V <- if (is.null(vcov.)) vcov(model)
 			else if (is.function(vcov.)) vcov.(model) else vcov.
@@ -248,6 +251,8 @@ linearHypothesis.lm <- function(model, hypothesis.matrix, rhs=NULL,
 		test=c("F", "Chisq"), vcov.=NULL,
 		white.adjust=c(FALSE, TRUE, "hc3", "hc0", "hc1", "hc2", "hc4"),
 		singular.ok=FALSE, ...){
+    if (df.residual(model) == 0) stop("residual df = 0")
+    if (deviance(model) < sqrt(.Machine$double.eps)) stop("residual sum of squares is 0 (within rounding error)")
 	if (!singular.ok && is.aliased(model))
 		stop("there are aliased coefficients in the model.")
 	test <- match.arg(test)

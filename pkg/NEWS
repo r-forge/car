@@ -1,9 +1,10 @@
 Changes to Version 2.0-23
 
-    o Modified ScatterplotSmoothers to add an 'offset' to the vertical axis of spread smooths.  This are requires in the marginal model plot functions.  
+    o Modified ScatterplotSmoothers to add an 'offset' to the vertical axis of spread smooths.  This are required in the marginal model plot functions.  
 
     o Fixed labels on mcPlot with overlay=FALSE
 
+    o Check for 0 residual df and 0 residual deviance (within rounding) in Anova() and linearHypothesis() (problem reported by Jonathan Love).
 
 Changes to Version 2.0-22
 
