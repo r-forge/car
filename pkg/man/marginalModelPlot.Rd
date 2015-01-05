@@ -155,12 +155,14 @@ Used for its side effect of producing plots.
 
 \references{ 
 
+Cook, R. D., & Weisberg, S. (1997). Graphics for assessing the adequacy of regression models. 
+\emph{Journal of the American Statistical Association}, 92(438), 490-499.
+
 Fox, J. and Weisberg, S. (2011)
 \emph{An R Companion to Applied Regression}, Second Edition.  Sage.
 
-
-Weisberg, S. (2014) \emph{Applied
-Linear Regression}, Fourth Edition, Wiley, Chapter 8.
+Weisberg, S. (2005) \emph{Applied
+Linear Regression}, Third Edition, Wiley, Section 8.4.
 }
 
 \author{Sanford Weisberg, \email{sandy@umn.edu}}
