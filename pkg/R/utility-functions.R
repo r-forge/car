@@ -12,6 +12,7 @@
 # 2014-05-16: added .multinom method for has.intercept(). John
 # 2014-08-19: added package.installed() function, unexported. John
 # 2014-11-02: termsToMf fixed, Sandy
+# 2015-01-13: fixed model.matrix.lme() to work with model with formula as object. John
 
 #if (getRversion() >= "2.15.1") globalVariables(c(".boot.sample", ".boot.indices"))
 
@@ -283,7 +284,7 @@ has.intercept.merMod <- function(model){
 }
 	
 model.matrix.lme <- function(object, ...){
-	model.matrix(as.formula(object$call$fixed), eval(object$call$data))
+	model.matrix(formula(object), eval(object$call$data))
 }
 
 # added by J. Fox 2012-04-08 to use in deltaMethod.default()

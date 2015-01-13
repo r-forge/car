@@ -13,7 +13,7 @@ Second Edition, Sage, 2011.
 \tabular{ll}{
 Package: \tab car\cr
 Version: \tab 2.0-23\cr
-Date: \tab 2014/12/17\cr
+Date: \tab 2015/01/13\cr
 Depends: \tab R (>= 2.14.0), stats, graphics\cr
 Imports: \tab MASS, nnet\cr
 Suggests: \tab  alr4, boot, leaps, lme4, lmtest, Matrix, MatrixModels, mgcv, nlme, pbkrtest (>= 0.3-2), quantreg, rgl (>= 0.93.960), sandwich, SparseM, survival, survey\cr
