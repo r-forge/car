@@ -8,6 +8,8 @@ Changes to Version 2.0-23
 
     o Fixed model.matrix.lme and model.matrix.gls utility functions, and hence Anova and vif, respectively, to work with models specified with formulas supplied as objects (after problem noted by Gang Chen).
 
+    o Added Wong data set, used in mixed-models appendix.
+
 Changes to Version 2.0-22
 
     o corrected bug in 'terms' argument in residualPlots, and other graphic functions with a 'terms' argument
