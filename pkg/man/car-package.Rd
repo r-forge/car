@@ -12,7 +12,7 @@ Second Edition, Sage, 2011.
 \details{
 \tabular{ll}{
 Package: \tab car\cr
-Version: \tab 2.0-24\cr
+Version: \tab 2.0-27\cr
 Date: \tab 2015/01/26\cr
 Depends: \tab R (>= 2.14.0), stats, graphics\cr
 Imports: \tab MASS, nnet\cr
