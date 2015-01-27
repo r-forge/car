@@ -23,8 +23,8 @@ Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaste
     person("Achim", "Zeileis", role = "ctb"),
     person("R-Core", role="ctb"))
 Depends: R (>= 2.14.0), stats, graphics
-Imports: MASS, nnet
-Suggests: alr4, boot, leaps, lme4, lmtest, Matrix, MatrixModels, mgcv, nlme, pbkrtest (>= 0.3-2), quantreg, rgl (>= 0.93.960), sandwich, SparseM, survival, survey
+Imports: MASS, nnet, pbkrtest (>= 0.3-2)
+Suggests: alr4, boot, leaps, lme4, lmtest, Matrix, MatrixModels, mgcv, nlme, quantreg, rgl (>= 0.93.960), sandwich, SparseM, survival, survey
 ByteCompile: yes
 LazyLoad: yes
 LazyData: yes
