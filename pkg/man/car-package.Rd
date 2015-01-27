@@ -15,8 +15,8 @@ Package: \tab car\cr
 Version: \tab 2.0-27\cr
 Date: \tab 2015/01/26\cr
 Depends: \tab R (>= 2.14.0), stats, graphics\cr
-Imports: \tab MASS, nnet, pbkrtest (>= 0.3-2)\cr
-Suggests: \tab  alr4, boot, leaps, lme4, lmtest, Matrix, MatrixModels, mgcv, nlme, quantreg, rgl (>= 0.93.960), sandwich, SparseM, survival, survey\cr
+Imports: \tab MASS, mgcv, nnet, pbkrtest (>= 0.3-2), quantreg\cr
+Suggests: \tab  alr4, boot, leaps, lme4, lmtest, Matrix, MatrixModels, mgcv, nlme, rgl (>= 0.93.960), sandwich, SparseM, survival, survey\cr
 License: \tab GPL (>= 2)\cr
 URL: \tab \url{http://CRAN.R-project.org/package=car}, 
 	\url{http://socserv.socsci.mcmaster.ca/jfox/Books/Companion},

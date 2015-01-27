@@ -2,6 +2,10 @@ Changes to Version 2.0-24
 
     o Fixed broken URLs.
 
+    o Changed handling of .carEnv environment.
+
+    o Moved pbkrtest, quantreg, and mgcv from Suggests: to Imports:.
+
 Changes to Version 2.0-23
 
     o Modified ScatterplotSmoothers to add an 'offset' to the vertical axis of spread smooths.  This are required in the marginal model plot functions.  

@@ -116,14 +116,14 @@ set.seed(12345)
 w <- 1 + rpois(100, 5)
 x <- rnorm(100)
 p <- 1/(1 + exp(-(x + 0.5*x^2)))
-s <- rbinom(100, w, p)
-scatterplot(s/w ~ x, smoother=gamLine, 
+y <- rbinom(100, w, p)
+scatterplot(y/w ~ x, smoother=gamLine, 
        smoother.args=list(family="binomial", weights=w))
-scatterplot(s/w ~ x, smoother=gamLine, 
+scatterplot(y/w ~ x, smoother=gamLine, 
        smoother.args=list(family=binomial, link="probit", weights=w))
-scatterplot(s/w ~ x, smoother=gamLine, 
+scatterplot(y/w ~ x, smoother=gamLine, 
        smoother.args=list(family=binomial, link="probit", weights=w)) 
-scatterplot(s/w ~ x, smoother=loessLine, reg=FALSE) 
+scatterplot(y/w ~ x, smoother=loessLine, reg=FALSE) 
 
 y <- rbinom(100, 1, p)
 scatterplot(y ~ x, smoother=gamLine, smoother.args=list(family=binomial)) 
