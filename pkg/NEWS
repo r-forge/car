@@ -1,3 +1,7 @@
+Changes to Version 2.0-26
+
+    o Anova() F-tests for binomial and Poisson GLMs now changes error.estimate="dispersion" to "pearson" as advertized (bug reported by Will Petry).
+
 Changes to Version 2.0-25
 
     o Fixed df check in linearHypothesis.default() (bug report by Pierre Chausse).
