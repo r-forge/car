@@ -13,9 +13,9 @@ An R Companion to Applied Regression, Second Edition, Sage, 2011.
 \tabular{ll}{
 Package: \tab car\cr
 Version: \tab 2.0-26\cr
-Date: \tab 2015-04-30\cr
-Depends: \tab R (>= 2.14.0), stats, graphics\cr
-Imports: \tab MASS, mgcv, nnet, pbkrtest (>= 0.3-2), quantreg\cr
+Date: \tab 2015-07-13\cr
+Depends: \tab R (>= 3.2.0)\cr
+Imports: \tab MASS, mgcv, nnet, pbkrtest (>= 0.3-2), quantreg, grDevices, utils, stats, graphics\cr
 Suggests: \tab  alr4, boot, leaps, lme4, lmtest, Matrix, MatrixModels, mgcv, nlme, rgl (>= 0.93.960), sandwich, SparseM, survival, survey\cr
 License: \tab GPL (>= 2)\cr
 URL: \tab \url{http://CRAN.R-project.org/package=car}, 
