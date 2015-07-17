@@ -2,6 +2,8 @@ Changes to Version 2.0-26
 
     o Anova() F-tests for binomial and Poisson GLMs now changes error.estimate="dispersion" to "pearson" as advertized (bug reported by Will Petry).
     
+    o Improved behavior of above-plot legends in scatterplot().
+    
     o Conforms to new CRAN requirements for package imports.
 
 Changes to Version 2.0-25

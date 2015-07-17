@@ -29,7 +29,7 @@ scatterplot(x, ...)
     cex=par("cex"), cex.axis=par("cex.axis"), cex.lab=par("cex.lab"), 
     cex.main=par("cex.main"), cex.sub=par("cex.sub"), 
     groups, by.groups=!missing(groups), 
-    legend.title=deparse(substitute(groups)), legend.coords,
+    legend.title=deparse(substitute(groups)), legend.coords, legend.columns,
     ellipse=FALSE, levels=c(.5, .95), robust=TRUE,
     col=if (n.groups == 1) palette()[3:1] else rep(palette(), length=n.groups),
     pch=1:n.groups, 
@@ -92,9 +92,11 @@ sp(...)
     plotted with different colors and plotting characters.}
   \item{by.groups}{if \code{TRUE}, regression lines are fit by groups.}
   \item{legend.title}{title for legend box; defaults to the name of the groups variable.}
-  \item{legend.coords}{coordinates for placing legend; an be a list with components x and y to
+  \item{legend.coords}{coordinates for placing legend; can be a list with components x and y to
   	specify the coordinates of the upper-left-hand corner of the legend; or a quoted keyword, such as \code{"topleft"},
   	recognized by \code{\link{legend}}.}
+  \item{legend.columns}{number of columns for the legend; if absent will be supplied automatically to
+    prefer horizontal legends when plotted above the graph.}
   \item{ellipse}{if \code{TRUE} data-concentration ellipses are plotted.}
   \item{levels}{level or levels at which concentration ellipses are plotted;
     the default is \code{c(.5, .95)}.}
