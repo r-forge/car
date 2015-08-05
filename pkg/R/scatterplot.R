@@ -13,6 +13,7 @@
 # 2013-02-07: S. Weisberg:  modifed call to showLabels to work correctly with groups
 # 2014-09-04: J. Fox: empty groups produce warning rather than error
 # 2015-07-17: J. Fox: improved above-plot legends.
+# 2015-08-05: J. Fox: fixed sp()
 
 reg <- function(reg.line, x, y, col, lwd, lty, log.x, log.y){
     if(log.x) x <- log(x)
@@ -299,5 +300,5 @@ scatterplot.default <- function(x, y, smoother=loessLine, smoother.args=list(), 
     if (is.null(indices)) invisible(indices) else if (is.numeric(indices)) sort(indices) else indices
 } 
 
-sp <- function(...) scatterplot(...)
+sp <- function(x, ...)  UseMethod("scatterplot", x)
 
