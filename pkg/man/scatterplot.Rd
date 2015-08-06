@@ -35,11 +35,11 @@ scatterplot(x, ...)
     pch=1:n.groups, 
     legend.plot=!missing(groups), reset.par=TRUE, grid=TRUE, ...)
 
-sp(...)
+sp(x, ...)
 }
 
 \arguments{
-  \item{x}{vector of horizontal coordinates}
+  \item{x}{vector of horizontal coordinates (or first argument of generic function).}
   \item{y}{vector of vertical coordinates.}
   \item{formula}{a ``model'' formula, of the form \code{y ~ x} or 
     (to plot by groups) \code{y ~ x | z}, where \code{z} evaluates to a factor 
