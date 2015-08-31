@@ -1,4 +1,5 @@
-# last modified 2015-07-13 by J. Fox
+# modified 2015-07-13 by J. Fox
+# modified 2015-08-31 S. Weisberg, added optimHess
 
 importFrom(MASS, cov.trob, polr, rlm)
 importFrom(nnet, multinom)
@@ -19,7 +20,8 @@ importFrom(stats, D, IQR, alias, anova, as.formula, coef, coefficients,
     model.matrix.default, model.response, model.weights, na.omit, na.pass, 
     naresid, optim, optimize, pchisq, pf, pnorm, ppoints, predict, printCoefmat, 
     pt, qchisq, qf, qnorm, qqline, qqnorm, qt, quantile, resid, residuals, rnorm, 
-    rstandard, rstudent, sd, spline, summary.lm, terms, update, var, vcov, weights)
+    rstandard, rstudent, sd, spline, summary.lm, terms, update, var, vcov, weights,
+    optimHess)
 importFrom(utils, browseURL, head, methods)
 
 export(
