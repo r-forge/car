@@ -37,6 +37,7 @@
 # 2015-04-30: don't allow error.estimate="dispersion" for F-tests in binomial
 #             and Poission GLMs. John
 # 2015-08-29: fixed Anova() for coxph models with clusters. John
+# 2015-09-04: added support for coxme models.
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1388,8 +1389,9 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
 					pchisq(teststat[i], df[i], lower.tail=FALSE) 
 				else pf(teststat[i], df[i], df[n.terms + 1], lower.tail=FALSE)
 	}    
-	result <- data.frame(df, teststat, p)
-	row.names(result) <- c(names,"Residuals")
+	result <- data.frame(df, teststat[!is.na(teststat)], p[!is.na(teststat)])
+	if (nrow(result) == length(names) + 1) names <- c(names,"Residuals")
+	row.names(result) <- names
 	names(result) <- c ("Df", test, if (test == "Chisq") "Pr(>Chisq)" 
 					else "Pr(>F)")
 	class(result) <- c("anova", "data.frame")
@@ -1443,8 +1445,9 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
 					else pf(teststat[term], df[term], df[n.terms + 1], lower.tail=FALSE)
 		}
 	}
-	result <- data.frame(df, teststat, p)
-	row.names(result) <- c(names, "Residuals")
+	result <- data.frame(df, teststat[!is.na(teststat)], p[!is.na(teststat)])
+	if (nrow(result) == length(names) + 1) names <- c(names,"Residuals")
+	row.names(result) <- names
 	names(result) <- c ("Df", test, if (test == "Chisq") "Pr(>Chisq)" 
 					else "Pr(>F)")
 	class(result) <- c("anova", "data.frame")
@@ -1735,3 +1738,60 @@ Anova.III.lme <- function(mod, vcov., singular.ok=FALSE, ...){
 Anova.svyglm <- function(mod, ...) Anova.default(mod, ...)
 
 Anova.rlm <- function(mod, ...) Anova.default(mod, test.statistic="F", ...)
+
+Anova.coxme <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Wald", "LR"), ...){
+    type <- as.character(type)
+    type <- match.arg(type)
+    test.statistic <- match.arg(test.statistic)
+    switch(type,
+        II=switch(test.statistic,
+            LR=Anova.II.LR.coxme(mod, ...),
+            Wald=Anova.default(mod, type="II", test.statistic="Chisq", ...)),
+        III=switch(test.statistic,
+            LR=stop("type-III LR tests not available for coxme models"),
+            Wald=Anova.default(mod, type="III", test.statistic="Chisq", ...)),
+        "2"=switch(test.statistic,
+            LR=Anova.II.LR.coxme(mod, ...),
+            Wald=Anova.default(mod, type="II", test.statistic="Chisq", ...)),
+        "3"=switch(test.statistic,
+            LR=stop("type-III LR tests not available for coxme models"),
+            Wald=Anova.default(mod, type="III", test.statistic="Chisq")))
+}
+
+Anova.II.LR.coxme <- function(mod, ...){
+    if (!requireNamespace("coxme")) stop("coxme package is missing")
+    which.nms <- function(name) which(asgn == which(names == name))
+    fac <-attr(terms(mod), "factors")
+    names <- term.names(mod)
+    n.terms <- length(names)
+    if (n.terms < 2) return(anova(mod, test="Chisq"))
+    X <- model.matrix(mod)
+    asgn <- attr(X, 'assign')
+    p <- LR <- rep(0, n.terms)
+    df <- df.terms(mod)
+    random <- mod$formulaList$random
+    random <- sapply(random, as.character)[2, ]
+    random <- paste(paste0("(", random, ")"), collapse=" + ")
+    fixed <- as.character(mod$formulaList$fixed)[3]
+    for (term in 1:n.terms){
+        rels <- names[relatives(names[term], names, fac)]
+        formula <- paste0(". ~ . - ", paste(c(names[term], rels), collapse=" - "), " + ", random)
+        mod.1 <- update(mod, as.formula(formula))
+        loglik.1 <- logLik(mod.1, type="integrated")
+        mod.2 <- if (length(rels) == 0) mod
+        else {
+            formula <- paste0(". ~ . - ", paste(rels, collapse=" - "), " + ", random)
+            update(mod, as.formula(formula))
+        }
+        loglik.2 <- logLik(mod.2, type="integrated")
+        LR[term] <- -2*(loglik.1 - loglik.2)
+        p[term] <- pchisq(LR[term], df[term], lower.tail=FALSE)
+    }
+    result <- data.frame(LR, df, p)
+    row.names(result) <- names
+    names(result) <- c("LR Chisq", "Df", "Pr(>Chisq)")
+    class(result) <- c("anova", "data.frame")
+    attr(result, "heading") <- "Analysis of Deviance Table (Type II tests)"
+    result
+}
+

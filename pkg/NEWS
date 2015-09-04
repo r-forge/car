@@ -1,5 +1,7 @@
 Changes to Version 2.1-1
 
+    o Anova() now supports "coxme" objects (produced by coxme() in coxme package) (request of Philipp Sprenger).
+    
     o dataEllipse() now throws an error if there are too few colors for the number of groups (fixing bug reported by Ottorino Pantani).
 
 Changes to Version 2.1-0
