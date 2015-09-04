@@ -1,3 +1,7 @@
+Changes to Version 2.1-1
+
+    o dataEllipse() now throws an error if there are too few colors for the number of groups (fixing bug reported by Ottorino Pantani).
+
 Changes to Version 2.1-0
 
     o New power family called skewPower has been added that can be used with the Box Cox method with a few negative responses (joint work with Doug Hawkins).  Several functions modified to accomodate two-parameter power families.
