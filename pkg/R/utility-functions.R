@@ -15,6 +15,7 @@
 # 2015-01-13: fixed model.matrix.lme() to work with model with formula as object. John
 # 2015-01-27: .carEnv now lives in the global environment. John
 # 2015-09-04: added model.matrix.coxme() and alias.coxme(). John
+# 2015-09-11: added some support for VGAM::vglm objects. John
 
 #if (getRversion() >= "2.15.1") globalVariables(c(".boot.sample", ".boot.indices"))
 
@@ -387,3 +388,18 @@ alias.coxme <- function(model){
     if(any(which <- is.na(coef(model)))) return(list(Complete=which))
     else list()
 }
+
+# to make linearHypothesis() work again and to make Anova() work with VGAM:"vglm" objects 
+
+df.residual.vglm <- function(object, ...) object@df.residual
+
+vcov.vglm <- function(object, ...) vcovvlm(object, ...)
+
+coef.vglm <- function(object, ...) coefvlm(object, ...)
+
+has.intercept.vglm <- function(model, ...) any(grepl("^\\(Intercept\\)", names(coef(model))))
+
+formula.vglm <- function(x, ...) formulavlm(x = x, ...)
+
+model.matrix.vglm <- function(object, ...) model.matrixvlm(object, ...)
+

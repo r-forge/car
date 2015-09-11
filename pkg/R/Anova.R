@@ -37,7 +37,8 @@
 # 2015-04-30: don't allow error.estimate="dispersion" for F-tests in binomial
 #             and Poission GLMs. John
 # 2015-08-29: fixed Anova() for coxph models with clusters. John
-# 2015-09-04: added support for coxme models.
+# 2015-09-04: added support for coxme models. John
+# 2015-09-11: modified Anova.default() to work with vglm objects from VGAM. John
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -138,7 +139,7 @@ Anova.II.lm <- function(mod, error, singular.ok=TRUE, ...){
 	not.aliased <- !is.na(coef(mod))
 	if (!singular.ok && !all(not.aliased))
 		stop("there are aliased coefficients in the model")
-	fac <- attr(mod$terms, "factors")
+	fac <- attr(terms(mod), "factors")
 	intercept <- has.intercept(mod)
 	I.p <- diag(length(coefficients(mod)))
 	assign <- mod$assign
@@ -339,7 +340,7 @@ Anova.II.LR.glm <- function(mod, singular.ok=TRUE, ...){
 		stop("there are aliased coefficients in the model")
 	# (some code adapted from drop1.glm)
 	which.nms <- function(name) which(asgn == which(names == name))
-	fac <- attr(mod$terms, "factors")
+	fac <- attr(terms(mod), "factors")
 	names <- if (has.intercept(mod)) term.names(mod)[-1]
 			else term.names(mod)
 	n.terms <- length(names)
@@ -399,7 +400,7 @@ Anova.II.F.glm <- function(mod, error, error.estimate, singular.ok=TRUE, ...){
         pearson = sum(residuals(error, "pearson")^2, na.rm=TRUE),
         dispersion = df.res*summary(error, corr = FALSE)$dispersion,
         deviance = deviance(error))
-    fac <- attr(mod$terms, "factors")
+    fac <- attr(terms(mod), "factors")
     names <- if (has.intercept(mod)) term.names(mod)[-1]
     else term.names(mod)
     n.terms <- length(names)
@@ -472,7 +473,7 @@ Anova.II.multinom <- function (mod, ...)
 {
 	which.nms <- function(name) which(asgn == which(names ==
 								name))
-	fac <- attr(mod$terms, "factors")
+	fac <- attr(terms(mod), "factors")
 	names <- if (has.intercept(mod)) term.names(mod)[-1]
 			else term.names(mod)
 	n.terms <- length(names)
@@ -559,7 +560,7 @@ Anova.II.polr <- function (mod, ...)
   if (!requireNamespace("MASS")) stop("MASS package is missing")
 	which.nms <- function(name) which(asgn == which(names ==
 								name))
-	fac <- attr(mod$terms, "factors")
+	fac <- attr(terms(mod), "factors")
 	names <- term.names(mod)
 	n.terms <- length(names)
 	X <- model.matrix(mod)
@@ -805,7 +806,7 @@ Anova.II.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatri
 			return(list(SSP = lh2$SSPH - SSP1, SSPE=lh2$SSPE, P=lh2$P, singular=lh2$singular))
 		}
 	}
-	fac <- attr(mod$terms, "factors")
+	fac <- attr(terms(mod), "factors")
 	intercept <- has.intercept(mod)
 	p <- nrow(coefficients(mod))
 	I.p <- diag(p)
@@ -1337,11 +1338,13 @@ Anova.default <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq
 Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
 	hyp.term <- function(term){
 		which.term <- which(term==names)
-		subs.term <- which(assign==which.term)
+		subs.term <- if (is.list(assign)) assign[[which.term]] else which(assign == which.term)
 		relatives <- relatives(term, names, fac)
 		subs.relatives <- NULL
-		for (relative in relatives) 
-			subs.relatives <- c(subs.relatives, which(assign==relative))
+		for (relative in relatives){
+		    sr <- if (is.list(assign)) assign[[relative]] else which(assign == relative)
+			subs.relatives <- c(subs.relatives, sr)
+		}
 		hyp.matrix.1 <- I.p[subs.relatives,,drop=FALSE]
 		hyp.matrix.1 <- hyp.matrix.1[, not.aliased, drop=FALSE]
 		hyp.matrix.2 <- I.p[c(subs.relatives,subs.term),,drop=FALSE]
@@ -1360,12 +1363,13 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
 	not.aliased <- !is.na(coef(mod))
 	if (!singular.ok && !all(not.aliased))
 		stop("there are aliased coefficients in the model")
-	fac <- attr(mod$terms, "factors")
+	fac <- attr(terms(mod), "factors")
 	intercept <- has.intercept(mod)
 	p <- length(coefficients(mod))
 	I.p <- diag(p)
 	assign <- attr(model.matrix(mod), "assign")
-	assign[!not.aliased] <- NA
+	if (!is.list(assign)) assign[!not.aliased] <- NA
+	else if (intercept) assign <- assign[-1]
 	names <- term.names(mod)
 	if (intercept) names <- names[-1]
 	n.terms <- length(names)
@@ -1388,7 +1392,8 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
 		p[i] <- if (test == "Chisq") 
 					pchisq(teststat[i], df[i], lower.tail=FALSE) 
 				else pf(teststat[i], df[i], df[n.terms + 1], lower.tail=FALSE)
-	}    
+	}
+	if (test == "Chisq" && length(df) == n.terms + 1) df <- df[1:n.terms]
 	result <- data.frame(df, teststat[!is.na(teststat)], p[!is.na(teststat)])
 	if (nrow(result) == length(names) + 1) names <- c(names,"Residuals")
 	row.names(result) <- names
@@ -1418,7 +1423,7 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
 			n.terms <- n.terms - length(clusters)
 		}
 	}
-	if (intercept) df[1] <- 1
+	if (intercept) df[1] <- sum(grepl("^\\(Intercept\\)", names(coef(mod))))
 	teststat <- rep(0, n.terms + 1)
 	p <- rep(0, n.terms + 1)
 	teststat[n.terms + 1] <- p[n.terms + 1] <- NA
@@ -1426,7 +1431,7 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
 	if (!singular.ok && !all(not.aliased))
 		stop("there are aliased coefficients in the model")
 	for (term in 1:n.terms){
-		subs <- which(assign == term - intercept)        
+		subs <- if (is.list(assign)) assign[[term]] else which(assign == term - intercept)    
 		hyp.matrix <- I.p[subs,,drop=FALSE]
 		hyp.matrix <- hyp.matrix[, not.aliased, drop=FALSE]
 		hyp.matrix <- hyp.matrix[!apply(hyp.matrix, 1, function(x) all(x == 0)), , drop=FALSE]        
@@ -1445,6 +1450,7 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
 					else pf(teststat[term], df[term], df[n.terms + 1], lower.tail=FALSE)
 		}
 	}
+	if (test == "Chisq" && length(df) == n.terms + 1) df <- df[1:n.terms]
 	result <- data.frame(df, teststat[!is.na(teststat)], p[!is.na(teststat)])
 	if (nrow(result) == length(names) + 1) names <- c(names,"Residuals")
 	row.names(result) <- names
