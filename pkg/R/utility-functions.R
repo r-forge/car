@@ -391,15 +391,15 @@ alias.coxme <- function(model){
 
 # to make linearHypothesis() work again and to make Anova() work with VGAM:"vglm" objects 
 
-df.residual.vglm <- function(object, ...) object@df.residual
+# df.residual.vglm <- function(object, ...) object@df.residual
 
-vcov.vglm <- function(object, ...) vcovvlm(object, ...)
+# vcov.vglm <- function(object, ...) vcovvlm(object, ...)
 
-coef.vglm <- function(object, ...) coefvlm(object, ...)
+# coef.vglm <- function(object, ...) coefvlm(object, ...)
 
-has.intercept.vglm <- function(model, ...) any(grepl("^\\(Intercept\\)", names(coef(model))))
+has.intercept.vlm <- function(model, ...) any(grepl("^\\(Intercept\\)", names(coef(model))))
 
-formula.vglm <- function(x, ...) formulavlm(x = x, ...)
+# formula.vglm <- function(x, ...) formulavlm(x = x, ...)
 
-model.matrix.vglm <- function(object, ...) model.matrixvlm(object, ...)
+# model.matrix.vglm <- function(object, ...) model.matrixvlm(object, ...)
 

@@ -1,4 +1,4 @@
-# last modified 2015-09-11 by J. Fox
+# last modified 2015-09-12 by J. Fox
 
 importFrom(MASS, cov.trob, polr, rlm)
 importFrom(nnet, multinom)
@@ -22,7 +22,7 @@ importFrom(stats, D, IQR, alias, anova, as.formula, coef, coefficients,
     rstandard, rstudent, sd, spline, summary.lm, terms, update, var, vcov, weights,
     optimHess)
 importFrom(utils, browseURL, head, methods)
-importFrom(VGAM, vcovvlm, coefvlm, formulavlm, model.matrixvlm)
+# importFrom(VGAM, vcovvlm, coefvlm, formulavlm, model.matrixvlm)
 
 export(
     .carEnv,
