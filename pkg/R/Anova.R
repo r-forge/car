@@ -39,6 +39,7 @@
 # 2015-08-29: fixed Anova() for coxph models with clusters. John
 # 2015-09-04: added support for coxme models. John
 # 2015-09-11: modified Anova.default() to work with vglm objects from VGAM. John
+# 2015-09-15: fixed Anova.default() so that F-tests work again. John
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1393,8 +1394,11 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
 					pchisq(teststat[i], df[i], lower.tail=FALSE) 
 				else pf(teststat[i], df[i], df[n.terms + 1], lower.tail=FALSE)
 	}
-	if (test == "Chisq" && length(df) == n.terms + 1) df <- df[1:n.terms]
-	result <- data.frame(df, teststat[!is.na(teststat)], p[!is.na(teststat)])
+	result <- if (test == "Chisq"){ 
+	    if (length(df) == n.terms + 1) df <- df[1:n.terms]
+	    data.frame(df, teststat[!is.na(teststat)], p[!is.na(teststat)])
+	}
+	else data.frame(df, teststat, p)
 	if (nrow(result) == length(names) + 1) names <- c(names,"Residuals")
 	row.names(result) <- names
 	names(result) <- c ("Df", test, if (test == "Chisq") "Pr(>Chisq)" 
@@ -1450,8 +1454,11 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
 					else pf(teststat[term], df[term], df[n.terms + 1], lower.tail=FALSE)
 		}
 	}
-	if (test == "Chisq" && length(df) == n.terms + 1) df <- df[1:n.terms]
-	result <- data.frame(df, teststat[!is.na(teststat)], p[!is.na(teststat)])
+	result <- if (test == "Chisq"){ 
+	    if (length(df) == n.terms + 1) df <- df[1:n.terms]
+	    data.frame(df, teststat[!is.na(teststat)], p[!is.na(teststat)])
+	}
+	else data.frame(df, teststat, p)
 	if (nrow(result) == length(names) + 1) names <- c(names,"Residuals")
 	row.names(result) <- names
 	names(result) <- c ("Df", test, if (test == "Chisq") "Pr(>Chisq)" 

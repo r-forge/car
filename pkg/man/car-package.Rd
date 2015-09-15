@@ -13,7 +13,7 @@ An R Companion to Applied Regression, Second Edition, Sage, 2011.
 \tabular{ll}{
 Package: \tab car\cr
 Version: \tab 2.1-1\cr
-Date: \tab 2015-09-12\cr
+Date: \tab 2015-09-15\cr
 Depends: \tab R (>= 3.2.0)\cr
 Imports: \tab MASS, mgcv, nnet, pbkrtest (>= 0.3-2), quantreg, grDevices, utils, stats, graphics\cr
 Suggests: \tab  alr4, boot, leaps, lme4, lmtest, Matrix, MatrixModels, mgcv, nlme, rgl (>= 0.93.960), sandwich, SparseM, survival, survey\cr
