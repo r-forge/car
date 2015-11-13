@@ -40,6 +40,7 @@
 # 2015-09-04: added support for coxme models. John
 # 2015-09-11: modified Anova.default() to work with vglm objects from VGAM. John
 # 2015-09-15: fixed Anova.default() so that F-tests work again. John
+# 2015-11-13: modify Anova.coxph() to take account of method/ties argument. John
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1132,6 +1133,7 @@ Anova.II.LR.coxph <- function(mod, ...){
 	names <- term.names(mod)
 	n.terms <- length(names)
 	if (n.terms < 2) return(anova(mod, test="Chisq"))
+	method <- mod$method
 	X <- model.matrix(mod)
 	asgn <- attr(X, 'assign')
 	p <- LR <- rep(0, n.terms)
@@ -1139,12 +1141,12 @@ Anova.II.LR.coxph <- function(mod, ...){
 	for (term in 1:n.terms){
 		rels <- names[relatives(names[term], names, fac)]
 		exclude.1 <- as.vector(unlist(sapply(c(names[term], rels), which.nms)))
-		mod.1 <- survival::coxph(mod$y ~ X[, -exclude.1, drop = FALSE])
+		mod.1 <- survival::coxph(mod$y ~ X[, -exclude.1, drop = FALSE], method=method)
 		loglik.1 <- logLik(mod.1)
 		mod.2 <- if (length(rels) == 0) mod
 				else {
 					exclude.2 <- as.vector(unlist(sapply(rels, which.nms)))
-					survival::coxph(mod$y ~ X[, -exclude.2, drop = FALSE])
+					survival::coxph(mod$y ~ X[, -exclude.2, drop = FALSE], method=method)
 				}
 		loglik.2 <- logLik(mod.2)
 		LR[term] <- -2*(loglik.1 - loglik.2)
@@ -1165,13 +1167,14 @@ Anova.III.LR.coxph <- function(mod, ...){
 	names <- term.names(mod)
 	n.terms <- length(names)
 	if (n.terms < 2) return(anova(mod, test="Chisq"))
+	method <- mod$method
 	X <- model.matrix(mod)
 	asgn <- attr(X, 'assign')
 	df <- df.terms(mod)
 	LR <- p <- rep(0, n.terms)
 	loglik1 <- logLik(mod)
 	for (term in 1:n.terms){
-		mod.0 <- survival::coxph(mod$y ~ X[, -which.nms(names[term])])
+		mod.0 <- survival::coxph(mod$y ~ X[, -which.nms(names[term])], method=method)
 		LR[term] <- -2*(logLik(mod.0) - loglik1)
 		p[term] <- pchisq(LR[term], df[term], lower.tail=FALSE)
 	}

@@ -6,6 +6,8 @@ Changes to Version 2.1-1
     
     o Anova() now works via its default method with "vglm" objects produced by functions in the VGAM package; and the default method of linearHypothesis() again works with these objects (problem reported by Michael Friendly).
     
+    o Fixed Anova.coxph() so that it takes account of method (ties) argument (bug reported by Karl Ove Hufthammer).
+    
     o dataEllipse() now throws an error if there are too few colors for the number of groups (fixing bug reported by Ottorino Pantani).
 
 Changes to Version 2.1-0
