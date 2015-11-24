@@ -8,7 +8,11 @@ Changes to Version 2.1-1
     
     o Fixed Anova.coxph() so that it takes account of method (ties) argument (bug reported by Karl Ove Hufthammer).
     
+    o Improvements to Anova.default() so that a wider variety of model classes are accommodated (following request of Liviu Andronic.)
+    
     o dataEllipse() now throws an error if there are too few colors for the number of groups (fixing bug reported by Ottorino Pantani).
+    
+    o spreadLevelPlot.lm() now includes an optional smoother in addition to the fitted straight line (suggestion of Michael Friendly).
 
 Changes to Version 2.1-0
 

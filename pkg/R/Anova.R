@@ -1339,6 +1339,16 @@ Anova.default <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq
 			"3"=Anova.III.default(mod, vcov., test.statistic, singular.ok=singular.ok))
 }
 
+assignVector <- function(model){
+    m <- model.matrix(model)
+    assign <- attr(m, "assign")
+    if (!is.null(assign)) return (assign)
+    m <- model.matrix(formula(model), data=model.frame(model))
+    assign <- attr(m, "assign")
+    if (!has.intercept(model)) assign <- assign[assign != 0]
+    assign
+}
+
 Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
 	hyp.term <- function(term){
 		which.term <- which(term==names)
@@ -1371,7 +1381,7 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
 	intercept <- has.intercept(mod)
 	p <- length(coefficients(mod))
 	I.p <- diag(p)
-	assign <- attr(model.matrix(mod), "assign")
+	assign <- assignVector(mod) # attr(model.matrix(mod), "assign")
 	if (!is.list(assign)) assign[!not.aliased] <- NA
 	else if (intercept) assign <- assign[-1]
 	names <- term.names(mod)
@@ -1387,6 +1397,7 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
 			n.terms <- n.terms - length(clusters)
 		}
 	}
+#	if (inherits(mod, "plm")) assign <- assign[assign != 0]
 	p <- teststat <- rep(0, n.terms + 1)
 	teststat[n.terms + 1] <- p[n.terms + 1] <- NA
 	for (i in 1:n.terms){
@@ -1418,7 +1429,7 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
 	I.p <- diag(p)
 	names <- term.names(mod)
 	n.terms <- length(names)
-	assign <- attr(model.matrix(mod), "assign")
+	assign <- assignVector(mod) # attr(model.matrix(mod), "assign")
 	df <- c(rep(0, n.terms), df.residual(mod))
 	if (inherits(mod, "coxph")){
 		if (intercept) names <- names[-1]
@@ -1430,6 +1441,7 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
 			n.terms <- n.terms - length(clusters)
 		}
 	}
+#	if (inherits(mod, "plm")) assign <- assign[assign != 0]
 	if (intercept) df[1] <- sum(grepl("^\\(Intercept\\)", names(coef(mod))))
 	teststat <- rep(0, n.terms + 1)
 	p <- rep(0, n.terms + 1)
