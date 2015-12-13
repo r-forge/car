@@ -1,9 +1,9 @@
-# last modified 2015-09-12 by J. Fox
+# last modified 2015-12-12 by J. Fox
 
 importFrom(MASS, cov.trob, polr, rlm)
 importFrom(nnet, multinom)
-importFrom(pbkrtest, KRmodcomp, KRmodcomp.lmerMod, KRmodcomp.mer, 
-           vcovAdj, vcovAdj.lmerMod, vcovAdj.mer)
+importFrom(pbkrtest, KRmodcomp, # KRmodcomp.lmerMod, KRmodcomp.mer, 
+           vcovAdj) #, vcovAdj.lmerMod, vcovAdj.mer)
 importFrom(mgcv, gam, s)
 importFrom(quantreg, rqss, qss, fitted.rqss)
 importFrom(graphics, abline, arrows, axis, box, boxplot, contour, hist, identify, 

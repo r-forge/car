@@ -13,6 +13,10 @@ Changes to Version 2.1-1
     o dataEllipse() now throws an error if there are too few colors for the number of groups (fixing bug reported by Ottorino Pantani).
     
     o spreadLevelPlot.lm() now includes an optional smoother in addition to the fitted straight line (suggestion of Michael Friendly).
+    
+    o No longer import methods (as opposed to generics) directly from pbkrtest.
+    
+    o Added axis.ticks argument to scatter3d() (code contributed by David Winsemius).
 
 Changes to Version 2.1-0
 
