@@ -1,3 +1,7 @@
+Changes to 2.1-2
+
+    o Modified scatter3d() so that plots can be embedded in HTML.
+
 Changes to Version 2.1-1
 
     o influencePlot now returns Cook's distance, not its square root.
