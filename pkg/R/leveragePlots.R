@@ -8,12 +8,16 @@
 # 5 Sept 2010 J. Fox, pass ... down to plot() and points() etc.
 # 16 June 2011 allow layout=NA, in which case the layout is not set in this
 #  function, so it is the responsibility of the user
+# 25 April 2016:  checks na.action for compatibility with Rcmdr.  SW
 
 
 # these functions to be rewritten; simply renamed for now
 
 leveragePlots <- function(model, terms= ~ ., layout=NULL, ask, 
 		main, ...){
+# Added for compatibility with Rcmdr
+  if(class(model$na.action) == "exclude") model <- update(model, na.action=na.omit)
+# End addition
 	terms <- if(is.character(terms)) paste("~",terms) else terms
 	vform <- update(formula(model),terms)
 	terms.model <- attr(attr(model.frame(model), "terms"), "term.labels")

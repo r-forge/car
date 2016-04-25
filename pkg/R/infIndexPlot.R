@@ -2,6 +2,7 @@
 # 21 Jan 10: added wrapper influenceIndexPlot(). J. Fox
 # 30 March 10: bug-fixes and changed arguments, S. Weisberg
 # 15 October 13:  Bug-fix on labelling x-axis
+# 25 April 2016:  For compatibility with Rcmdr, change na.action=exclude to na.action=na.omit SW.
 
 influenceIndexPlot <- function(model, ...)
 	{UseMethod("infIndexPlot")}
@@ -15,6 +16,9 @@ infIndexPlot.lm <- function(model,
      labels, id.method = "y", 
      id.n = if(id.method[1]=="identify") Inf else 0,
      id.cex=1, id.col=palette()[1], grid=TRUE, ...) {
+# Added for compatibility with Rcmdr
+  if(class(model$na.action) == "exclude") model <- update(model, na.action=na.omit)
+# End addition
    what <- pmatch(tolower(vars), 
                   tolower(c("Cook", "Studentized", "Bonf", "hat")))
    if(length(what) < 1) stop("Nothing to plot")

@@ -1,5 +1,7 @@
 Changes to Version 2.1-3
 
+  o added fix for compatiblity with Rcmdr with missing data in several plotting functins.
+  
   o deltaMethod() now reports confidence intervals.
 
 Changes to Version 2.1-2

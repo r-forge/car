@@ -20,6 +20,7 @@
 # 11 July 2013:  'groups' arg for residualPlot and residualPlots.
 # 19 July 2014:  type='rstudent' fixed
 # 7 October 2014: trapped error resulting from groups= when n<3
+# 25 April 2016: checks for na.action=na.exclude and changes it to na.omit for compatibility with Rcmdr. sw
 
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
 
@@ -27,6 +28,9 @@ residualPlots.default <- function(model, terms= ~ . ,
      layout=NULL, ask, main="", 
      fitted=TRUE, AsIs=TRUE, plot=TRUE, tests=TRUE, groups, ...){
   mf <- if(!is.null(terms)) termsToMf(model, terms) else NULL
+# Added for compatibility with Rcmdr
+  if(class(model$na.action) == "exclude") model <- update(model, na.action=na.omit)
+# End addition
   groups <- if (!missing(groups)) {
       termsToMf(model, as.formula(paste("~",
            deparse(substitute(groups)))))$mf.vars[, 2, drop=FALSE]
@@ -125,6 +129,9 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
  ylab <- if(!missing(ylab)) ylab else
          paste(string.capitalize(type), "residuals")
  column <- match(variable, names(model$model))
+# Added for compatibility with Rcmdr
+ if(class(model$na.action) == "exclude") model <- update(model, na.action=na.omit)
+# End addition
  if(is.na(column) && variable != "fitted")
    stop(paste(variable, "is not a regressor in the mean function"))
  horiz <- if(variable == "fitted") predict(model) else model$model[[column]]
@@ -267,7 +274,7 @@ tukeyNonaddTest <- function(model){
     tukey <- summary(m1)$coef[2, 3] * df.correction
     c(Test=tukey, Pvalue=2*pnorm(-abs(tukey)))
     }
- }
+}
  
 
  
