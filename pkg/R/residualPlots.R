@@ -117,7 +117,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
                  labels, 
                  id.method = "r", 
                  id.n = if(id.method[1]=="identify") Inf else 0,
-                 id.cex=1, id.col=palette()[1], 
+                 id.cex=1, id.col=palette()[1], id.location="lr", 
                  col = palette()[1], col.quad = palette()[2],
                  pch=1,
                  xlab, ylab, lwd = 1, lty = 1,  
@@ -182,7 +182,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
             if(id.method[1] == "xy") "y"}    
      Boxplot(theResiduals, horiz, xlab=lab, ylab=ylab, labels=labels, 
             id.method=idm, id.n=id.n, id.cex=id.cex,  
-            id.col=id.col, ...) 
+            id.col=id.col, id.location=id.location, ...) 
      abline(h=0, lty=2) } else 
      {    
      plot(horiz, theResiduals, xlab=lab, ylab=ylab, type="n", ...)
@@ -224,7 +224,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
        }
      showLabels(horiz, theResiduals, labels=labels, 
             id.method=id.method, id.n=id.n, id.cex=id.cex, 
-            id.col=id.col)  
+            id.col=id.col, id.location=id.location)  
         }
       }  
   invisible(ans)}

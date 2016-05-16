@@ -15,7 +15,7 @@ infIndexPlot.lm <- function(model,
      main="Diagnostic Plots",
      labels, id.method = "y", 
      id.n = if(id.method[1]=="identify") Inf else 0,
-     id.cex=1, id.col=palette()[1], grid=TRUE, ...) {
+     id.cex=1, id.col=palette()[1], id.location="lr", grid=TRUE, ...) {
 # Added for compatibility with Rcmdr
   if(class(model$na.action) == "exclude") model <- update(model, na.action=na.omit)
 # End addition
@@ -55,7 +55,7 @@ infIndexPlot.lm <- function(model,
       axis(1, labels= ifelse(plotnum < nplots, FALSE, TRUE))
       showLabels(xaxis, y, labels=labels,
             id.method=id.method, id.n=id.n, id.cex=id.cex,
-            id.col=id.col)
+            id.col=id.col, id.location=id.location)
     }
     mtext(side=3, outer=TRUE ,main, cex=1.2, line=1)
     mtext(side=1, outer=TRUE, "Index", line=3)

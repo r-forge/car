@@ -18,7 +18,7 @@ mcPlot(model, ...)
                       id.method = list(abs(residuals(model, type="pearson")), "x"),
                       labels, 
                       id.n = if(id.method[1]=="identify") Inf else 0,
-                      id.cex=1, id.col=palette()[1],
+                      id.cex=1, id.col=palette()[1], id.location="lr",
                       col.marginal="blue", col.conditional="red", col.arrows="gray",
                       pch = c(16, 1), lwd = 2, grid=TRUE,   ###removed arg main
                       ellipse=FALSE, ellipse.args=list(levels=0.5), 
@@ -47,7 +47,7 @@ will be drawing one-pair-at-a-time, with user input required between pairs of gr
 \item{\dots}{\code{mcPlots} passes these arguments to \code{mcPlot}.  
   \code{mcPlot} passes arguments to \code{plot}. 
 }
-  \item{id.method,labels,id.n,id.cex,id.col}{Arguments for the labelling of
+  \item{id.method,labels,id.n,id.cex,id.col,id.location}{Arguments for the labelling of
     points.  The default is \code{id.n=0} for labeling no points.  See
     \code{\link{showLabels}} for details of these arguments.
 }
