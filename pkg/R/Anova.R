@@ -41,6 +41,7 @@
 # 2015-09-11: modified Anova.default() to work with vglm objects from VGAM. John
 # 2015-09-15: fixed Anova.default() so that F-tests work again. John
 # 2015-11-13: modify Anova.coxph() to take account of method/ties argument. John
+# 2016-06-03: added SSP and SSPE args to print.summary.Anova.mlm(). John
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1043,18 +1044,18 @@ summary.Anova.mlm <- function (object, test.statistic, univariate=TRUE, multivar
     summary.object
 }
 
-print.summary.Anova.mlm <- function(x, digits = getOption("digits"), ... ) {
+print.summary.Anova.mlm <- function(x, digits = getOption("digits"), SSP=TRUE, SSPE=SSP, ... ) {
     if (!is.null(x$multivariate.tests)) {
         cat(paste("\nType ", x$type, if (x$repeated) 
             " Repeated Measures", " MANOVA Tests:\n", sep = ""))
-        if (!x$repeated) {
+        if ((!x$repeated) && SSPE) {
             cat("\nSum of squares and products for error:\n")
             print(x$SSPE, digits = digits)
         }
         for (term in 1:length(x$multivariate.tests)) {
             cat(paste("\n------------------------------------------\n", 
                 "\nTerm:", names(x$multivariate.tests)[term], "\n"))
-            print(x$multivariate.tests[[term]], digits = digits, SSPE = x$repeated, ...)
+            print(x$multivariate.tests[[term]], digits = digits, SSP=SSP, SSPE=FALSE, ...)
         }
     }
     if  (!is.null(x$univariate.tests)) {

@@ -25,8 +25,8 @@ dataEllipse(x, y, groups, group.labels = group.levels, ellipse.label,
     pch = if (missing(groups)) 1 else seq(group.levels), lwd = 2, 
     fill = FALSE, fill.alpha = 0.3, grid = TRUE, labels, id.method = "mahal", 
     id.n = if (id.method[1] == "identify") Inf else 0, id.cex = 1, 
-    id.col = if (missing(groups)) palette()[1] else palette()(1:length(groups)), id.location="lr",
-    ...) 
+    id.col = if (missing(groups)) palette()[1] else palette()(1:length(groups)), 
+    id.location="lr", ...) 
 
 confidenceEllipse(model, ...)
 

@@ -1,4 +1,4 @@
-%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
 % Revision history:
 % checked in 2008-12-29 by J. Fox (corresponds to version 1.2-10 of car)
 %	2009-01-16 updated doc to correspond to changes in linearHypothesis. J. Fox
@@ -13,7 +13,8 @@
 %   2014-09-23: added Anova.rlm(). J. Fox
 %   2015-02-18: updated info about when Anova.default() works. J. Fox
 %   2015-09-04: added Anova.coxme(). J. Fox
-%-------------------------------------------------------------------------------
+%   2016-06-03: added SSP and SSPE arguments to print.summary.ANova.mlm(). J. Fox
+%-------------------------------------------------------------------------------------
 
 \name{Anova}
 \alias{Anova}
@@ -90,7 +91,8 @@ Manova(mod, ...)
 \method{summary}{Anova.mlm}(object, test.statistic, univariate=TRUE, 
     multivariate=TRUE, ...)
     
-\method{print}{summary.Anova.mlm}(x, digits = getOption("digits"), ... )
+\method{print}{summary.Anova.mlm}(x, digits = getOption("digits"), 
+    SSP=TRUE, SSPE=SSP, ... )
     
 \method{Anova}{coxph}(mod, type=c("II", "III", 2, 3), 
 	test.statistic=c("LR", "Wald"), ...)
@@ -151,8 +153,13 @@ Manova(mod, ...)
     covariance matrix; the various values of the argument specify different corrections.
     See the documentation for \code{\link{hccm}} for details. If \code{white.adjust=TRUE}
     then the \code{"hc3"} correction is selected.} 
-  \item{SSPE}{The error sum-of-squares-and-products matrix; if missing, will be computed
-    from the residuals of the model.}
+  \item{SSPE}{For \code{Anova} for a multivariate linear model, the 
+    error sum-of-squares-and-products matrix; if missing, will be computed
+    from the residuals of the model; for the \code{print} method for the \code{summary} of
+    an \code{Anova} of a multivariate linear model, 
+    whether or not to print the error SSP matrix (defaults to \code{TRUE}).}
+  \item{SSP}{if \code{TRUE} (the default), print the sum-of-squares and 
+    cross-products matrix for the hypothesis and the response-transformation matrix.}
   \item{error.df}{The degrees of freedom for error; if missing, will be taken from the model.}
   \item{idata}{an optional data frame giving a factor or factors defining the
     intra-subject model for multivariate repeated-measures data. See 
