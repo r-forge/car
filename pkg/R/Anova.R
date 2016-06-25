@@ -42,6 +42,7 @@
 # 2015-09-15: fixed Anova.default() so that F-tests work again. John
 # 2015-11-13: modify Anova.coxph() to take account of method/ties argument. John
 # 2016-06-03: added SSP and SSPE args to print.summary.Anova.mlm(). John
+# 2016-06-25: added code to optionally print univariate ANOVAs for a mlm. John
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -937,7 +938,7 @@ print.Anova.mlm <- function(x, ...){
 
 # summary.Anova.mlm and print.summary.Anova.mlm methods
 #  with contributions from Gabriel Baud-Bovy
-summary.Anova.mlm <- function (object, test.statistic, univariate=TRUE, multivariate=TRUE, ...) {
+summary.Anova.mlm <- function (object, test.statistic, univariate=object$repeated, multivariate=TRUE, p.adjust.method, ...) {
     GG <- function(SSPE, P) { # Greenhouse-Geisser correction
         p <- nrow(SSPE)
         if (p < 2) 
@@ -1040,6 +1041,25 @@ summary.Anova.mlm <- function (object, test.statistic, univariate=TRUE, multivar
         summary.object$pval.adjustments <- table2
         summary.object$sphericity.tests <- table3
     }
+    if (!object$repeated && univariate) {
+      SS <- sapply(object$SSP, diag)
+      SSE <- diag(object$SSPE)
+      df <- object$df
+      dfe <- object$error.df
+      F <- (SS/df)/(SSE/dfe)
+      SS <- cbind(SS, residuals=SSE)
+      SS <- rbind(df=c(df, residuals=dfe), SS)
+      p <- pf(F, df, dfe, lower.tail=FALSE)
+      result <- list(SS=t(SS), F=t(F), p=t(p), type=object$type)
+      if (!missing(p.adjust.method)){
+        if (isTRUE(p.adjust.method)) p.adjust.method <- "holm"
+        p.adj <- apply(p, 2, p.adjust, method=p.adjust.method)
+        result$p.adjust <- t(p.adj)
+        result$p.adjust.method <- p.adjust.method
+      }
+      class(result) = "univaov"
+      summary.object$univaov <- result
+    }
     class(summary.object) <- "summary.Anova.mlm"
     summary.object
 }
@@ -1075,7 +1095,80 @@ print.summary.Anova.mlm <- function(x, digits = getOption("digits"), SSP=TRUE, S
             print(table)
         }
     }
+    if (!is.null(x$univaov)){
+      print(x$univaov, ...)
+    }
     invisible(x)
+}
+
+print.univaov <- function(x, digits = max(getOption("digits") - 2L, 3L), 
+                          style=c("wide", "long"), 
+                          by=c("response", "term"),
+                          ...){
+  style <- match.arg(style)
+  if (style == "wide") {
+    cat("\n Type", x$type, "Sums of Squares\n")
+    print(x$SS, digits=digits)
+    cat("\n F-tests\n")
+    F <- x$F
+    print(round(F, 2))
+    cat("\n p-values\n")
+    p <- format.pval(x$p)
+    p <- matrix(p, nrow=nrow(F))
+    rownames(p) <- rownames(F)
+    colnames(p) <- colnames(F)
+    print(p, quote=FALSE)
+    if (!is.null(x$p.adjust)){
+      cat("\n p-values adjusted (by term) for simultaneous inference by", x$p.adjust.method, "method\n")
+      p.adjust <- format.pval(x$p.adjust)
+      p.adjust <- matrix(p.adjust, nrow=nrow(F))
+      rownames(p.adjust) <- rownames(F)
+      colnames(p.adjust) <- colnames(F)
+      print(p.adjust, quote=FALSE)
+    }
+  }
+  else {
+    x.df <- as.data.frame(x, by=by)
+    x.df$F <- round(x.df$F, 2)
+    x.df$p <- format.pval(x.df$p)
+    if (!is.null(x$p.adjust)) x.df$"adjusted p" <- format.pval(x.df$"adjusted p")
+    cat("\n Type", x$type, "Sums of Squares and F tests\n")
+    print(x.df, quote=FALSE, digits=digits)
+  }
+  invisible(x)
+}
+
+as.data.frame.univaov <- function(x, row.names, optional, by=c("response", "term"), ...) {
+  melt <- function(data, varnames = names(dimnames(data)), value.name = "value") {
+    dn <- dimnames(data)
+    labels <- expand.grid( dn[[1]], dn[[2]])
+    colnames(labels) <- varnames
+    value_df <- setNames(data.frame(as.vector(data)), value.name)
+    cbind(labels, value_df)
+  }
+  nv <- ncol(x$F)
+  nt <- nrow(x$F)
+  by <- match.arg(by)
+  if (by=="response") {
+    vn <- c("term", "response")
+    df <- matrix(x$SS[1:nt, "df", drop=FALSE], nrow=nt, ncol=nv)
+    SS <- melt(x$SS[1:nt, -1, drop=FALSE], varnames=vn, value.name="SS")	
+    F <- melt(x$F, varnames=vn, value.name="F")
+    p <- melt(x$p, varnames=vn, value.name="p")
+    if (!is.null(x$p.adjust)) p.adjust <- melt(x$p.adjust, varnames=vn, value.name="adjusted p")
+  }
+  else {
+    vn <- rev(c("term", "response"))
+    df <- t(matrix(x$SS[1:nt, "df", drop=FALSE], nrow=nt, ncol=nv))
+    SS <- melt(t(x$SS[1:nt, -1, drop=FALSE]), varnames=vn, value.name="SS")	
+    F <- melt(t(x$F), varnames=vn, value.name="F")
+    p <- melt(t(x$p), varnames=vn, value.name="p")
+    if (!is.null(x$p.adjust)) p.adjust <- melt(x$p.adjust, varnames=vn, value.name="adjusted p")
+  }
+  
+  result <- cbind(SS[,c(2,1,3)], df=c(df), F=F[,"F"], p=p[,"p"])
+  if (!is.null(x$p.adjust)) result <- cbind(result, "adjusted p"=p.adjust[, "adjusted p"])
+  result
 }
 
 Anova.manova <- function(mod, ...){
