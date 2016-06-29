@@ -16,6 +16,7 @@
 %   2013-06-20 added .merMod methods to linearHypothesis() and matchCoefs(). J. Fox
 %   2014-04-23 added aliases for makeHypothesis and printHypothesis
 %   2014-08-23 added linearHypothesis.rlm. J. Fox
+%   2016-06-28 noted addition of "value" and "vcov" attributes. J. Fox
 %-------------------------------------------------------------------------------
 
 \name{linearHypothesis}
@@ -270,6 +271,9 @@ matchCoefs(model, pattern, ...)
   which contains the residual degrees of freedom
   in the model, the difference in degrees of freedom, Wald statistic
   (either \code{"F"} or \code{"Chisq"}), and corresponding p value.
+  The value of the linear hypothesis and its covariance matrix are returned
+  respectively as \code{"value"} and \code{"vcov"} attributes of the object
+  (but not printed).
   
   For a multivariate linear model, an object of class 
   \code{"linearHypothesis.mlm"}, which contains sums-of-squares-and-product
