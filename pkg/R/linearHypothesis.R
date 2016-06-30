@@ -32,8 +32,8 @@
 #               and residual SS nonzero in Anova.lm(). John
 #   2015-01-27: KRmodcomp() and methods now imported from pbkrtest. John
 #   2015-02-03: Check for NULL df before 0 df in default method. John
-#   2016-06-28: added "value" and "vcov" attributes to returned object. John
-#---------------------------------------------------------------------------------------
+#   2016-06-29: added "value" and "vcov" attributes to returned object, print vcov when verbose. John
+#----------------------------------------------------------------------------------------------------
 
 vcov.default <- function(object, ...){
 	stop(paste("there is no vcov() method for models of class",
@@ -209,17 +209,21 @@ linearHypothesis.default <- function(model, hypothesis.matrix, rhs=NULL,
 		if (is.null(rhs)) rhs <- rep(0, nrow(L))
 	}
 	q <- NROW(L)
+	value.hyp <- L %*% b - rhs
+	vcov.hyp <- L %*% V %*% t(L)
 	if (verbose){
 		cat("\nHypothesis matrix:\n")
 		print(L)
 		cat("\nRight-hand-side vector:\n")
 		print(rhs)
 		cat("\nEstimated linear function (hypothesis.matrix %*% coef - rhs)\n")
-		print(drop(L %*% b - rhs))
+		print(drop(value.hyp))
+		cat("\n")
+		if (length(vcov.hyp) == 1) cat("\nEstimated variance of linear function\n")
+		else cat("\nEstimated variance/covariance matrix for linear function\n")
+		print(drop(vcov.hyp))
 		cat("\n")
 	}
-	value.hyp <- L %*% b - rhs
-	vcov.hyp <- L %*% V %*% t(L)
 	SSH <- as.vector(t(value.hyp) %*% solve(vcov.hyp) %*% value.hyp)
 	test <- match.arg(test)
 	if (!(is.finite(df) && df > 0)) test <- "Chisq"
