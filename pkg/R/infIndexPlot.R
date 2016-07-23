@@ -3,7 +3,7 @@
 # 30 March 10: bug-fixes and changed arguments, S. Weisberg
 # 15 October 13:  Bug-fix on labelling x-axis
 # 25 April 2016:  For compatibility with Rcmdr, change na.action=exclude to na.action=na.omit SW.
-
+# 2016-07-23: add ... argument to call to lines(). J. Fox
 influenceIndexPlot <- function(model, ...)
 	{UseMethod("infIndexPlot")}
 
@@ -47,7 +47,7 @@ infIndexPlot.lm <- function(model,
         grid(lty=1, equilogs=FALSE)
         box()}
       if(j==3) {
-            for (k in which(y < 1)) lines(c(xaxis[k], xaxis[k]), c(1, y[k]))}
+            for (k in which(y < 1)) lines(c(xaxis[k], xaxis[k]), c(1, y[k]), ...)}
           else {
             points(xaxis, y, type="h", ...)}  
       points(xaxis, y, type="p", ...)  
