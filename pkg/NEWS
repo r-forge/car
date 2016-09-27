@@ -1,5 +1,7 @@
 Changes to Version 2.1-4
 
+  o Bug fixed in one of the skewPower support functions; thans to Balazs Banfai
+  
   o Added support for lmer objects in power transformations
   
   o Added support for skewPower family power transformations for lm and lmer objects

@@ -10,6 +10,7 @@
 # April 15, 2015, corrected handling of invHess submatrices in estimateTransform.skewPower
 # July 20, 2016:  Minor changes in error handling and formatting
 # August 17, 2016:  skewmle and testTransform.skewPower adapted to allow fixing gamma
+# Sept 27, 2016:  Fixed bug in handling vectors rather than data frames, thanks to Balazs Banfai
 
 ## ------------------------------------------------------------------------
 skewPower <- function(U, lambda, jacobian.adjusted=FALSE, gamma) { 
@@ -116,7 +117,7 @@ skewmle2d <- function(X, Y, weights=NULL, lambda=c(-3, 3), gamma=NULL, control=l
   Y <- as.matrix(Y)
   sel <- apply(Y, 1, function(x) all(x > 0))
   weights <- if(is.null(weights)) rep(1, length(sel)) else weights
-  lambda.start <- estimateTransform(as.matrix(X[sel, ]), as.matrix(Y[sel,]), weights[sel])$lambda
+  lambda.start <- estimateTransform(as.matrix(X)[sel, ], Y[sel,], weights[sel])$lambda
   # Get a starting value for gamma using profiling
   xqr <- qr(sqrt(weights) * as.matrix(X))
   nc <- length(lambda.start)
