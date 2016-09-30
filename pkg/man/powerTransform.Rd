@@ -33,7 +33,8 @@ estimateTransform(X, Y, weights=NULL, family="bcPower", start=NULL,
          
 \S3method{estimateTransform}{skewPower}(X, Y, weights=NULL, lambda=c(-3, 3), gamma=NULL, ...)
 
-\S3method{estimateTransform}{lmerMod}(object, family="bcPower", lambda=c(-3, 3), start=NULL, method="L-BFGS-B", ...)
+\S3method{estimateTransform}{lmerMod}(object, family="bcPower", lambda=c(-3, 3), 
+  start=NULL, method="L-BFGS-B", ...)
 
 \S3method{estimateTransform}{skewPowerlmer}(object, lambda=c(-3, +3), gamma=NULL, ...)
 }

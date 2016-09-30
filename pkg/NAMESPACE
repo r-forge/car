@@ -1,4 +1,4 @@
-# last modified 2016-06-25 by J. Fox
+# last modified 2016-09-30 by J. Fox
 
 importFrom(MASS, cov.trob, polr, rlm)
 importFrom(nnet, multinom)
@@ -189,6 +189,9 @@ S3method(bootCase, glm)
 S3method(bootCase, nls)
 S3method(Boxplot, default)
 S3method(Boxplot, formula)
+S3method(Boxplot, list)
+S3method(Boxplot, data.frame)
+S3method(Boxplot, matrix)
 S3method(nextBoot, lm)
 S3method(nextBoot, nls)
 S3method(boxTidwell, default)
