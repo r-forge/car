@@ -26,7 +26,7 @@ Boxplot(y, ...)
 
 \method{Boxplot}{list}(y, xlab="", ylab="", ...)
 
-\method{Boxplot}{data.frame}(y, ...)
+\method{Boxplot}{data.frame}(y, labels=rownames(y), ...)
 
 \method{Boxplot}{matrix}(y, ...)
 }
@@ -37,7 +37,7 @@ Boxplot(y, ...)
     numeric matrix, each of whose columns will be treated as a group.}
   \item{g}{a grouping variable, usually a factor, for constructing parallel boxplots.}
   \item{labels, labels.}{point labels; if not specified, \code{Boxplot} will use the row names of the \code{data}
-    argument, if one is given, or observation numbers.}
+    argument, if one is given, or observation numbers, or row names if \code{y} is a data frame or matrix (that has row names).}
   \item{id.method}{if \code{"y"} (the default), all outlying points are labeled; if \code{"identify"}, points
     may be labeled interactive; if \code{"none"}, no point identification is performed.}
   \item{id.n}{up to \code{id.n} high outliers and low outliers will be identified in each group, (default, 10).}
