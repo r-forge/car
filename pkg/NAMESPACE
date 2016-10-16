@@ -1,4 +1,6 @@
-# last modified 2016-09-30 by J. Fox
+# last modified 2016-10-16 by J. Fox
+
+useDynLib(car)
 
 importFrom(MASS, cov.trob, polr, rlm)
 importFrom(nnet, multinom)
@@ -10,7 +12,7 @@ importFrom(graphics, abline, arrows, axis, box, boxplot, contour, hist, identify
     layout, legend, lines, locator, mtext, pairs, par, plot, points, polygon, 
     rug, segments, strheight, strwidth, text)
 importFrom(grDevices, boxplot.stats, col2rgb, gray, palette, rgb)
-importFrom(stats, D, IQR, alias, anova, as.formula, coef, coefficients, 
+importFrom(stats, D, IQR, alias, anova, as.formula, bw.nrd0, coef, coefficients, 
     complete.cases, confint, contrasts, "contrasts<-", cooks.distance, cor, 
     cov, cov.wt, cov2cor, density, deviance, df.residual, dfbeta, dnorm, 
     drop1, family, fitted, fitted.values, fivenum, formula, gaussian, getCall, 
@@ -22,6 +24,7 @@ importFrom(stats, D, IQR, alias, anova, as.formula, coef, coefficients,
     rstandard, rstudent, sd, setNames, spline, summary.lm, terms, update, var, vcov, weights,
     optimHess)
 importFrom(utils, browseURL, head, methods)
+importFrom(Rcpp, sourceCpp)
 # importFrom(VGAM, vcovvlm, coefvlm, formulavlm, model.matrixvlm)
 
 export(
@@ -102,6 +105,7 @@ export(
     quantregLine,
     mcPlot,
     mcPlots,
+    adaptiveKernel,
     
     # method explicitly exported for import in other packages
     linearHypothesis.default,
@@ -312,5 +316,3 @@ S3method(estimateTransform, default)
 S3method(estimateTransform, skewPower)
 S3method(estimateTransform, lmerMod)
 S3method(estimateTransform, skewPowerlmer)
-
-
