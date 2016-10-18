@@ -33,8 +33,7 @@ estimateTransform(X, Y, weights=NULL, family="bcPower", start=NULL,
          
 \S3method{estimateTransform}{skewPower}(X, Y, weights=NULL, lambda=c(-3, 3), gamma=NULL, ...)
 
-\S3method{estimateTransform}{lmerMod}(object, family="bcPower", lambda=c(-3, 3), 
-  start=NULL, method="L-BFGS-B", ...)
+\S3method{estimateTransform}{lmerMod}(object, family="bcPower", lambda=c(-3, 3), start=NULL, method="L-BFGS-B", ...)
 
 \S3method{estimateTransform}{skewPowerlmer}(object, lambda=c(-3, +3), gamma=NULL, ...)
 }
@@ -48,7 +47,7 @@ estimateTransform(X, Y, weights=NULL, family="bcPower", start=NULL,
   \item{na.action}{Missing value action, as in \sQuote{lm}.}
   \item{family}{The quoted name of a family of transformations.  The available options are \code{"bcPower"} the default for the Box-Cox power family; \code{"yjpower"} for the Yeo-Johnson family, and \code{"skewPower"} for the two-parameter skew power family.  The families are documented at \code{\link{bcPower}} and \code{\link{skewPower}}.}
   \item{lambda}{The range to be considered for the estimate of the power parameter lambda, equal to \code{c(-3, +3)} by default.  Values of lambda outside the default range is unlikely to be useful in practice.}
-  \item{gamma}{The skewPower family has two parameters, a start or location parameter gamma in addition to the power parameter present in most other transformation families.  If \code{gamma=NULL} then the location parameter will be estimated; if \code{gamma} is set to a numeric value, or a numeric vector of positive value equal in length to the number of responses, \code{gamma} will be fixed at that value and only the power will be estimated.}
+  \item{gamma}{The skewPower family has two parameters, adding a location parameter gamma  to the power parameter lambda present in most other transformation families.  If \code{gamma=NULL} then the location parameter will be estimated; if \code{gamma} is set to a numeric value, or a numeric vector of positive values equal in length to the number of responses, \code{gamma} will be fixed and only the power will be estimated.}
   \item{...}{Additional arguments that are passed to \code{estimateTransform}
   which does the actual computing, or to the \code{\link{optim}} 
   function, which does the maximization for all the methods except for \code{lmerMod} models with the \code{skewPower} family.  For this case, computing is done using the \code{\link[nloptr]{neldermead}}  function in the \code{noptr} package is used.}
