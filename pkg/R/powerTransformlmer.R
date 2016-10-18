@@ -1,5 +1,5 @@
 # 2016-07-20:  Added support for power transformations in lmerMod  objects, S. Weisberg
-# 2016-08017:  Allowed fixed gamma or estimated gamma.
+# 2016-08-17:  Allowed fixed gamma or estimated gamma.
 
 
 # generic functions in powerTransform.R
