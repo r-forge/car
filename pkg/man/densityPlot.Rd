@@ -17,17 +17,17 @@ densityPlot(x, ...)
 
 \method{densityPlot}{default}(x, g, method=c("kernel", "adaptive"), 
     bw=if (method == "adaptive") bw.nrd0 else "SJ", adjust=1,
-    kernel = c("gaussian", "epanechnikov", "rectangular", 
-               "triangular", "biweight", "cosine", "optcosine"),
-    xlim, ylim, normalize=FALSE,
-    xlab = deparse(substitute(x)), ylab = "Density", col = palette(), 
-    lty = seq_along(col), lwd = 2, grid=TRUE,
-    legend.location = "topright", legend.title = deparse(substitute(g)), 
-    show.bw = FALSE, rug = TRUE, ...)
+    kernel, xlim, ylim, normalize=FALSE,
+    xlab=deparse(substitute(x)), ylab="Density", 
+    col=palette(), lty=seq_along(col), lwd=2, grid=TRUE,
+    legend.location="topright", legend.title=deparse(substitute(g)), show.bw=FALSE,
+    rug=TRUE, ...) 
     
-\method{densityPlot}{formula}(formula, data = NULL, subset, na.action = NULL, xlab, ylab, ...)
+\method{densityPlot}{formula}(formula, data = NULL, subset, 
+    na.action = NULL, xlab, ylab, ...)
 
-adaptiveKernel(x, bw = bw.nrd0, adjust = 1, n = 500, from, to, cut = 3, na.rm = TRUE) 
+adaptiveKernel(x, kernel=dnorm, bw=bw.nrd0, adjust=1.0, n=500, 
+    from, to, cut=3, na.rm=TRUE)
 }
 
 
@@ -50,7 +50,9 @@ adaptiveKernel(x, bw = bw.nrd0, adjust = 1, n = 500, from, to, cut = 3, na.rm = 
   \item{adjust}{a multiplicative adjustment factor for the bandwidth; the default, \code{1}, indicates no adjustment;
     if plotting by groups, \code{adjust} may be a vector of adjustment factors, one for each group. The default bandwidth-selection rule tends to give a value that's too large if
     the distribution is asymmetric or has multiple modes; try setting \code{adjust} <  1, particularly for the adaptive-kernel estimator.}
-  \item{kernel}{kernel function for the kernel estimator; the default is "gaussian" (see \code{\link{density}}). The adaptive-kernel estimator always uses a Gaussian kernel.}
+  \item{kernel}{for \code{densityPlot} this is the name of the kernel function for the kernel estimator (the default is \code{"gaussian"}, see \code{\link{density}});
+    or a kernel function for the adaptive-kernel estimator (the default is \code{dnorm}, producing the Gaussian kernel). 
+    For \code{adaptivekernel} this is a kernel function, defaulting to \code{dnorm}, which is the Gaussian kernel (standard-normal density).}
   \item{xlim, ylim}{axis limits; if missing, determined from the range of x-values at which the densities are estimated and the estimated densities.}
   \item{normalize}{if \code{TRUE} (the default is \code{FALSE}), the estimated densities are rescaled to integrate approximately to 1; particularly useful if the
     density is estimated over a restricted domain, as when \code{from} or \code{to} are specified.}

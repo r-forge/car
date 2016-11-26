@@ -1,6 +1,6 @@
 Package: car
 Version: 2.1-4
-Date: 2016-11-20
+Date: 2016-11-26
 Title: Companion to Applied Regression
 Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaster.ca"),
 	person("Sanford", "Weisberg", role = "aut", email = "sandy@umn.edu"),
@@ -24,8 +24,7 @@ Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaste
     person("Achim", "Zeileis", role = "ctb"),
     person("R-Core", role="ctb"))
 Depends: R (>= 3.2.0)
-LinkingTo: Rcpp
-Imports: MASS, mgcv, nnet, pbkrtest (>= 0.4-4), quantreg, grDevices, utils, stats, graphics, Rcpp
+Imports: MASS, mgcv, nnet, pbkrtest (>= 0.4-4), quantreg, grDevices, utils, stats, graphics
 Suggests: alr4, boot, coxme, leaps, lme4, lmtest, Matrix, MatrixModels, nlme, rgl (>= 0.93.960), sandwich, SparseM, survival, survey, nloptr
 ByteCompile: yes
 LazyLoad: yes

@@ -1,6 +1,7 @@
 # checked in 2013-06-05 by J. Fox
 # 2014-09-04: J. Fox: empty groups produce warning rather than error
-# 2016-10-16: J. FOx: add option for adaptive kernel.
+# 2016-10-16: J. Fox: add option for adaptive kernel.
+# 2016-11-26: J. Fox: rejig for pure-R adaptive kernel
 
 densityPlot <- function(x, ...){
     UseMethod("densityPlot")
@@ -8,8 +9,7 @@ densityPlot <- function(x, ...){
 
 densityPlot.default <- function (x, g, method=c("kernel", "adaptive"), 
     bw=if (method == "adaptive") bw.nrd0 else "SJ", adjust=1,
-    kernel = c("gaussian", "epanechnikov", "rectangular", 
-               "triangular", "biweight", "cosine", "optcosine"),
+    kernel,
     xlim,
     ylim,
     normalize=FALSE,
@@ -23,11 +23,19 @@ densityPlot.default <- function (x, g, method=c("kernel", "adaptive"),
         y0 <- (y[1:(n-1)] + y[2:n])/2
         exp(log(y) - log(sum(y0*x0)))
     }
-    ylab
-    xlab
-    if (!is.numeric(x)) stop("argument x must be numeric")
     method <- match.arg(method)
-    kernel <- match.arg(kernel)
+    if (method == "kernel"){
+        kernel <- if (missing(kernel)) "gaussian"
+        else match.arg(kernel, c("gaussian", "epanechnikov", "rectangular", 
+                                      "triangular", "biweight", "cosine", "optcosine"))
+    }
+    else{
+        if(missing(kernel)) kernel <- dnorm
+        if (!is.function(kernel)) stop("for the adaptive kernel estimator, the kernel argument must be a function")
+    }
+    force(ylab)
+    force(xlab)
+    if (!is.numeric(x)) stop("argument x must be numeric")
     if (missing(g)) {
         density <- if (method == "adaptive") adaptiveKernel(x, bw=bw, adjust=adjust, ...)
             else density(x, bw=bw, adjust=adjust, kernel=kernel, ...)

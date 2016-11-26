@@ -21,9 +21,11 @@ powerTransform(object, ...)
 
 \S3method{powerTransform}{lm}(object, family="bcPower", ...)
 
-\S3method{powerTransform}{formula}(object, data, subset, weights, na.action, family="bcPower", ...)
+\S3method{powerTransform}{formula}(object, data, subset, weights, na.action, 
+    family="bcPower", ...)
   
-\S3method{powerTransform}{lmerMod}(object, family="bcPower", lambda=c(-3, 3), gamma=NULL, ...)
+\S3method{powerTransform}{lmerMod}(object, family="bcPower", lambda=c(-3, 3), 
+    gamma=NULL, ...)
   
 estimateTransform(X, Y, weights=NULL, family="bcPower", start=NULL,
          method="L-BFGS-B", ...)
@@ -31,11 +33,14 @@ estimateTransform(X, Y, weights=NULL, family="bcPower", start=NULL,
 \method{estimateTransform}{default}(X, Y, weights=NULL, family="bcPower", start=NULL, 
          method="L-BFGS-B", ...)
          
-\S3method{estimateTransform}{skewPower}(X, Y, weights=NULL, lambda=c(-3, 3), gamma=NULL, ...)
+\S3method{estimateTransform}{skewPower}(X, Y, weights=NULL, lambda=c(-3, 3), 
+    gamma=NULL, ...)
 
-\S3method{estimateTransform}{lmerMod}(object, family="bcPower", lambda=c(-3, 3), start=NULL, method="L-BFGS-B", ...)
+\S3method{estimateTransform}{lmerMod}(object, family="bcPower", lambda=c(-3, 3), 
+    start=NULL, method="L-BFGS-B", ...)
 
-\S3method{estimateTransform}{skewPowerlmer}(object, lambda=c(-3, +3), gamma=NULL, ...)
+\S3method{estimateTransform}{skewPowerlmer}(object, lambda=c(-3, +3), 
+    gamma=NULL, ...)
 }
 
 \arguments{
