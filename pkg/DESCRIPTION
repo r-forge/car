@@ -1,6 +1,6 @@
 Package: car
 Version: 2.1-4
-Date: 2016-11-26
+Date: 2016-11-30
 Title: Companion to Applied Regression
 Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaster.ca"),
 	person("Sanford", "Weisberg", role = "aut", email = "sandy@umn.edu"),
@@ -33,4 +33,4 @@ Description:
   Functions and Datasets to Accompany J. Fox and S. Weisberg, 
   An R Companion to Applied Regression, Second Edition, Sage, 2011.
 License: GPL (>= 2)
-URL: https://r-forge.r-project.org/projects/car/, http://CRAN.R-project.org/package=car, http://socserv.socsci.mcmaster.ca/jfox/Books/Companion/index.html
+URL: https://r-forge.r-project.org/projects/car/, https://CRAN.R-project.org/package=car, http://socserv.socsci.mcmaster.ca/jfox/Books/Companion/index.html
