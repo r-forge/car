@@ -3,6 +3,7 @@
 # 2015-02-02: added 'gamma' argument to get transformation of (U + gamma)
 # 2015-08-10: added estimateTransform as a generic function
 # 2015-08-24: made 'family' an explicit argument to powerTransformation to clairfy man page.
+# 2017-01-28: fixed bug in yjPower
 
 
 ### Power families:
@@ -46,8 +47,8 @@ yjPower <- function(U, lambda, jacobian.adjusted=FALSE) {
  yj1 <- function(U, lambda){
   nonnegs <- U >= 0
   z <- rep(NA, length(U))
-  z[which(nonnegs)] <- bcPower(U[which(nonnegs)]+1, lambda, jacobian.adjusted=FALSE)
-  z[which(!nonnegs)] <- -bcPower(-U[which(!nonnegs)]+1, 2-lambda, jacobian.adjusted=FALSE)
+  z[which(nonnegs)] <-  bcPower(U[which(nonnegs)]+1, lambda, jacobian.adjusted=FALSE)
+  z[which(!nonnegs)] <- bcPower(-U[which(!nonnegs)]+1, 2-lambda, jacobian.adjusted=FALSE)
   if (jacobian.adjusted == TRUE)
         z * (exp(mean(log((1 + abs(U))^(2 * nonnegs - 1)), na.rm=TRUE)))^(1 -
             lambda)

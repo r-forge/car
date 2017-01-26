@@ -1,5 +1,7 @@
 Changes to Version 2.1-4
 
+  o Bug in yjPower is fixed.
+  
   o The smoother functions loessLine, gamLine and quantregLine used in many car functions now evaluate the smoother at an equally spaced grid of points rather than at the observed values on the horizontal axis of a plot.
   
   o spreadLevelPlot.lm now accepts point marking as in most other graphical functions in car.
