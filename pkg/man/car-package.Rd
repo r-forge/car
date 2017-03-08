@@ -13,7 +13,7 @@ An R Companion to Applied Regression, Second Edition, Sage, 2011.
 \tabular{ll}{
 Package: \tab car\cr
 Version: \tab 2.1-5\cr
-Date: \tab 2016-01-28\cr
+Date: \tab 2017-03-08\cr
 Depends: \tab R (>= 3.2.0)\cr
 LinkingTo: \tab Rcpp\cr
 Imports: \tab MASS, mgcv, nnet, pbkrtest (>= 0.3-2), quantreg, grDevices, utils, stats, graphics, Rcpp\cr
