@@ -1,5 +1,7 @@
 Changes to Version 2.1-5
 
+  o Removed the skewPower transformation functions, and added bcnPower transformation family. Same transformation, new name, new computational algorithms, improved documentation.
+  
   o Fixed bug (reported by Bruno Hebling Vieira) in print.summary.Anova.mlm() that could cause adjusted p-values to be incorrectly ordered.
 
 Changes to Version 2.1-4
