@@ -5,7 +5,8 @@
 # 2015-08-10: added estimateTransform as a generic function
 # 2015-08-24: made 'family' an explicit argument to powerTransformation to clairfy man page.
 # 2017-01-28: bug-fix in yjPower
-# 2017-05-02: function updates to accomodate bcnPower family.  S. Weisberfg
+# 2017-05-02: function updates to accomodate bcnPower family.  S. Weisberg
+# 2017-05-19: Changed summary.powerTransform; deleted invalid test; added roundlam to output
 
 
 ### Power families:
@@ -219,17 +220,19 @@ summary.powerTransform<-function(object,...){
        (if(one) "Transformation to Normality" else
                 "Transformations to Multinormality"), "\n")
     lambda<-object$lambda
+    roundlam <- round(object$roundlam, 2)
     stderr<-sqrt(diag(object$invHess))
     df<-length(lambda)
-    result <- cbind(lambda, stderr, lambda - 1.96*stderr, lambda + 1.96*stderr)
+#    result <- cbind(lambda, roundlam, stderr, lambda - 1.96*stderr, lambda + 1.96*stderr)
+    result <- cbind(lambda, roundlam, lambda - 1.96*stderr, lambda + 1.96*stderr)
     rownames(result)<-names(object$lambda)
-    colnames(result)<-c("Est.Power", "Std.Err.", "Wald Lower Bound",
-                        "Wald Upper Bound")
+#    colnames(result)<-c("Est Power", "Rnd Pwr", "Std Err", "Lwr bnd", "Upr Bnd")
+    colnames(result)<-c("Est Power", "Rounded Pwr", "Wald Lwr bnd", "Wald Upr Bnd")
     tests <- testTransform(object, 0)
     tests <- rbind(tests, testTransform(object, 1))
-    if ( !(all(object$roundlam==0) | all(object$roundlam==1) |
-        length(object$roundlam)==1 ))
-           tests <- rbind(tests, testTransform(object, object$roundlam))
+#    if ( !(all(object$roundlam==0) | all(object$roundlam==1) |
+#        length(object$roundlam)==1 ))
+#           tests <- rbind(tests, testTransform(object, object$roundlam))
     out <-  list(label=label, result=result, tests=tests)
     class(out) <- "summary.powerTransform"
     out

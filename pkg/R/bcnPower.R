@@ -1,4 +1,6 @@
 # 05-02-2017:  bcnPower family, replacing skewPower.  S. Weisberg
+# 2017-05-18: Changed summary.powerTransform; deleted invalid test; added roundlam to output
+
 
 bcnPower <- function(U, lambda, jacobian.adjusted=FALSE, gamma) {
   if(is.matrix(U)){
@@ -236,22 +238,22 @@ summary.bcnPowerTransform <- function(object, ...){
   label <- paste(if(nc==1) "Skew Power transformation to Normality" else
                    "Skew Power Transformations to Multinormality", "\n")
   lambda <- object$lambda
+  roundlam <- round(object$roundlam, 3)
   gamma <- object$gamma
   stderr <- sqrt(diag(object$invHess))
   stderr.gamma <- stderr[(nc+1):(2*nc)]
   stderr <- stderr[1:nc]
-  result <- cbind(lambda, stderr, lambda - 1.96*stderr, lambda + 1.96*stderr)
+  result <- cbind(lambda, roundlam, lambda - 1.96*stderr, lambda + 1.96*stderr)
   result.gamma <- cbind(gamma, stderr.gamma, pmax(gamma - 1.96*stderr.gamma, 0), gamma + 1.96*stderr.gamma)
   rownames(result) <- rownames(result.gamma) <- object$ylabs
-  colnames(result) <- colnames(result.gamma) <-
-     c("Est.Power", "Std.Err.", "Wald Lower Bound", "Wald Upper Bound")
+  colnames(result) <- c("Est Power", "Rounded Pwr", "Wald Lwr Bnd", "Wald Upr Bnd")
   colnames(result.gamma) <-
-    c("Est.gamma", "Std.Err.", "Wald Lower Bound", "Wald Upper Bound")
+    c("Est gamma", "Std Err.", "Wald Lower Bound", "Wald Upper Bound")
   tests <- testTransform(object, 0)
   tests <- rbind(tests, testTransform(object, 1))
-  if ( !(all(object$roundlam==0) | all(object$roundlam==1) |
-           length(object$roundlam)==1 | all(object$roundlam == object$lambda)))
-    tests <- rbind(tests, testTransform(object, object$roundlam))
+#  if ( !(all(object$roundlam==0) | all(object$roundlam==1) |
+#           length(object$roundlam)==1 | all(object$roundlam == object$lambda)))
+#    tests <- rbind(tests, testTransform(object, object$roundlam))
   out <-  list(label=label, result=result, result.gamma=result.gamma, tests=tests)
   class(out) <- "summary.bcnPowerTransform"
   out

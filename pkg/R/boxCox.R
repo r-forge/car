@@ -1,12 +1,15 @@
 # 2015-08-26:  Modified by S. Weisberg to add support for bcn power transformations.
+# 2017-05-11:  Added boxCox2d, renamed verssion of contour.powerTransform
+# 2017-05-11:  Bug fixes in boxCox.formula with arugment passing to other methods
 
 boxCox <- function(object,...) UseMethod("boxCox")
 
 #  New arguments:  param, and gamma
-boxCox.formula <- function (object, lambda = seq(-2, 2, 1/10), plotit=TRUE, ...)
+boxCox.formula <- function (object, lambda = seq(-2, 2, 1/10), plotit=TRUE,
+          family="bcPower", param=c("lambda", "gamma"), gamma=NULL, grid=TRUE,...)
 {
   m <- length(lambda)
-  object <- lm(object, y = TRUE, qr = TRUE, ...)
+  object <- lm(object, y = TRUE, qr = TRUE)
   result <- NextMethod()
   if (plotit)
     invisible(result)
@@ -52,7 +55,7 @@ boxCox.default <- function(object,
       if(!is.null(gamma)) as.vector(gamma) else{
         p1 <- powerTransform(object, family="bcnPower")
         gam <- p1$gamma
-        se <- sqrt(vcov(p1)[2,2])
+        se <- sd(y)  # arbitrary scaling factor
         seq(max(.01, gam - 3*se), gam + 3*se, length=100)
       }
     }
@@ -90,7 +93,7 @@ boxCox.default <- function(object,
     Lmax <- loglik[mx]
     lim <- Lmax - qchisq(19/20, 1)/2
     plot(xl, loglik, xlab = xlab, ylab = ylab, type = "n",
-         ylim = range(loglik, lim), ...)
+         ylim = range(loglik, lim))
     if(grid){
       grid(lty=1, equilogs=FALSE)
       box()}

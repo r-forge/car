@@ -26,7 +26,9 @@ boxCox(object, ...)
         param=c("lambda", "gamma"), gamma=NULL,
         grid=TRUE, ...)
 
-\method{boxCox}{formula}(object, lambda = seq(-2, 2, 1/10), plotit = TRUE, ...)
+\method{boxCox}{formula}(object, lambda = seq(-2, 2, 1/10), plotit = TRUE, family = "bcPower",
+    param = c("lambda", "gamma"), gamma = NULL, grid = TRUE,
+    ...)
 
 \method{boxCox}{lm}(object, lambda = seq(-2, 2, 1/10), plotit = TRUE, ...)
 
@@ -67,13 +69,13 @@ boxCox2d(x, ksds = 4, levels = c(0.5, 0.95, 0.99, 0.999),
   }
   \item{param}{Relevant only to \code{family="bcnPower"}, produces a profile log-likelihood for the parameter selected, maximizing over the remaining parameter.}
  \item{gamma}{
-    For use when the \code{family="bcnPower", param="gamma"}.  If this is a vector of positive values, then the profile log-likelihood for the location (or start) parameter in the skew power family is evaluated at these values of gamma.  If gamma is \code{NULL}, then evaulation is done at 100 equally spaced points between \code{min(.01, gmax - 3*se)} and \code{gmax + 3*se}, where \code{gmax} is the maximimul likelihood estimate of gamma, and \code{se} is its estimated standard error.  See \code{\link{bcnPower}} for the definition of \code{gamma}.
+    For use when the \code{family="bcnPower", param="gamma"}.  If this is a vector of positive values, then the profile log-likelihood for the location (or start) parameter in the  \code{bcnPower} family is evaluated at these values of gamma.  If gamma is \code{NULL}, then evaulation is done at 100 equally spaced points between \code{min(.01, gmax - 3*sd)} and \code{gmax + 3*sd}, where \code{gmax} is the maximimum likelihood estimate of gamma, and \code{sd} is the sd of the response.  See \code{\link{bcnPower}} for the definition of \code{gamma}.
   }
   \item{grid}{If TRUE, the default, a light-gray background grid is put on the
               graph.
   }
   \item{\dots}{
-    passes arguments from methods to the default, or from the default to \code{plot}, or from \code{boxCox2d} to the \code{\link{contour}} function.
+  additional arguments passed to the \code{lm} method with \code{boxCox.formula} or passed to \code{contour} with \code{boxCox2d}.
   }
     \item{x}{
   An object created by a call to \code{\link{powerTransform}} using \code{family="bcnPower"}.

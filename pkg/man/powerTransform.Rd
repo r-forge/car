@@ -72,6 +72,8 @@ values will  usually be the desired transformations.}
 \item{gamma}{Estimated location parameters for \code{bcnPower}, \code{NULL} otherwise}
 \item{invHess}{Estimated covariance matrix of the estimated parameters}
 \item{llik}{Value of the log-likelihood at the estimates}
+
+The \code{summary} method for \code{powerTransform} returns an array with columns labeled "Est Power" for the value of \code{lambda} that maximizes the likelihood; "Rounded Pwr" for \code{roundlam},  and columns "Wald Lwr Bnd" and "Wald Ur Bnd" for a 95 percent Wald normal theory confidence interval for \code{lambda} computed as the estimate plus or minus 1.96 times the standard error.
 }
 \references{Box, G. E. P. and Cox, D. R. (1964) An analysis of transformations.
 \emph{Journal
