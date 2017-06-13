@@ -138,11 +138,11 @@ The bcnPower family has two parameters: a power \eqn{\lambda}{lambda} and a star
   \code{\link{powerTransform}}, \code{\link{contour}}
 }
 \examples{
-  boxCox(Volume ~ log(Height) + log(Girth), data = trees,
-         lambda = seq(-0.25, 0.25, length = 10))
+  with(trees, boxCox(Volume ~ log(Height) + log(Girth), data = trees,
+         lambda = seq(-0.25, 0.25, length = 10)))
 
   data("quine", package = "MASS")
-  boxCox(Days ~ Eth*Sex*Age*Lrn, data = quine,
-         lambda = seq(-0.05, 0.45, len = 20), family="yjPower")
+  with(quine, boxCox(Days ~ Eth*Sex*Age*Lrn, data = quine,
+         lambda = seq(-0.05, 0.45, len = 20), family="yjPower"))
 }
 \keyword{ regression}
