@@ -1,5 +1,7 @@
 Changes to Version 2.1-5
 
+  o Fixed bug in boot.hist, and made Boot.default more general.
+  
   o Fixed bug in gamLine with non-dentity links.
   
   o Removed the skewPower transformation functions, and added bcnPower transformation family. Same transformation, new name, new computational algorithms, improved documentation.

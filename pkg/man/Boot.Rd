@@ -15,7 +15,7 @@ meet the needs of many users.
 \usage{
 \S3method{Boot}{default}(object, f=coef, labels=names(coef(object)),
                      R=999, method=c("case", "residual"))
-                     
+
 \S3method{Boot}{lm}(object, f=coef, labels=names(coef(object)),
                      R=999, method=c("case", "residual"))
 
@@ -31,7 +31,7 @@ meet the needs of many users.
 method and have a \code{subset} argument}
   \item{f}{A function whose one argument is the name of a regression object that will be applied to the updated regression object to
 compute the statistics of interest.  The default is \code{coef}, to return to
-regression coefficient estimates.  For example, 
+regression coefficient estimates.  For example,
 \code{f = function(obj) coef(obj)[1]/coef(obj[2]} will bootstrap the ratio of the first and second coefficient estimates.}
   \item{labels}{Provides labels for the statistics computed by \code{f}.  If
 this argument is of the wrong length, then generic labels will be generated.
@@ -64,6 +64,8 @@ generalized linear models has several competing approaches, but none are
 without problems.  If you want to do a residual bootstrap for a glm, you
 will need to write your own call to \code{boot}.
 
+For the default object to work with other types of regression model, the model must have methods for the the following generic functions:  \code{residuals(object, type="pearson")} must return Pearson residuals; \code{fitted(object)} must return fitted values; \code{hatvalues(object)} should return the leverages, or perhaps the value 1.
+
 An attempt to model fit to a bootstrap sample may fail.  In a \code{lm} or
 \code{glm} fit, the bootstrap sample could have a different rank from the original
 fit.  In an \code{nls} fit, convergence may not be obtained for some bootstraps.
@@ -82,23 +84,23 @@ Applications}.  Oxford:  Oxford University Press.
 Fox, J. and Weisberg, S. (2011) \emph{Companion to Applied Regression}, Second Edition.
 Thousand Oaks:  Sage.
 
-Fox, J. and Weisberg, S. (2012) \emph{Bootstrapping}, 
+Fox, J. and Weisberg, S. (2012) \emph{Bootstrapping},
 \url{http://socserv.mcmaster.ca/jfox/Books/Companion/appendix/Appendix-Bootstrapping.pdf}.
 
-Weisberg, S. (2014) \emph{Applied Linear Regression}, Fourth Edition, Wiley   
+Weisberg, S. (2014) \emph{Applied Linear Regression}, Fourth Edition, Wiley
 Wiley, Chapters 4 and 11.}
 
 \author{ Sanford Weisberg, \email{sandy@umn.edu}.}
 
 \seealso{Functions that work with
-\code{Boot} objects from the \code{boot} package are 
+\code{Boot} objects from the \code{boot} package are
 \code{\link[boot]{boot.array}},
-\code{\link[boot]{boot.ci}}, 
+\code{\link[boot]{boot.ci}},
 \code{\link[boot]{plot.boot}} and
 \code{\link[boot]{empinf}}.  Additional
-functions in the \code{car} package are 
+functions in the \code{car} package are
 \code{\link{summary.boot}},
-\code{\link{confint.boot}}, and 
+\code{\link{confint.boot}}, and
 \code{\link{hist.boot}}.
 }
 
