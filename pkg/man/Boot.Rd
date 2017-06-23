@@ -13,17 +13,19 @@ has many arguments, the \code{Boot} function has very few arguments, but should
 meet the needs of many users.
 }
 \usage{
-\S3method{Boot}{default}(object, f=coef, labels=names(coef(object)),
-                     R=999, method=c("case", "residual"))
+Boot(object, f=coef, labels=names(f(object)), R=999, method=c("case", "residual"), \dots)
 
-\S3method{Boot}{lm}(object, f=coef, labels=names(coef(object)),
-                     R=999, method=c("case", "residual"))
+\S3method{Boot}{default}(object, f=coef, labels=names(f(object)),
+                     R=999, method=c("case", "residual"), start = FALSE, \dots)
 
-\S3method{Boot}{glm}(object, f=coef, labels=names(coef(object)),
-                     R=999, method=c("case", "residual"))
+\S3method{Boot}{lm}(object, f=coef, labels=names(f(object)),
+                     R=999, method=c("case", "residual"), \dots)
 
-\S3method{Boot}{nls}(object, f=coef, labels=names(coef(object)),
-                     R=999, method=c("case", "residual"))
+\S3method{Boot}{glm}(object, f=coef, labels=names(f(object)),
+                     R=999, method=c("case", "residual"), \dots)
+
+\S3method{Boot}{nls}(object, f=coef, labels=names(f(object)),
+                     R=999, method=c("case", "residual"), \dots)
 
 }
 \arguments{
@@ -42,6 +44,11 @@ model is different in the bootstrap replication than in the original data.}
   \item{method}{The bootstrap method, either \dQuote{case} for resampling
 cases or \dQuote{residuals} for a residual bootstrap.  See the details
 below. The residual bootstrap is available only for \code{lm} and \code{nls} objects and will return an error for \code{glm} objects.}
+  \item{\dots}{Arguments passed to methods. The default method passes these on
+to the \code{boot} function.}
+  \item{start}{Should the \code{f} paramters be passed as \code{start} values
+to the \code{update} in each bootstrap iteration? Alternatively, \code{start}
+can also be a numeric vector that is passed to the \code{update}.}
 }
 \details{
 Whereas the \code{boot} function is
