@@ -28,8 +28,11 @@
 #             set labels=names(f(object)) with f() rather than coef()
 #             simplified and avoid bug in computation of 'out' and check for $qr in Boot.default
 #             do not rely on $model to be available
-#             instead set up empty dummy data with right number of rows (either via nobs or NROW(residuals(...)))
-#             optionally use original estimates as starting values in update(object, ...) within Boot.default
+#             instead set up empty dummy data with right number of rows (either via nobs or 
+#             NROW(residuals(...)))
+#             optionally use original estimates as starting values in update(object, ...) 
+#             within Boot.default
+# 2017-06-25: modified bca confidence intervals to default to 'perc' if adjustment is out of range
 
 Boot <- function(object, f=coef, labels=names(f(object)), R=999, method=c("case", "residual"), ...){UseMethod("Boot")}
 
@@ -170,7 +173,7 @@ confint.boot <- function(object, parm, level = 0.95,
   if (!requireNamespace("boot")) "boot package is missing"
   cl <- match.call()
   type <- match.arg(type)
-  if(type=="all") stop("Use 'boot.ci' if you want to see 'all' types")
+  if(type=="all") stop("Use 'boot::boot.ci' if you want to see 'all' types")
   types <-   c("bca", "norm", "basic", "perc")
   typelab <- c("bca", "normal",   "basic", "percent")[match(type, types)]
   nn <- colnames(object$t)
@@ -178,7 +181,10 @@ confint.boot <- function(object, parm, level = 0.95,
   parm <- if(missing(parm)) which(!is.na(object$t0)) else parm
   out <- list()
   for (j in 1:length(parm)){
-   out[[j]] <- boot::boot.ci(object, conf=level, type=type, index=parm[j], ...)
+   out[[j]] <- try(boot::boot.ci(object, conf=level, type=type, index=parm[j], ...))
+   if(class(out[[j]]) == "try-error" & type=="bca"){
+    warning("BCa method fails for this problem.  Using 'perc' incstead")
+    return(confint(object, parm, level = 0.95, type = "perc", ...))}
   }
   levs <- unlist(lapply(level, function(x) c( (1-x)/2, 1 - (1-x)/2)))
   ints <- matrix(0, nrow=length(parm), ncol=length(levs))

@@ -2,6 +2,7 @@
 \alias{hist.boot}
 \alias{summary.boot}
 \alias{confint.boot}
+\alias{vcov.boot}
 
 \title{
 Methods Functions to Support \code{boot} Objects
@@ -25,6 +26,8 @@ summarize the results of the bootstrap.
 
 \method{confint}{boot}(object, parm, level = 0.95, type = c("bca", "norm",
     "basic", "perc", "all"), ...)
+    
+\method{vcov}{boot}(object, ...)
 }
 
 \arguments{
@@ -83,7 +86,7 @@ A confidence interval based on the bootstrap will be added to the histogram
 using the BCa method if \code{ci="bca"} or using the percentile method if
 \code{ci="perc"}.  No interval is drawn if
 \code{ci="none"}.  The default is \code{"bca"}.  The interval is indicated
-by a thick horizontal line at \code{y=0}.  For some bootstraps the BCa method is unavailable and another method should be used.
+by a thick horizontal line at \code{y=0}.  For some bootstraps the BCa method is unavailable, in which case a warning is issued and \code{ci="perc"} is substituted.
 }
   \item{legend}{
 A legend can be added to the (array of) histograms.  The value \dQuote{"top"}
@@ -122,7 +125,7 @@ other types, see the documentation for \code{\link[boot]{boot}}.
 \code{hist} is used for the side-effect of drawing an array of historgams of
 each column of the first argument.   \code{summary} returns a matrix of
 summary statistics for each of the columns in the bootstrap object.  The
-\code{confint} method returns confidence intervals.  Print method
+\code{confint} method returns confidence intervals.  The \code{vcov} returns the sample covariance of the bootstrap sample estimates.
 }
 \references{
 

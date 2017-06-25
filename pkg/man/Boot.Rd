@@ -81,7 +81,7 @@ The summary methods handle the \code{NA}s appropriately.
 }
 \value{
 See \code{\link[boot]{boot}} for the returned value from this function.  The car
-package includes additional generic functions summary, confint and hist that works
+package includes additional generic functions \code{\link{summary}}, \code{\link{vcov.boot}}, \code{\link{confint.boot}} and \code{\link{hist.boot}} that work
 with boot objects.
 }
 \references{
