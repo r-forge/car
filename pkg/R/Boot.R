@@ -33,6 +33,7 @@
 #             optionally use original estimates as starting values in update(object, ...) 
 #             within Boot.default
 # 2017-06-25: modified bca confidence intervals to default to 'perc' if adjustment is out of range
+# 2017-06-26: consistently use inherits(..., "try-error") rather than class(...) == "try-error"
 
 Boot <- function(object, f=coef, labels=names(f(object)), R=999, method=c("case", "residual"), ...){UseMethod("Boot")}
 
@@ -131,7 +132,7 @@ Boot.nls <- function(object, f=coef, labels=names(f(object)),
          assign(".boot.indices", indices, envir=.carEnv)
          mod <- try(update(object, subset=get(".boot.indices", envir=.carEnv),
                  start=coef(object)))
-         if(class(mod) == "try-error"){
+         if(inherits(mod, "try-error")){
             out <- .fn(object)
             out <- rep(NA, length(out)) } else  {out <- .fn(mod)}
      out
@@ -149,7 +150,7 @@ Boot.nls <- function(object, f=coef, labels=names(f(object)),
       assign(".y.boot", val, envir=.carEnv)
       mod <- try(update(object, get(".y.boot", envir=.carEnv) ~ .,
              start=coef(object)))
-      if(class(mod) == "try-error"){
+      if(inherits(mod, "try-error")){
             out <- .fn(object)
             out <- rep(NA, length(out)) } else  {out <- .fn(mod)}
       out
@@ -181,8 +182,8 @@ confint.boot <- function(object, parm, level = 0.95,
   parm <- if(missing(parm)) which(!is.na(object$t0)) else parm
   out <- list()
   for (j in 1:length(parm)){
-   out[[j]] <- try(boot::boot.ci(object, conf=level, type=type, index=parm[j], ...))
-   if(class(out[[j]]) == "try-error" & type=="bca"){
+   out[[j]] <- try(boot::boot.ci(object, conf=level, type=type, index=parm[j], ...), silent=TRUE)
+   if(inherits(out[[j]], "try-error") && type=="bca"){
     warning("BCa method fails for this problem.  Using 'perc' incstead")
     return(confint(object, parm, level = 0.95, type = "perc", ...))}
   }
