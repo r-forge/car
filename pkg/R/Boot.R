@@ -184,7 +184,7 @@ confint.boot <- function(object, parm, level = 0.95,
   for (j in 1:length(parm)){
    out[[j]] <- try(boot::boot.ci(object, conf=level, type=type, index=parm[j], ...), silent=TRUE)
    if(inherits(out[[j]], "try-error") && type=="bca"){
-    warning("BCa method fails for this problem.  Using 'perc' incstead")
+    warning("BCa method fails for this problem.  Using 'perc' instead")
     return(confint(object, parm, level = 0.95, type = "perc", ...))}
   }
   levs <- unlist(lapply(level, function(x) c( (1-x)/2, 1 - (1-x)/2)))
