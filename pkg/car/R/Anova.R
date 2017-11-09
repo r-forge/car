@@ -44,6 +44,7 @@
 # 2016-06-03: added SSP and SSPE args to print.summary.Anova.mlm(). John
 # 2016-06-25: added code to optionally print univariate ANOVAs for a mlm. John
 # 2017-03-08: fixed bug in print.summary.Anova.mlm(). John
+# 2017-11-09: made compatible with vcov() in R 3.5.0. John
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -79,7 +80,7 @@ Anova <- function(mod, ...){
 Anova.lm <- function(mod, error, type=c("II","III", 2, 3), 
 		white.adjust=c(FALSE, TRUE, "hc3", "hc0", "hc1", "hc2", "hc4"),
         vcov.=NULL, singular.ok, ...){
-    if (is.function(vcov.)) vcov. <- vcov.(mod)
+    if (is.function(vcov.)) vcov. <- vcov.(mod, complete=FALSE)
     if (df.residual(mod) == 0) stop("residual df = 0")
     if (deviance(mod) < sqrt(.Machine$double.eps)) stop("residual sum of squares is 0 (within rounding error)")
 	type <- as.character(type)
@@ -132,7 +133,7 @@ Anova.II.lm <- function(mod, error, singular.ok=TRUE, ...){
 		hyp.matrix.2 <- I.p[c(subs.relatives,subs.term),,drop=FALSE]
 		hyp.matrix.2 <- hyp.matrix.2[, not.aliased, drop=FALSE]
 		hyp.matrix.term <- if (nrow(hyp.matrix.1) == 0) hyp.matrix.2
-				else t(ConjComp(t(hyp.matrix.1), t(hyp.matrix.2), vcov(mod)))
+				else t(ConjComp(t(hyp.matrix.1), t(hyp.matrix.2), vcov(mod, complete=FALSE)))
 		hyp.matrix.term <- hyp.matrix.term[!apply(hyp.matrix.term, 1, 
 						function(x) all(x == 0)), , drop=FALSE]
 		if (nrow(hyp.matrix.term) == 0)
@@ -1209,16 +1210,16 @@ Anova.coxph <- function(mod, type=c("II","III", 2, 3), test.statistic=c("LR", "W
 	switch(type,
 			II=switch(test.statistic,
 					LR=Anova.II.LR.coxph(mod),
-					Wald=Anova.default(mod, type="II", test.statistic="Chisq", vcov.=vcov(mod))),
+					Wald=Anova.default(mod, type="II", test.statistic="Chisq", vcov.=vcov(mod, complete=FALSE))),
 			III=switch(test.statistic,
 					LR=Anova.III.LR.coxph(mod),
-					Wald=Anova.default(mod, type="III", test.statistic="Chisq", vcov.=vcov(mod))),
+					Wald=Anova.default(mod, type="III", test.statistic="Chisq", vcov.=vcov(mod, complete=FALSE))),
 			"2"=switch(test.statistic,
 					LR=Anova.II.LR.coxph(mod),
-					Wald=Anova.default(mod, type="II", test.statistic="Chisq", vcov.=vcov(mod))),
+					Wald=Anova.default(mod, type="II", test.statistic="Chisq", vcov.=vcov(mod, complete=FALSE))),
 			"3"=switch(test.statistic,
 					LR=Anova.III.LR.coxph(mod),
-					Wald=Anova.default(mod, type="III", test.statistic="Chisq", vcov.=vcov(mod))))
+					Wald=Anova.default(mod, type="III", test.statistic="Chisq", vcov.=vcov(mod, complete=FALSE))))
 }
 
 Anova.II.LR.coxph <- function(mod, ...){
@@ -1284,7 +1285,7 @@ Anova.III.LR.coxph <- function(mod, ...){
 # parametric survival regression models
 
 alias.survreg <- function(model){
-	if(any(which <- diag(vcov(model)) < 1e-10)) return(list(Complete=which))
+	if(any(which <- diag(vcov(model, complete=FALSE)) < 1e-10)) return(list(Complete=which))
 	else list()
 }
 
@@ -1404,14 +1405,14 @@ Anova.III.LR.survreg <- function(mod, ...){
 }
 
 Anova.II.Wald.survreg <- function(mod){
-	V <- vcov(mod)
+	V <- vcov(mod, complete=FALSE)
 	p <- which(rownames(V) == "Log(scale)")
 	if (length(p) > 0) V <- V[-p, -p]
 	Anova.II.default(mod, V, test="Chisq")
 }
 
 Anova.III.Wald.survreg <- function(mod){
-	V <- vcov(mod)
+	V <- vcov(mod, complete=FALSE)
 	p <- which(rownames(V) == "Log(scale)")
 	if (length(p) > 0) V <- V[-p, -p]
 	Anova.III.default(mod, V, test="Chisq")
@@ -1420,8 +1421,8 @@ Anova.III.Wald.survreg <- function(mod){
 # Default Anova() method: requires methods for vcov() (if vcov. argument not specified) and coef().
 
 Anova.default <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq", "F"), 
-		vcov.=vcov(mod), singular.ok, ...){
-    if (is.function(vcov.)) vcov. <- vcov.(mod)
+		vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
+    if (is.function(vcov.)) vcov. <- vcov.(mod, complete=FALSE)
 	type <- as.character(type)
 	type <- match.arg(type)
 	test.statistic <- match.arg(test.statistic)
@@ -1593,8 +1594,8 @@ fixef <- function (object){
 
 Anova.merMod <- function(mod, type=c("II","III", 2, 3), 
                          test.statistic=c("Chisq", "F"),
-                         vcov.=vcov(mod), singular.ok, ...){
-    if (is.function(vcov.)) vcov. <- vcov.(mod)
+                         vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
+    if (is.function(vcov.)) vcov. <- vcov.(mod, complete=FALSE)
     type <- as.character(type)
     type <- match.arg(type)
     test.statistic <- match.arg(test.statistic)
@@ -1605,8 +1606,8 @@ Anova.merMod <- function(mod, type=c("II","III", 2, 3),
 }
 
 Anova.mer <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq", "F"),
-		vcov.=vcov(mod), singular.ok, ...){
-    if (is.function(vcov.)) vcov. <- vcov.(mod)
+		vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
+    if (is.function(vcov.)) vcov. <- vcov.(mod, complete=FALSE)
 	type <- as.character(type)
 	type <- match.arg(type)
 	test.statistic <- match.arg(test.statistic)
@@ -1655,7 +1656,7 @@ Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, test=c("Chisq", "F"), ...
 #					if (!require("pbkrtest")) stop("pbkrtest package required for F-tests on linear mixed model")
 					as.matrix(vcovAdj(mod, details=0))
 				}
-				else vcov(mod)
+				else vcov(mod, complete=FALSE)
 	}
 	assign <- attr(model.matrix(mod), "assign")
 	assign[!not.aliased] <- NA
@@ -1707,7 +1708,7 @@ Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, test=c("Chisq", "F"), .
 #					if (!require("pbkrtest")) stop("pbkrtest package required for F-tests on linear mixed model")
 					as.matrix(vcovAdj(mod, details=0))
 				}
-				else vcov(mod)
+				else vcov(mod, complete=FALSE)
 	}
 	for (term in 1:n.terms){
 		subs <- which(assign == term - intercept)        
@@ -1755,8 +1756,8 @@ Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, test=c("Chisq", "F"), .
 }
 
 Anova.lme <- function(mod, type=c("II","III", 2, 3),
-		vcov.=vcov(mod), singular.ok, ...){
-    if (is.function(vcov.)) vcov. <- vcov.(mod)
+		vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
+    if (is.function(vcov.)) vcov. <- vcov.(mod, complete=FALSE)
 	type <- as.character(type)
 	type <- match.arg(type)
 	if (missing(singular.ok))
