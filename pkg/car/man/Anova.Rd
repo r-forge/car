@@ -15,7 +15,7 @@
 %   2015-09-04: added Anova.coxme(). J. Fox
 %   2016-06-03: added SSP and SSPE arguments to print.summary.ANova.mlm(). J. Fox
 %   2016-06-25: provision to print univariate ANOVAs for a mlm. J. Fox
-%   2017-11-09: update vcov. args. J. Fox
+%   2017-11-09,13: update vcov. args. J. Fox
 %-------------------------------------------------------------------------------------
 
 \name{Anova}
@@ -69,7 +69,7 @@ Manova(mod, ...)
 
 \method{Anova}{lm}(mod, error, type=c("II","III", 2, 3), 
 	white.adjust=c(FALSE, TRUE, "hc3", "hc0", "hc1", "hc2", "hc4"), 
-	vcov.=NULL, singular.ok, ...)
+	vcov.=vcov(mod, complete=FALSE), singular.ok, ...)
 
 \method{Anova}{aov}(mod, ...)
 

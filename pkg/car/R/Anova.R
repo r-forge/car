@@ -45,6 +45,7 @@
 # 2016-06-25: added code to optionally print univariate ANOVAs for a mlm. John
 # 2017-03-08: fixed bug in print.summary.Anova.mlm(). John
 # 2017-11-09: made compatible with vcov() in R 3.5.0. John
+# 2017-11-13: further fixes for vcov() John
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -79,8 +80,8 @@ Anova <- function(mod, ...){
 
 Anova.lm <- function(mod, error, type=c("II","III", 2, 3), 
 		white.adjust=c(FALSE, TRUE, "hc3", "hc0", "hc1", "hc2", "hc4"),
-        vcov.=NULL, singular.ok, ...){
-    if (is.function(vcov.)) vcov. <- vcov.(mod, complete=FALSE)
+        vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
+    if (is.function(vcov.)) vcov. <- vcov.(mod)
     if (df.residual(mod) == 0) stop("residual df = 0")
     if (deviance(mod) < sqrt(.Machine$double.eps)) stop("residual sum of squares is 0 (within rounding error)")
 	type <- as.character(type)
@@ -1422,7 +1423,7 @@ Anova.III.Wald.survreg <- function(mod){
 
 Anova.default <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq", "F"), 
 		vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
-    if (is.function(vcov.)) vcov. <- vcov.(mod, complete=FALSE)
+    if (is.function(vcov.)) vcov. <- vcov.(mod)
 	type <- as.character(type)
 	type <- match.arg(type)
 	test.statistic <- match.arg(test.statistic)
@@ -1595,7 +1596,7 @@ fixef <- function (object){
 Anova.merMod <- function(mod, type=c("II","III", 2, 3), 
                          test.statistic=c("Chisq", "F"),
                          vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
-    if (is.function(vcov.)) vcov. <- vcov.(mod, complete=FALSE)
+    if (is.function(vcov.)) vcov. <- vcov.(mod)
     type <- as.character(type)
     type <- match.arg(type)
     test.statistic <- match.arg(test.statistic)
@@ -1607,7 +1608,7 @@ Anova.merMod <- function(mod, type=c("II","III", 2, 3),
 
 Anova.mer <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq", "F"),
 		vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
-    if (is.function(vcov.)) vcov. <- vcov.(mod, complete=FALSE)
+    if (is.function(vcov.)) vcov. <- vcov.(mod)
 	type <- as.character(type)
 	type <- match.arg(type)
 	test.statistic <- match.arg(test.statistic)
@@ -1757,7 +1758,7 @@ Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, test=c("Chisq", "F"), .
 
 Anova.lme <- function(mod, type=c("II","III", 2, 3),
 		vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
-    if (is.function(vcov.)) vcov. <- vcov.(mod, complete=FALSE)
+    if (is.function(vcov.)) vcov. <- vcov.(mod)
 	type <- as.character(type)
 	type <- match.arg(type)
 	if (missing(singular.ok))
