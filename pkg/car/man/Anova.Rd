@@ -69,14 +69,14 @@ Manova(mod, ...)
 
 \method{Anova}{lm}(mod, error, type=c("II","III", 2, 3), 
 	white.adjust=c(FALSE, TRUE, "hc3", "hc0", "hc1", "hc2", "hc4"), 
-	vcov.=vcov(mod, complete=FALSE), singular.ok, ...)
+	vcov.=NULL, singular.ok, ...)
 
 \method{Anova}{aov}(mod, ...)
 
 \method{Anova}{glm}(mod, type=c("II","III", 2, 3), 
     test.statistic=c("LR", "Wald", "F"), 
     error, error.estimate=c("pearson", "dispersion", "deviance"), 
-    singular.ok, ...)
+    vcov.=NULL, singular.ok, ...)
     
 \method{Anova}{multinom}(mod, type = c("II","III", 2, 3), ...)
 
@@ -204,7 +204,7 @@ Manova(mod, ...)
   \item{row.names, optional}{not used.}
   \item{vcov.}{in the \code{default} method, an optional coefficient-covariance matrix or function
     to compute a covariance matrix, computed by default by applying the generic \code{vcov} function to the model object.
-    A similar argument may be supplied to the \code{lm} method, and the default (\code{NULL}) is to ignore the argument;
+    A similar argument may be supplied to the \code{lm} and \code{glm} methods, and the default (\code{NULL}) is to ignore the argument;
     if both \code{vcov.} and \code{white.adjust} are supplied to the \code{lm} method, the latter is used.}
   \item{\dots}{do not use.}
 }

@@ -45,7 +45,7 @@
 # 2016-06-25: added code to optionally print univariate ANOVAs for a mlm. John
 # 2017-03-08: fixed bug in print.summary.Anova.mlm(). John
 # 2017-11-09: made compatible with vcov() in R 3.5.0. John
-# 2017-11-13: further fixes for vcov() John
+# 2017-11-13,14: further fixes for vcov() John
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -80,7 +80,7 @@ Anova <- function(mod, ...){
 
 Anova.lm <- function(mod, error, type=c("II","III", 2, 3), 
 		white.adjust=c(FALSE, TRUE, "hc3", "hc0", "hc1", "hc2", "hc4"),
-        vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
+        vcov.=NULL, singular.ok, ...){
     if (is.function(vcov.)) vcov. <- vcov.(mod)
     if (df.residual(mod) == 0) stop("residual df = 0")
     if (deviance(mod) < sqrt(.Machine$double.eps)) stop("residual sum of squares is 0 (within rounding error)")
@@ -233,7 +233,7 @@ Anova.III.lm <- function(mod, error, singular.ok=FALSE, ...){
 # generalized linear models
 
 Anova.glm <- function(mod, type=c("II","III", 2, 3), test.statistic=c("LR", "Wald", "F"), 
-		error, error.estimate=c("pearson", "dispersion", "deviance"), singular.ok, ...){
+		error, error.estimate=c("pearson", "dispersion", "deviance"), vcov.=NULL, singular.ok, ...){
 	type <- as.character(type)
 	type <- match.arg(type)
 	if (has.intercept(mod) && length(coef(mod)) == 1 
@@ -246,6 +246,8 @@ Anova.glm <- function(mod, type=c("II","III", 2, 3), test.statistic=c("LR", "Wal
 	}
 	test.statistic <- match.arg(test.statistic)
 	error.estimate <- match.arg(error.estimate)
+	if (!is.null(vcov.)) return(Anova.default(mod, type=type, vcov.=vcov., 
+	                                               singular.ok=singular.ok, ...))
 	switch(type,
 			II=switch(test.statistic,
 					LR=Anova.II.LR.glm(mod, singular.ok=singular.ok),
