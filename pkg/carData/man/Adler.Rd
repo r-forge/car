@@ -24,14 +24,14 @@ an unbalanced design.
   \describe{
     \item{instruction}{
      a factor with levels:
-     \code{GOOD}, good data;
-     \code{NONE}, no stress;
-     \code{SCIENTIFIC}, scientific data.
+     \code{good}, good data;
+     \code{none}, no stress;
+     \code{scientific}, scientific data.
      }
     \item{expectation}{
      a factor with levels:
-     \code{HIGH}, expect high ratings;
-     \code{LOW}, expect low ratings.
+     \code{high}, expect high ratings;
+     \code{low}, expect low ratings.
      }
     \item{rating}{
      The average rating obtained.  

@@ -1,3 +1,7 @@
+Version 3.0-1
+
+o Converted factor levels in Adler data set to lowercase.
+
 Initial Version 3.0-0
 
 o Changed level names in Guyer data frame.
