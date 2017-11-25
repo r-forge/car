@@ -5,18 +5,18 @@
 \title{Experimenter Expectations} 
 
 \description{
-The \code{Adler} data frame has 97 rows and 3 columns.  
+The \code{Adler} data frame has 108 rows and 3 columns.  
                                                         
 The ``experimenters'' were the actual subjects of the study. 
-They collected ratings of the apparent successfulness of
+They collected ratings of the apparent success of
 people in pictures who were pre-selected for their
-average appearance. The experimenters were told prior to collecting 
-data that the pictures were either high or low in their 
+average appearance of success. The experimenters were told prior to collecting 
+data that particular subjects were either high or low in their tendency to rate 
 appearance of success, and were instructed to get good data, 
 scientific data, or were given no such instruction. Each 
 experimenter collected ratings from 18 randomly assigned
-respondents; a few subjects were deleted at random to produce
-an unbalanced design.
+subjects. This version of the Adler data is taken from Erickson and Nosanchuk (1977).
+The data described in the original source, Adler (1973), have a more complex structure.
 }
 
 \format{
@@ -40,15 +40,15 @@ an unbalanced design.
  }
 
 \source{
- Adler, N. E. (1973)
- Impact of prior sets given experimenters and subjects on the experimenter
- expectancy effect.
- \emph{Sociometry} \bold{36}, 113--126.
+  Erickson, B. H., and Nosanchuk, T. A. (1977)
+  \emph{Understanding Data.} McGraw-Hill Ryerson.
 }
 
 \references{
-  Erickson, B. H., and Nosanchuk, T. A. (1977)
-  \emph{Understanding Data.} McGraw-Hill Ryerson.
+Adler, N. E. (1973)
+ Impact of prior sets given experimenters and subjects on the experimenter
+ expectancy effect.
+ \emph{Sociometry} \bold{36}, 113--126.
 }
 
 \usage{
