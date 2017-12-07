@@ -2,6 +2,8 @@ Version 3.0-1
 
 o Replaced Adler data set with full version of the data.
 
+o Added MplsDemo and MplsStops data sets.
+
 Initial Version 3.0-0
 
 o Changed level names in Guyer data frame.
