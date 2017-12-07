@@ -18,11 +18,11 @@ Minneapolis Demographic Data 2015, by Neighborhood, from the 2015 American Commu
     \item{\code{poverty}}{estimated fraction earning less than twice the poverty level}
     \item{\code{collegeGrad}}{estimated fraction with a college degree}
   }}
+\details{
+The data frame \code{\link{MplsStops}} contains 2017 Minneapolis Police stop data, using the same neighborhood names as this data file.
+}
 \source{
 http://www.mncompass.org/profiles/neighborhoods/minneapolis-saint-paul#!community-areas
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
 }
 \examples{
 str(MplsDemo)

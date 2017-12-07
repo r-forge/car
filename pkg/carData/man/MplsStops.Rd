@@ -27,12 +27,12 @@ Results of nearly all stops made by the Minneapolis Police Department for the ye
   }
 }
 \details{
-A few stops have been deleted, either because the incident occurred in a neighborhood with no population, location data was missing, or a few very rare categories were also removed.
+A few stops have been deleted, either because the incident occurred in a neighborhood with no population, location data was missing, or a few very rare categories were also removed.  The data frame \code{\link{MplsDemo}} contains 2015 demongraphic data on Minneapolis neighborhoods, using the same neighborhood names as this data file.
 }
 \source{
 These are public data obtained from <http://opendata.minneapolismn.gov/datasets/police-stop-data>.  A few more fields, and more data, are available at the original source
 }
 \examples{
-str(MplsStops) ; plot(MplsStops) ...
+summary(MplsStops)
 }
 \keyword{datasets}
