@@ -13,6 +13,7 @@ Minneapolis Demographic Data 2015, by Neighborhood, from the 2015 American Commu
     \item{\code{neighborhood}}{name of the neighborhood}
     \item{\code{population}}{total population }
     \item{\code{black}}{fraction of the population estimated to be black}
+    \item{\code{white}}{fraction of the population estimated to be white}
     \item{\code{foreignBorn}}{fraction of the population estimated to be foreign born}
     \item{\code{hhIncome}}{estimated median household income}
     \item{\code{poverty}}{estimated fraction earning less than twice the poverty level}
