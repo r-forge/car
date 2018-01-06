@@ -10,8 +10,8 @@ Results of nearly all stops made by the Minneapolis Police Department for the ye
 \format{
   A data frame with 51857 observations on the following 14 variables.
   \describe{
-    \item{\code{masterIncidentNumber}}{character vector of incident identifiers}
-    \item{\code{responseDate}}{a POSIXlt date variable giving the date and time of the stop}
+    \item{\code{idNum}}{character vector of incident identifiers}
+    \item{\code{date}}{a POSIXlt date variable giving the date and time of the stop}
     \item{\code{problem}}{a factor with levels \code{suspicious} for suspicious vehicle or person stops and  \code{traffic} for traffic stops}
     \item{\code{citationIssued}}{a factor with levels \code{no} \code{yes} indicating if a citation was issued}
     \item{\code{personSearch}}{a factor with levels \code{no} \code{yes} indicating if the stopped person was searched}
