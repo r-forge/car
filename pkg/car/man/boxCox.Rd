@@ -121,9 +121,8 @@ The bcnPower family has two parameters: a power \eqn{\lambda}{lambda} and a star
   Fox, J. and Weisberg, S. (2011)
   \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 
-  Hawkins, D. and Weisberg, S. (2015)
-  Combining the Box-Cox Power and Genralized Log Transformations to Accomodate Negative Responses,
-  submitted for publication.
+Hawkins, D. and Weisberg, S. (2017)
+Combining the Box-Cox Power and Generalized Log Transformations to Accomodate Nonpositive  Responses In Linear and Mixed-Effects Linear Models \emph{South African Statistics Journal}, 51, 317-328.
 
   Weisberg, S. (2014) \emph{Applied Linear Regression}, Fourth Edition, Wiley.
 

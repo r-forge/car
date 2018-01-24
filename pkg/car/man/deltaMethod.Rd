@@ -27,10 +27,10 @@ deltaMethod(object, ...)
 \method{deltaMethod}{lm} (object, g, vcov.=vcov(object, complete=FALSE), 
            parameterNames=names(coef(object)), ...)
 \method{deltaMethod}{nls}(object, g, vcov.=vcov(object, complete=FALSE), ...)
-\method{deltaMethod}{multinom} (object, g, vcov. = vcov, 
+\method{deltaMethod}{multinom} (object, g, vcov. = vcov(object, complete=FALSE), 
            parameterNames = if (is.matrix(coef(object))) 
            colnames(coef(object)) else names(coef(object)), ...) 
-\method{deltaMethod}{polr} (object, g, vcov.=vcov, ...)
+\method{deltaMethod}{polr} (object, g, vcov.=vcov(object, complete=FALSE), ...)
 \method{deltaMethod}{survreg} (object, g, vcov. = vcov(object, complete=FALSE), 
            parameterNames = names(coef(object)), ...)
 \method{deltaMethod}{coxph} (object, g, vcov. = vcov(object, complete=FALSE), 

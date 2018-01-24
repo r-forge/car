@@ -17,24 +17,25 @@ Adds the fitted curve to the plot.
 \usage{
 inverseResponsePlot(model, lambda=c(-1,0,1), robust=FALSE, xlab=NULL, ...)
 
-\S3method{inverseResponsePlot}{lm}(model, lambda=c(-1,0,1), robust=FALSE, 
-   xlab=NULL, labels=names(residuals(model)), ...)
+\S3method{inverseResponsePlot}{lm}(model, lambda=c(-1, 0, 1), 
+    robust=FALSE, xlab=NULL, id=FALSE, ...)
 
 invResPlot(model, ...)
 }
 
 \arguments{
-  \item{model}{A \code{lm} regression object}
+  \item{model}{A \code{"lm"} regression object.}
   \item{lambda}{A vector of values for lambda.  A plot will be produced 
   with curves corresponding to these lambdas and to the least squares 
-  estimate of lambda}
+  estimate of lambda.}
+  \item{robust}{If \code{TRUE}, then estimation uses Huber M-estimates with the median
+    absolute deviation to estimate scale and k= 1.345.  The default is \code{FALSE}.}
   \item{xlab}{The horizontal axis label.  If \code{NULL}, it is constructed by the function.}
-  \item{labels}{Case labels if labeling is turned on; see
-\code{\link{invTranPlot}} and \code{\link{showLabels}} for arguments.}
-  \item{robust}{If TRUE, then estimation uses Huber M-estimates with the median
-absolute deviation to estimate scale and k= 1.345.  The default is FALSE.} 
-  \item{\dots}{Other arguments passed to \code{invTranPlot} and then to
-\code{plot}.}
+  \item{id}{controls point identification; if \code{FALSE} (the default), no points are identified;
+    can be a list of named arguments to the \code{\link{showLabels}} function;
+    \code{TRUE} is equivalent to \code{list(method=list(method="x", n=2, cex=1, col=carPalette()[1], location="lr")},
+    which identifies the 2 points with the most extreme horizontal (X) values.}
+  \item{\dots}{Other arguments passed to \code{invTranPlot} and then to \code{plot}.}
 }
 
 \value{

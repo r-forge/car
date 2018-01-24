@@ -14,11 +14,8 @@
 \usage{
 influencePlot(model, ...)
 
-\method{influencePlot}{lm}(model, scale=10, 
-	xlab="Hat-Values", ylab="Studentized Residuals", 
-    labels, id.method = "noteworthy",
-    id.n = if(id.method[1]=="identify") Inf else 0, 
-    id.cex=1, id.col=palette()[1], id.location="lr", ...)
+\method{influencePlot}{lm}(model, scale=10,  
+ xlab="Hat-Values", ylab="Studentized Residuals", id=TRUE, ...)
 }
 
 \arguments{
@@ -28,15 +25,11 @@ influencePlot(model, ...)
   }
   \item{xlab, ylab}{axis labels.
   }
-  \item{labels, id.method, id.n, id.cex, id.col, id.location}{settings for labelling
-points; see \code{link{showLabels}} for details. To omit point labelling, set
-\code{id.n=0}, the default.  The default \code{id.method="noteworthy"} is used
-only in this function and indicates setting labels for points with large
-Studentized residuals, hat-values or Cook's distances.  Set 
-\code{id.method="identify"} for interactive point identification.
-}
-  \item{\dots}{arguments to pass to the \code{plot} and \code{points} functions.
-  }
+  \item{id}{settings for labelling points; see \code{link{showLabels}} for details. To omit point labelling, set
+\code{id=FALSE}; the default, \code{id=TRUE} is equivalent to \code{id=list(method="noteworthy", n=2, cex=1, col=carPalette()[1], location="lr")}.  
+The default \code{method="noteworthy"} is used only in this function and indicates setting labels for points with large Studentized residuals, hat-values or Cook's distances.  Set 
+\code{id=list(method="identify")} for interactive point identification.}
+  \item{\dots}{arguments to pass to the \code{plot} and \code{points} functions.}
 }
 
 \value{
@@ -64,6 +57,10 @@ used for its side-effect of drawing a plot.
 
 \examples{
 influencePlot(lm(prestige ~ income + education, data=Duncan))
+\dontrun{
+influencePlot(lm(prestige ~ income + education, data=Duncan), 
+    id=list(method="identify"))
+}
 }
 
 \keyword{regression}

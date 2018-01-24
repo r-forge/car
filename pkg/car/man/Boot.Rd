@@ -13,19 +13,21 @@ has many arguments, the \code{Boot} function has very few arguments, but should
 meet the needs of many users.
 }
 \usage{
-Boot(object, f=coef, labels=names(f(object)), R=999, method=c("case", "residual"), \dots)
+Boot(object, f=coef, labels=names(f(object)), R=999,
+  method=c("case", "residual"), ncores=1, \dots)
 
 \S3method{Boot}{default}(object, f=coef, labels=names(f(object)),
-                     R=999, method=c("case", "residual"), start = FALSE, \dots)
+  R=999, method=c("case", "residual"), ncores=1,
+  start = FALSE, \dots)
 
 \S3method{Boot}{lm}(object, f=coef, labels=names(f(object)),
-                     R=999, method=c("case", "residual"), \dots)
+  R=999, method=c("case", "residual"), ncores=1, \dots)
 
 \S3method{Boot}{glm}(object, f=coef, labels=names(f(object)),
-                     R=999, method=c("case", "residual"), \dots)
+  R=999, method=c("case", "residual"), ncores=1, \dots)
 
 \S3method{Boot}{nls}(object, f=coef, labels=names(f(object)),
-                     R=999, method=c("case", "residual"), \dots)
+  R=999, method=c("case", "residual"), ncores=1, \dots)
 
 }
 \arguments{
@@ -46,9 +48,10 @@ cases or \dQuote{residuals} for a residual bootstrap.  See the details
 below. The residual bootstrap is available only for \code{lm} and \code{nls} objects and will return an error for \code{glm} objects.}
   \item{\dots}{Arguments passed to methods. The default method passes these on
 to the \code{boot} function.}
-  \item{start}{Should the \code{f} paramters be passed as \code{start} values
+  \item{start}{Should the estimates returned b \code{f} be passed as \code{start}ing values
 to the \code{update} in each bootstrap iteration? Alternatively, \code{start}
 can also be a numeric vector that is passed to the \code{update}.}
+\item{ncores}{A numeric argument that specifies the number of cores for parallel processing.  If less than or equal to 1, no parallel processing wiill be used.}
 }
 \details{
 Whereas the \code{boot} function is
@@ -71,7 +74,7 @@ generalized linear models has several competing approaches, but none are
 without problems.  If you want to do a residual bootstrap for a glm, you
 will need to write your own call to \code{boot}.
 
-For the default object to work with other types of regression model, the model must have methods for the the following generic functions:  \code{residuals(object, type="pearson")} must return Pearson residuals; \code{fitted(object)} must return fitted values; \code{hatvalues(object)} should return the leverages, or perhaps the value 1.
+For the default object to work with other types of regression model, the model must have methods for the the following generic functions:  \code{residuals(object, type="pearson")} must return Pearson residuals; \code{fitted(object)} must return fitted values; \code{hatvalues(object)} should return the leverages, or perhaps the value 1.  In addition, the \code{data} argument should contain no missing values among the columns actually used in fittig the model, as the resampling may incorrectly attempt to include cases with missing values.  For \code{lm}, \code{glm} and \code{nls}, missing values are handled correctly.
 
 An attempt to model fit to a bootstrap sample may fail.  In a \code{lm} or
 \code{glm} fit, the bootstrap sample could have a different rank from the original

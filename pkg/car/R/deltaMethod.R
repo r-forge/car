@@ -17,9 +17,9 @@
 # 2013-07-01: New 'constants' argument for use when called from within a function.
 # 2013-07-18: fixed a bug in passing the 'func' argument
 # 2016-03-31: added level argument and report CIs. J. Fox
-# 2017-11-09: make compatible with vcov() in R 3.5.0. J. Fox
-# 2017-11-13: further fixes for vcov(). J. Fox
-# 2017-12-01: bug fixes to some methods in handling vcov. arg. J. Fox
+# 2017-11-09: made compatible with vcov() in R 2.5.0. J. Fox
+# 2017-11-29: further fixes for vcov() and vcov.(). J. Fox
+# 2017-12-01: fix bug in handling vcov. arg in some methods. J. Fox
 #-------------------------------------------------------------------------------
 
 deltaMethod <- function (object, ...) {
@@ -79,26 +79,26 @@ deltaMethod.lm <- function (object, g, vcov. = vcov(object, complete=FALSE),
 }
 
 # nls has named parameters so parameterNames is ignored
-deltaMethod.nls <- function(object, g, vcov.=vcov(object, complete=FALSE),...){
+deltaMethod.nls <- function(object, g, vcov.=vcov(object, complete=FALSE), ...){
 	vcov. <- if(is.function(vcov.)) vcov.(object) else vcov.
 	deltaMethod.default(coef(object), g, vcov., ...)   
 }
 
-deltaMethod.polr <- function(object, g, vcov.=vcov,...){
+deltaMethod.polr <- function(object,g,vcov.=vcov(object, complete=FALSE), ...){
 	sel <- 1:(length(coef(object)))
 	vcov. <- if(is.function(vcov.)) vcov.(object)[sel, sel] else vcov.[sel, sel]
 	deltaMethod.lm(object, g, vcov., ...)
 }
 
-deltaMethod.multinom <- function(object, g, vcov.=vcov, 
+deltaMethod.multinom <- function(object, g, vcov.=vcov(object, complete=FALSE), 
    parameterNames = if(is.matrix(coef(object)))
      colnames(coef(object)) else names(coef(object)), ...){
+  vcov. <- if(is.function(vcov.)) vcov.(object) else vcov.
 	out <- NULL
 	coefs <- coef(object)
 	if (!is.matrix(coefs)) { coefs <- t(as.matrix(coefs)) }
 	colnames(coefs) <- parameterNames
 	nc <- dim(coefs)[2]
-	vcov. <- if (is.function(vcov.)) vcov.(object) else vcov.
 	for (i in 1:dim(coefs)[1]){
 		para <- coefs[i, ]
 		ans <- deltaMethod(para, g, vcov.[(i - 1) + 1:nc, (i - 1) + 1:nc], ...)

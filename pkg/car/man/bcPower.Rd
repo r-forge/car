@@ -1,6 +1,7 @@
 \name{bcPower}
 \alias{bcPower}
 \alias{bcnPower}
+\alias{bcnPowerInverse}
 \alias{yjPower}
 \alias{basicPower}
 
@@ -14,6 +15,8 @@ bcPower(U, lambda, jacobian.adjusted=FALSE, gamma=NULL)
 
 bcnPower(U, lambda, jacobian.adjusted = FALSE, gamma)
 
+bcnPowerInverse(z, lambda, gamma)
+
 yjPower(U, lambda, jacobian.adjusted = FALSE)
 
 basicPower(U,lambda, gamma=NULL)
@@ -25,6 +28,7 @@ basicPower(U,lambda, gamma=NULL)
   \item{jacobian.adjusted}{If \code{TRUE}, the transformation is normalized to have
   Jacobian equal to one.  The default \code{FALSE} is almost always appropriate}
   \item{gamma}{For bcPower or basicPower, the transformation is of U + gamma, where gamma is a positive number called a start that must be large enough so that U + gamma is strictly positive.  For the bcnPower, Box-cox power with negatives allowed, see the details below.}
+  \item{z}{a numeric vector the result of a call to \code{bcnPower} with \code{jacobian.adjusted=FALSE}}.
 }
 
 \details{
@@ -35,6 +39,8 @@ basicPower(U,lambda, gamma=NULL)
   must be strictly positive to use this family.
 
   The Box-Cox family with negatives allowed was proposed by Hawkins and Weisberg (2017).  It is the Box-Cox power transformation of \eqn{z = .5 * (y + (y^2 + \gamma^2)^{1/2})}, where \eqn{\gamma}{gamma} is strictly positive if \eqn{y}{y} includes negative values and non-negative otherwise.  The value of \eqn{z}{z} is always positive.  The bcnPower transformations behave very similarly to the bcPower transformations, including much less bias than is introduced by setting the parameter \eqn{\gamma}{gamma} to be non-zero in the Box-Cox family.
+
+The function \code{bcnPowerInverse} computes the inverse of the \code{bcnPower} function, so \code{U = bcnPowerInverse(bcnPower(U, lambda=lam, jacobian.adjusted=FALSE, gamma=gam), lambda=lam, gamma=gam)} is true for any permitted value of \code{gam} and \code{lam}.
 
   If \code{family="yeo.johnson"} then the Yeo-Johnson transformations are used.
   This is the Box-Cox transformation of \eqn{U+1} for nonnegative values,
@@ -58,9 +64,7 @@ Fox, J. and Weisberg, S. (2011)
 \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 
 Hawkins, D. and Weisberg, S. (2017)
-Combining the Box-Cox Power and Generalized Log Transformations to Accomodate Negative Responses
-In Linear and Mixed-Effects Linear Models,
-submitted for publication.
+Combining the Box-Cox Power and Generalized Log Transformations to Accomodate Nonpositive  Responses In Linear and Mixed-Effects Linear Models \emph{South African Statistics Journal}, 51, 317-328.
 
 Weisberg, S. (2014)  \emph{Applied Linear Regression}, Fourth Edition, Wiley
 Wiley, Chapter 7.

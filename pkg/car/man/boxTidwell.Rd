@@ -21,7 +21,7 @@ boxTidwell(y, ...)
 \method{boxTidwell}{default}(y, x1, x2=NULL, max.iter=25, tol=0.001, 
   verbose=FALSE, ...)
   
-\method{print}{boxTidwell}(x, digits, ...)
+\method{print}{boxTidwell}(x, digits=getOption("digits") - 2, ...)
 }
 
 \arguments{

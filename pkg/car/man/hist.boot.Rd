@@ -3,6 +3,7 @@
 \alias{summary.boot}
 \alias{confint.boot}
 \alias{vcov.boot}
+\alias{Confint.boot}
 
 \title{
 Methods Functions to Support \code{boot} Objects
@@ -16,17 +17,20 @@ summarize the results of the bootstrap.
 
 \usage{
 \method{hist}{boot}(x, parm, layout = NULL, ask, main = "", freq = FALSE,
-    estPoint = TRUE, point.col = "black", point.lty = 2, point.lwd = 2,
-    estDensity = !freq, den.col = "blue", den.lty = 1, den.lwd = 2,
-    estNormal = !freq, nor.col = "red", nor.lty = 2, nor.lwd = 2,
-    ci = c("bca", "none", "perc"), level = 0.95, legend = c("top",
+    estPoint = TRUE, point.col = carPalette()[1], point.lty = 2, point.lwd = 2,
+    estDensity = !freq, den.col = carPalette()[2], den.lty = 1, den.lwd = 2,
+    estNormal = !freq, nor.col = carPalette()[3], nor.lty = 2, nor.lwd = 2,
+    ci = c("bca", "none", "perc", "norm"), level = 0.95, legend = c("top",
         "none", "separate"), box = TRUE, ...)
 
 \method{summary}{boot}(object, parm, high.moments = FALSE, extremes = FALSE, ...)
 
 \method{confint}{boot}(object, parm, level = 0.95, type = c("bca", "norm",
-    "basic", "perc", "all"), ...)
-    
+    "basic", "perc"), ...)
+
+\method{Confint}{boot}(object, parm, level = 0.95, type = c("bca", "norm",
+    "basic", "perc"), ...)
+
 \method{vcov}{boot}(object, ...)
 }
 
@@ -83,10 +87,10 @@ of the lines that are drawn.
 }
   \item{ci}{
 A confidence interval based on the bootstrap will be added to the histogram
-using the BCa method if \code{ci="bca"} or using the percentile method if
-\code{ci="perc"}.  No interval is drawn if
+using the BCa method if \code{ci="bca"} the percentile method if
+\code{ci="perc"}, or the normal method if \code{ci="norm"}.  No interval is drawn if
 \code{ci="none"}.  The default is \code{"bca"}.  The interval is indicated
-by a thick horizontal line at \code{y=0}.  For some bootstraps the BCa method is unavailable, in which case a warning is issued and \code{ci="perc"} is substituted.
+by a thick horizontal line at \code{y=0}.  For some bootstraps the BCa method is unavailable, in which case a warning is issued and \code{ci="perc"} is substituted.  If you wish to see all the options at once, see \code{\link[boot]{boot.ci}}.  The normal method is computed as the (estimate from the original data) minus the bootstrap bias plus or minus the standard deviation of the bootstrap replicates times the appropriate quantile of the standard normal distribution.
 }
   \item{legend}{
 A legend can be added to the (array of) histograms.  The value \dQuote{"top"}
@@ -99,7 +103,7 @@ Add a box around each histogram.
   \item{\dots}{
 Additional arguments passed to \code{hist}; for other methods this is included for compatibility with the generic method.  For example, the argument
 \code{border=par()$bg} in \code{hist} will draw the histogram transparently, leaving only
-the density estimates.
+the density estimates.  With the \code{vcov} function, the additional arguments are passed to \code{\link{cov}}.  See the Value section, below.
 }
   \item{high.moments}{
 Should the skewness and kurtosis be included in the summary?  Default is FALSE.
@@ -125,7 +129,9 @@ other types, see the documentation for \code{\link[boot]{boot}}.
 \code{hist} is used for the side-effect of drawing an array of historgams of
 each column of the first argument.   \code{summary} returns a matrix of
 summary statistics for each of the columns in the bootstrap object.  The
-\code{confint} method returns confidence intervals.  The \code{vcov} returns the sample covariance of the bootstrap sample estimates.
+\code{confint} method returns confidence intervals.  \code{Confint} appends the estimates based on the original fitted model to the left of the confidence intervals.
+
+The \code{vcov} returns the sample covariance of the bootstrap sample estimates.  If any of the bootstrap replications returned an \code{NA} value, then \code{vcov} will return a matrix of \code{NA}s.  You can compute the covariance of the complete cases by adding the argument  \code{use="complete.obs"} to the call to \code{vcov}; see \code{\link{cov}}.
 }
 \references{
 

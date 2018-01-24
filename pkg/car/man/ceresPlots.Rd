@@ -15,16 +15,9 @@ ceresPlots(model, terms = ~., layout = NULL, ask, main,
 
 ceresPlot(model, ...)
 
-\method{ceresPlot}{lm}(model, variable, 
-  id.method = list(abs(residuals(model, type="pearson")), "x"),
-  labels, 
-  id.n = if(id.method[1]=="identify") Inf else 0,
-  id.cex=1, id.col=palette()[1], id.location="lr",
-  line=TRUE, smoother=loessLine, smoother.args=list(),
-    smooth, span,
-	col=palette()[1], col.lines=palette()[-1],
-  xlab, ylab, pch=1, lwd=2,  
-  grid=TRUE, ...)
+\method{ceresPlot}{lm}(model, variable, id=FALSE,
+  line=TRUE,  smooth=TRUE, col=carPalette()[1], col.lines=carPalette()[-1],
+  xlab, ylab, pch=1, lwd=2,  grid=TRUE, ...)
 
 \method{ceresPlot}{glm}(model, ...)
 }
@@ -57,22 +50,20 @@ is provided.}
 }  
   \item{variable}{A quoted string giving the name of a variable for the horizontal
 axis}
-  \item{id.method,labels,id.n,id.cex,id.col,id.location}{Arguments for the labelling of
-    points.  The default is \code{id.n=0} for labeling no points.  See
-    \code{\link{showLabels}} for details of these arguments.
-}
+  \item{id}{controls point identification; if \code{FALSE} (the default), no points are identified;
+    can be a list of named arguments to the \code{\link{showLabels}} function;
+    \code{TRUE} is equivalent to \code{list(method=list(abs(residuals(model, type="pearson")), "x"), n=2, 
+    cex=1, col=carPalette()[1], location="lr")},
+    which identifies the 2 points with the largest residuals and the 2 points with the most extreme
+    horizontal (X) values.}
   \item{line}{\code{TRUE} to plot least-squares line.
 }
-  \item{smoother}{Function to add a nonparametric smooth.
-}
-  \item{smoother.args}{see \code{\link{ScatterplotSmoothers}} for available
-  smooethers and arguments.
-}
-  \item{smooth, span}{these arguments are included for backwards compatility: 
-    if \code{smooth=TRUE} then \code{smoother} is set to \code{loessLine},
-    and if \code{span} is specified, it is added to \code{smoother.args}.}
+  \item{smooth}{specifies the smoother to be used along with its arguments; if \code{FALSE}, no smoother is shown;
+    can be a list giving the smoother function and its named arguments; \code{TRUE}, the default, is equivalent to
+    \code{list(smoother=loessLine)}. See \code{\link{ScatterplotSmoothers}} for the smoothers supplied by the
+    \pkg{car} package and their arguments.}
   \item{col}{color for points; the default is the first entry
-    in the current color palette (see \code{\link[grDevices]{palette}}
+    in the current \pkg{car} palette (see \code{\link{carPalette}}
     and \code{\link[graphics]{par}}).
 }
   \item{col.lines}{a list of at least two colors.  The first color is used for the

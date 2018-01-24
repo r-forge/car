@@ -37,7 +37,7 @@ powerTransform(object, ...)
   \item{subset}{Case indices to be used, as in \sQuote{\link{lm}}.}
   \item{weights}{Weights as in \sQuote{\link{lm}}.}
   \item{na.action}{Missing value action, as in \sQuote{lm}.}
-  \item{...}{Additional arguments that used in the interative algorithm; defaults are generally adequate.}
+  \item{...}{Additional arguments that used in the interative algorithm; defaults are generally adequate.  For use with the \code{bcnPower} family, a convergence criterion can be set with \code{conv=.0001} the default, and a minimum positive value of the location parameter can be set, with default \code{gamma.min=.1}.}
 }
 
 \details{This function implements the Box and Cox (1964) method of selecting a power transformation of a variable toward normality, and its generalization by Velilla (1993) to a multivariate response.  Cook and Weisberg (1999) and Weisberg (2014) suggest the usefulness of transforming a set of predictors \code{z1, z2, z3} for multivariate normality.  It also includes two additional families that allow for negative values.
@@ -50,7 +50,7 @@ to multivariate normality with no predictors.  A vector value for \sQuote{object
 
 Three families of power transformations are available. The default Box-Cox power family (\code{family="bcPower"}) of power transformations effectively replaces a vector by that vector raised to a power, generally in the range from -3 to 3.  For powers close to zero, the log-transformtion is suggested.  In practical situations, after estimating a power using the \code{powerTransform} function, a variable would be replaced by a simple power transformation of it, for example, if \eqn{\lambda\approx 0.5}{lamba is about 0.5}, then the correspoding variable would be replaced by its square root; if \eqn{\lambda}{\lambda} is close enough to zero, the the variable would be replaced by its natural logarithm.  The Box-Cox family requires the responses to be strictly positive.
 
-The \code{family="bcnPower"}, or Box-Cox with negatives, family proposed by Hawkins and Weisberg (2017)  allows for (a few) non-positive values, while allowing for the transformed data to be interpreted similarly to the interpretation of Box-Cox transformed values.  This family is the Box-Cox transformation of \eqn{z = .5 * (y + (y^2 + \gamma^2)^{1/2})} that depends on a location parameter \eqn{\gamma}{gamma}.  The quantity \eqn{z} is positive for all values of \eqn{y}.  If \eqn{\gamma = 0}{gamma=0} and \eqn{y} is strictly positive, then the Box-Cox and the bcnPower transformations are identical.  When fitting the Box-Cox with negatives family, \code{lambda} is restricted to the range [-3, 3], and gamma is restricted to the range from .01 to the largest positive value of the variable, since values outside these ranges are unreasonable in practice.
+The \code{family="bcnPower"}, or Box-Cox with negatives, family proposed by Hawkins and Weisberg (2017)  allows for (a few) non-positive values, while allowing for the transformed data to be interpreted similarly to the interpretation of Box-Cox transformed values.  This family is the Box-Cox transformation of \eqn{z = .5 * (y + (y^2 + \gamma^2)^{1/2})} that depends on a location parameter \eqn{\gamma}{gamma}.  The quantity \eqn{z} is positive for all values of \eqn{y}.  If \eqn{\gamma = 0}{gamma=0} and \eqn{y} is strictly positive, then the Box-Cox and the bcnPower transformations are identical.  When fitting the Box-Cox with negatives family, \code{lambda} is restricted to the range [-3, 3], and gamma is restricted to the range from \code{gamma.min=.1} to the largest positive value of the variable, since values outside these ranges are unreasonable in practice.  The value of \code{gamma.min} can be changed with an argument to \code{powerTransform}.
 
 The final family \code{family="yjPower"} uses the Yeo-Johnson transformation, which is the Box-Cox transformation of \eqn{U+1} for nonnegative values, and of \eqn{|U|+1} with parameter \eqn{2-\lambda}{2-lambda} for \eqn{U} negative and thus it provides a family for fitting when (a few) observations are negative.  Because of the unusual constraints on the powers for positive and negative data, this transformation is not used very often, as results are difficult to interpret.  In practical problems, a variable would be replaced by its Yeo-Johnson transformation computed using the \code{\link{yjPower}} function.
 
@@ -87,9 +87,7 @@ Fox, J. and Weisberg, S. (2011)
 \emph{An R Companion to Applied Regression}, Second Edition, Sage.
 
 Hawkins, D. and Weisberg, S. (2017)
-Combining the Box-Cox Power and Generalized Log Transformations to Accomodate Negative Responses
-In Linear and Mixed-Effects Linear Models,
-submitted for publication.
+Combining the Box-Cox Power and Generalized Log Transformations to Accomodate Nonpositive  Responses In Linear and Mixed-Effects Linear Models \emph{South African Statistics Journal}, 51, 317-328.
 
 Velilla, S. (1993)  A note on the multivariate Box-Cox transformation to
 normality.  \emph{Statistics and Probability Letters}, 17, 259-263.

@@ -19,12 +19,8 @@ leveragePlots(model, terms = ~., layout = NULL, ask,
 leveragePlot(model, ...)
 
 \method{leveragePlot}{lm}(model, term.name,
-    id.method = list(abs(residuals(model, type="pearson")), "x"),
-    labels, 
-    id.n = if(id.method[1]=="identify") Inf else 0,
-    id.cex=1, id.col=palette()[1], id.location="lr", 
-    col=palette()[1], col.lines=palette()[2], lwd=2, 
-    xlab, ylab, main="Leverage Plot", grid=TRUE, ...)
+		id=TRUE, col=carPalette()[1], col.lines=carPalette()[2], lwd=2, 
+		xlab, ylab, main="Leverage Plot", grid=TRUE, ...)
 
 \method{leveragePlot}{glm}(model, ...)
 }
@@ -58,10 +54,11 @@ user to select the term(s) to plot.
   \item{\dots}{arguments passed down to method functions.}
   \item{term.name}{Quoted name of term in the model to be plotted; this argument 
 is omitted for \code{leveragePlots}.}
-  \item{id.method,labels,id.n,id.cex,id.col,id.location}{Arguments for the labelling of
-    points.  The default is \code{id.n=0} for labeling no points.  See
-    \code{\link{showLabels}} for details of these arguments.
-}
+  \item{id}{controls point identification; if \code{FALSE}, no points are identified;
+    can be a list of named arguments to the \code{\link{showLabels}} function;
+    \code{TRUE}, the default, is equivalent to \code{list(method=list(abs(residuals(model, type="pearson")), "x"), n=2, 
+    cex=1, col=carPalette()[1], location="lr")},
+    which identifies the 2 points with the largest residuals and the 2 points with the greatest partial leverage.}
 \item{col}{color(s) of points}
 \item{col.lines}{color of the fitted line
 }

@@ -1,12 +1,14 @@
 Package: car
-Version: 2.1-7
-Date: 2017-12-01
+Version: 3.0-0
+Date: 2018-01-18
 Title: Companion to Applied Regression
 Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaster.ca"),
 	person("Sanford", "Weisberg", role = "aut", email = "sandy@umn.edu"),
+	person("Brad", "Price", role = "aut", email = "brad.price@mail.wvu.edu"),
     person("Daniel", "Adler", role="ctb"),
     person("Douglas", "Bates", role = "ctb"),
     person("Gabriel", "Baud-Bovy", role = "ctb"),
+    person("Ben", "Bolker", role="ctb"),
     person("Steve", "Ellison", role="ctb"),
     person("David", "Firth", role = "ctb"),
     person("Michael", "Friendly", role = "ctb"),
@@ -14,23 +16,24 @@ Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaste
     person("Spencer", "Graves", role = "ctb"),
     person("Richard", "Heiberger", role = "ctb"),
     person("Rafael", "Laboissiere", role = "ctb"),
+    person("Martin", "Maechler", role="ctb"),
     person("Georges", "Monette", role = "ctb"),
     person("Duncan", "Murdoch", role="ctb"),
     person("Henric", "Nilsson", role = "ctb"),
     person("Derek", "Ogle", role = "ctb"),
     person("Brian", "Ripley", role = "ctb"),
     person("William", "Venables", role = "ctb"),
+    person("Steve", "Walker", role="ctb"),
     person("David", "Winsemius", role="ctb"),
     person("Achim", "Zeileis", role = "ctb"),
     person("R-Core", role="ctb"))
-Depends: R (>= 3.2.0)
-Imports: MASS, mgcv, nnet, pbkrtest (>= 0.4-4), quantreg, grDevices, utils, stats, graphics
-Suggests: alr4, boot, coxme, leaps, lme4, lmtest, Matrix, MatrixModels, nlme, rgl (>= 0.93.960), sandwich, SparseM, survival, survey
+Depends: R (>= 3.2.0), carData (>= 3.0-0)
+Imports: abind, MASS, mgcv, nnet, pbkrtest (>= 0.4-4), quantreg, grDevices, utils, stats, graphics, maptools, rio, lme4, nlme
+Suggests: alr4, boot, coxme, leaps, lmtest, Matrix, MatrixModels, rgl (>= 0.93.960), sandwich, SparseM, survival, survey
 ByteCompile: yes
 LazyLoad: yes
-LazyData: yes
 Description:
-  Functions and Datasets to Accompany J. Fox and S. Weisberg, 
-  An R Companion to Applied Regression, Second Edition, Sage, 2011.
+  Functions to Accompany J. Fox and S. Weisberg, 
+  An R Companion to Applied Regression, Third Edition, Sage, in press.
 License: GPL (>= 2)
 URL: https://r-forge.r-project.org/projects/car/, https://CRAN.R-project.org/package=car, http://socserv.socsci.mcmaster.ca/jfox/Books/Companion/index.html
