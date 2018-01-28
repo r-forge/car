@@ -42,7 +42,8 @@
 # 2017-10-19:  Added "norm" as an option on histograms
 # 2017-11-30: Use carPalette() for colors in hist.boot()
 # 2017-12-24: Removed parallel argument that was added. If ncores<=1, no parallel processing is used.  If ncores>1
-# selects the correct parallel environment, and implements with that number of cores.  
+# selects the correct parallel environment, and implements with that number of cores. 
+# 2018-01-28: Changed print.summary.boot to print R once only if it is constant
 
 Boot <- function(object, f=coef, labels=names(f(object)), R=999, method=c("case", "residual"), ncores=1, ...){UseMethod("Boot")}
 
@@ -300,6 +301,10 @@ summary.boot <- function (object, parm, high.moments = FALSE,
 print.summary.boot <-
    function(x, digits = max(getOption("digits") - 2, 3), ...)
 {
+    counts <- x[, 1]
+    if(sd(counts) < sqrt(.Machine$double.neg.eps)){
+      cat(paste("\nNumber of bootstrap replications R =", x[1,1], "\n", sep=" "))
+      print.data.frame(x[, -1])} else
     print.data.frame(x, digits=digits, ...)
 }
 
