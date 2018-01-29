@@ -94,7 +94,7 @@ Applications}.  Oxford:  Oxford University Press.
 Fox, J. and Weisberg, S. (2011) \emph{Companion to Applied Regression}, Second Edition.
 Thousand Oaks:  Sage.
 
-Fox, J. and Weisberg, S. (2012) \emph{Bootstrapping},
+Fox, J. and Weisberg, S. (2017) \emph{Bootstrapping},
 \url{http://socserv.mcmaster.ca/jfox/Books/Companion/appendix/Appendix-Bootstrapping.pdf}.
 
 Weisberg, S. (2014) \emph{Applied Linear Regression}, Fourth Edition, Wiley
