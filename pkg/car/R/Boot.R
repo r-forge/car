@@ -299,14 +299,13 @@ summary.boot <- function (object, parm, high.moments = FALSE,
     return(stats[parm , use])
 }
 print.summary.boot <-
-   function(x, digits = max(getOption("digits") - 2, 3), ...)
-{
-    counts <- x[, 1]
-    if(sd(counts) < sqrt(.Machine$double.neg.eps)){
-      cat(paste("\nNumber of bootstrap replications R =", x[1,1], "\n", sep=" "))
-      print.data.frame(x[, -1])} else
-    print.data.frame(x, digits=digits, ...)
-}
+   function(x, digits = max(getOption("digits") - 2, 3), ...) {
+    if(dim(x)[1] == 1){print.data.frame(x, digits=digits, ...)} else{
+      if(sd(x[, 1]) < 1.e-8 ) {
+        cat(paste("\nNumber of bootstrap replications R =", x[1, 1], "\n", sep=" "))
+        print.data.frame(x[, -1], digits=digits, ...)} else
+      print.data.frame(x, digits=digits, ...)
+}}
 
 hist.boot <- function(x, parm, layout=NULL, ask, main="", freq=FALSE,
       estPoint = TRUE, point.col=carPalette()[1], point.lty=2, point.lwd=2,
