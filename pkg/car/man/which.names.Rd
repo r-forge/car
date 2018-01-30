@@ -1,6 +1,8 @@
-\name{which.names}
+\name{whichNames}
 \alias{which.names}
 \alias{whichNames}
+\alias{whichNames.data.frame}
+\alias{whichNames.default}
 
 \title{Position of Row Names}
 \description{
@@ -8,18 +10,20 @@
   or names of another object, such as a vector or list. \code{whichNames} is just an alias for \code{which.names}.
 }
 \usage{
-which.names(names, object)
-whichNames(...)
+whichNames(names, object, ...)
+which.names(names, object, ...)
+\method{whichNames}{data.frame}(names, object, ...)
+\method{whichNames}{default}(names, object, ...)
 }
 
 \arguments{
   \item{names}{a name or character vector of names.}
-  \item{object}{a data frame or or an object with a names attribute.}
-  \item{\dots}{arguments to be passed to \code{which.names}.}
+  \item{object}{a data frame or an object with a names attribute.}
+  \item{\dots}{not used.}
 }
 
 \value{
-Returns the index or indices of \code{names} in row names of the data frame of names of an object of another class. Then names of the indices are the corresponding matched row names or names.
+Returns the index or indices of \code{names} in row names of the data frame or names of an object of another class. 
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}}
@@ -30,6 +34,6 @@ Returns the index or indices of \code{names} in row names of the data frame of n
 }
 
 \examples{
-which.names(c('minister', 'conductor'), Duncan)
+whichNames(c('minister', 'conductor'), Duncan)
 }
 \keyword{utilities}

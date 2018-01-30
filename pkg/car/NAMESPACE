@@ -1,4 +1,4 @@
-# last modified 2018-01-14 by J. Fox
+# last modified 2018-01-30 by J. Fox
 
 # additions for car 3.0-0, started 2016-12-27
 
@@ -57,6 +57,8 @@ S3method(dfbetas, influence.merMod)
 S3method(dfbetas, influence.lme)
 S3method(infIndexPlot, influence.merMod)
 S3method(infIndexPlot, influence.lme)
+S3method(whichNames, data.frame)
+S3method(whichNames, default)
 
 import("carData")
 importFrom("abind", "abind")
@@ -66,7 +68,7 @@ importFrom("stats", "naprint", "symnum", ".checkMFClasses",
 importFrom("utils", "download.file", "capture.output")
 
 
-# copied from car package
+#  from earlier versions car package
 
 importFrom(graphics, abline, arrows, axis, box, boxplot, contour, hist, identify,
     layout, legend, lines, locator, mtext, pairs, par, plot, points, polygon,
