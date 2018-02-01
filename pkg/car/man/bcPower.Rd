@@ -81,6 +81,7 @@ U <- c(NA, (-3:3))
 \dontrun{bcPower(U, 0)}  # produces an error as U has negative values
 bcPower(U, 0, gamma=4)
 bcPower(U, .5, jacobian.adjusted=TRUE, gamma=4)
+bcnPower(U, 0, gamma=2)
 basicPower(U, lambda = 0, gamma=4)
 yjPower(U, 0)
 V <- matrix(1:10, ncol=2)

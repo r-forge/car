@@ -21,6 +21,8 @@ Changes to Version 3.0-0
   o Fixed bug in LinearHypothesis.merMod() when rhs of "F" test is specified (reported by Patrick Forscher).
 
   o Introduced carPalette() for color selection.
+  
+  o new bcnPowerAxis() function for bcnPower() transformations.
 
   o Various small improvements and fixes.
 

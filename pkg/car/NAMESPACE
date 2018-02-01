@@ -1,8 +1,8 @@
-# last modified 2018-01-30 by J. Fox
+# last modified 2018-02-01 by J. Fox
 
 # additions for car 3.0-0, started 2016-12-27
 
-export(Import, Export, Predict)
+export(Import, Export, Predict, bcnPowerAxis)
 import("rio")
 export(Confint, S, carPalette, poTest, brief)
 S3method(Confint, lm)
