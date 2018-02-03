@@ -37,7 +37,8 @@
 # 2017-11-29:  J. Fox made fixes for vcov() and vcov.() calls.
 # 2017-12-27:  J. Fox tweaked the Summarize() output for mixed models.
 # 2017-12-29:  J. Fox added fit statistics to Summarize() output for various models.
-# 2018-01015:  S. Weisberg all Summmarize/Summarise methods renamed S
+# 2018-01-15:  S. Weisberg all Summmarize/Summarise methods renamed S
+# 2018-02-02:  J. Fox fixed S.lm() and S.glm() output when vcov. arg not given.
 
 formatCall <- function(call){
   call <- if (is.character(call)){
@@ -192,7 +193,7 @@ S.lm <- function (object, brief=FALSE, correlation = FALSE, symbolic.cor = FALSE
     }
     if (!is.null(z$na.action))
         ans$na.action <- z$na.action
-    ans$vcov. <- deparse(substitute(vcov.))
+    ans$vcov. <- if (missing(vcov.)) "" else deparse(substitute(vcov.))
     ans$header <- header
     ans$resid.summary <- resid.summary
     ans$adj.r2 <- adj.r2
@@ -212,7 +213,7 @@ print.S.lm <- function(x, digits = max(3, getOption("digits") - 3),
     if (brief) header <- resid.summary <- adj.r2 <- FALSE
     if (header) {
         cat(formatCall(x$call))
-        if(x$vcov. != "vcov"){
+        if(x$vcov. != ""){
             cat("Standard errors computed by",  x$vcov., "\n")
         }
     }
@@ -299,6 +300,7 @@ S.glm <-
     function (object, brief=FALSE, exponentiate, dispersion, correlation = FALSE, symbolic.cor = FALSE,
               vcov. = vcov(object, complete=FALSE), header=TRUE, resid.summary=FALSE, ...)
     {
+        vcov.arg <- if (missing(vcov.)) "" else deparse(substitute(vcov.))
         if (missing(exponentiate)) exponentiate <- object$family$link %in% c("log", "logit")
         #    if(!is.null(dispersion)) vcov. <- "vcov" # ignore vcov. arg if dispersion is set
         if (!missing(dispersion) && !missing(vcov.))
@@ -377,7 +379,7 @@ S.glm <-
         }
         # add to value
         ans$fitstats <- fitstats(object)
-        ans$vcov. <- deparse(substitute(vcov.))
+        ans$vcov. <- vcov.arg
         ans$header <- header
         ans$resid.summary <- resid.summary
         ans$brief <- brief
@@ -398,7 +400,7 @@ print.S.glm <-
         if (brief) header <- resid.summary <-  FALSE
         if (header) {
             cat(formatCall(x$call))
-            if(x$vcov. != "vcov"){
+            if(x$vcov. != ""){
               cat("Standard errors computed by",  x$vcov., "\n")
             }
         }
@@ -783,10 +785,10 @@ Confint.lm <- function(object, estimate=TRUE, parm, level = 0.95, vcov.= vcov(ob
 }
 
 Confint.glm <- function(object, estimate=TRUE, exponentiate=FALSE, vcov., dispersion, ...){
+    silent <- list(...)$silent
     if (!missing(vcov.) && !missing(dispersion))
         stop("cannot specify both vcov. and dispersion arguments")
-    if (!missing(vcov.)) cat("Standard errors computed by", deparse(substitute(vcov.)), "\n")
-    silent <- list(...)$silent
+    if (!missing(vcov.) && (is.null(silent) || !silent)) cat("Standard errors computed by", deparse(substitute(vcov.)), "\n")
     result <- if (!missing(vcov.)) Confint.default(object, estimate=FALSE, vcov.=vcov(object, complete=FALSE), ...)
     else if (!missing(dispersion))
         Confint.default(object, estimate=FALSE, vcov.=dispersion*summary(object)$cov.unscaled, ...)
