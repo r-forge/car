@@ -39,6 +39,7 @@
 # 2017-12-29:  J. Fox added fit statistics to Summarize() output for various models.
 # 2018-01-15:  S. Weisberg all Summmarize/Summarise methods renamed S
 # 2018-02-02:  J. Fox fixed S.lm() and S.glm() output when vcov. arg not given.
+# 2018-02-07:  J. Fox removed leading blank line in formatCall().
 
 formatCall <- function(call){
   call <- if (is.character(call)){
@@ -46,12 +47,13 @@ formatCall <- function(call){
   }
   else paste(deparse(call), sep = "", collapse = "")
   call <-  gsub("\\s+", " ", call)
+  call <- paste("Call:", call)
   call <- strwrap(call, width=getOption("width"))
   paren <- regexpr("\\(", call[1])
   if (paren > 0 && length(call) > 1){
     call[-1] <- paste0(paste(rep(" ", paren), collapse=""), call[-1])
   }
-  paste0("\nCall:\n", paste(call, collapse="\n"), "\n")
+  paste0(paste(call, collapse="\n"), "\n")
 }
 
 fitstats <- function(model){

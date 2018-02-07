@@ -12,6 +12,7 @@
 # 2017-11-09: made calls to vcov() compatible with R 2.5.0. J. Fox
 # 2017-12-05: added vcov. argument. J. Fox
 # 2017-12-06,07: reorganized formatting of output, added zvals and pvals args. J. Fox
+# 2018-02-07: removed leading blank line. J. Fox
 
 compareCoefs <- function (..., se = TRUE, zvals = FALSE, pvals = FALSE, vcov., print = TRUE, digits = 3) {
   interleave <- function(X, se, zvals, pvals){
@@ -153,7 +154,7 @@ compareCoefs <- function (..., se = TRUE, zvals = FALSE, pvals = FALSE, vcov., p
   else c("Estimate", "Std. Error", "z", "Pr(>|z|)")
   calls <- !any(sapply(models, getcall) == "NULL")
   if (print == TRUE && calls) 
-    cat("\nCall:")
+    cat("Calls:")
   for (i in 1:n.models) {
     model <- models[[i]]
     fout <- getcall(model)
