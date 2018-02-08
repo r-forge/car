@@ -134,7 +134,7 @@ if \code{TRUE}, print the five-number summary of the residuals in the summary, d
 if \code{TRUE}, print the adjusted r-squared in the summary, default is \code{FALSE}
   }
   \item{brief}{
-if \code{TRUE}, set \code{header}, \code{resid.summary} and \code{adj.r.squared} to \code{FALSE}
+if \code{TRUE}, set \code{header}, \code{resid.summary} and \code{adj.r.squared} to \code{FALSE}, and suppress exponeniated coefficients for GLMs with log or logit link.
   }
   \item{KR}{if \code{TRUE} (default is \code{FALSE}), compute Kenward-Roger standard errors and
   Satterthwaite degrees of freedom for t-tests. \emph{Warning:} This computation can be very time-consuming.}

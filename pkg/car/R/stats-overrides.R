@@ -39,7 +39,7 @@
 # 2017-12-29:  J. Fox added fit statistics to Summarize() output for various models.
 # 2018-01-15:  S. Weisberg all Summmarize/Summarise methods renamed S
 # 2018-02-02:  J. Fox fixed S.lm() and S.glm() output when vcov. arg not given.
-# 2018-02-07:  J. Fox removed leading blank line in formatCall().
+# 2018-02-07,08:  J. Fox removed leading blank lines in formatCall() and elsewhere.
 
 formatCall <- function(call){
   call <- if (is.character(call)){
@@ -247,10 +247,11 @@ print.S.lm <- function(x, digits = max(3, getOption("digits") - 3),
         cat("\nNo Coefficients\n")
     }
     else {
+        if (header || resid.summary) cat("\n")
         if (nsingular <- df[3L] - df[1L])
-            cat("\nCoefficients: (", nsingular, " not defined because of singularities)\n",
+            cat("Coefficients: (", nsingular, " not defined because of singularities)\n",
                 sep = "")
-        else cat("\nCoefficients:\n")
+        else cat("Coefficients:\n")
         coefs <- x$coefficients
         if (!is.null(aliased <- x$aliased) && any(aliased)) {
             cn <- names(aliased)
@@ -399,7 +400,10 @@ print.S.glm <-
         header <- x$header
         resid.summary <- x$resid.summary
         brief <- x$brief
-        if (brief) header <- resid.summary <-  FALSE
+        if (brief) {
+          header <- resid.summary <-  FALSE
+          x$exponentiated <- NULL
+        }
         if (header) {
             cat(formatCall(x$call))
             if(x$vcov. != ""){
@@ -419,13 +423,14 @@ print.S.glm <-
             cat("\nNo Coefficients\n")
         }
         else {
+            if (header || resid.summary) cat("\n")
             df <- if ("df" %in% names(x))
                 x[["df"]]
             else NULL
             if (!is.null(df) && (nsingular <- df[3L] - df[1L]))
-                cat("\nCoefficients: (", nsingular, " not defined because of singularities)\n",
+                cat("Coefficients: (", nsingular, " not defined because of singularities)\n",
                     sep = "")
-            else cat("\nCoefficients:\n")
+            else cat("Coefficients:\n")
             coefs <- x$coefficients
             if (!is.null(aliased <- x$aliased) && any(aliased)) {
                 cn <- names(aliased)
