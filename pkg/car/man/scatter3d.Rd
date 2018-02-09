@@ -49,7 +49,7 @@ Identify3d(x, y, z, axis.scales=TRUE, groups = NULL, labels = 1:length(x),
 }
 
 \note{
-You have to install the \code{rgl} package to produce 3D plots.
+You have to install the \code{rgl} package to produce 3D plots.  On a Macintosh (but not on Windows or Linux), you may also need to install the X11 windowing system.  Go to \url{https://www.xquartz.org/} and click on the link for XQuartz. Double-click on the downloaded disk-image file, and then double-click on \code{XQuartz.pkg} to start the installer. You may take all of the defaults in the installation. After XQuartz is installed, you should restart your Macintosh.
 }
 
 \arguments{
@@ -168,8 +168,8 @@ or a list containing any or all of the following elements:
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \references{
-  Fox, J. and Weisberg, S. (2011)
-  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  Fox, J. and Weisberg, S. (2019)
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 
 \seealso{\code{\link[rgl]{rgl-package}}, \code{\link[mgcv]{gam}}}

@@ -6,7 +6,7 @@
 \title{Scatterplot Matrices}
 \description{
 This function provides a convenient interface to the \code{pairs} function to produce
-enhanced scatterplot matrices, including univariate displays down the diagonal and a variety of fitted lines, smoothers, variance functions, and concentration ellipsoids.  The function also allows applying Box-Cox transformations toward normality of the plotted quantities using the \code{powerTransform} function in \code{car}.
+enhanced scatterplot matrices, including univariate displays on the diagonal and a variety of fitted lines, smoothers, variance functions, and concentration ellipsoids.
 \code{spm} is an abbreviation for \code{scatterplotMatrix}.
 }
 \usage{
@@ -18,10 +18,10 @@ scatterplotMatrix(x, ...)
 \method{scatterplotMatrix}{default}(x, smooth = TRUE,
     id = FALSE, legend = TRUE, regLine = TRUE,
     ellipse = FALSE, var.labels = colnames(x), diagonal = TRUE,
-    plot.points = TRUE, transform = FALSE, family = c("bcPower",
-        "yjPower"), groups = NULL, by.groups = TRUE, use = c("complete.obs",
-        "pairwise.complete.obs"), col = carPalette()[-1], pch = 1:n.groups,
-    cex = par("cex"), cex.axis = par("cex.axis"), cex.labels = NULL,
+    plot.points = TRUE, groups = NULL, by.groups = TRUE, 
+    use = c("complete.obs", "pairwise.complete.obs"), col = 
+    carPalette()[-1], pch = 1:n.groups, cex = par("cex"), 
+    cex.axis = par("cex.axis"), cex.labels = NULL,
     cex.main = par("cex.main"), row1attop = TRUE, ...)
 
 spm(x, ...)
@@ -56,7 +56,7 @@ spm(x, ...)
    \item{regLine}{controls adding a fitted regression line to each plot, or to each group of points
     if \code{by.groups=TRUE}.  If \code{regLine=FALSE}, no line
     is drawn.  This argument can also be a list with named list, with default \code{regLine=TRUE} equivalent
-    to \code{refLine = list(method=lm, lty=1, lwd=2, col=col[1])} specifying the name of the function that
+    to \code{regLine = list(method=lm, lty=1, lwd=2, col=col[1])} specifying the name of the function that
     computes the line, with line type 1 (solid) of relative line width 2 and the color equal to the first
     value in the argument \code{col}. Setting \code{method=MASS::rlm} would fit using a robust regression.}
   \item{ellipse}{controls plotting data-concentration ellipses. If \code{FALSE} (the default), no
@@ -73,14 +73,6 @@ spm(x, ...)
     the diagonal entries.  See details below for other choices for the diagonal.}
   \item{plot.points}{if \code{TRUE} the points are plotted in each
     off-diagonal panel.}
-  \item{transform}{if \code{TRUE}, multivariate normalizing power transformations
-    are computed with \code{\link{powerTransform}}, rounding the estimated powers to `nice' values for plotting;
-    if a vector of powers, one for each variable, these are applied prior to plotting. If  there are \code{groups}
-    and \code{by.groups} is \code{TRUE}, then the transformations are estimated \emph{conditional} on the
-    \code{groups} factor.}
-  \item{family}{family of transformations when \code{transform=TRUE}: \code{"bcPower"} for the Box-Cox family or
-    \code{"yjPower"} for the Yeo-Johnson family (see \code{\link{powerTransform}}).}
-
   \item{groups}{a factor or other variable dividing the data into groups; groups are
     plotted with different colors and plotting characters.}
   \item{by.groups}{if \code{TRUE}, the default, regression lines and smooths are fit by groups.}
@@ -107,7 +99,7 @@ spm(x, ...)
    The \code{smooth} argument is usually either equal to \code{TRUE} or \code{FALSE} to draw, or omit,
    the smoother.  Alternatively \code{smooth} can equal a list of arguments.  The default behavior of
    \code{smooth=TRUE} is equivalent to \code{smooth=list(smoother=loessLine, spread=TRUE, lty.smooth=1, lwd.smooth=1.5, lty.spread=3, lwd.spread=1)}, specifying the smoother to be used, including the spread or variance smooth,
-   and the line widths and types for the curves.  You can also specify the colors you want to use for the mean and variance smooths with the arguments \code{col.smooth} and \code{col.spread} Alternative smoothers are \code{gamline} that uses the
+   and the line widths and types for the curves.  You can also specify the colors you want to use for the mean and variance smooths with the arguments \code{col.smooth} and \code{col.spread}. Alternative smoothers are \code{gamline} that uses the
    \code{\link{gam}} function from the mgcv package, and \code{quantregLine} that uses quantile regression to
    estimate the median and quartile functiona using \code{\link{rqss}} frm the quantreg package.  All of these
    smoothers have one or more arguments described on their help pages, and these arguments can be added to the
@@ -131,12 +123,14 @@ spm(x, ...)
    shown are descibed at \code{\link{adaptiveKernel}}.  The other methods avaliable, with their default
    arguments, are \code{diagonal=list(method="denisty", bw="nrd0", adjust=1, kernel="gaussian", na.rm=TRUE)}
    that uses \code{\link{density}} for nonadaptive kernel density estimation; \code{diagonal=list(method
-   ="hostogram", breaks="FD")}
+   ="histogram", breaks="FD")}
    that uses \code{\link{hist}} for drawing a histogram that ignores grouping, if present;
    \code{diagonal=list(method="boplot")} with no additional arguments that draws (parallel) boxplots;
    \code{diagonal=list(method="qqplot")} with no additional arguments that draws a normal QQplot; and
    \code{diagonal=list(method="oned")} with no additional arguments that draws a rug plot tilted to the
    diagonal, as suggested by Richard Heiberger.
+   
+   Earlier versions of \code{scatterplotMatrix} included arguments \code{transform} and \code{famiy} to estimate power transformations using the \code{\link{powerTransform}} function before drawing the plot.  The sample functionality can be achieved by calling \code{powerTransform} directly to estimate a transformation, saving the transformed variables, and then plotting.
 }
 
 \value{
@@ -147,8 +141,8 @@ spm(x, ...)
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \references{
-  Fox, J. and Weisberg, S. (2011)
-  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  Fox, J. and Weisberg, S. (2019)
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 
 \seealso{\code{\link[graphics]{pairs}}, \code{\link{scatterplot}},
@@ -161,9 +155,7 @@ scatterplotMatrix(~ income + education + prestige | type, data=Duncan)
 scatterplotMatrix(~ income + education + prestige | type, data=Duncan,
     regLine=FALSE, smooth=list(spread=FALSE))
 scatterplotMatrix(~ income + education + prestige,
-    transform=TRUE, data=Duncan, id=TRUE, smooth=list(method=gamLine))
-scatterplotMatrix(~ income + education + prestige | type, smooth=FALSE,
-	by.group=TRUE, transform=TRUE, ellipse=TRUE, data=Duncan)
+    data=Duncan, id=TRUE, smooth=list(method=gamLine))
 }
 
 \keyword{hplot}

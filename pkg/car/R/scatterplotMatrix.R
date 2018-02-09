@@ -24,6 +24,7 @@
 # 2017-05-08: S. Weisberg changed col=carPalette()
 # 2017-06-22: J. Fox: eliminated extraneous code for defunct labels argument; small cleanup
 # 2017-12-07: J. Fox: added fill, fill.alpha subargs to ellipse arg, suggestion of Michael Friendly.
+# 2018-02-09: S. Weisberg removed the transform and family arguments from the default method
 
 scatterplotMatrix <- function(x, ...){
   UseMethod("scatterplotMatrix")
@@ -73,13 +74,14 @@ scatterplotMatrix.default <-
            var.labels=colnames(x),
            diagonal=TRUE,
            plot.points=TRUE,
-           transform=FALSE, family=c("bcPower", "yjPower"),
            groups=NULL, by.groups=TRUE,
            use=c("complete.obs", "pairwise.complete.obs"),
            col=carPalette()[-1],
            pch=1:n.groups,
            cex=par("cex"), cex.axis=par("cex.axis"),
            cex.labels=NULL, cex.main=par("cex.main"), row1attop=TRUE, ...){
+  transform <- FALSE
+  family <- "bcPower"
   force(col)
   n.groups <- if(by.groups) length(levels(groups)) else 1
   if(isFALSE(diagonal)) diagonal <- "none" else {
@@ -147,7 +149,7 @@ scatterplotMatrix.default <-
     ellipse <- TRUE
   }
   # pre 2017 code follows
-  family <- match.arg(family)
+#  family <- match.arg(family)
   use <- match.arg(use)
   na.action <- if (use == "complete.obs") na.omit else na.pass
   if (!(missing(groups))){
@@ -286,18 +288,18 @@ scatterplotMatrix.default <-
   if (n.groups > length(col)) stop("number of groups exceeds number of available col")
   if (length(col) == 1) col <- rep(col, 3)
 
-  if (transform != FALSE | length(transform) == ncol(x)){
-    if (transform == TRUE & length(transform) == 1){
-      transform <- if (n.groups > 1) coef(powerTransform(as.matrix(x) ~ groups, family=family), round=TRUE)
-      else coef(powerTransform(x, family=family), round=TRUE)
-    }
-    for (i in 1:ncol(x)){
-      x[, i] <- if (family == "bcPower")
-        bcPower(x[, i], transform[i])
-      else yjPower(x[, i], transform[i])
-      var.labels[i] <- paste(var.labels[i], "^(", round(transform[i],2), ")", sep="")
-    }
-  }
+#  if (transform != FALSE | length(transform) == ncol(x)){
+#    if (transform == TRUE & length(transform) == 1){
+#      transform <- if (n.groups > 1) coef(powerTransform(as.matrix(x) ~ groups, family=family), round=TRUE)
+#      else coef(powerTransform(x, family=family), round=TRUE)
+#    }
+#    for (i in 1:ncol(x)){
+#      x[, i] <- if (family == "bcPower")
+#        bcPower(x[, i], transform[i])
+#      else yjPower(x[, i], transform[i])
+#      var.labels[i] <- paste(var.labels[i], "^(", round(transform[i],2), ")", sep="")
+#    }
+#  }
   labs <- labels
   pairs(x, labels=var.labels,
         cex.axis=cex.axis, cex.main=cex.main, cex.labels=cex.labels, cex=cex,
