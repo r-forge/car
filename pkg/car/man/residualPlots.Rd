@@ -11,11 +11,11 @@
 \alias{residCurvTest.lm}
 \alias{residCurvTest.glm}
 \alias{tukeyNonaddTest}
-\title{Residual Plots and Curvature Tests for Linear Model Fits}
+\title{Residual Plots for Linear and Generalized Linear Models}
 \description{
 Plots the residuals versus each term in a mean function and versus
 fitted values.  Also computes a curvature test for each of the plots
-by adding a quadratic term and testing the quadratic to be zero.  This
+by adding a quadratic term and testing the quadratic to be zero.  For linear models, this
 is Tukey's test for nonadditivity when plotting against fitted values.
 }
 \usage{
@@ -143,7 +143,7 @@ not missing.
     \code{TRUE} is equivalent to \code{list(method="r", n=2, cex=1, col=carPalette()[1], location="lr")},
     which identifies the 2 points with the largest absolute residuals.}
   \item{col}{
-default color for points.  If groups is set, col can abe a list at least
+default color for points.  If groups is set, col can be a list at least
 as long as the number of levels for groups giving the colors for each groups.
 }
   \item{col.quad}{
@@ -183,10 +183,10 @@ residuals versus fitted values is also included unless \code{fitted=FALSE}.
 
 In addition to plots, a table of curvature tests is displayed. For plots
 against a term in the model formula, say \code{X1}, the test displayed is
-the t-test for for \code{I(X^2)} in the fit of \code{update, model, ~. + I(X^2))}.
+the t-test for for \code{I(X1^2)} in the fit of \code{update, model, ~. + I(X1^2))}.
 Econometricians call this a specification test.  For factors, the displayed
 plot is a boxplot, no curvature test is computed, and grouping is ignored.
-For fitted values, the test is Tukey's one-degree-of-freedom test for
+For fitted values in a linear model, the test is Tukey's one-degree-of-freedom test for
 nonadditivity.  You can suppress the tests with the argument \code{tests=FALSE}.
 If grouping is used curvature tests are not displayed.
 
@@ -208,8 +208,8 @@ residual plots.
 }
 \references{
 
-Fox, J. and Weisberg, S. (2011)
-\emph{An R Companion to Applied Regression}, Second Edition.  Sage.
+Fox, J. and Weisberg, S. (2019)
+\emph{An R Companion to Applied Regression}, Third Edition.  Sage.
 
 Weisberg, S. (2014) \emph{Applied
 Linear Regression}, Fourth Edition, Wiley, Chapter 8}

@@ -80,6 +80,9 @@ adaptiveKernel(x, kernel=dnorm, bw=bw.nrd0, adjust=1.0, n=500,
 }
 
 \references{
+  Fox, J. and Weisberg, S. (2019) 
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
+  
 W. N. Venables and B. D. Ripley (2002) \emph{Modern Applied Statistics with S}. New York: Springer.
 
 B.W. Silverman (1986) \emph{Density Estimation for Statistics and Data Analysis}. London: Chapman and Hall.

@@ -39,7 +39,7 @@ Boxplot(y, ...)
     \code{n}, the maximum number of points to label (default 10); \code{location}, \code{"lr"} (left or right) of points or 
     \code{"avoid"} to try to avoid overplotting; \code{method}, one of \code{"y"} (automatic, the default), \code{"identify"} (interactive), or \code{"none"}; \code{col} for labels (default is the first color in \code{carPalette()} ); and \code{cex} size of labels (default is \code{1}).
     Can be \code{FALSE} to suppress point identification or \code{TRUE} (the default) to use all defaults. This is similar to how \code{\link{showLabels}} handles point labels
-    for other functions in the \pkg{car} package.}
+    for other functions in the \pkg{car} package, except that the usual default is \code{id=FALSE}.}
   \item{xlab, ylab}{text labels for the horizontal and vertical axes; if missing, \code{Boxplot} will use the
     variable names, or, in the case of a list, data frame, or matrix, empty labels.}
   \item{formula}{a `model' formula, of the form \code{~ y} to produce a boxplot for the variable \code{y}, or
@@ -54,8 +54,8 @@ Boxplot(y, ...)
     to handle \code{at} argument (see \code{\link{boxplot}}).}
 
 \references{
-  Fox, J. and Weisberg, S. (2011) 
-  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  Fox, J. and Weisberg, S. (2019) 
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 
 \seealso{

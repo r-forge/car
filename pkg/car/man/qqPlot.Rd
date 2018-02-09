@@ -6,10 +6,11 @@
 \alias{qqPlot.lm}
 \alias{qqPlot.glm}
 
-\title{Quantile-Comparison Plots}
+\title{Quantile-Comparison Plot}
 \description{
  Plots empirical quantiles of a variable, or of studentized residuals from
- a linear model, against theoretical quantiles of a comparison distribution.
+ a linear model, against theoretical quantiles of a comparison distribution.  Includes
+ options not avaiable in the \code{\link[stats]{qqnorm}} function.
 }
 \usage{
 qqPlot(x, ...)
@@ -76,7 +77,7 @@ qqp(...)
     \code{TRUE} is equivalent to \code{list(method="y", n=2, cex=1, col=carPalette()[1], location="lr")},
     which identifies the 2 points with the 2 points with the most extreme
     verical values --- studentized residuals for the \code{"lm"} method. Points labels are by default
-    taken from the names of the variable being plotted; if no names are available, indices are used.}
+    taken from the names of the variable being plotted is any, else case indices are used.  Unlike most graphical functions in \code{car}, the default is \code{id=TRUE} to include point identification.}
   \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).}
   \item{line}{\code{"quartiles"} to pass a line through the quartile-pairs, or
     \code{"robust"} for a robust-regression line; the latter uses the \code{rlm}
@@ -105,15 +106,15 @@ graph}
 }
 \value{
   These functions return the labels of identified points, unless a grouping factor is employed,
-  in which \code{NULL} is returned invisibly.
+  in which case \code{NULL} is returned invisibly.
 }
 \references{
   Fox, J. (2008)
   \emph{Applied Regression Analysis and Generalized Linear Models},
   Second Edition. Sage.
 
-  Fox, J. and Weisberg, S. (2011)
-  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  Fox, J. and Weisberg, S. (2019)
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 
   Atkinson, A. C. (1985)
   \emph{Plots, Transformations, and Regression.} Oxford.

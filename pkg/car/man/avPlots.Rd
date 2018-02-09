@@ -7,8 +7,8 @@
 
 \title{Added-Variable Plots}
 \description{
-  These functions construct added-variable (also called 
-  partial-regression) plots for  linear and generalized linear
+  These functions construct added-variable, also called 
+  partial-regression, plots for  linear and generalized linear
   models.
 }
 
@@ -25,7 +25,7 @@ avPlot(model, ...)
 	main=paste("Added-Variable Plot:", variable),
 	grid=TRUE,
 	ellipse=FALSE,
-    marginal.scale=FALSE, ...)
+  marginal.scale=FALSE, ...)
 
 \method{avPlot}{glm}(model, variable, 
 	id=TRUE,
@@ -57,10 +57,10 @@ avPlot(model, ...)
     \code{avPlot} passes them to \code{plot}. }
   \item{id}{controls point identification; if \code{FALSE}, no points are identified;
     can be a list of named arguments to the \code{\link{showLabels}} function;
-    \code{TRUE}, the default, is equivalent to \code{list(method=list(abs(residuals(model, type="pearson")), "x"), n=2, 
-    cex=1, col=carPalette()[1], location="lr")},
-    which identifies the 2 points with the largest residuals and the 2 points with the most extreme
-    horizontal values (i.e., largest partial leverage).}
+    \code{TRUE}, the default, is equivalent to 
+    \code{list(method=list(abs(residuals(model, type="pearson")), "x"), n=2, cex=1, col=carPalette()[1], location="lr")},
+    which identifies the 2 points with the largest residuals and the 2 points with 
+    the most extreme horizontal values (i.e., largest partial leverage).}
   \item{col}{color for points; the default is the \emph{second} entry
     in the current \pkg{car} palette (see \code{\link{carPalette}}
     and \code{\link[graphics]{par}}).}
@@ -99,8 +99,8 @@ avPlot(model, ...)
   \emph{Applied Regression Analysis and Generalized Linear Models},
   Second Edition. Sage.  
   
-  Fox, J. and Weisberg, S. (2011) 
-  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  Fox, J. and Weisberg, S. (2019) 
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
   
   Wang, P C. (1985)
   Adding a variable in generalized linear models.
