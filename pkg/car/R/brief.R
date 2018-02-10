@@ -4,6 +4,7 @@
 # 2017-11-22: fixed bugs in brief.data.frame(), improved brief() and brief.list(). J. Fox
 # 2017-12-15--21: tweaks to brief.data.frame. J. Fox
 # 2017-12-19: added head, tail args to brief.data.frame()
+# 2018-02-10: tweak brief.glm() output formatting
 
 brief <- function(object, ...){
     g <- options("max.print"=.Machine$integer.max)
@@ -287,10 +288,10 @@ brief.glm <- function(object, terms = ~ ., intercept=missing(terms), pvalues=FAL
     colnames(coefs)[if (pvalues) 4 else 3] <- "exp(Estimate)"
   }
   print(if (horizontal) t(coefs) else coefs, digits=digits)
-  if (missing(terms)) cat("\n Residual deviance =", format(object$deviance, digits=digits),
-                          "on", object$df.residual, "df",
+  if (missing(terms)) cat(paste0("\n Residual deviance = ", format(object$deviance, digits=digits),
+                          " on ", object$df.residual, " df",
                           if (family(object)$family %in% c("binomial", "poisson")) ""
-                          else (paste(", Est. dispersion =", format(sumry$dispersion, digits=digits))))
+                          else (paste0(", Est. dispersion = ", format(sumry$dispersion, digits=digits)))))
   invisible(sumry)
 }
 
