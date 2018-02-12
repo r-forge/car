@@ -50,6 +50,7 @@
 # 2017-11-24: small improvements to output. John
 # 2017-11-29: further fixed to vcov() and vcov.() calls. John
 # 2018-01-15: Anova.multinom() now works with response matrix. JF
+# 2018-02-11: If there are aliased coefs in lm object, treat as GLM. JF
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -75,6 +76,17 @@ relatives <- function(term, names, factors){
                                         function(term2) is.relative(term, term2))]
 }
 
+lm2glm <- function(mod){
+  class(mod) <- c("glm", "lm")
+  wts <- mod$weights
+  mod$prior.weights <- if (is.null(wts)) rep(1, length(mod$residuals)) else wts
+  mod$y <- model.response(model.frame(mod))
+  mod$linear.predictors <- mod$fitted.values
+  mod$control <- list(epsilon=1e-8, maxit=25, trace=FALSE)
+  mod$family <- gaussian()
+  mod$deviance <- sum(residuals(mod)^2, na.rm=TRUE)
+  mod
+}
 
 Anova <- function(mod, ...){
   UseMethod("Anova", mod)
@@ -101,6 +113,15 @@ Anova.lm <- function(mod, error, type=c("II","III", 2, 3),
       && (type == "2" || type == "II")) {
     type <- "III"
     warning("the model contains only an intercept: Type III test substituted")
+  }
+  if (any(is.na(coef(mod))) && singular.ok){
+    message("Note: model has aliased coefficients\n      sums of squares computed by model comparison")
+    result <- Anova(lm2glm(mod), type=type, singular.ok=TRUE, test.statistic="F", ...)
+    heading <- attributes(result)$heading
+    if (type == "2") type <- "II"
+    if (type == "3") type <- "III"
+    attr(result, "heading") <- c(paste("Anova Table (Type", type, "tests)"), "", heading[2])
+    return(result)
   }
   if (white.adjust != "FALSE"){
     if (white.adjust == "TRUE") white.adjust <- "hc3" 
@@ -287,8 +308,8 @@ Anova.III.LR.glm <- function(mod, singular.ok=FALSE, ...){
   deviance <- deviance(mod)/dispersion
   for (term in 1:n.terms){
     mod.1 <- drop1(mod, scope=eval(parse(text=paste("~",Source[term]))))
-    LR[term] <- (mod.1$Deviance[2]/dispersion)-deviance
     df[term] <- mod.1$Df[2]
+    LR[term] <- if (df[term] == 0) NA else (mod.1$Deviance[2]/dispersion)-deviance
     p[term] <- pchisq(LR[term], df[term], lower.tail = FALSE)
   }
   result <- data.frame(LR, df, p)
@@ -328,12 +349,12 @@ Anova.III.F.glm <- function(mod, error, error.estimate, singular.ok=FALSE, ...){
     mod.1 <- drop1(mod, scope=eval(parse(text=paste("~",Source[term]))))
     df[term] <- mod.1$Df[2]
     SS[term] <- mod.1$Deviance[2] - deviance
-    f[term] <- (SS[term]/df[term])/dispersion
+    f[term] <- if (df[term] == 0) NA else (SS[term]/df[term])/dispersion
     p[term] <- pf(f[term], df[term], df.res, lower.tail = FALSE)
   }
   result <- data.frame(SS, df, f, p)
   row.names(result) <- c(Source, "Residuals")
-  names(result) <- c("SS", "Df", "F", "Pr(>F)")
+  names(result) <- c("Sum Sq", "Df", "F values", "Pr(>F)")
   class(result) <- c("anova","data.frame")
   attr(result, "heading") <- c("Analysis of Deviance Table (Type III tests)\n", 
                                paste("Response:", responseName(mod)), 
@@ -451,7 +472,7 @@ Anova.II.F.glm <- function(mod, error, error.estimate, singular.ok=TRUE, ...){
   }
   result <- data.frame(SS, df, f, p)
   row.names(result) <- c(names, "Residuals")
-  names(result) <- c("SS", "Df", "F", "Pr(>F)")
+  names(result) <- c("Sum Sq", "Df", "F value", "Pr(>F)")
   class(result) <- c("anova", "data.frame")
   attr(result, "heading") <- c("Analysis of Deviance Table (Type II tests)\n", 
                                paste("Response:", responseName(mod)),
@@ -1010,7 +1031,7 @@ summary.Anova.mlm <- function (object, test.statistic, univariate=object$repeate
     table2 <- matrix(0, nterms, 4)
     table3 <- matrix(0, nterms, 2)
     rownames(table3) <- rownames(table2) <- rownames(table) <- object$terms
-    colnames(table) <- c("SS", "num Df", "Error SS", "den Df", "F", "Pr(>F)")
+    colnames(table) <- c("Sum Sq", "num Df", "Error SS", "den Df", "F value", "Pr(>F)")
     colnames(table2) <- c("GG eps", "Pr(>F[GG])", "HF eps","Pr(>F[HF])")
     colnames(table3) <- c("Test statistic", "p-value")
     if (singular) 
@@ -1022,13 +1043,13 @@ summary.Anova.mlm <- function (object, test.statistic, univariate=object$repeate
       p <- ncol(P)
       PtPinv <- solve(t(P) %*% P)
       gg <- if (!singular) GG(SSPE, P) else NA
-      table[term, "SS"] <- sum(diag(SSP %*% PtPinv))
+      table[term, "Sum Sq"] <- sum(diag(SSP %*% PtPinv))
       table[term, "Error SS"] <- sum(diag(SSPE %*% PtPinv))
       table[term, "num Df"] <- object$df[term] * p
       table[term, "den Df"] <- error.df * p
-      table[term, "F"] <- (table[term, "SS"]/table[term, "num Df"])/
+      table[term, "F value"] <- (table[term, "Sum Sq"]/table[term, "num Df"])/
         (table[term, "Error SS"]/table[term, "den Df"])
-      table[term, "Pr(>F)"] <- pf(table[term, "F"], table[term, "num Df"], table[term, "den Df"], 
+      table[term, "Pr(>F)"] <- pf(table[term, "F value"], table[term, "num Df"], table[term, "den Df"], 
                                   lower.tail = FALSE)
       table2[term, "GG eps"] <- gg
       table2[term, "HF eps"] <- if (!singular) HF(gg, error.df, p) else NA
@@ -1036,10 +1057,10 @@ summary.Anova.mlm <- function (object, test.statistic, univariate=object$repeate
     }
     table3 <- na.omit(table3)
     if (nrow(table3) > 0) {
-      table2[, "Pr(>F[GG])"] <- pf(table[, "F"], table2[, "GG eps"] * 
+      table2[, "Pr(>F[GG])"] <- pf(table[, "F value"], table2[, "GG eps"] * 
                                      table[, "num Df"], table2[, "GG eps"] * table[, "den Df"], 
                                    lower.tail = FALSE)
-      table2[, "Pr(>F[HF])"] <- pf(table[, "F"], pmin(1, table2[, "HF eps"]) * 
+      table2[, "Pr(>F[HF])"] <- pf(table[, "F value"], pmin(1, table2[, "HF eps"]) * 
                                      table[, "num Df"], pmin(1, table2[, "HF eps"]) * table[, "den Df"], 
                                    lower.tail = FALSE)
       table2 <- na.omit(table2)

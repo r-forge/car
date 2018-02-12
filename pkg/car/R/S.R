@@ -39,7 +39,7 @@
 # 2017-12-29:  J. Fox added fit statistics to Summarize() output for various models.
 # 2018-01-15:  S. Weisberg all Summmarize/Summarise methods renamed S
 # 2018-02-02:  J. Fox fixed S.lm() and S.glm() output when vcov. arg not given.
-# 2018-02-07,08:  J. Fox removed leading blank lines in formatCall() and elsewhere.
+# 2018-02-07,08,12:  J. Fox removed leading blank lines in formatCall() and elsewhere.
 
 formatCall <- function(call){
   call <- if (is.character(call)){
@@ -598,7 +598,7 @@ S.lmerMod <- function(object, brief=FALSE, KR=FALSE, correlation=FALSE, ...){
 print.S.lmerMod <- function(x, digits=max(3, getOption("digits") - 3),
                                  signif.stars = getOption("show.signif.stars"), ...){
   if (!x$brief) {
-      cat(paste("Linear mixed model fit by", if (x$REML) "REML" else "ML"))
+      cat(paste("Linear mixed model fit by", if (x$REML) "REML" else "ML", "\n"))
       cat(formatCall(x$call))
   }
   if (x$KR) cat("\nEstimates of Fixed Effects with KR Tests\n")
@@ -713,7 +713,7 @@ S.glmerMod <- function(object, brief=FALSE, correlation=FALSE, exponentiate, ...
 print.S.glmerMod <- function(x, digits=max(3, getOption("digits") - 3),
                                   signif.stars = getOption("show.signif.stars"), ...){
   if (!x$brief) {
-      cat("Generalized linear mixed model fit by ML")
+      cat("Generalized linear mixed model fit by ML\n")
       cat(formatCall(x$call))
   }
   cat("\nEstimates of Fixed Effects:\n")

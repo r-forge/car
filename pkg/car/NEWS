@@ -19,6 +19,8 @@ Changes to Version 3.0-0
   o New deletion diagnostics for mixed-effects models, e.g., influence.merMod().
 
   o Fixed bug in LinearHypothesis.merMod() when rhs of "F" test is specified (reported by Patrick Forscher).
+  
+  o Anova.lm() now computes SSs by model comparison for models with aliased coefficients (response to problem reported by Ruchi Mahadeshwar).
 
   o Introduced carPalette() for color selection.
   

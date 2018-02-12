@@ -293,7 +293,7 @@ and \code{print.summary.Anova.mlm} incorporates code contributed by Gabriel Baud
 
 \seealso{ \code{\link{linearHypothesis}}, \code{\link[stats]{anova}}
 \code{\link[stats]{anova.lm}}, \code{\link[stats]{anova.glm}},
-\code{\link[stats]{anova.mlm}}, \code{\link[survival]{anova.coxph}}, \code{link[survey]{svyglm}}.}
+\code{\link[stats]{anova.mlm}}, \code{\link[survival]{anova.coxph}}, \code{\link[survey]{svyglm}}.}
 
 \examples{
 
