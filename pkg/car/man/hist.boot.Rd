@@ -11,8 +11,7 @@ Methods Functions to Support \code{boot} Objects
 \description{
 The \code{Boot} function in the \pkg{car} package uses the \code{\link{boot}} function from the
 \pkg{boot} package to do a straightforward case
-or residual bootstrap for a least-squares regression object.  These are method functions for standard generics to
-summarize the results of the bootstrap.
+or residual bootstrap for many regression objects.  These are method functions for standard generics to summarize the results of the bootstrap.  Other tools for this purpose are available in the \code{boot} package.
 }
 
 \usage{
@@ -20,8 +19,8 @@ summarize the results of the bootstrap.
     estPoint = TRUE, point.col = carPalette()[1], point.lty = 2, point.lwd = 2,
     estDensity = !freq, den.col = carPalette()[2], den.lty = 1, den.lwd = 2,
     estNormal = !freq, nor.col = carPalette()[3], nor.lty = 2, nor.lwd = 2,
-    ci = c("bca", "none", "perc", "norm"), level = 0.95, legend = c("top",
-        "none", "separate"), box = TRUE, ...)
+    ci = c("bca", "none", "perc", "norm"), level = 0.95, 
+    legend = c("top", "none", "separate"), box = TRUE, ...)
 
 \method{summary}{boot}(object, parm, high.moments = FALSE, extremes = FALSE, ...)
 
@@ -36,7 +35,7 @@ summarize the results of the bootstrap.
 
 \arguments{
   \item{x, object}{
-An object created by a call to \code{boot} of class \code{"boot"}.
+An object created by a call to \code{boot} in the \code{boot} package, or to \code{Boot} in the \code{car} package of class \code{"boot"}.
 }
   \item{parm}{
 A vector of numbers or coefficient names giving the coefficients for which a
@@ -60,10 +59,7 @@ ask.
 Main title for the graphs.  The default is \code{main=""} for no title.
 }
   \item{freq}{
-The usual default for \code{hist} is \code{freq=TRUE} to give a frequency
-histogram.  The default here is \code{freq=FALSE} to give a density
-histogram.  A density estimate and/or a fitted normal density can be added
-to the graph if \code{freq=FALSE} but not if \code{freq=TRUE}.
+The default for the generic \code{hist} function is \code{freq=TRUE} to give a frequency histogram.  The default for \code{hist.boot} is \code{freq=FALSE} to give a density histogram.  A density estimate and/or a fitted normal density can be added to the graph if \code{freq=FALSE} but not if \code{freq=TRUE}.
 }
   \item{estPoint, point.col, point.lty, point.lwd}{
 If \code{estPoint=TRUE}, the default, a vertical line is drawn on the histgram
@@ -113,8 +109,7 @@ Should the minimum, maximum and range be included in the summary?  Default is FA
 }
   \item{level}{
 Confidence level, a number between 0 and 1.  In \code{confint}, \code{level} can be
-a vector; for example \code{level=c(.68, .90, .95)} will return the estimated
-quantiles at \code{c(.025, .05, .16, .84, .95, .975)}.
+a vector; for example \code{level=c(.50, .90, .95)} will return the following estimated quantiles:  \code{c(.025, .05, .25, .75, .95, .975)}.
 }
   \item{type}{
 Selects the  confidence interval type.  The types
@@ -139,10 +134,10 @@ Efron, B. and Tibsharini, R. (1993)
 \emph{An Introduction to the Bootstrap}. New
 York: Chapman and Hall.
 
-Fox, J. and Weisberg, S. (2011)
-\emph{An R Companion to Applied Regression}, Second Edition.  Sage.
+Fox, J. and Weisberg, S. (2019)
+\emph{An R Companion to Applied Regression}, Third Edition.  Thousand Oaks:  Sage.
 
-Fox, J. and Weisberg, S. (2012) \emph{Bootstrapping},
+Fox, J. and Weisberg, S. (2017) \emph{Bootstrapping},
 \url{http://socserv.mcmaster.ca/jfox/Books/Companion/appendix/Appendix-Bootstrapping.pdf}.
 
 Weisberg, S. (2013) \emph{Applied
@@ -151,7 +146,7 @@ Linear Regression}, Fourth Edition, Wiley
 \author{Sanford Weisberg, \email{sandy@umn.edu}}
 
 \seealso{See Also \code{\link{Boot}}, \code{\link{hist}},
-\code{\link{density}} }
+\code{\link{density}}, Fox and Weisberg (2017), cited above }
 
 \examples{
 m1 <- lm(Fertility ~ ., swiss)

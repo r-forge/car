@@ -6,8 +6,8 @@
 
 \title{Component+Residual (Partial Residual) Plots}
 \description{
-  These functions construct component+residual plots (also called
-  partial-residual plots) for linear and generalized linear models.
+  These functions construct component+residual plots, also called
+  partial-residual plots, for linear and generalized linear models.
 }
 \usage{
 crPlots(model, terms = ~., layout = NULL, ask, main, 
@@ -25,11 +25,13 @@ crPlot(model, ...)
 
 \arguments{
   \item{model}{model object produced by \code{lm} or \code{glm}.}
-  \item{terms}{ A one-sided formula that specifies a subset of the predictors. 
-    One component-plus-residual plot is drawn for each term.  The default
-    \code{~.} is to plot against all numeric predictors.  For example, the
-    specification \code{terms = ~ . - X3} would plot against all predictors
-    except for \code{X3}.  If this argument is a quoted name of one of the predictors, the 
+  \item{terms}{ A one-sided formula that specifies a subset of the regressors. 
+    One component-plus-residual plot is drawn for each regressor.  The default
+    \code{~.} is to plot against all numeric regressors.  For example, the
+    specification \code{terms = ~ . - X3} would plot against all regressors
+    except for \code{X3}, while \code{terms = ~ log(X4)} would give the plot for the 
+    predictor X4 that is represented in the model by log(X4).  If this argument is a 
+    quoted name of one of the predictors, the 
     component-plus-residual plot is drawn for that predictor only.}
   \item{layout}{ 
     If set to a value like \code{c(1, 1)} or \code{c(4, 3)}, the layout
@@ -93,8 +95,8 @@ crPlot(model, ...)
   \emph{Applied Regression Analysis and Generalized Linear Models},
   Second Edition. Sage.  
   
-  Fox, J. and Weisberg, S. (2011) 
-  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  Fox, J. and Weisberg, S. (2019) 
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 \author{John Fox \email{jfox@mcmaster.ca}}
 

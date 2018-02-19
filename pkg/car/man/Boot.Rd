@@ -8,9 +8,8 @@
 \title{Bootstrapping for regression models }
 \description{
 This function provides a simple front-end to the \code{boot} function in the
-package also called \code{boot}.  Whereas \code{boot} is very general and therefore
-has many arguments, the \code{Boot} function has very few arguments, but should
-meet the needs of many users.
+package also called \code{boot} that is tailored to bootstrapping based on regression models.  Whereas \code{boot} is very general and therefore
+has many arguments, the \code{Boot} function has very few arguments.
 }
 \usage{
 Boot(object, f=coef, labels=names(f(object)), R=999,
@@ -32,34 +31,31 @@ Boot(object, f=coef, labels=names(f(object)), R=999,
 }
 \arguments{
   \item{object}{ A regression object of class \code{lm}, \code{glm} or \code{nls}.  The function may work with other regression objects that support the \code{update}
-method and have a \code{subset} argument}
+method and have a \code{subset} argument}.  See discussion of the default method in the details below.
   \item{f}{A function whose one argument is the name of a regression object that will be applied to the updated regression object to
-compute the statistics of interest.  The default is \code{coef}, to return to
+compute the statistics of interest.  The default is \code{coef}, to return 
 regression coefficient estimates.  For example,
 \code{f = function(obj) coef(obj)[1]/coef(obj[2]} will bootstrap the ratio of the first and second coefficient estimates.}
   \item{labels}{Provides labels for the statistics computed by \code{f}.  If
 this argument is of the wrong length, then generic labels will be generated.
 }
   \item{R}{Number of bootstrap samples.  The number of bootstrap samples actually computed may be smaller than
-this value if either the fitting method is iterative, or if the rank of a fittle \code{lm} or \code{glm}
-model is different in the bootstrap replication than in the original data.}
+this value if either the fitting method is iterative, or if the rank of a fitted model is different in a bootstrap replication than in the original data.}
   \item{method}{The bootstrap method, either \dQuote{case} for resampling
 cases or \dQuote{residuals} for a residual bootstrap.  See the details
 below. The residual bootstrap is available only for \code{lm} and \code{nls} objects and will return an error for \code{glm} objects.}
-  \item{\dots}{Arguments passed to methods. The default method passes these on
-to the \code{boot} function.}
-  \item{start}{Should the estimates returned b \code{f} be passed as \code{start}ing values
-to the \code{update} in each bootstrap iteration? Alternatively, \code{start}
-can also be a numeric vector that is passed to the \code{update}.}
-\item{ncores}{A numeric argument that specifies the number of cores for parallel processing.  If less than or equal to 1, no parallel processing wiill be used.}
+  \item{\dots}{Arguments passed to the \code{boot} function, see \code{\link[boot]{boot}}.}
+  \item{start}{Should the estimates returned by \code{f} be passed as starting
+    values for each bootstrap iteration? Alternatively,
+    \code{start} can be a numeric vector of starting values.  The default is to use
+    the estiamtes from the last bootstrap iteration as starting values.}
+\item{ncores}{A numeric argument that specifies the number of cores for parallel
+    processing.  If less than or equal to 1, no parallel processing wiill be used.}
 }
 \details{
-Whereas the \code{boot} function is
-very general, \code{Boot} is very specific.  It takes the information from a
+\code{Boot} uses a
 regression object and the choice of \code{method}, and creates a function that is
-passed as the \code{statistic} argument to \code{boot}.  The argument \code{R}
-is also passed to \code{boot}.  All other arguments to \code{boot} are
-kept at their default values.
+passed as the \code{statistic} argument to the \code{boot} function in the \code{boot} package.  The argument \code{R}is also passed to \code{boot}.  If \code{ncores} is greater than 1, then the \code{parallel} and \code{ncpus} arguments to \code{boot} are set appropriately to use multiple codes, if available, on your computer. All other arguments to \code{boot} are kept at their default values unless you pass values for them.
 
 The methods available for \code{lm} and \code{nls} objects are \dQuote{case} and
 \dQuote{residual}.  The case bootstrap resamples from the joint distribution
@@ -74,13 +70,15 @@ generalized linear models has several competing approaches, but none are
 without problems.  If you want to do a residual bootstrap for a glm, you
 will need to write your own call to \code{boot}.
 
-For the default object to work with other types of regression model, the model must have methods for the the following generic functions:  \code{residuals(object, type="pearson")} must return Pearson residuals; \code{fitted(object)} must return fitted values; \code{hatvalues(object)} should return the leverages, or perhaps the value 1.  In addition, the \code{data} argument should contain no missing values among the columns actually used in fittig the model, as the resampling may incorrectly attempt to include cases with missing values.  For \code{lm}, \code{glm} and \code{nls}, missing values are handled correctly.
+For the default object to work with other types of regression models, the model must have methods for the the following generic functions:  \code{residuals(object, type="pearson")} must return Pearson residuals; \code{fitted(object)} must return fitted values; \code{hatvalues(object)} should return the leverages, or perhaps the value 1 which will effectively ignore setting the hatvalues.  In addition, the \code{data} argument should contain no missing values among the columns actually used in fitting the model, as the resampling may incorrectly attempt to include cases with missing values.  For \code{lm}, \code{glm} and \code{nls}, missing values are handled correctly.
 
-An attempt to model fit to a bootstrap sample may fail.  In a \code{lm} or
+An attempt to fit using a bootstrap sample may fail.  In a \code{lm} or
 \code{glm} fit, the bootstrap sample could have a different rank from the original
 fit.  In an \code{nls} fit, convergence may not be obtained for some bootstraps.
 In either case, \code{NA} are returned for the value of the function \code{f}.
 The summary methods handle the \code{NA}s appropriately.
+
+A link below to Fox and Weisberg (2017) discusses this function.
 }
 \value{
 See \code{\link[boot]{boot}} for the returned value from this function.  The car
@@ -91,8 +89,7 @@ with boot objects.
 Davison, A, and Hinkley, D.  (1997)  \emph{Bootstrap Methods and their
 Applications}.  Oxford:  Oxford University Press.
 
-Fox, J. and Weisberg, S. (2011) \emph{Companion to Applied Regression}, Second Edition.
-Thousand Oaks:  Sage.
+Fox, J. and Weisberg, S. (2019) \emph{Companion to Applied Regression}, Third Edition. Thousand Oaks:  Sage.
 
 Fox, J. and Weisberg, S. (2017) \emph{Bootstrapping},
 \url{http://socserv.mcmaster.ca/jfox/Books/Companion/appendix/Appendix-Bootstrapping.pdf}.
@@ -100,7 +97,7 @@ Fox, J. and Weisberg, S. (2017) \emph{Bootstrapping},
 Weisberg, S. (2014) \emph{Applied Linear Regression}, Fourth Edition, Wiley
 Wiley, Chapters 4 and 11.}
 
-\author{ Sanford Weisberg, \email{sandy@umn.edu}.}
+\author{ Sanford Weisberg, \email{sandy@umn.edu}.  Achim Zeileis added multicore support, and also fixed the default method to work for many more regression models.}
 
 \seealso{Functions that work with
 \code{Boot} objects from the \code{boot} package are
