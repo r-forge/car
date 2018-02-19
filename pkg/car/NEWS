@@ -5,6 +5,8 @@ Changes to Version 3.0-0
   o Reorganized plotting functions.
 
   o Functions deprecated in 2009 are now defunct.
+  
+  o bootCase(), nextBoot(), and their methods are now deprecated in favor of Boot().
 
   o All data sets moved to the carData pakage.
 
