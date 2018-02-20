@@ -54,6 +54,7 @@ linear.hypothesis(...)
 ncv.test(...)
 outlier.test(...)
 qq.plot(...)
+skewPower(...)
 spread.level.plot(...)
 }
 
@@ -97,6 +98,8 @@ functions.
 \code{outlier.test} is replaced by \code{\link{outlierTest}}.
 
 \code{qq.plot} is replaced by \code{\link{qqPlot}}.
+
+\code{skewPower} is replaced by \code{\link{bcnPower}}.
 
 \code{spread.level.plot} is replaced by \code{\link{spreadLevelPlot}}.
 }

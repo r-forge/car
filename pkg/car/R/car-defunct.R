@@ -92,6 +92,10 @@ scatterplot.matrix <- function (...) {
 	.Defunct("scatterplotMatrix", package="car")
 }
 
+skewPower <- function (...) {
+  .Defunct("bcnPower", package="car")
+}
+
 spread.level.plot <- function (...) {
 	.Defunct("spreadLevelPlot", package="car")
 }

@@ -198,6 +198,7 @@ export(
     ncv.test,
     qq.plot,
 #    scatterplot.matrix,
+    skewPower,
     spread.level.plot,
     wcrossprod
 )
