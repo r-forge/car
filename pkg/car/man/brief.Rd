@@ -59,7 +59,7 @@ brief(object, ...)
 }
 
 \arguments{
-  \item{object}{a data or model object to abbreviate or summarize briefly.}
+  \item{object}{a data or model object to abbreviate.}
 
   \item{rows}{for a matrix or data frame, a 2-element integer vector with the number of rows to print at
   the beginning and end of the display; for a vector or factor,
@@ -107,6 +107,12 @@ Invisibly returns \code{object} for a data object, or summary for a model object
 
 \note{
 The method \code{brief.matrix} calls \code{brief.data.frame}.
+}
+
+\references{
+
+  Fox, J. and Weisberg, S. (2019)
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 
 \author{

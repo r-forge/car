@@ -11,8 +11,11 @@
 }
 \usage{
 whichNames(names, object, ...)
+
 which.names(names, object, ...)
+
 \method{whichNames}{data.frame}(names, object, ...)
+
 \method{whichNames}{default}(names, object, ...)
 }
 
@@ -29,8 +32,8 @@ Returns the index or indices of \code{names} in row names of the data frame or n
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \references{
-  Fox, J. and Weisberg, S. (2011) 
-  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  Fox, J. and Weisberg, S. (2019) 
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 
 \examples{

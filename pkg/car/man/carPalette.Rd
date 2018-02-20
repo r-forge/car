@@ -21,6 +21,11 @@ This function sets or returns the value of \code{options(carPalette=pallete)} th
 Invisibly returns the previous value of the \pkg{car} palette.
 }
 
+\references{
+  Fox, J. and Weisberg, S. (2019)
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
+}
+
 \author{Sanford Weisberg and John Fox}
 
 \seealso{
