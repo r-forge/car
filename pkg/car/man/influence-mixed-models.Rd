@@ -81,7 +81,8 @@ For plotting \code{"influence.merMod"} and \code{"influence.lme"} objects, see \
 }
 
 \references{
-J. Fox and S. Weisberg, \emph{An R Companion to Applied Regression, 3rd Ed.}, Sage, in press.
+  Fox, J. and Weisberg, S. (2019) 
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 
 \author{

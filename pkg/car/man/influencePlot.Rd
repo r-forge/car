@@ -5,8 +5,8 @@
 
 \title{Regression Influence Plot}
 \description{
-  This function creates a \dQuote{bubble} plot of Studentized residuals by hat values, with the areas of the
-  circles representing the observations proportional to Cook's distances. Vertical reference lines are drawn
+  This function creates a \dQuote{bubble} plot of Studentized residuals versus hat values, with the areas of the
+  circles representing the observations proportional to the value Cook's distance. Vertical reference lines are drawn
   at twice and three times the average hat value, horizontal reference lines at -2, 0, and 2 on the
   Studentized-residual scale.
 }
@@ -40,12 +40,12 @@ used for its side-effect of drawing a plot.
 }
 
 \references{
-  Fox, J. (2008)
+  Fox, J. (2016)
   \emph{Applied Regression Analysis and Generalized Linear Models},
-  Second Edition. Sage.  
+  Third Edition. Sage.  
   
-  Fox, J. and Weisberg, S. (2011) 
-  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  Fox, J. and Weisberg, S. (2019) 
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}, minor changes by S. Weisberg

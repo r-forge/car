@@ -54,7 +54,7 @@ You have to install the \code{rgl} package to produce 3D plots.  On a Macintosh 
 
 \arguments{
   \item{formula}{``model'' formula, of the form \code{y ~ x + z} or
-    (to plot by groups) \code{y ~ x + z | g}, where \code{g} evaluates to a factor
+    to plot by groups \code{y ~ x + z | g}, where \code{g} evaluates to a factor
     or other variable dividing the data into groups.}
   \item{data}{data frame within which to evaluate the formula.}
   \item{subset}{expression defining a subset of observations.}

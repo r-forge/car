@@ -6,7 +6,7 @@
 \alias{infIndexPlot.influence.lme}
 \title{Influence Index Plot}
 \description{
-Provides index plots of some influence and related diagnostics for a regression model.
+Provides index plots of influence and related diagnostics for a regression model.
 }
 \usage{
 infIndexPlot(model, ...)
@@ -52,12 +52,11 @@ of diagnostic quantities.
   Cook, R. D. and Weisberg, S. (1999)
   \emph{Applied Regression, Including Computing and Graphics.} Wiley.
 
-  Fox, J. (2008)
+  Fox, J. (2016)
   \emph{Applied Regression Analysis and Generalized Linear Models},
-  Second Edition. Sage.
-
-  Fox, J. and Weisberg, S. (2011)
-  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  Third Edition. Sage.
+  Fox, J. and Weisberg, S. (2019)
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 
   Weisberg, S. (2014)
   \emph{Applied Linear Regression}, Fourth Edition, Wiley.

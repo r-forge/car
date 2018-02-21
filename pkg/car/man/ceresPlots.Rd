@@ -24,13 +24,13 @@ ceresPlot(model, ...)
 
 \arguments{
   \item{model}{model object produced by \code{lm} or \code{glm}.}
-  \item{terms}{ A one-sided formula that specifies a subset of the predictors. 
+  \item{terms}{ A one-sided formula that specifies a subset of the regressors. 
 One component-plus-residual plot is drawn for each term.  The default
 \code{~.} is to plot against all numeric predictors.  For example, the
 specification \code{terms = ~ . - X3} would plot against all predictors
 except for \code{X3}.  Factors and nonstandard predictors such as B-splines are 
-skipped.  If this argument is a quoted name of one of the predictors, the 
-component-plus-residual plot is drawn for that predictor only.
+skipped.  If this argument is a quoted name of one of the regressors, the 
+component-plus-residual plot is drawn for that predictor only.  
 }
   \item{layout}{ 
 If set to a value like \code{c(1, 1)} or \code{c(4, 3)}, the layout
@@ -100,14 +100,12 @@ graph
   Cook, R. D. and Weisberg, S. (1999)
   \emph{Applied Regression, Including Computing and Graphics.} Wiley.
 
-  Fox, J. (2008)
+  Fox, J. (2016)
   \emph{Applied Regression Analysis and Generalized Linear Models},
-  Second Edition. Sage.  
+  Third Edition. Sage.  
   
-  Fox, J. and Weisberg, S. (2011) 
-  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
-  
-  Weisberg, S. (2014)  \emph{Applied Linear Regression}, Fourth Edition, Wiley.
+  Fox, J. and Weisberg, S. (2019) 
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 \author{John Fox \email{jfox@mcmaster.ca}}
 

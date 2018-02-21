@@ -26,7 +26,7 @@ invResPlot(model, ...)
 \arguments{
   \item{model}{A \code{"lm"} regression object.}
   \item{lambda}{A vector of values for lambda.  A plot will be produced 
-  with curves corresponding to these lambdas and to the least squares 
+  with curves corresponding to these lambdas and to the nonlinear least squares 
   estimate of lambda.}
   \item{robust}{If \code{TRUE}, then estimation uses Huber M-estimates with the median
     absolute deviation to estimate scale and k= 1.345.  The default is \code{FALSE}.}
@@ -58,9 +58,8 @@ If robust = TRUE, the value of Huber objective function is returned.}
   Fox, J. and Weisberg, S. (2011) 
   \emph{An R Companion to Applied Regression}, Second Edition, Sage.
   
-  Pendergast, L, and Sheather, S. (in press).  On sensitivity of response plot
-estimation of a robust estimation approach.  \emph{Scandinavian Journal of
-Statistics}.
+  Prendergast, L. A., & Sheather, S. J. (2013)
+  On sensitivity of inverse response plot estimation and the benefits of a robust estimation approach. \emph{Scandinavian Journal of Statistics}, 40(2), 219-237.
 
   Weisberg, S. (2014) \emph{Applied Linear Regression}, Fourth Edition, Wiley, Chapter 7.
 }

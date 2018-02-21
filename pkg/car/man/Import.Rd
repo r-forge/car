@@ -1,23 +1,23 @@
 \name{Import}
 \alias{Import}
 \title{
-Import
+Import data from many file formats
 }
 \description{
-Use the \code{import} function from the \code{rio} package to read a data.frame from a variety of file types.  This function includes 3 additional arguments adding row names and for converting character and logical variables to factors.}
+Use the \code{import} function from the \pkg{rio} package to read a data.frame from a variety of file types.  The \code{Import} function includes 3 additional arguments adding row names and for converting character and logical variables to factors.}
 \usage{
 Import(file, format, ..., row.names=TRUE,
-                   stringsAsFactors = default.stringsAsFactors())
+       stringsAsFactors = default.stringsAsFactors())
 }
 \arguments{
   \item{file}{
-A character string naming a file, URL, or single-file .zip or .tar archive.  See the details below.
+A character string naming a file, URL, or single-file .zip or .tar archive.  See the details below.  If the file name has an extention like \code{.xlsx} or \code{.csv} then the type of file is inferred from the extension.
 }
   \item{format}{
-An optional character string code of file format, which can be used to override the format inferred from file. Shortcuts include: "," (for comma-separated values), ";" (for semicolon-separated values), and "|" (for pipe-separated values).  See details below.
+If an extension is not present in the file name or it is wrong, the file format can be set with this argument; see \code{\link[rio]{import}}.
 }
   \item{\dots}{
-Additional arguments.  The arguments \code{setclass} and \code{which}, if present, are passed to \code{\link[rio]{import}}.  Additional arguments are passed by \code{import} to the functions in other packages that it calls.
+Additional arguments passed to \code{\link[rio]{import}}.  
 }
   \item{row.names}{
 If \code{TRUE}, the default, the left-most character variable that has all unique elements is removed from the data frame and set to be \code{row.names}.  To match \code{import}, set \code{row.names=FALSE}.

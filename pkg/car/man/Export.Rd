@@ -1,10 +1,10 @@
 \name{Export}
 \alias{Export}
 \title{
-Export
+Export a data frame to disk in one of many formats
 }
 \description{
-Uses the \code{export} function in the \code{rio} package to export a file to disk.  This function adds an argument for converting row.names to a column in the resulting file.
+Uses the \code{export} function in the \pkg{rio} package to export a file to disk.  This function adds an argument for converting row.names to a column in the resulting file.
 }
 \usage{
 Export(x, file, format, ..., keep.row.names)
@@ -14,10 +14,9 @@ Export(x, file, format, ..., keep.row.names)
 A data frame or matrix to be written to a file.
 }
   \item{file}{
-A character string naming a file. Must specify file and/or format.
+A character string naming a file. If the file name has an extension, such as \code{.xlsx}, the extention is used to infer the type of file to be exported.  See \code{\link[rio]{export}} for the file types supported.
 }
-  \item{format}{
-An optional character string containing the file format, which can be used to override the format inferred from file or, in lieu of specifying file, a file with the symbol name of x and the specified file extension will be created. Must specify file and/or format. Shortcuts include: "," (for comma-separated values), ";" (for semicolon-separated values), "|" (for pipe-separated values), and "dump"" for \code{\link{dump}}.
+  \item{format}{see \code{\link[rio]{export}}.
 }
   \item{\dots}{
 Additional arguments; see \code{\link[rio]{export}}.
@@ -27,7 +26,7 @@ If set to \code{TRUE}, then the data frame's row.names are appended to the left 
 }
 }
 \details{
-This is a convenience function in the \code{car} package for exporting (writing) a data frame to a file in a wide variety of formats.  It optionally allows converting the row.names for the data frame to a column before writing.  It then calls \code{\link[rio]{export}} in the \code{rio} package.  That function in turn uses many other packages and functions for writing the function to a file.
+This is a convenience function in the \pkg{car} package for exporting (writing) a data frame to a file in a wide variety of formats including csv, Microsoft Excel.  It optionally allows converting the row.names for the data frame to a column before writing.  It then calls \code{\link[rio]{export}} in the \code{rio} package.  That function in turn uses many other packages and functions for writing the function to a file.
 }
 \value{
 The name of the output file as a character string (invisibly).

@@ -5,7 +5,7 @@ Print estimated coefficients and their standard errors in a table
 for several regression models.
 }
 \description{
-This simple function extracts estimates of regression parameters and
+This function extracts estimates of regression parameters and
 their standard errors from one or more models and prints them in a
 table.
 }
@@ -27,7 +27,7 @@ If \code{TRUE}, the default, show standard errors as well as estimates.
 }
 \item{zvals}{If \code{TRUE} (the default is \code{FALSE}), print Wald statistics, the
 ratio of each coefficient to its standard error.}
-\item{pvals}{If ]code{TRUE} (the default is \code{FALSE}), print two-sided p-values
+\item{pvals}{If code{TRUE} (the default is \code{FALSE}), print two-sided p-values
 from the standard normal distribution corresponding to the Wald statistics.}
 \item{vcov.}{an optional argument, specifying a function to be applied to all of the models, returning a coefficient covariance matrix
 for each, or a list with one element for each model, with each element either containing a function to
@@ -48,8 +48,8 @@ This function is mainly used for its side-effect of printing the result.  It
 also  invisibly returns a matrix of estimates, standard errors, Wald statistics, and p-values.
 }
 \references{
-Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied Regression},
-Second Edition, Sage.
+Fox, J. and Weisberg, S. (2019) \emph{An R Companion to Applied Regression},
+Third Edition, Sage.
 }
 \author{John Fox \email{jfox@mcmaster.ca}}
 

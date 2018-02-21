@@ -6,7 +6,7 @@
 
 \title{Enhanced Scatterplots with Marginal Boxplots, Point Marking, Smoothers, and More}
 \description{
-This function uses basic R graphics to draw a two-dimensional scatterplot, with options to allow for plot enhancements that are often helpful with regression problems.  Enhancements include adding marginal boxplots, estimated mean and variance functions using parametric and nonparametric method, point identification, jittering, setting characteristics of points and lines like color, size and symbol, fitting conditional on a grouping variable, and other enhancements.
+This function uses basic R graphics to draw a two-dimensional scatterplot, with options to allow for plot enhancements that are often helpful with regression problems.  Enhancements include adding marginal boxplots, estimated mean and variance functions using either parametric or nonparametric methods, point identification, jittering, setting characteristics of points and lines like color, size and symbol, fitting conditional on a grouping variable, and other enhancements.
 \code{sp} is an abbreviation for \code{scatterplot}.
 }
 \usage{
@@ -28,6 +28,8 @@ sp(x, ...)
 }
 
 \arguments{
+
+
   \item{x}{vector of horizontal coordinates (or first argument of generic function).}
   \item{y}{vector of vertical coordinates.}
   \item{formula}{a model formula, of the form \code{y ~ x} or, if plotting by
@@ -45,7 +47,7 @@ sp(x, ...)
        line is fit.  This argument can also be a list.  The default of \code{TRUE} is
        equivalent to \code{refLine=list(method=lm, lty=1, lwd=2, col=col)}, which specifies
        using the \code{lm} function to estimate the fitted line, to draw a solid line
-       (\code{lty=1}) or width 2 times the nominal width (\code{lwd=2}) in the color given by
+       (\code{lty=1}) of width 2 times the nominal width (\code{lwd=2}) in the color given by
        the first element of the \code{col} argument described below.
        }
   \item{legend}{when the plot is drawn by groups and \code{legend=TRUE}, controls placement
@@ -86,7 +88,7 @@ sp(x, ...)
     for grouped
     data.  The default smoother is \code{\link{loessLine}}, which uses the 
     \code{\link{loess}} function from
-    the \code{stats} package.  This smoother is fast and reliable.  See the details below 
+    the \pkg{stats} package.  This smoother is fast and reliable.  See the details below 
     for changing
     the smoother, line type, width and color, of the added lines, and adding arguments 
     for the smoother.}
@@ -121,15 +123,15 @@ sp(x, ...)
 }
 
 \details{
-   Many arguments to scatterplot were changed with verions 3 of \code{car} that we hope simplifies use of
+   Many arguments to scatterplot were changed with verions 3 of \pkg{car} that we hope simplifies use of
    this function.
 
    The \code{smooth} argument is usually either equal to \code{TRUE} or \code{FALSE} to draw, or omit,
    the smoother.  Alternatively \code{smooth} can equal a list of arguments.  The default behavior of
    \code{smooth=TRUE} is equivalent to \code{smooth=list(smoother=loessLine, spread=!by.groups, lty.smooth=2, lty.spread=4)}, specifying the smoother to be used, including the spread or variance smooth,
    and the line widths and types for the curves.  You can also specify the colors you want to use for the mean and variance smooths with the arguments \code{col.smooth} and \code{col.spread}. Alternative smoothers are \code{gamline} that uses the
-   \code{\link{gam}} function from the mgcv package, and \code{quantregLine} that uses quantile regression to
-   estimate the median and quartile functiona using \code{\link{rqss}} frm the quantreg package.  All of these
+   \code{\link{gam}} function from the \pkg{mgcv} package, and \code{quantregLine} that uses quantile regression to
+   estimate the median and quartile functiona using \code{\link{rqss}} frm the \pkg{quantreg} package.  All of these
    smoothers have one or more arguments described on their help pages, and these arguments can be added to the
    \code{smooth} argument; for example, \code{smooth = list(span=1/2)} would use the default
    \code{loessLine} smoother,

@@ -81,15 +81,13 @@ graph}
 \seealso{ \code{\link{inverseResponsePlot}},\code{\link{optimize}}}
 
 \references{
-Fox, J. and Weisberg, S. (2011) 
-\emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  Fox, J. and Weisberg, S. (2011) 
+  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  
+  Prendergast, L. A., & Sheather, S. J. (2013)
+  On sensitivity of inverse response plot estimation and the benefits of a robust estimation approach. \emph{Scandinavian Journal of Statistics}, 40(2), 219-237.
 
-Pendergast, L, and Sheather, S. (in press).  On sensitivity of response plot
-estimation of a robust estimation approach.  \emph{Scandinavian Journal of
-Statistics}.
-
-Weisberg, S. (2014)  \emph{Applied Linear Regression}, Fourth Edition, Wiley
-  Wiley. 
+  Weisberg, S. (2014) \emph{Applied Linear Regression}, Fourth Edition, Wiley, Chapter 7. 
 }
 
 \author{Sanford Weisberg, \email{sandy@umn.edu} }
