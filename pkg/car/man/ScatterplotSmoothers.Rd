@@ -10,7 +10,7 @@ Smoothers to Draw Lines on Scatterplots
 
 \description{
 These smoothers are used to draw nonparametric-regression lines on scatterplots produced by
-the \code{\link{scatterplot}}, \code{\link{scatterplotMatrix}} and several other \code{car} functions.
+the \code{\link{scatterplot}}, \code{\link{scatterplotMatrix}} and several other \pkg{car} functions.
 The functions are not meant to
 be called directly by the user, although the user can supply options via the \code{smoother.args} argument,
 the contents of which vary by the smoother (see \emph{Details} below). The \code{gamLine} smoother uses the
@@ -31,11 +31,11 @@ quantregLine(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE, spread=FALSE,
 }
 
 \arguments{
-  \item{x}{$x$ coordinates of points.}
-  \item{y}{$y$ coordinates of points.}
+  \item{x}{horizontal coordinates of points.}
+  \item{y}{vertical coordinates of points.}
   \item{col}{line color.}
-  \item{log.x}{should be set to \code{TRUE} (default is \code{FALSE}) if the $x$-axis is logged.}
-  \item{log.y}{should be set to \code{TRUE} (default is \code{FALSE}) if the $y$-axis is logged.}
+  \item{log.x}{should be set to \code{TRUE} (default is \code{FALSE}) if the horizontal axis is logged.}
+  \item{log.y}{should be set to \code{TRUE} (default is \code{FALSE}) if the vertical axis is logged.}
   \item{spread}{the default is to plot only an estimated mean or median function.  If this
   argument is TRUE, then a measure of spread is also plotted.}
   \item{smoother.args}{additional options accepted by the smoother, in the form of a list of
@@ -48,8 +48,8 @@ quantregLine(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE, spread=FALSE,
 }
 
 \details{
-The function \code{loessLine} is a re-implementation of the \code{loess} smoother
-that was used in \code{car} prior to September 2012.  The main enhancement is the ability to
+The function \code{loessLine} is a re-implementation of the \pkg{loess} smoother
+that was used in \pkg{car} prior to September 2012.  The main enhancement is the ability to
 set more arguments through the \code{smoother.args} argument.
 
 The function \code{gamLine} is more general than the \code{loess} fitting

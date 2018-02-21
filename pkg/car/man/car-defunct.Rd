@@ -24,6 +24,7 @@
 \alias{qq.plot}
 %\alias{scatterplot.matrix}
 \alias{spread.level.plot}
+\alias{skewPower}
 
 \title{Defunct Functions in the car Package}
 

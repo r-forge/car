@@ -93,7 +93,7 @@ spm(x, ...)
 }
 
 \details{
-   Many arguments to scatterplotMatrix were changed with verions 3 of \code{car} that we hope simplifies use of
+   Many arguments to scatterplotMatrix were changed with verions 3 of \pkg{car} that we hope simplifies use of
    this function.
 
    The \code{smooth} argument is usually either equal to \code{TRUE} or \code{FALSE} to draw, or omit,

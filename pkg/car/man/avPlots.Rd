@@ -95,9 +95,9 @@ avPlot(model, ...)
   Cook, R. D. and Weisberg, S. (1999)
   \emph{Applied Regression, Including Computing and Graphics.} Wiley.
 
-  Fox, J. (2008)
+  Fox, J. (2016)
   \emph{Applied Regression Analysis and Generalized Linear Models},
-  Second Edition. Sage.  
+  Third Edition. Sage.  
   
   Fox, J. and Weisberg, S. (2019) 
   \emph{An R Companion to Applied Regression}, Third Edition, Sage.

@@ -9,7 +9,7 @@ Model Predictions
 \description{
 \code{Predict} is a generic function with, at present, a single method for \code{"lm"} objects,
 \code{Predict.lm}, which is a modification of the standard \code{\link{predict.lm}} method in
-the \pkg{stats} package, but with an additional \code{vcov.} argument.
+the \pkg{stats} package, but with an additional \code{vcov.} argument for a user-specified covariance matrix for intreval estimation.
 }
 
 \usage{
@@ -46,9 +46,8 @@ See \code{\link{predict}} and \code{\link{predict.lm}}.
 }
 
 \references{
-J. Fox and S. Weisberg,
-\emph{An R Companion to Applied Regression, Third Edition}
-Sage, in press.
+Fox, J. and Weisberg, S. (2019)
+\emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 
 \author{

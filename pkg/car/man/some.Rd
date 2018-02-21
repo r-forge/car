@@ -36,8 +36,8 @@ some(x, ...)
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \references{
-  Fox, J. and Weisberg, S. (2011)
-  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  Fox, J. and Weisberg, S. (2019)
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 
 \note{These functions are adapted from \code{head} and \code{tail}
@@ -45,7 +45,7 @@ in the \code{utils} package.
 }
 
 
-\seealso{\code{\link[utils]{head}}, \code{\link[utils]{tail}}.}
+\seealso{\code{\link[utils]{head}}, \code{\link[utils]{tail}}, \code{\link{brief}}.}
 
 \examples{
 some(Duncan)

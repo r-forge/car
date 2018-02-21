@@ -36,8 +36,8 @@ The object returned by \code{\link{tapply}}, typically simply printed.
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \references{
-  Fox, J. and Weisberg, S. (forthcoming)
-  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
+	Fox, J. and Weisberg, S. (2019)
+    \emph{An R Companion to Applied Regression}, Third Edition. Sage.
 }
 
 

@@ -5,10 +5,11 @@
 #                 download a file if file=filename
 #                 download a script file if script = chap-num
 #  Add more to carWeb including cheat sheets
+# 2/21/2018 deleted "ethics" from the deafulat for page
 
 
 carWeb <-
-function (page = c("webpage", "errata", "taskviews", "ethics"), script, data, setup)
+function (page = c("webpage", "errata", "taskviews"), script, data, setup)
 {
     rstudiocheat <- "https://www.rstudio.com/resources/cheatsheets/"
     ide.cheat <- "https://www.rstudio.com/wp-content/uploads/2016/01/rstudio-IDE-cheatsheet.pdf"

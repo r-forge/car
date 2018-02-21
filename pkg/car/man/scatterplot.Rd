@@ -68,7 +68,7 @@ sp(x, ...)
       which identifies the 2 points (in each group) with the largest Mahalanobis distances
       from the center of the data.  See \code{\link{showLabels}} for a description of the
       other arguments.  The default behavior of \code{id} is not the same in all graphics
-      functions in \code{car}, as the \code{method} used depends on the type of plot.}
+      functions in \pkg{car}, as the \code{method} used depends on the type of plot.}
   \item{ellipse}{controls plotting data-concentration ellipses. If \code{FALSE}     
       (the default), no ellipses are plotted.  Can be a list of named values giving 
       \code{levels}, a vector of one or more bivariate-normal probability-contour levels at

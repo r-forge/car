@@ -35,7 +35,7 @@ or residual bootstrap for many regression objects.  These are method functions f
 
 \arguments{
   \item{x, object}{
-An object created by a call to \code{boot} in the \code{boot} package, or to \code{Boot} in the \code{car} package of class \code{"boot"}.
+An object created by a call to \code{boot} in the \code{boot} package, or to \code{Boot} in the \pkg{car} package of class \code{"boot"}.
 }
   \item{parm}{
 A vector of numbers or coefficient names giving the coefficients for which a
