@@ -36,7 +36,7 @@ basicPower(U,lambda, gamma=NULL)
   family of \emph{scaled power transformations}
   equals \eqn{(x^{\lambda}-1)/\lambda}{(x^(lambda)-1)/lambda}
   for \eqn{\lambda \neq 0}{lambda not equal to 0}, and
-  \eqn{\logx)}{log(x)} if \eqn{\lambda =0}{lambda = 0}.  The \code{bcPower} 
+  \eqn{\log(x)}{log(x)} if \eqn{\lambda =0}{lambda = 0}.  The \code{bcPower} 
   function computes the scaled power transformation of 
   \eqn{x = U + \gamma}{x = U + gamma}, where \eqn{\gamma}{gamma} 
   is chosen so \eqn{U+\gamma}{U + gamma} is strictly positive.
