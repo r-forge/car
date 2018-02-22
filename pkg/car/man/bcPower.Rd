@@ -32,16 +32,17 @@ basicPower(U,lambda, gamma=NULL)
 }
 
 \details{
-  Suppose the variable \eqn{x}{x} is strictly positive.  Then the Box-Cox 
+  The Box-Cox 
   family of \emph{scaled power transformations}
   equals \eqn{(x^{\lambda}-1)/\lambda}{(x^(lambda)-1)/lambda}
   for \eqn{\lambda \neq 0}{lambda not equal to 0}, and
   \eqn{\log(x)}{log(x)} if \eqn{\lambda =0}{lambda = 0}.  The \code{bcPower} 
   function computes the scaled power transformation of 
   \eqn{x = U + \gamma}{x = U + gamma}, where \eqn{\gamma}{gamma} 
-  is chosen so \eqn{U+\gamma}{U + gamma} is strictly positive.
+  is set by the user so \eqn{U+\gamma}{U + gamma} is strictly positive for these
+  transformations to make sense.
 
-  The Box-Cox family with negatives allowed was proposed by Hawkins and Weisberg (2017).  It is the Box-Cox power transformation of \eqn{z = .5 * (U + (U^2 + \gamma^2)^{1/2})}{z = .5 * (U + (U^2 + gamma^2)^{1/2})}, where for this family \eqn{\gamma}{gamma} is strictly positive if \eqn{U}{U} includes negative values and non-negative otherwise.  The value of \eqn{z}{z} is always positive.  The bcnPower transformations behave very similarly to the bcPower transformations, including much less bias than is introduced by setting the parameter \eqn{\gamma}{gamma} to be non-zero in the Box-Cox family.
+  The Box-Cox family with negatives allowed was proposed by Hawkins and Weisberg (2017).  It is the Box-Cox power transformation of \deqn{z = .5  (U + \sqrt{U^2 + \gamma^2)})}{z = .5 (U + \sqrt[U^2 + gamma^2])} where for this family \eqn{\gamma}{gamma} is either user selected or is estimated. \code{gamma} must be positive if \eqn{U}{U} includes negative values and non-negative otherwise, ensuring that \eqn{z}{z} is always positive.  The bcnPower transformations behave similarly to the bcPower transformations, and introduce less bias than is introduced by setting the parameter \eqn{\gamma}{gamma} to be non-zero in the Box-Cox family.
 
 The function \code{bcnPowerInverse} computes the inverse of the \code{bcnPower} function, so \code{U = bcnPowerInverse(bcnPower(U, lambda=lam, jacobian.adjusted=FALSE, gamma=gam), lambda=lam, gamma=gam)} is true for any permitted value of \code{gam} and \code{lam}.
 
