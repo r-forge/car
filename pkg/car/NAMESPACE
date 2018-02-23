@@ -1,4 +1,4 @@
-# last modified 2018-02-01 by J. Fox
+# last modified 2018-02-23 by J. Fox
 
 # additions for car 3.0-0, started 2016-12-27
 
@@ -356,6 +356,7 @@ S3method(summary, powerTransform)
 S3method(coef, powerTransform)
 S3method(vcov, powerTransform)
 S3method(vif, default)
+S3method(vif, merMod)
 S3method(symbox, formula)
 S3method(symbox, default)
 # added with bcnPower

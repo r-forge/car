@@ -1,20 +1,24 @@
 \name{vif}
 \alias{vif}
 \alias{vif.default}
+\alias{vif.merMod}
 
 \title{Variance Inflation Factors}
 \description{
   Calculates variance-inflation and generalized variance-inflation factors
-  for linear and generalized linear models.
+  for linear, generalized linear, and other models.
 }
 \usage{
 vif(mod, ...)
 
 \method{vif}{default}(mod, ...)
+
+\method{vif}{merMod}(mod, ...)
 }
  
 \arguments{
-  \item{mod}{an object that responds to \code{\link{coef}}, \code{\link{vcov}}, and
+  \item{mod}{for the default method, an object that responds to 
+  \code{\link{coef}}, \code{\link{vcov}}, and
   \code{\link{model.matrix}}, such as an \code{lm} or \code{glm} object.}
   \item{\dots}{not used.}
 }
@@ -35,7 +39,7 @@ vif(mod, ...)
   associated with the term.
   
   Through a further generalization, the implementation here is applicable as well to other sorts of models,
-  in particular weighted linear models and  generalized linear models.
+  in particular weighted linear models,  generalized linear models, and mixed-effects models.
 }
 \value{
   A vector of vifs, or a matrix containing one row for each term in the model, and
