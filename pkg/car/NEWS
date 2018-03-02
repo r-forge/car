@@ -14,7 +14,7 @@ Changes to Version 3.0-0
 
   o Changed as.factor.result argument in recode() to as.factor, and as.numeric.result to as.numeric.
 
-  o New brief(), Confint(), Predict(), Tapply(), Summarize()/Summarise() functions.
+  o New brief(), Confint(), Predict(), Tapply(), S() functions.
 
   o New poTest() function for testing for proportional odds in "polr" models.
 
