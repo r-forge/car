@@ -8,7 +8,7 @@ Changes to Version 3.0-0
   
   o bootCase(), nextBoot(), and their methods are now deprecated in favor of Boot().
 
-  o All data sets moved to the carData pakage.
+  o All data sets moved to the carData package.
 
   o Improved handling of imports (suggestion of Jonathon Love).
 
