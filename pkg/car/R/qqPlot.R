@@ -15,6 +15,7 @@
 # 2017-06-27: added formula method and plotting by groups. J. Fox
 # 2017-10-26: fix qqPlot.lm() so that it doesn't return names identifical to indices. J. Fox
 # 2017-11-30: substitute carPalette() for palette(). J. Fox
+# 2018-03-23: properly return point IDs when method="identify"
 
 qqp <- function(...) qqPlot(...)
 
@@ -106,9 +107,11 @@ qqPlot.default <- function(x, distribution="norm", groups, layout,
 	}
 	extreme <- showLabels(z, ord.x, labels=ord.lab,
 			method = id.method, n = id.n, cex=id.cex, col=id.col, location=id.location)
-	nms <- names(extreme)
-	extreme <- index[good][ord][extreme]
-	if (!all(as.character(extreme) == nms)) names(extreme) <- nms
+	if (is.numeric(extreme)){
+  	nms <- names(extreme)
+  	extreme <- index[good][ord][extreme]
+  	if (!all(as.character(extreme) == nms)) names(extreme) <- nms
+	}
 	if (length(extreme) > 0) extreme else invisible(NULL)
 }
 

@@ -24,6 +24,7 @@
 # 2017-05-08: S. Weisberg changed col=carPalette()
 # 2017-11-30: substitute carPalette() for palette(). J. Fox
 # 2017-12-07: J. Fox: added fill, fill.alpha subargs to ellipse arg, suggestion of Michael Friendly.
+# 2018-03-23: J. Fox: fix ellipses when log-axes used by groups; fix interactive point identification by groups.
 
 reg <- function(reg.line, x, y, col, lwd, lty, log.x, log.y){
   if(log.x) x <- log(x)
@@ -303,8 +304,8 @@ scatterplot.default <- function(x, y, boxplots=if (by.groups) "" else "xy",
                                         regLine.args$col[i])
       if (ellipse) {
         X <- na.omit(data.frame(x=.x[subs], y=.y[subs]))
-        if (logged("x")) X$x <- log(x)
-        if (logged("y")) X$y <- log(y)
+        if (logged("x")) X$x <- log(X$x)
+        if (logged("y")) X$y <- log(X$y)
         with(X, dataEllipse(x, y, plot.points=FALSE, lwd=1, log=log,
                             levels=levels, col=col[i], robust=robust,
                             fill=fill, fill.alpha=fill.alpha))
@@ -346,7 +347,7 @@ scatterplot.default <- function(x, y, boxplots=if (by.groups) "" else "xy",
            title=legend.title, bg="white", ncol=legend.columns, inset=legend$inset)
   }
   if (id.method[1] == "identify") indices <- showLabels(.x, .y, labels,
-                    method=id.method, n=length(.x), cex=id.cex, col=id.col, id.location=id.location)
+                    method=id.method, n=length(.x), cex=id.cex, col="black", id.location=id.location)
   if (is.null(indices)) invisible(indices) else if (is.numeric(indices)) sort(indices) else indices
 }
 
