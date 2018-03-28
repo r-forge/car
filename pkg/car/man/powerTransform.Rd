@@ -128,13 +128,18 @@ m2 <- lm(I1L1 ~ pool, LoBD)
 summary(p2 <- powerTransform(m2, family="bcnPower"))
 testTransform(p2, .5)
 summary(powerTransform(update(m2, cbind(LoBD$I1L2, LoBD$I1L1) ~ .), family="bcnPower"))
-# multivariate bcnPower, with 8 responses
-summary(powerTransform(update(m2, as.matrix(LoBD[, -1]) ~ .), family="bcnPower"))
-# multivariate bcnPower, fit with one iteration using starting values as estimates
-summary(powerTransform(update(m2, as.matrix(LoBD[, -1]) ~ .), family="bcnPower", itmax=1))
+
+\dontrun{ 
+  # tajes a few seconds:
+  # multivariate bcnPower, with 8 responses
+  summary(powerTransform(update(m2, as.matrix(LoBD[, -1]) ~ .), family="bcnPower"))
+  # multivariate bcnPower, fit with one iteration using starting values as estimates
+  summary(powerTransform(update(m2, as.matrix(LoBD[, -1]) ~ .), family="bcnPower", itmax=1))
+}
 
 # mixed effects model
 \dontrun{
+  # uses the lme4 package
   data <- reshape(LoBD[1:20, ], varying=names(LoBD)[-1], direction="long", v.names="y")
   names(data) <- c("pool", "assay", "y", "id")
   data$assay <- factor(data$assay)
