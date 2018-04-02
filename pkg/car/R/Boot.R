@@ -147,7 +147,7 @@ Boot.glm <- function(object, f=coef, labels=names(f(object)),
 
 Boot.nls <- function(object, f=coef, labels=names(f(object)),
                      R=999, method=c("case", "residual"),ncores=1, ...) {
-  f0 <- f(obj)
+  f0 <- f(object)
 ### Remove rows with missing data from the data object
   all.names <- all.vars(object$m$formula())
   param.names <- names(object$m$getPars())
