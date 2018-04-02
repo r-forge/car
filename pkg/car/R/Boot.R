@@ -44,6 +44,7 @@
 # 2017-12-24: Removed parallel argument that was added. If ncores<=1, no parallel processing is used.  If ncores>1
 # selects the correct parallel environment, and implements with that number of cores. 
 # 2018-01-28: Changed print.summary.boot to print R once only if it is constant
+# 2018-04-02: John fixed error in Boot.nlm() reported by Derek Ogle.
 
 Boot <- function(object, f=coef, labels=names(f(object)), R=999, method=c("case", "residual"), ncores=1, ...){UseMethod("Boot")}
 
