@@ -1,3 +1,9 @@
+Changes to Version 3.0-1
+
+  o Too few colors in scatterplot() and scatterplotMatrix() now produces a warning rather than an error (suggestion of John Maindonald).
+  
+  o Small edits to docs.
+
 Changes to Version 3.0-0
 
   o This version of the package corresponds to the third edition of Fox and Weisberg, An R Companion to Applied Regression (Sage, forthcoming).

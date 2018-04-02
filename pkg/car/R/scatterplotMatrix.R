@@ -25,6 +25,7 @@
 # 2017-06-22: J. Fox: eliminated extraneous code for defunct labels argument; small cleanup
 # 2017-12-07: J. Fox: added fill, fill.alpha subargs to ellipse arg, suggestion of Michael Friendly.
 # 2018-02-09: S. Weisberg removed the transform and family arguments from the default method
+# 2018-04-02: J. Fox: warning rather than error for too few colors.
 
 scatterplotMatrix <- function(x, ...){
   UseMethod("scatterplotMatrix")
@@ -96,7 +97,6 @@ scatterplotMatrix.default <-
     reg.line <- regLine.args$method
     lty <- regLine.args$lty
     lwd <- regLine.args$lwd
-#    if(!by.groups) regLine.args$col <- col[1]
   } else reg.line <- "none"
   # setup smoother, now including spread
   n.groups <- if(is.null(groups)) 1 else(length(levels(groups)))
@@ -285,21 +285,11 @@ scatterplotMatrix.default <-
     groups <- factor(groups, levels=levels[counts > 0])
   }
   n.groups <- length(levels(groups))
-  if (n.groups > length(col)) stop("number of groups exceeds number of available col")
+  if (n.groups > length(col)) {
+    warning("number of groups exceeds number of available colors\n  colors are recycled")
+    col <- rep(col, n.groups)
+  }
   if (length(col) == 1) col <- rep(col, 3)
-
-#  if (transform != FALSE | length(transform) == ncol(x)){
-#    if (transform == TRUE & length(transform) == 1){
-#      transform <- if (n.groups > 1) coef(powerTransform(as.matrix(x) ~ groups, family=family), round=TRUE)
-#      else coef(powerTransform(x, family=family), round=TRUE)
-#    }
-#    for (i in 1:ncol(x)){
-#      x[, i] <- if (family == "bcPower")
-#        bcPower(x[, i], transform[i])
-#      else yjPower(x[, i], transform[i])
-#      var.labels[i] <- paste(var.labels[i], "^(", round(transform[i],2), ")", sep="")
-#    }
-#  }
   labs <- labels
   pairs(x, labels=var.labels,
         cex.axis=cex.axis, cex.main=cex.main, cex.labels=cex.labels, cex=cex,
