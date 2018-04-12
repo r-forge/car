@@ -4,7 +4,9 @@ Changes to Version 3.0-1
   
   o Bug fix to Boot.nlm() (reported by Derek Ogle).
   
-  o Fixed bug in linearHypothesis() for lmer models using pbkrtest (following report by Francois Piraux)
+  o Fixed bug in linearHypothesis() for lmer() models using pbkrtest (following report by Francois Piraux). This bug indirectly affected Anova().
+  
+  o Fixed bug in scatterplot() when groups variable is not a factor (reported by Alexandre Courtiol).
   
   o Small improvements. 
   

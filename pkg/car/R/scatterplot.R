@@ -26,6 +26,7 @@
 # 2017-12-07: J. Fox: added fill, fill.alpha subargs to ellipse arg, suggestion of Michael Friendly.
 # 2018-03-23: J. Fox: fix ellipses when log-axes used by groups; fix interactive point identification by groups.
 # 2018-04-02: J. Fox: warning rather than error for too few colors.
+# 2018-04-12: J. Fox: fixed error produced when groups not a factor, reported by Alexandre Courtiol.
 
 reg <- function(reg.line, x, y, col, lwd, lty, log.x, log.y){
   if(log.x) x <- log(x)
@@ -152,7 +153,11 @@ scatterplot.default <- function(x, y, boxplots=if (by.groups) "" else "xy",
     fill <- ellipse.args$fill
     fill.alpha <- ellipse.args$fill.alpha
   }
-  n.groups <- if(by.groups) length(levels(groups)) else 1
+  n.groups <- if (by.groups) {
+    if (!is.factor(groups)) groups <- as.factor(groups)
+    length(levels(groups)) 
+    }
+    else 1
   regLine.args <- applyDefaults(regLine, defaults=list(method=lm, lty=1, lwd=2,
                                                        col=rep(col, n.groups), type="regLine"))
   if(!isFALSE(regLine.args)) {
@@ -216,7 +221,7 @@ scatterplot.default <- function(x, y, boxplots=if (by.groups) "" else "xy",
     lines(c(.5, .5), c(Q3, UW))
     if (!is.null(res$out)) points(rep(.5, length(res$out)), res$out, cex=cex)
   }
-  force(by.groups)
+#  force(by.groups)
   id <- as.list(id)
   if (is.null(labels)){
     labels <- if (is.null(names(y)))
@@ -234,8 +239,8 @@ scatterplot.default <- function(x, y, boxplots=if (by.groups) "" else "xy",
   if( FALSE == boxplots) boxplots <- ""
   if (!missing(groups)){
     data <- na.omit(data.frame(groups, x, y, labels, stringsAsFactors=FALSE))
-    groups <- data[,1]
-    if (!is.factor(groups)) groups <- as.factor(groups)
+    groups <- data[ , 1]
+#    if (!is.factor(groups)) groups <- as.factor(groups)
     .x <- data[,2]
     .y <- data[,3]
     labels <- data[,4]

@@ -26,6 +26,7 @@
 # 2017-12-07: J. Fox: added fill, fill.alpha subargs to ellipse arg, suggestion of Michael Friendly.
 # 2018-02-09: S. Weisberg removed the transform and family arguments from the default method
 # 2018-04-02: J. Fox: warning rather than error for too few colors.
+# 2018-04-12: J. Fox: clean up handling of groups arg.
 
 scatterplotMatrix <- function(x, ...){
   UseMethod("scatterplotMatrix")
@@ -82,9 +83,9 @@ scatterplotMatrix.default <-
            cex=par("cex"), cex.axis=par("cex.axis"),
            cex.labels=NULL, cex.main=par("cex.main"), row1attop=TRUE, ...){
   transform <- FALSE
-  family <- "bcPower"
+#  family <- "bcPower"
   force(col)
-  n.groups <- if(by.groups) length(levels(groups)) else 1
+#  n.groups <- if(by.groups) length(levels(groups)) else 1
   if(isFALSE(diagonal)) diagonal <- "none" else {
     diagonal.args <- applyDefaults(diagonal, defaults=list(method="adaptiveDensity"), type="diag")
     diagonal <- if(!isFALSE(diagonal.args)) diagonal.args$method
@@ -99,7 +100,11 @@ scatterplotMatrix.default <-
     lwd <- regLine.args$lwd
   } else reg.line <- "none"
   # setup smoother, now including spread
-  n.groups <- if(is.null(groups)) 1 else(length(levels(groups)))
+  n.groups <- if(is.null(groups)) 1 
+    else {
+      if (!is.factor(groups)) groups <- as.factor(groups)
+      length(levels(groups))
+    }
   smoother.args <- applyDefaults(smooth, defaults=list(smoother=loessLine,
                               spread=(n.groups)==1, col=col, lty.smooth=2, lty.spread=4), type="smooth")
   if (!isFALSE(smoother.args)) {
@@ -156,7 +161,7 @@ scatterplotMatrix.default <-
     x <- na.action(data.frame(groups, labels, x, stringsAsFactors=FALSE))
     #      groups <- as.factor(as.character(x[, 1]))
     groups <- x$groups
-    if (!is.factor(groups)) groups <- as.factor(as.character(x[,1]))
+#    if (!is.factor(groups)) groups <- as.factor(as.character(x[,1]))
     labels <- x[, 2]
     x <- x[, -(1:2)]
   }
@@ -284,7 +289,7 @@ scatterplotMatrix.default <-
     warning("the following groups are empty: ", paste(levels[counts == 0], collapse=", "))
     groups <- factor(groups, levels=levels[counts > 0])
   }
-  n.groups <- length(levels(groups))
+#  n.groups <- length(levels(groups))
   if (n.groups > length(col)) {
     warning("number of groups exceeds number of available colors\n  colors are recycled")
     col <- rep(col, n.groups)
