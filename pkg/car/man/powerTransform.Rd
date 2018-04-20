@@ -56,7 +56,7 @@ The final family \code{family="yjPower"} uses the Yeo-Johnson transformation, wh
 
 The function \code{\link{testTransform}} is used to obtain likelihood ratio tests for any specified value for the transformation parameter(s).
 
-Computations maximize the likelihood-like functions described by Box and Cox (1964) and by Velilla (2000).  For univariate responses, the computations are very stable and problems are unlikely, although for \sQuote{lmer} models computations may be very slow because the model is refit many times. For multivariate responses with the \code{bcnPower} family, the computing algorithm may fail.  In this case we recommend adding the argument \code{itmax = 1} to the call to \code{powerTransform}.  This will return the starting value estimates of the transformation parameters, fitting a d-dimensional response as if all the d responses were independent.
+Computations maximize the likelihood-like functions described by Box and Cox (1964) and by Velilla (1993).  For univariate responses, the computations are very stable and problems are unlikely, although for \sQuote{lmer} models computations may be very slow because the model is refit many times. For multivariate responses with the \code{bcnPower} family, the computing algorithm may fail.  In this case we recommend adding the argument \code{itmax = 1} to the call to \code{powerTransform}.  This will return the starting value estimates of the transformation parameters, fitting a d-dimensional response as if all the d responses were independent.
 
 }
 \value{
