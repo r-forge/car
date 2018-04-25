@@ -1,7 +1,7 @@
 \name{carWeb}
 \alias{carWeb}
 
-\title{ Access to the R Companion to Applied Regression website }
+\title{ Access to the R Companion to Applied Regression Website }
 \description{
   This function will access the website for \emph{An R Companion to Applied Regression}, or setup files or data.}
 

@@ -8,6 +8,8 @@ Changes to Version 3.0-1
   
   o Fixed bug in scatterplot() when groups variable is not a factor (reported by Alexandre Courtiol).
   
+  o Updated carWeb().
+  
   o Small improvements. 
   
   o Small edits to docs.
