@@ -6,7 +6,8 @@
 #                 download a script file if script = chap-num
 #  Add more to carWeb including cheat sheets
 # 2/21/2018 deleted "ethics" from the deafulat for page
-# 2018-04-25: J.fox. Update website URLs; update setup files
+# 2018-04-25: J. Fox. Update website URLs; update setup files
+# 2018-04-28: J. Fox. Check whether file exists before overwriting
 
 
 carWeb <-
@@ -36,9 +37,24 @@ function (page = c("webpage", "errata", "taskviews"), script, data, setup)
        if(length(sfile) > 1) sfile <- sfile[1:(length(sfile)-1)]
        sfile <- paste(c(sfile, "R"), collapse="." )
        url <- paste(script.page, sfile, sep="")}
-    if(!missing(setup)){
-      for(f in files) download.file(paste(setup.dir, f, sep=""),
-                                    paste(getwd(), f, sep="/"))
+    if(!missing(setup) && isTRUE(setup)){
+      downloaded <- character(0)
+      for(f in files) {
+        if (file.exists(f)){
+          response <- askYesNo(paste0(f, " exists, replace?"), prompts=c("yes", "no", "cancel"), default=FALSE)
+          if (is.na(response)) {
+            if (length(downloaded) > 0) cat("\nFiles downloaded:", paste(downloaded, collapse=", "), "\n")
+            return(invisible(response))
+          }
+        }
+        else response <- TRUE
+        if (isTRUE(response)) {
+          download.file(paste(setup.dir, f, sep=""),
+                                              paste(getwd(), f, sep="/"))
+          downloaded <- c(downloaded, f)
+        }
+      }
+      if (length(downloaded) > 0) cat("\nFiles downloaded:", paste(downloaded, collapse=", "), "\n")
       return(invisible(NULL))
     }
     browseURL(url)
