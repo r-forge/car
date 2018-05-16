@@ -45,6 +45,7 @@
 # selects the correct parallel environment, and implements with that number of cores. 
 # 2018-01-28: Changed print.summary.boot to print R once only if it is constant
 # 2018-04-02: John fixed error in Boot.nlm() reported by Derek Ogle.
+# 2018-05-16: John modified Confint.boot() to return a "confint.boot" object.
 
 Boot <- function(object, f=coef, labels=names(f(object)), R=999, method=c("case", "residual"), ncores=1, ...){UseMethod("Boot")}
 
@@ -215,9 +216,14 @@ Boot.nls <- function(object, f=coef, labels=names(f(object)),
 Confint.boot <- function(object, parm, level = 0.95,
   type = c("bca", "norm", "basic", "perc"), ...){
   ci <- confint(object, parm, level, type, ...)
+  typelab <- attr(ci, "type")
+  class <- class(ci)
   co <- object$t0
   co <- co[names(co) %in% rownames(ci)]
-  cbind(Estimate=co, ci)
+  ci <- cbind(Estimate=co, ci)
+  attr(ci, "type") <- typelab
+  class(ci) <- class
+  ci
 }
 
 confint.boot <- function(object, parm, level = 0.95,
@@ -225,7 +231,7 @@ confint.boot <- function(object, parm, level = 0.95,
   if (!requireNamespace("boot")) "boot package is missing"
   cl <- match.call()
   type <- match.arg(type)
-  if(type=="all") stop("Use 'boot::boot.ci' if you want to see 'all' types")
+#  if(type=="all") stop("Use 'boot::boot.ci' if you want to see 'all' types") # has no effect
   types <-   c("bca", "norm", "basic", "perc")
   typelab <- c("bca", "normal",   "basic", "percent")[match(type, types)]
   nn <- colnames(object$t)
@@ -254,7 +260,7 @@ confint.boot <- function(object, parm, level = 0.95,
   ints
 }
 print.confint.boot <- function(x, ...) {
-  cat("Bootstrap quantiles, type = ", attr(x, "type"), "\n\n")
+  cat("Bootstrap confidence intervals, type =", attr(x, "type"), "\n\n")
   print(as.data.frame(x), ...)
   }
 
