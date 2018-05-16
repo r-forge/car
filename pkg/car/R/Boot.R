@@ -260,7 +260,7 @@ confint.boot <- function(object, parm, level = 0.95,
   ints
 }
 print.confint.boot <- function(x, ...) {
-  cat("Bootstrap confidence intervals, type =", attr(x, "type"), "\n\n")
+  cat("Bootstrap", attr(x, "type"), "confidence intervals\n\n")
   print(as.data.frame(x), ...)
   }
 
