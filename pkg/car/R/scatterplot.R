@@ -27,6 +27,7 @@
 # 2018-03-23: J. Fox: fix ellipses when log-axes used by groups; fix interactive point identification by groups.
 # 2018-04-02: J. Fox: warning rather than error for too few colors.
 # 2018-04-12: J. Fox: fixed error produced when groups not a factor, reported by Alexandre Courtiol.
+# 2018-05-19: J. Fox: fixed bug when legend=FALSE, reported by Castor Guisande.
 
 reg <- function(reg.line, x, y, col, lwd, lty, log.x, log.y){
   if(log.x) x <- log(x)
@@ -113,7 +114,7 @@ scatterplot.formula <- function (formula, data, subset, xlab, ylab,
 
 scatterplot.default <- function(x, y, boxplots=if (by.groups) "" else "xy",
                                 regLine=TRUE, legend=TRUE, id=FALSE, ellipse=FALSE, grid=TRUE,
-                                smooth=TRUE, #spread=!by.groups,
+                                smooth=TRUE,
                                 groups, by.groups=!missing(groups),
                                 xlab=deparse(substitute(x)), ylab=deparse(substitute(y)),
                                 log="", jitter=list(), cex=par("cex"),
@@ -123,8 +124,10 @@ scatterplot.default <- function(x, y, boxplots=if (by.groups) "" else "xy",
   id <- applyDefaults(id, defaults=list(method="mahal", n=2, cex=1, col=carPalette()[-1], location="lr"), type="id")
   legend <- applyDefaults(legend, defaults=list(title=deparse(substitute(groups)), inset=0.02, cex=1))
   legend.plot <- !(isFALSE(legend) || missing(groups))
-  legend.title <- if (legend.plot) legend$title else ""
-  legend.cex <- legend$cex
+  if (legend.plot){
+    legend.title <- legend$title
+    legend.cex <- legend$cex
+  }
   if (isFALSE(id)){
     id.n <- 0
     id.method <- "mahal"
