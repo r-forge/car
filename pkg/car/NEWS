@@ -12,6 +12,8 @@ Changes to Version 3.0-1
   
   o Fixed bug in influence.merMod() and influence.lme() when there is more than one grouping variable (reported by Maarten Jung).
   
+  o Make model.matrix.lme() more bullet proof (following report by Peter Grossmann).
+  
   o Updated carWeb().
   
   o Small improvements. 
