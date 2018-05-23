@@ -2,6 +2,7 @@
 # 2017-12-14: improved recovery of model data
 #             removed faulty one-step approximations
 # 2018-01-28: fix computation of Cook's D for lme models
+# 2018-05-23: fixed bug when more than one grouping variable (reported by Maarten Jung)
 
 # influence diagnostics for mixed models
 
@@ -19,7 +20,7 @@ influence.merMod <- function(model, groups, data, maxfun=1000, ...){
     }
     else if (length(groups) > 1){
         del.var <- paste0(groups, collapse=".")
-        data[, del.var] <- apply(data, 1, function (row) paste0(row, collapse="."))
+        data[, del.var] <- apply(data[, groups], 1, function (row) paste0(row, collapse="."))
         groups <- del.var
     }
     unique.del <- unique(data[, groups])
@@ -154,7 +155,7 @@ influence.lme <- function(model, groups, data, ...){
     }
     else if (length(groups) > 1){
         del.var <- paste0(groups, collapse=".")
-        data[, del.var] <- apply(data, 1, function (row) paste0(row, collapse="."))
+        data[, del.var] <- apply(data[, groups], 1, function (row) paste0(row, collapse="."))
         groups <- del.var
     }
     unique.del <- unique(data[, groups])

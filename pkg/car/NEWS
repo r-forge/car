@@ -10,6 +10,8 @@ Changes to Version 3.0-1
   
   o Fixed bug in scatterplot() when legend=FALSE (reported by Castor Guisande).
   
+  o Fixed bug in influence.merMod() and influence.lme() when there is more than one grouping variable (reported by Maarten Jung).
+  
   o Updated carWeb().
   
   o Small improvements. 
