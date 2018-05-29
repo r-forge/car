@@ -1,5 +1,7 @@
 Changes to Version 3.0-1
 
+  o Mofidied man page for showLabels to clarify setting the labels argument
+  
   o Too few colors in scatterplot() and scatterplotMatrix() now produces a warning rather than an error (suggestion of John Maindonald).
   
   o Bug fix to Boot.nlm() (reported by Derek Ogle).
