@@ -28,6 +28,7 @@
 # 2018-04-02: J. Fox: warning rather than error for too few colors.
 # 2018-04-12: J. Fox: fixed error produced when groups not a factor, reported by Alexandre Courtiol.
 # 2018-05-19: J. Fox: fixed bug when legend=FALSE, reported by Castor Guisande.
+# 2018-06-25: S. Weisberg  made the argument 'var' an alias of 'spread'
 
 reg <- function(reg.line, x, y, col, lwd, lty, log.x, log.y){
   if(log.x) x <- log(x)
@@ -143,6 +144,9 @@ scatterplot.default <- function(x, y, boxplots=if (by.groups) "" else "xy",
   }
   smoother.args <- applyDefaults(smooth, defaults=list(smoother=loessLine, spread=!by.groups, lty.smooth=2, lty.spread=4), type="smooth")
   if (!isFALSE(smoother.args)) {
+# check for an argument 'var' in smoother.args.
+    if(!is.null(smoother.args$var)) smoother.args$spread <- smoother.args$var
+# end change
     smoother <- smoother.args$smoother
     spread <- if(is.null(smoother.args$spread)) TRUE else smoother.args$spread
     smoother.args$smoother <- NULL
@@ -158,7 +162,7 @@ scatterplot.default <- function(x, y, boxplots=if (by.groups) "" else "xy",
   }
   n.groups <- if (by.groups) {
     if (!is.factor(groups)) groups <- as.factor(groups)
-    length(levels(groups)) 
+    length(levels(groups))
     }
     else 1
   regLine.args <- applyDefaults(regLine, defaults=list(method=lm, lty=1, lwd=2,

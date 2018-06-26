@@ -18,9 +18,9 @@ scatterplotMatrix(x, ...)
 \method{scatterplotMatrix}{default}(x, smooth = TRUE,
     id = FALSE, legend = TRUE, regLine = TRUE,
     ellipse = FALSE, var.labels = colnames(x), diagonal = TRUE,
-    plot.points = TRUE, groups = NULL, by.groups = TRUE, 
-    use = c("complete.obs", "pairwise.complete.obs"), col = 
-    carPalette()[-1], pch = 1:n.groups, cex = par("cex"), 
+    plot.points = TRUE, groups = NULL, by.groups = TRUE,
+    use = c("complete.obs", "pairwise.complete.obs"), col =
+    carPalette()[-1], pch = 1:n.groups, cex = par("cex"),
     cex.axis = par("cex.axis"), cex.labels = NULL,
     cex.main = par("cex.main"), row1attop = TRUE, ...)
 
@@ -117,6 +117,8 @@ spm(x, ...)
    horizontal axis, and the spread estimates the lower and upper quartiles of the estimated conditional
    distribution for each value of the horizontal axis.
 
+      The sub-arguments \code{spread}, \code{lty.spread} and \code{col.spread} of the \code{smooth} argument are equivalent to the newer \code{var}, \code{col.var} and \code{lty.var}, respectively, recognizing that the spread is a measuure of conditional variability.
+
    By default the diagonal argument is used to draw kernel density estimates of the
    variables by setting \code{diagonal=TRUE}, which is equivalent to setting \code{diagonal =
    list(method="adaptiveDensity", bw=bw.nrd0, adjust=1, kernel=dnorm, na.rm=TRUE)}.  The additional arguments
@@ -129,7 +131,7 @@ spm(x, ...)
    \code{diagonal=list(method="qqplot")} with no additional arguments which draws a normal QQ plot; and
    \code{diagonal=list(method="oned")} with no additional arguments which draws a rug plot tilted to the
    diagonal, as suggested by Richard Heiberger.
-   
+
    Earlier versions of \code{scatterplotMatrix} included arguments \code{transform} and \code{family} to estimate power transformations using the \code{\link{powerTransform}} function before drawing the plot.  The same functionality can be achieved by calling \code{powerTransform} directly to estimate a transformation, saving the transformed variables, and then plotting.
 }
 

@@ -100,7 +100,7 @@ scatterplotMatrix.default <-
     lwd <- regLine.args$lwd
   } else reg.line <- "none"
   # setup smoother, now including spread
-  n.groups <- if(is.null(groups)) 1 
+  n.groups <- if(is.null(groups)) 1
     else {
       if (!is.factor(groups)) groups <- as.factor(groups)
       length(levels(groups))
@@ -108,6 +108,9 @@ scatterplotMatrix.default <-
   smoother.args <- applyDefaults(smooth, defaults=list(smoother=loessLine,
                               spread=(n.groups)==1, col=col, lty.smooth=2, lty.spread=4), type="smooth")
   if (!isFALSE(smoother.args)) {
+    # check for an argument 'var' in smoother.args.
+    if(!is.null(smoother.args$var)) smoother.args$spread <- smoother.args$var
+    # end change
     smoother <- smoother.args$smoother
     spread <- if(is.null(smoother.args$spread)) TRUE else smoother.args$spread
     smoother.args$spread <- smoother.args$smoother <- NULL
