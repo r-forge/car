@@ -25,8 +25,8 @@ default.arg <- function(args.list, arg, default){
 }
 
 
-loessLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE, spread=FALSE, smoother.args=NULL,
-               draw=TRUE, offset=0) {
+loessLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE,
+                      var=FALSE, spread=var, smoother.args=NULL, draw=TRUE, offset=0) {
     lty.smooth <- default.arg(smoother.args, "lty.smooth", 1)
     lwd.smooth <- default.arg(smoother.args, "lwd.smooth", 2)
     col.smooth <- default.arg(smoother.args, "col.smooth", col)
@@ -104,8 +104,8 @@ loessLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE, sprea
     }
 
 
-gamLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE, spread=FALSE, smoother.args=NULL,
-              draw=TRUE, offset=0) {
+gamLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE,
+                    var=FALSE, spread=var, smoother.args=NULL, draw=TRUE, offset=0) {
     gam <- mgcv::gam
     s <- mgcv::s
     lty.smooth <- default.arg(smoother.args, "lty.smooth", 1)
@@ -189,8 +189,8 @@ gamLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE, spread=
     if(!draw) return(out)
     }
 
-quantregLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE, spread=FALSE, smoother.args=NULL,
-                   draw=TRUE, offset=0) {
+quantregLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE,
+                         var=FALSE, spread=var, smoother.args=NULL, draw=TRUE, offset=0) {
     if (!package.installed("Matrix")) stop("the Matrix package is missing")
     if (!package.installed("MatrixModels")) stop("the MatrixModels package is missing")
     if (!package.installed("SparseM")) stop("the SparseM package is missing")
