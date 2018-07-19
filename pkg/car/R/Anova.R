@@ -116,6 +116,8 @@ Anova.lm <- function(mod, error, type=c("II","III", 2, 3),
     warning("the model contains only an intercept: Type III test substituted")
   }
   if (any(is.na(coef(mod))) && singular.ok){
+    if ((white.adjust != "FALSE") || (!is.null(vcov.)))
+      stop("non-standard coefficient covariance matrix\n  may not be used for model with aliased coefficients")
     message("Note: model has aliased coefficients\n      sums of squares computed by model comparison")
     result <- Anova(lm2glm(mod), type=type, singular.ok=TRUE, test.statistic="F", ...)
     heading <- attributes(result)$heading
