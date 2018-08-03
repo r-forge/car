@@ -21,6 +21,8 @@ Changes to Version 3.0-1
   o Make model.matrix.lme() more bullet proof (following report by Peter Grossmann).
   
   o Anova.lm() now doesn't permit non-standard coefficient covariance matrix for model with aliased coefficients (following report by Ariel Muldoon).
+  
+  o Added kernel functions depan() and dbiwt() for use with adaptiveKernel().
 
   o Updated carWeb().
 
