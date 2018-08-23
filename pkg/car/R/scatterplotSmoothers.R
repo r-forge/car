@@ -166,7 +166,8 @@ gamLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE,
         pos.fit <- try(gam(I(res^2) ~ s(x, k=k, bs=bs), subset=pos), silent=TRUE)
         neg.fit <- try(gam(I(res^2) ~ s(x, k=k, bs=bs), subset=!pos), silent=TRUE)
         if(class(pos.fit)[1] != "try-error"){
-          y.pos <- y.eval + sqrt(offset^2 + predict(pos.fit, newdata=data.frame(x=x.eval)))
+          y.pos <- y.eval + sqrt(offset^2 +
+                  predict(pos.fit, newdata=data.frame(x=x.eval), type="response"))
           if(draw) {lines(if(log.x) exp(x.eval) else x.eval,
                           if(log.y) exp(y.pos) else y.pos,
                           lwd=lwd.spread, lty=lty.spread, col=col.spread)}
@@ -177,7 +178,8 @@ gamLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE,
             warning("could not fit positive part of the spread")
             }
         if(class(neg.fit)[1] != "try-error"){
-            y.neg <- y.eval - sqrt(offset^2 + predict(neg.fit, newdata=data.frame(x=x.eval)))
+            y.neg <- y.eval - sqrt(offset^2 +
+                    predict(neg.fit, newdata=data.frame(x=x.eval), type="response"))
             if(draw) {lines(if(log.x) exp(x.eval) else x.eval,
                             if(log.y) exp(y.neg) else y.neg,
                             lwd=lwd.spread, lty=lty.spread, col=col.spread)}
