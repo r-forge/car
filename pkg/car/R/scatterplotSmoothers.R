@@ -19,6 +19,7 @@
 # 2017-11-30: substitute carPalette() for palette(). J. Fox
 # 2018-06-25: The argument 'spread' has an alias 'var', with 'var' having precedence.  S. Weisberg
 #             Similarly, col.var, lty.var, lwd.var override col.spread, lty.spread, lwd.spread
+# 2018-08-23: gamLine tried to graph in linear predictor scale, not the response scale for glms.
 
 default.arg <- function(args.list, arg, default){
     if (is.null(args.list[[arg]])) default else args.list[[arg]]
@@ -149,7 +150,7 @@ gamLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE,
     fit <- try(gam(y ~ s(x, k=k, bs=bs), weights=w, family=fam1))
 # end bug fix.
     if (class(fit)[1] != "try-error"){
-      y.eval <- predict(fit, newdata=data.frame(x=x.eval))
+      y.eval <- predict(fit, newdata=data.frame(x=x.eval), type="response")
       if(draw)lines(if(log.x) exp(x.eval) else x.eval,
                     if(log.y) exp(y.eval) else y.eval,
                     lwd=lwd.smooth, col=col.smooth, lty=lty.smooth) else

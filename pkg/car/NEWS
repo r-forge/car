@@ -1,7 +1,11 @@
+Changes to Version 3.0-2
+
+  o Fix a bug in gamLine to return values in the response scale, rather than the linear predictor scale, for glms.
+
 Changes to Version 3.0-1
 
   o Fix a bug in 'Boot' so lm and glm models work with transformed predictors like log(x) or I(x-34).
-  
+
   o For 'smooth' argument to scatterplot and scatterPlot matrix, the 'smooth' subargument is replaced by a new argument 'var', and 'lty.smooth', 'col.smooth', 'lwd.smooth' are replaced by 'lty.var', 'col.var' and 'lwd.var', respectively, although the old arguments are still allowed.
 
   o Mofidied man page for showLabels to clarify setting the labels argument
@@ -19,9 +23,9 @@ Changes to Version 3.0-1
   o Fixed bug in influence.merMod() and influence.lme() when there is more than one grouping variable (reported by Maarten Jung).
 
   o Make model.matrix.lme() more bullet proof (following report by Peter Grossmann).
-  
+
   o Anova.lm() now doesn't permit non-standard coefficient covariance matrix for model with aliased coefficients (following report by Ariel Muldoon).
-  
+
   o Added kernel functions depan() and dbiwt() for use with adaptiveKernel().
 
   o Updated carWeb().
