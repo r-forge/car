@@ -9,6 +9,10 @@ This function provides a \code{"mira"} method for the \code{\link[car]{linearHyp
 \method{linearHypothesis}{mira}(model, hypothesis.matrix, rhs = NULL, ...)
 }
 
+\details{
+Wald test statistics and degrees of freedom are computed by the approximate method described in Reiter (2007) if the complete-data residual degrees of freedom are known and by the method in Rubin (1987) if they are not.
+}
+
 \arguments{
   \item{model}{an object of class \code{"mira"} produced by the \pkg{mice} package, \code{\link[mice]{mice-package}}.}
   \item{hypothesis.matrix}{hypothesis in matrix or symbolic form: see \code{\link[car]{linearHypothesis}} for details.}
@@ -20,6 +24,10 @@ This function provides a \code{"mira"} method for the \code{\link[car]{linearHyp
 J. Fox, \emph{Applied Regression Analysis and Generalized Linear Models, 3rd ed.}, Sage, 2016.
 
 S. van Buuren, \emph{Flexible Imputation of Missing Data, 2nd ed.}, Chapman and Hall, 2018.
+
+J. P. Reiter, Small-sample degrees of freedom for multi-component significance tests with multiple imputation for missing data. \emph{Biometrika}, 2007, 94: 502-508.
+
+D. B. Rubin, \emph{Multiple Imputation for Nonresponse in Surveys}, Wiley, 1987.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca}}

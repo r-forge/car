@@ -14,14 +14,19 @@
 }
 
 \details{
-t-test statistics and egrees of freedom are computed as for Wald tests.
+t-test statistics and degrees of freedom are computed as for Wald tests, using the approach described in Barnard and Rubin (1999) if the complete-data residual degrees of freedom are known and by the approach in Rubin (1987) if they are not known.
 }
 
 \references{
 J. Fox, \emph{Applied Regression Analysis and Generalized Linear Models, 3rd ed.}, Sage, 2016.
 
 S. van Buuren, \emph{Flexible Imputation of Missing Data, 2nd ed.}, Chapman and Hall, 2018.
+
+J. Barnard and D. B. Rubin, Small-sample degrees of freedom with multiple imputation. \emph{Biometrika}, 1999, 86:948-955.
+
+D. B. Rubin, \emph{Multiple Imputation for Nonresponse in Surveys}, Wiley, 1987.
 }
+
 \author{John Fox \email{jfox@mcmaster.ca}}
 
 \seealso{\code{\link[car]{deltaMethod}}, \code{\link[mice]{mira}}, \code{\link[mice]{mice-package}}.}

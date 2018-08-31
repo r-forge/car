@@ -1,7 +1,8 @@
 # created 2018-08-31
 
+tr <- function(X) sum(diag(X))
+
 linearHypothesis.mira <- function(model, hypothesis.matrix, rhs=NULL, ...){
-    tr <- function(X) sum(diag(X))
     vcovs <- lapply(model$analyses, vcov)
     m <- length(vcovs)
     if (m < 2) stop("fewer than 2 'multiple' imputations")
@@ -39,25 +40,16 @@ linearHypothesis.mira <- function(model, hypothesis.matrix, rhs=NULL, ...){
     r <- ((m + 1)/m)*tr(vcov.b %*% solve(vcov.w))/s
     value.hyp <- L %*% beta.1 - rhs
     f <- (t(value.hyp) %*% solve(vcov.w) %*% value.hyp)/(s*(1 + r))
-    
-    # df.d <- if (s*(m - 1) > 4){
-    #     4 + (s*(m - 1) - 4) * (1 + (1/r)*(s*(m - 1) - 2)/(s*(m - 1)))
-    # } else {
-    #     0.5*(m - 1)*(s + 1)*(1 + 1/r)^2
-    # }
-    
-    t <- s*(m - 1)
-    df.d <- if (t > 4){
-        4 + (t - 4)*(1 + (1 - 2/t)/r)^2
+    df.d <- if (is.null(df.res)){
+        t <- s*(m - 1)
+        if (t > 4){
+            4 + (t - 4)*(1 + (1 - 2/t)/r)^2
+        } else {
+            0.5*t*(1 + 1/s)*(1 + 1/r)^2
+        }
     } else {
-        0.5*t*(1 + 1/s)*(1 + 1/r)^2
+        reiter(vcov.b, vcov.w, m, s, df.res)
     }
-    
-    if (!is.null(df.res)){
-        df.o <- ((df.res + 1)*df.res)/((df.res + 3)*(1 + r))
-        df.d <- df.d*df.o/(df.d + df.o)
-    }
-    
     pval <- pf(f, s, df.d, lower.tail=FALSE)
     title <- "Linear hypothesis test\n\nHypothesis:"
     topnote <- paste("Based on", m, "multiple imputations")
