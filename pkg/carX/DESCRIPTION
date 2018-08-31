@@ -1,0 +1,15 @@
+Package: carEx
+Type: Package
+Title: Supplemental and Experimental Functions
+Version: 0.1-0
+Date: 2018-08-31
+Author: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaster.ca"),
+	person("Sanford", "Weisberg", role = "aut", email = "sandy@umn.edu"),
+	person("Brad", "Price", role = "aut", email = "brad.price@mail.wvu.edu"))
+Maintainer: John Fox <jfox@mcmaster.ca>
+Description: Functions meant to supplement those in the car package
+    and experimental functions that may eventually be included in the car package.
+Depends: car (>= 3.0-0)
+Imports: stats
+Suggests: mice
+License: GPL (>= 2)

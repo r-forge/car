@@ -1,0 +1,9 @@
+# last modified 2018-08-31
+
+importFrom("car", "Anova", "deltaMethod", "linearHypothesis", 
+           "makeHypothesis", "printHypothesis")
+importFrom("stats", "terms", "coef", "df.residual", "vcov", "qt", "pf")
+
+S3method("Anova", "mira")
+S3method("linearHypothesis", "mira")
+S3method("deltaMethod", "mira")
