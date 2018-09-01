@@ -1,20 +1,24 @@
 \name{linearHypothesis.mira}
 \alias{linearHypothesis.mira}
+\alias{coef.mira}
+\alias{vcov.mira}
 \title{Linear Hypothesis Tests for mira Objects}
 
 \description{
-This function provides a \code{"mira"} method for the \code{\link[car]{linearHypothesis}} function in the \pkg{car} package. \code{\link[mice]{mira}} objects are produced by fitting statistical models to multiply imputed data sets using functions in the \pkg{mice} package: \code{\link[mice]{mice-package}}.
+These functions provide a \code{"mira"} method for the \code{\link[car]{linearHypothesis}} function in the \pkg{car} package, along with basic \code{coef} and \code{vcov} methods that apply ``Rubin's Rules'' for combining estimates across imputations. \code{\link[mice]{mira}} objects are produced by fitting statistical models to multiply imputed data sets using functions in the \pkg{mice} package: \code{\link[mice]{mice-package}}.
 }
 \usage{
 \method{linearHypothesis}{mira}(model, hypothesis.matrix, rhs = NULL, ...)
+\method{coef}{mira}(object, ...)
+\method{vcov}{mira}(object, ...)
 }
 
 \details{
-Wald test statistics and degrees of freedom are computed by the approximate method described in Reiter (2007) if the complete-data residual degrees of freedom are known and by the method in Rubin (1987) if they are not.
+Wald test statistics and degrees of freedom for linear hypotheses are computed by the approximate method described in Reiter (2007) if the complete-data residual degrees of freedom are known and by the method in Rubin (1987) if they are not.
 }
 
 \arguments{
-  \item{model}{an object of class \code{"mira"} produced by the \pkg{mice} package, \code{\link[mice]{mice-package}}.}
+  \item{model, object}{an object of class \code{"mira"} produced by the \pkg{mice} package, \code{\link[mice]{mice-package}}.}
   \item{hypothesis.matrix}{hypothesis in matrix or symbolic form: see \code{\link[car]{linearHypothesis}} for details.}
   \item{rhs}{right-hand side vector for the hypothesis, defaults to zeros.}
   \item{\dots}{not used.}

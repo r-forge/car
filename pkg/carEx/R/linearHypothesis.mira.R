@@ -1,14 +1,18 @@
-# created 2018-08-31
+# last modified 2018-09-01
 
 tr <- function(X) sum(diag(X))
 
 linearHypothesis.mira <- function(model, hypothesis.matrix, rhs=NULL, ...){
-    vcovs <- lapply(model$analyses, vcov)
-    m <- length(vcovs)
+    models <- model$analyses
+    m <- length(models)
     if (m < 2) stop("fewer than 2 'multiple' imputations")
-    coefs <- lapply(model$analyses, coef)
+    vcovs <- lapply(models, vcov)
+    # the following 2 lines are necessary because of scoping
+    if (inherits(models[[1]], "merMod")) coef <- lme4::fixef
+    if (inherits(models[[1]], "lme")) coef <- nlme::fixef
+    coefs <- lapply(models, coef)
     if (any(is.na(unlist(coefs)))) stop("there are aliased coefficients in the model")
-    df.res <- df.residual(model$analyses[[1]])
+    df.res <- df.residual(models[[1]])
     beta.1 <- rowMeans(do.call(cbind, coefs))
     if (is.character(hypothesis.matrix)) {
         L <- makeHypothesis(names(beta.1), hypothesis.matrix, rhs)

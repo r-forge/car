@@ -1,4 +1,4 @@
-# created 2018-08-31
+# created 2018-09-01
 
 Anova.mira <- function(mod, type=c("II","III", 2, 3), ...){
     type <- as.character(type)
@@ -6,6 +6,9 @@ Anova.mira <- function(mod, type=c("II","III", 2, 3), ...){
     models <- mod$analyses
     m <- length(models)
     if (m < 2) stop("fewer than 2 'multiple' imputations")
+    # the following 2 lines are necessary because of scoping
+    if (inherits(models[[1]], "merMod")) coef <- lme4::fixef
+    if (inherits(models[[1]], "lme")) coef <- nlme::fixef
     vcovs <- lapply(models, vcov)
     coefs <- lapply(models, coef)
     if (any(is.na(unlist(coefs)))) stop("there are aliased coefficients in the model")
@@ -58,6 +61,7 @@ Anova.II.mira <- function(models, vcov., ...){
     I.p <- diag(p)
     assign <- assignVector(mod) 
     if (is.list(assign) && intercept) assign <- assign[-1]
+#    if (intercept) assign <- assign[-1]
     names <- term.names(mod)
     if (intercept) names <- names[-1]
     n.terms <- length(names)

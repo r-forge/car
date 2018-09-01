@@ -20,4 +20,8 @@ if (require(mice) && require(carEx)){
         stop("failed test 1-2")
     if (!isTRUE(all.equal(l.2[, "F"], (d.2[, "Estimate"]/d.2[, "SE"])^2)))
         stop("failed test 1-3")
-}
+    if (!isTRUE(all.equal(summary(pool(mods.1))[, "estimate"], as.vector(coef(mods.1)))))
+        stop("failed test 1-4")
+    if (!isTRUE(all.equal(summary(pool(mods.1))[, "std.error"], as.vector(sqrt(diag(vcov(mods.1)))))))
+        stop("failed test 1-5")
+    }
