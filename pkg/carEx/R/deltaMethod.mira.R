@@ -1,4 +1,4 @@
-# created 2018-08-31
+# last modified 2018-09-03
 
 deltaMethod.mira <- function(object, ...){
     coefs <- lapply(object$analyses, coef)
@@ -14,12 +14,7 @@ deltaMethod.mira <- function(object, ...){
     Vw <- mean(D[, "SE"]^2)
     V <- Vw + (1 + 1/m)*Vb
     r <- (1 + 1/m)*Vb/Vw
-    # df <- (m - 1)*(1 + 1/r^2)
-    # if (!is.null(df.res)){
-    #     df.o <- (df.res + 1)*df.res/((df.res + 3)*(1 + r))
-    #     df <- df*df.o/(df + df.o)
-    # }
-    df <- barnard.rubin(Vb, V, m, df.res)
+    df <- df.barnard.rubin(Vb, V, m, df.res)
     t <- qt(as.numeric(sub(" %", "", colnames(D)[4]))/100, df)
     SE <- sqrt(V)
     result[1, ] <- c(estimate, SE, estimate - t*SE, estimate + t*SE)

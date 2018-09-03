@@ -52,7 +52,7 @@ linearHypothesis.mira <- function(model, hypothesis.matrix, rhs=NULL, ...){
             0.5*t*(1 + 1/s)*(1 + 1/r)^2
         }
     } else {
-        reiter(vcov.b, vcov.w, m, s, df.res)
+        df.reiter(vcov.b, vcov.w, m, s, df.res)
     }
     pval <- pf(f, s, df.d, lower.tail=FALSE)
     title <- "Linear hypothesis test\n\nHypothesis:"

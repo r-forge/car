@@ -1,4 +1,6 @@
-barnard.rubin <- function(B, T, m, v.com=NULL){
+# last modified 2018-09-03
+
+df.barnard.rubin <- function(B, T, m, v.com=NULL){
     lambda <- function(v) (v + 1)/(v + 3)
     gamma <- (1 + 1/m)*B/T
     v <- (m - 1)/gamma^2
@@ -7,7 +9,7 @@ barnard.rubin <- function(B, T, m, v.com=NULL){
     1/(1/v + 1/v.obs)
 }
 
-reiter <- function(B, U, m, k, v.com){
+df.reiter <- function(B, U, m, k, v.com){
     vs.com <- v.com*(v.com + 1)/(v.com + 3)
     t <- k*(m - 1)
     r <- (1 + 1/m)*tr(B %*% solve(U))/k

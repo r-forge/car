@@ -1,4 +1,4 @@
-# created 2018-09-01
+# last modified 2018-09-03
 
 Anova.mira <- function(mod, type=c("II","III", 2, 3), ...){
     type <- as.character(type)
@@ -61,7 +61,6 @@ Anova.II.mira <- function(models, vcov., ...){
     I.p <- diag(p)
     assign <- assignVector(mod) 
     if (is.list(assign) && intercept) assign <- assign[-1]
-#    if (intercept) assign <- assign[-1]
     names <- term.names(mod)
     if (intercept) names <- names[-1]
     n.terms <- length(names)
@@ -84,7 +83,7 @@ Anova.II.mira <- function(models, vcov., ...){
         table[i, ] <- unlist(c(hyp[1:3], r/(r + 1), r, hyp[4]))
     }
     class(table) <- c("anova")
-    attr(table, "heading") <- c("Analysis of Deviance Table (Type III tests)\n", 
+    attr(table, "heading") <- c("Analysis of Deviance Table (Type II tests)\n", 
                                 paste("Response:", responseName(mod)),
                                 paste("Based on", length(models$analyses), "multiple imputations\n"))
     table
