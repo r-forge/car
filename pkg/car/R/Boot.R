@@ -51,6 +51,8 @@
 #             If missing values are present, Boot returns an error.
 # 2018-09-21: John fixed bug that hard-coded level=0.95 when confint.boot() falls 
 #             back to type="perc" (reported by Derek Lee Sonderegger).
+# 2018-09-21: Brad removed the otpions for multicore on non-unix OS platforms. It now will
+#              produce a warning and set ncores=1.  
 
 Boot <- function(object, f=coef, labels=names(f(object)), R=999, 
             method=c("case", "residual"), ncores=1, ...){UseMethod("Boot")}
@@ -120,7 +122,10 @@ Boot.default <- function(object, f=coef, labels=names(f(object)),
     if(.Platform$OS.type=="unix"){
       parallel_env="multicore"
     }else{
-      parallel_env="snow"
+      warning("Multicore processing in Boot is not avaliable for Windows.  It is current under development")
+      ncores=1
+      parallel_env="no"
+      ncores=getOption("boot.ncpus",1L)
     }
   }
 

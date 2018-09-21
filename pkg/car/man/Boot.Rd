@@ -58,7 +58,7 @@ Boot(object, f=coef, labels=names(f(object)), R=999,
     the estimates from the last bootstrap iteration as starting values
     for the next iteration.}
 \item{ncores}{A numeric argument that specifies the number of cores for parallel
-    processing.  If less than or equal to 1, no parallel processing wiill be used.}
+    processing for unix systems.  If less than or equal to 1, no parallel processing wiill be used. Note in a Windows platform will produce a warning and set this argument to 1.}
 }
 \details{
 \code{Boot} uses a
