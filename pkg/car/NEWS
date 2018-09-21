@@ -5,6 +5,8 @@ Changes to Version 3.0-3
 Changes to Version 3.0-2
 
   o Include unexported copy of rather than import utils::askYesNo(), which doesn't exist before R 3.5.0. To be reversed in car 3.0-3 which will require R >= 3.5.0
+  
+  o Fix a bug in confint.boot() and hence Confint.boot() that always set level=0.95 when confint when function falls back to type="perc" (reported by Derek Lee Sonderegger).
 
 Changes to Version 3.0-1
 

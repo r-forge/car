@@ -49,6 +49,8 @@
 # 2018-08-03: Sandy corrected bug in Boot.lm and Boot.glm that caused failure
 #             with transformed predictors.  Also added test to missing values.
 #             If missing values are present, Boot returns an error.
+# 2018-09-21: John fixed bug that hard-coded level=0.95 when confint.boot() falls 
+#             back to type="perc" (reported by Derek Lee Sonderegger).
 
 Boot <- function(object, f=coef, labels=names(f(object)), R=999, 
             method=c("case", "residual"), ncores=1, ...){UseMethod("Boot")}
@@ -256,7 +258,7 @@ confint.boot <- function(object, parm, level = 0.95,
    out[[j]] <- try(boot::boot.ci(object, conf=level, type=type, index=parm[j], ...), silent=TRUE)
    if(inherits(out[[j]], "try-error") && type=="bca"){
     warning("BCa method fails for this problem.  Using 'perc' instead")
-    return(confint(object, parm, level = 0.95, type = "perc", ...))}
+    return(confint(object, parm, level = level, type = "perc", ...))}
   }
   levs <- unlist(lapply(level, function(x) c( (1-x)/2, 1 - (1-x)/2)))
   ints <- matrix(0, nrow=length(parm), ncol=length(levs))
