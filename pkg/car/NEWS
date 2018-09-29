@@ -2,6 +2,8 @@ Changes to Version 3.0-3
 
   o Fix a bug in gamLine() to return values in the response scale, rather than the linear predictor scale, for glms.
   
+  o Small corrections.
+  
 Changes to Version 3.0-2
 
   o Include unexported copy of rather than import utils::askYesNo(), which doesn't exist before R 3.5.0. To be reversed in car 3.0-3 which will require R >= 3.5.0
