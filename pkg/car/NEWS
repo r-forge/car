@@ -2,6 +2,8 @@ Changes to Version 3.0-3
 
   o Fix a bug in gamLine() to return values in the response scale, rather than the linear predictor scale, for glms.
   
+  o Added carHexsticker().
+  
   o Small corrections.
   
 Changes to Version 3.0-2

@@ -1,4 +1,4 @@
-# last modified 2018-08-03 by J. Fox
+# last modified 2018-10-06 by J. Fox
 
 # additions for car 3.0-0, started 2016-12-27
 
@@ -65,7 +65,7 @@ importFrom("abind", "abind")
 importFrom("stats", "naprint", "symnum", ".checkMFClasses",
            "delete.response", "napredict", "influence", "dfbetas",
             "AIC", "BIC")
-importFrom("utils", "download.file", "capture.output", "askYesNo")
+importFrom("utils", "download.file", "capture.output", "askYesNo", "browseURL")
 
 
 #  from earlier versions car package
@@ -94,6 +94,7 @@ export(
     basicPowerAxis,
     bcPowerAxis,
     Boxplot,
+    carHexsticker,
     carWeb,
     confidenceEllipse,
     contr.Helmert,
