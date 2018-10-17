@@ -2,6 +2,8 @@ Changes to Version 3.0-3
 
   o Fix a bug in gamLine() to return values in the response scale, rather than the linear predictor scale, for glms.
   
+  o Fixed a bug that caused the error argument to be ignored in Anova() for type-III tests in linear models (reported by Austin Hurst).
+  
   o Added carHexsticker().
   
   o Updated CITATION file.
