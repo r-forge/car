@@ -40,7 +40,7 @@
 # 2018-01-15:  S. Weisberg all Summmarize/Summarise methods renamed S
 # 2018-02-02:  J. Fox fixed S.lm() and S.glm() output when vcov. arg not given.
 # 2018-02-07,08,12:  J. Fox removed leading blank lines in formatCall() and elsewhere.
-
+# 2018-10-23: J. Fox made coefs2use() work with models without an intercept even if intercept arg is TRUE.
 formatCall <- function(call){
   call <- if (is.character(call)){
     if (length(call) > 1) paste(call, collapse=" ") else call
@@ -930,7 +930,7 @@ coefs2use <- function(model, terms, intercept){
     model.names <- attributes(mm)$dimnames[[2]]
     model.assign <- attributes(mm)$assign
     use <- model.names[!is.na(match(model.assign, terms.used))]
-    if (intercept) c("(Intercept)", use) else use
+    if (intercept && has.intercept(model)) c("(Intercept)", use) else use
 }
 
 # S <- function(model, terms, intercept, pvalues, digits, horizontal, ...){
