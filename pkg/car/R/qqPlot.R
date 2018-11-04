@@ -16,6 +16,7 @@
 # 2017-10-26: fix qqPlot.lm() so that it doesn't return names identifical to indices. J. Fox
 # 2017-11-30: substitute carPalette() for palette(). J. Fox
 # 2018-03-23: properly return point IDs when method="identify"
+# 2018-11-04: fixed handling of NAs when plotting by groups in qqPlot.default(). J. Fox
 
 qqp <- function(...) qqPlot(...)
 
@@ -38,7 +39,6 @@ qqPlot.default <- function(x, distribution="norm", groups, layout,
         if (prod(layout) < length(grps)) stop("layout cannot accomodate ", length(grps), " plots")
         oldpar <- par(mfrow=layout)
         on.exit(par(oldpar))
-        if (missing(ylim)) ylim <- range(x)
         for (group in grps){
             id.gr <- id
             if (!isFALSE(id)) id.gr$labels <- id$labels[groups == group]
