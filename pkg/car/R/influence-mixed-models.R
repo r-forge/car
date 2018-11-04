@@ -4,6 +4,7 @@
 # 2018-01-28: fix computation of Cook's D for lme models
 # 2018-05-23: fixed bug when more than one grouping variable (reported by Maarten Jung)
 # 2018-06-07: skip plot of "sigma^2" in GLMM if dispersion fixed to 1; improved labelling for covariance components
+# 2018-11-04: tweak to dfbetas.influence.merMod() suggested by Ben Bolker.
 
 # influence diagnostics for mixed models
 
@@ -114,7 +115,7 @@ dfbetas.influence.lme <- function(model, ...){
 }
 
 dfbetas.influence.merMod <- function(model, ...){
-    dfbeta(model)/t(sapply(model[[6]], function(x) sqrt(diag(x))))
+    dfbeta(model)/t(sapply(model[[6]], function(x) sqrt(diag(as.matrix(x)))))
 }
 
 cooks.distance.influence.lme <- function(model, ...){
