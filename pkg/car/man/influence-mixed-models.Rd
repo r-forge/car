@@ -24,7 +24,7 @@ on the objects computed by \code{influence.merMod} and \code{influence.lme}.
 
 \usage{
 \method{influence}{merMod}(model, groups, data, maxfun=1000, ncores=1, ...)
-\method{influence}{lme}(model, groups, data, ...)
+\method{influence}{lme}(model, groups, data, ncores=1, ...)
 
 \method{cooks.distance}{influence.merMod}(model, ...)
 \method{cooks.distance}{influence.lme}(model, ...)

@@ -252,7 +252,10 @@ cooks.distance.influence.merMod <- function(model, ...){
     d
 }
 
-influence.lme <- function(model, groups, data, ...){
+influence.lme <- function(model, groups, data, ncores=1, ...){
+    if (is.infinite(ncores)) {
+        ncores <- parallel::detectCores()
+    }
     if (missing(data)) data <- model$data
     if (is.null(data)){
         data <- getCall(model)$data
@@ -280,15 +283,26 @@ influence.lme <- function(model, groups, data, ...){
     colnames(vc.1) <- names(vc)
     vcov.1 <- vector(length(unique.del), mode="list")
     names(vcov.1) <-  unique.del
-    for (del in unique.del){
+    deleteGroup <- function(del){
         data$del <- del
         mod.1 <- suppressWarnings(update(model, data=data, subset=.groups != del,
                                          control=nlme::lmeControl(returnObject=TRUE)))
-        fixed.1[del, ] <- fixef(mod.1)
+        fixed.1 <- fixef(mod.1)
         vc.0 <- attr(mod.1$apVar, "Pars")
-        vc.1[del, ] <- if (!is.null(vc.0)) vc.0 else rep(NA, length(vc))
-        vcov.1[[del]] <- vcov(mod.1)
+        vc.1 <- if (!is.null(vc.0)) vc.0 else rep(as.numeric(NA), length(vc))
+        vcov.1 <- vcov(mod.1)
+        list(fixed.1=fixed.1, vc.1=vc.1, vcov.1=vcov.1)
     }
+    result <- if(ncores >= 2){
+        message("Note: using a cluster of ", ncores, " cores")
+        cl <- parallel::makeCluster(ncores)
+        on.exit(parallel::stopCluster(cl))
+        parallel::clusterEvalQ(cl, require("nlme"))
+        parallel::clusterApply(cl, unique.del, deleteGroup)
+    } else {
+        lapply(unique.del, deleteGroup)
+    }
+    result <- combineLists(result)
     left <- "[-"
     right <- "]"
     if (groups == ".case") {
@@ -298,11 +312,64 @@ influence.lme <- function(model, groups, data, ...){
              "var.cov.comps", paste0("var.cov.comps", left, groups, right),
              "vcov", paste0("vcov", left, groups, right),
              "groups", "deleted")
-    result <- list(fixed, fixed.1, vc, vc.1, vcov(model), vcov.1, groups, unique.del)
+    result <- list(fixed, fixed.1=result$fixed.1, vc, vc.1=result$vc.1, vcov(model), 
+                   vcov.1=result$vcov.1, groups, unique.del)
     names(result) <- nms
     class(result) <- "influence.lme"
     result
 }
+
+# influence.lme <- function(model, groups, data, ...){
+#     if (missing(data)) data <- model$data
+#     if (is.null(data)){
+#         data <- getCall(model)$data
+#         data <- if (!is.null(data)) eval(data, parent.frame())
+#         else stop("model did not use the data argument")
+#     }
+#     if (missing(groups)) {
+#         groups <- ".case"
+#         data$.case <- rownames(data)
+#     }
+#     else if (length(groups) > 1){
+#         del.var <- paste0(groups, collapse=".")
+#         data[, del.var] <- apply(data[, groups], 1, function (row) paste0(row, collapse="."))
+#         groups <- del.var
+#     }
+#     unique.del <- unique(data[, groups])
+#     data$.groups <- data[, groups]
+#     fixed <- fixef(model)
+#     fixed.1 <- matrix(0, length(unique.del), length(fixed))
+#     rownames(fixed.1) <- unique.del
+#     colnames(fixed.1) <- names(fixed)
+#     vc <- attr(model$apVar, "Pars")
+#     vc.1 <- matrix(0, length(unique.del), length(vc))
+#     rownames(vc.1) <- unique.del
+#     colnames(vc.1) <- names(vc)
+#     vcov.1 <- vector(length(unique.del), mode="list")
+#     names(vcov.1) <-  unique.del
+#     for (del in unique.del){
+#         data$del <- del
+#         mod.1 <- suppressWarnings(update(model, data=data, subset=.groups != del,
+#                                          control=nlme::lmeControl(returnObject=TRUE)))
+#         fixed.1[del, ] <- fixef(mod.1)
+#         vc.0 <- attr(mod.1$apVar, "Pars")
+#         vc.1[del, ] <- if (!is.null(vc.0)) vc.0 else rep(NA, length(vc))
+#         vcov.1[[del]] <- vcov(mod.1)
+#     }
+#     left <- "[-"
+#     right <- "]"
+#     if (groups == ".case") {
+#         groups <- "case"
+#     }
+#     nms <- c("fixed.effects", paste0("fixed.effects", left, groups, right),
+#              "var.cov.comps", paste0("var.cov.comps", left, groups, right),
+#              "vcov", paste0("vcov", left, groups, right),
+#              "groups", "deleted")
+#     result <- list(fixed, fixed.1, vc, vc.1, vcov(model), vcov.1, groups, unique.del)
+#     names(result) <- nms
+#     class(result) <- "influence.lme"
+#     result
+# }
 
 infIndexPlot.influence.lme <- function(model, vars=c("dfbeta", "dfbetas", "var.cov.comps", "cookd"), id=TRUE, grid=TRUE,
                                           main="Diagnostic Plots", ...){

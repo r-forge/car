@@ -1,6 +1,6 @@
 Changes to Version 3.0-3
 
-  o influence.merMod() now supports parallel computations.
+  o influence.merMod() and influence.lme() now support parallel computations.
 
   o Fix a bug in gamLine() to return values in the response scale, rather than the linear predictor scale, for glms.
   
