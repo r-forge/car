@@ -5,7 +5,7 @@
 # 2018-05-23: fixed bug when more than one grouping variable (reported by Maarten Jung)
 # 2018-06-07: skip plot of "sigma^2" in GLMM if dispersion fixed to 1; improved labelling for covariance components
 # 2018-11-04: tweak to dfbetas.influence.merMod() suggested by Ben Bolker.
-# 2018-11-07: parallel version of influence.merMod()
+# 2018-11-09: parallel version of influence.merMod()
 
 # influence diagnostics for mixed models
 
@@ -20,7 +20,7 @@ influence.merMod <- function(model, groups, data, maxfun=1000,
     .groups <- NULL  ## avoid false-positive code checks
     
     if (is.infinite(ncores)) {
-        ncores <- parallel::detectCores()
+        ncores <- parallel::detectCores(logical=FALSE)
     }
     if (length(list(...))>0) warning("disregarded additional arguments")
     if (missing(data)){
@@ -254,7 +254,7 @@ cooks.distance.influence.merMod <- function(model, ...){
 
 influence.lme <- function(model, groups, data, ncores=1, ...){
     if (is.infinite(ncores)) {
-        ncores <- parallel::detectCores()
+        ncores <- parallel::detectCores(logical=FALSE)
     }
     if (missing(data)) data <- model$data
     if (is.null(data)){

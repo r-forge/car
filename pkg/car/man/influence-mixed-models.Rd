@@ -49,8 +49,8 @@ on the objects computed by \code{influence.merMod} and \code{influence.lme}.
   Setting to \code{maxfun=20} for an \code{lmer} model or \code{100} for a \code{glmer} model will typically produce a faster reasonable approximation. 
   An even smaller value can be used if interest is only in influence on the fixed effects.}
   \item{ncores}{number of cores for parallel computation of diagnostics; if \code{1}
-  (the default), the computation isn't parallelized; if \code{Inf}, all of the cores
-  on the computer will be used.}
+  (the default), the computation isn't parallelized; if \code{Inf}, all of the available \emph{physical} cores 
+  (not necessarily \emph{logical} cores --- see \code{\link[parallel]{detectCores}}) on the computer will be used.}
   \item{which}{if \code{"fixed.effects"} (the default), return influence on the fixed effects; if \code{"var.cov"}, return influence on the variance-covariance components.}
   \item{\dots}{ignored.}
 }
