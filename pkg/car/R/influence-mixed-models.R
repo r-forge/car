@@ -13,16 +13,10 @@ globalVariables(".groups")
 
 influence.merMod <- function(model, groups, data, maxfun=1000,
                              ncores=1, ...) {
-    # this version of function modified from lme4
-    
-    vv <- function(x) Matrix::as.matrix(vcov(x))
-    
-    .groups <- NULL  ## avoid false-positive code checks
-    
+    .vcov <- function(x) Matrix::as.matrix(vcov(x))
     if (is.infinite(ncores)) {
         ncores <- parallel::detectCores(logical=FALSE)
     }
-    if (length(list(...))>0) warning("disregarded additional arguments")
     if (missing(data)){
         data <- getCall(model)$data
         data <- if (!is.null(data)) eval(data, parent.frame())
@@ -78,7 +72,7 @@ influence.merMod <- function(model, groups, data, maxfun=1000,
             vc.0 <- c(vc.0, V[lower.tri(V, diag=TRUE)])
         }
         vc.1 <- vc.0
-        vcov.1 <<- vv(mod.1)
+        vcov.1 <<- .vcov(mod.1)
         list(fixed.1=fixed.1, vc.1=vc.1, vcov.1=vcov.1, converged=converged, feval=feval)
     }
     result <- if(ncores >= 2){
@@ -111,7 +105,7 @@ influence.merMod <- function(model, groups, data, maxfun=1000,
              "vcov", paste0("vcov", left, groups, right),
              "groups", "deleted", "converged", "function.evals")
     result <- list(fixed, fixed.1, vc, vc.1,
-                   vv(model), vcov.1, groups, unique.del, converged, feval)
+                   .vcov(model), vcov.1, groups, unique.del, converged, feval)
     names(result) <- nms
     class(result) <- "influence.merMod"
     result
