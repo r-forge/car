@@ -1,5 +1,7 @@
 Changes to Version 3.0-3
 
+  o added a title argument to mcPlots
+  
   o influence.merMod() and influence.lme() now support parallel computations.
 
   o Fix a bug in gamLine() to return values in the response scale, rather than the linear predictor scale, for glms.
