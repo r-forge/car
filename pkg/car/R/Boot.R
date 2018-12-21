@@ -53,25 +53,27 @@
 #             back to type="perc" (reported by Derek Lee Sonderegger).
 # 2018-09-21: Brad removed the otpions for multicore on non-unix OS platforms. It now will
 #              produce a warning and set ncores=1.  
+##2018-12-21:  Brad changed the cluster initalizations for the parallel environements to makeCluster
+##             For non-unix environments we export the data, and model type to the cluster.
 
 Boot <- function(object, f=coef, labels=names(f(object)), R=999, 
             method=c("case", "residual"), ncores=1, ...){UseMethod("Boot")}
 
 Boot.default <- function(object, f=coef, labels=names(f(object)),
-            R=999, method=c("case", "residual"), ncores=1, start=FALSE,...) {
+                         R=999, method=c("case", "residual"), ncores=1, start=FALSE,...) {
   if(!(requireNamespace("boot"))) stop("The 'boot' package is missing")
-
+  
   ## original statistic
   f0 <- f(object)
   if(length(labels) != length(f0)) labels <- paste0("V", seq_along(f0))
-
+  
   ## process starting values (if any)
   if(isTRUE(start)) start <- f0
-
+  
   ## set up bootstrap handling for case vs. residual bootstrapping
   method <- match.arg(method, c("case", "residual"))
   if(method=="case") {
-     boot.f <- function(data, indices, .fn) {
+    boot.f <- function(data, indices, .fn) {
       assign(".boot.indices", indices, envir=.carEnv)
       mod <- if(identical(start, FALSE)) {
         update(object, subset=get(".boot.indices", envir=.carEnv))
@@ -79,21 +81,21 @@ Boot.default <- function(object, f=coef, labels=names(f(object)),
         update(object, subset=get(".boot.indices", envir=.carEnv), start=start)
       }
       out <- if(!is.null(object$qr) && (mod$qr$rank != object$qr$rank)) 
-               f0 * NA else .fn(mod)
+        f0 * NA else .fn(mod)
       out
-     }
-    } else {
+    }
+  } else {
     boot.f <- function(data, indices, .fn) {
       first <- all(indices == seq(length(indices)))
       res <- if(first) residuals(object, type="pearson") else
-                  residuals(object, type="pearson")/sqrt(1 - hatvalues(object))
+        residuals(object, type="pearson")/sqrt(1 - hatvalues(object))
       res <- if(!first) (res - mean(res)) else res
       val <- fitted(object) + res[indices]
       if (!is.null(object$na.action)){
-            pad <- object$na.action
-            attr(pad, "class") <- "exclude"
-            val <- naresid(pad, val)
-            }
+        pad <- object$na.action
+        attr(pad, "class") <- "exclude"
+        val <- naresid(pad, val)
+      }
       assign(".y.boot", val, envir=.carEnv)
       mod <- if(identical(start, FALSE)) {
         update(object, get(".y.boot", envir=.carEnv) ~ .)
@@ -101,11 +103,11 @@ Boot.default <- function(object, f=coef, labels=names(f(object)),
         update(object, get(".y.boot", envir=.carEnv) ~ ., start=start)
       }
       out <- if(!is.null(object$qr) && (mod$qr$rank != object$qr$rank)) 
-                f0 * NA else .fn(mod)
+        f0 * NA else .fn(mod)
       out
-      }
+    }
   }
-
+  
   ## try to determine number of observations and set up empty dummy data
   nobs0 <- function(x, ...) {
     rval <- try(stats::nobs(x, ...), silent = TRUE)
@@ -114,32 +116,44 @@ Boot.default <- function(object, f=coef, labels=names(f(object)),
   }
   n <- nobs0(object)
   dd <- data.frame(.zero = rep.int(0L, n))
-
+  
   if(ncores<=1){
-    parallel_env="no"
-    ncores=getOption("boot.ncpus",1L)
+    #parallel_env="no"
+    #ncores=getOption("boot.ncpus",1L)
+    cl2=NULL
+    p_type="no"
+    #}else{
+    #if(.Platform$OS.type=="unix"){
+    #    parallel_env="multicore"
   }else{
+    #warning("Multicore processing in Boot is not avaliable for Windows.  It is current under development")
+    #ncores=1
+    #parallel_env="no"
+    #ncores=getOption("boot.ncpus",1L)
+    cl2 <- parallel::makeCluster(ncores)
+    on.exit(parallel::stopCluster(cl2))
     if(.Platform$OS.type=="unix"){
-      parallel_env="multicore"
+      p_type="multicore"
     }else{
-      warning("Multicore processing in Boot is not avaliable for Windows.  It is current under development")
-      ncores=1
-      parallel_env="no"
-      ncores=getOption("boot.ncpus",1L)
+      p_type="snow"
+      clusterExport(cl2,varlist=c(".carEnv",sapply(c(1,3),function(m){gsub("()",getCall(object)[m],replacement="")})))
+      
     }
   }
-
+  
+  
   ## call boot() but set nice labels
-  b <- boot::boot(dd, boot.f, R, .fn=f,parallel=parallel_env,ncpus=ncores, ...)
+  b <- boot::boot(dd, boot.f, R, .fn=f,parallel=p_type,ncpus = ncores, 
+                  cl = cl2,...)
   colnames(b$t) <- labels
-
+  
   ## clean up and return
   if(exists(".y.boot", envir=.carEnv))
-     remove(".y.boot", envir=.carEnv)
+    remove(".y.boot", envir=.carEnv)
   if(exists(".boot.indices", envir=.carEnv))
-     remove(".boot.indices", envir=.carEnv)
+    remove(".boot.indices", envir=.carEnv)
   b
-  }
+}
 
 Boot.lm <- function(object, f=coef, labels=names(f(object)),
                      R=999, method=c("case", "residual"), ncores=1, ...){
@@ -211,17 +225,30 @@ Boot.nls <- function(object, f=coef, labels=names(f(object)),
     }
 
   if(ncores<=1){
-    parallel_env="no"
-    ncores=getOption("boot.ncpus",1L)
+    #parallel_env="no"
+    #ncores=getOption("boot.ncpus",1L)
+    cl2=NULL
+    p_type="no"
+    #}else{
+    #if(.Platform$OS.type=="unix"){
+    #    parallel_env="multicore"
   }else{
+    #warning("Multicore processing in Boot is not avaliable for Windows.  It is current under development")
+    #ncores=1
+    #parallel_env="no"
+    #ncores=getOption("boot.ncpus",1L)
+    cl2 <- parallel::makeCluster(ncores)
+    on.exit(parallel::stopCluster(cl2))
     if(.Platform$OS.type=="unix"){
-      parallel_env="multicore"
+      p_type="multicore"
     }else{
-      parallel_env="snow"
+      p_type="snow"
+      clusterExport(cl2,varlist=c(".carEnv",sapply(c(1,3),function(m){gsub("()",getCall(object)[m],replacement="")})))
+      
     }
   }
 
-  b <- boot::boot(data.frame(update(object, model=TRUE)$model), boot.f, R, .fn=f,parallel = parallel_env,ncpus = ncores, ...)
+  b <- boot::boot(data.frame(update(object, model=TRUE)$model), boot.f, R, .fn=f,parallel = p_type,ncpus = ncores,cl=cl2, ...)
   colnames(b$t) <- labels
   if(exists(".y.boot", envir=.carEnv))
      remove(".y.boot", envir=.carEnv)
