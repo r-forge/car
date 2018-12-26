@@ -1,5 +1,7 @@
 Changes to Version 3.0-3
 
+  o fixed a bug in brief.lm the caused an error with rank-deficient models 
+  
   o added a title argument to mcPlots
   
   o influence.merMod() and influence.lme() now support parallel computations.

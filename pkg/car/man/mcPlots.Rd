@@ -17,7 +17,7 @@ mcPlot(model, ...)
 \method{mcPlot}{lm}(model, variable, id=FALSE,
     col.marginal=carPalette()[2], col.conditional=carPalette()[3],
     col.arrows="gray", pch = c(16,1), lwd = 2, grid=TRUE,
-    ellipse=FALSE, overlaid=TRUE, new=TRUE, title=FALSE, ...)
+    ellipse=FALSE, overlaid=TRUE, new=TRUE, title=TRUE, ...)
 }
 \arguments{
   \item{model}{model object produced by \code{lm}.
