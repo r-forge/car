@@ -136,7 +136,7 @@ Boot.default <- function(object, f=coef, labels=names(f(object)),
       p_type="multicore"
     }else{
       p_type="snow"
-      clusterExport(cl2,varlist=c(".carEnv",sapply(c(1,3),function(m){gsub("()",getCall(object)[m],replacement="")})))
+      parallel::clusterExport(cl2,varlist=c(".carEnv",sapply(c(1,3),function(m){gsub("()",getCall(object)[m],replacement="")})))
       
     }
   }
@@ -243,7 +243,7 @@ Boot.nls <- function(object, f=coef, labels=names(f(object)),
       p_type="multicore"
     }else{
       p_type="snow"
-      clusterExport(cl2,varlist=c(".carEnv",sapply(c(1,3),function(m){gsub("()",getCall(object)[m],replacement="")})))
+      parallel::clusterExport(cl2,varlist=c(".carEnv",sapply(c(1,3),function(m){gsub("()",getCall(object)[m],replacement="")})))
       
     }
   }
