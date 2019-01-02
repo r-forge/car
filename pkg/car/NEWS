@@ -10,6 +10,8 @@ Changes to Version 3.0-3
   
   o Fixed a bug that caused the error argument to be ignored in Anova() for type-III tests in linear models (reported by Austin Hurst).
   
+  o New lmerMod method for influencePlot(), infIndexPlot(), and outlierTest().
+  
   o Added carHexsticker().
   
   o Updated CITATION file.

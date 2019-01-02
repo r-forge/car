@@ -24,6 +24,7 @@
 # 2018-01-15: df.terms.multinom() now works with response matrix. JF
 # 2018-05-23: make model.matrix.lme() more bullet proof, following report by Peter Grossmann. JF
 # 2018-11-07: added combineLists(). JF
+# 2019-01-02: added na.action.merMod(), removed df.residual.merMod(). JF
 
 #if (getRversion() >= "2.15.1") globalVariables(c(".boot.sample", ".boot.indices"))
 
@@ -282,7 +283,7 @@ squeezeBlanks <- function(text){
 
 df.residual.mer <- function(object, ...) NULL
 
-df.residual.merMod <- function(object, ...) NULL
+# df.residual.merMod <- function(object, ...) NULL # no longer needed, now supplied by lme4
 
 df.residual.lme <- function(object, ...) Inf
 
@@ -300,6 +301,18 @@ model.matrix.lme <- function(object, ...){
 	    model.matrix(formula(object), eval(object$call$data))
     }
     else model.matrix(formula(object), data)
+}
+
+# added by J. Fox 2019-01-02:
+
+na.action.merMod <- function(object, ...){
+  nms <- names(attributes(model.frame(object)))
+  if ("na.action" %in% nms) attributes(model.frame(object))$na.action
+  else {
+    na.action <- integer(0)
+    class(na.action) <- options("na.action")
+    na.action
+  }
 }
 
 # added by J. Fox 2012-04-08 to use in deltaMethod.default()
