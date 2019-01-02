@@ -791,7 +791,8 @@ Confint.lm <- function(object, estimate=TRUE, parm, level = 0.95, vcov.= vcov(ob
     ci
 }
 
-Confint.glm <- function(object, estimate=TRUE, exponentiate=FALSE, vcov., dispersion, ...){
+Confint.glm <- function(object, estimate=TRUE, exponentiate=FALSE, vcov., dispersion, type=c("LR", "Wald"), ...){
+    type <- match.arg(type)
     silent <- list(...)$silent
     if (!missing(vcov.) && !missing(dispersion))
         stop("cannot specify both vcov. and dispersion arguments")
@@ -799,7 +800,10 @@ Confint.glm <- function(object, estimate=TRUE, exponentiate=FALSE, vcov., disper
     result <- if (!missing(vcov.)) Confint.default(object, estimate=FALSE, vcov.=vcov(object, complete=FALSE), ...)
     else if (!missing(dispersion))
         Confint.default(object, estimate=FALSE, vcov.=dispersion*summary(object)$cov.unscaled, ...)
-    else suppressMessages(confint(object, ...))
+    else if (type == "LR"){
+      suppressMessages(confint(object, ...))
+    }
+    else Confint.default(object, estimate=FALSE, vcov.=vcov(object))
     if (estimate){
         result <- cbind(coef(object), result)
         colnames(result)[1] <- "Estimate"
