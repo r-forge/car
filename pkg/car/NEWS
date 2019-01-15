@@ -12,6 +12,8 @@ Changes to Version 3.0-3
   
   o New lmerMod method for influencePlot(), infIndexPlot(), and outlierTest().
   
+  o Make scatterplot.formula() more robust.
+  
   o Added carHexsticker().
   
   o Updated CITATION file.
