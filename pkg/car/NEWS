@@ -1,6 +1,8 @@
 Changes to Version 3.0-3
 
-  o fixed a bug in brief.lm the caused an error with rank-deficient models 
+  o fixed a bug in brief.lm the caused an error with rank-deficient models.
+  
+  o fixed a bug in deltaMethod() when a variable in the model is named "g" (reported by Chris Andrews.)
   
   o added a title argument to mcPlots
   
