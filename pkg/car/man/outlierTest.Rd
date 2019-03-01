@@ -8,7 +8,7 @@
 \title{Bonferroni Outlier Test}
 
 \description{
-  Reports the Bonferroni p-values for testing each observation in turn to be a mean-shift outliner, based Studentized residuals in
+  Reports the Bonferroni p-values for testing each observation in turn to be a mean-shift outlier, based Studentized residuals in
   linear (t-tests), generalized linear models (normal tests), and linear mixed models.
 }
 
