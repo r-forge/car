@@ -1,5 +1,7 @@
 Changes to Version 3.0-3
 
+  o fixed a bug in estimaePower.bncPowerlmer when the shift parameter is too close to the lower bound, thanks to Wouter van der Bijl <wouter@zoology.ubc.ca>
+  
   o fixed a bug in brief.lm the caused an error with rank-deficient models.
   
   o fixed a bug in deltaMethod() when a variable in the model is named "g" (reported by Chris Andrews.)
