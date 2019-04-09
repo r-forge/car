@@ -18,6 +18,8 @@ Changes to Version 3.0-3
   
   o Make scatterplot.formula() more robust.
   
+  o Fix qqPlot() to respect order of factor levels when plotting by groups (suggestion of Vilmantas Gegzna).
+  
   o Added carHexsticker().
   
   o Updated CITATION file.
