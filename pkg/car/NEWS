@@ -1,12 +1,12 @@
 Changes to Version 3.0-3
 
-  o fixed a bug in estimaePower.bncPowerlmer when the shift parameter is too close to the lower bound, thanks to Wouter van der Bijl <wouter@zoology.ubc.ca>
+  o Fixed a bug in estimatePower.bncPowerlmer when the shift parameter is too close to the lower bound, thanks to Wouter van der Bijl <wouter@zoology.ubc.ca>
   
-  o fixed a bug in brief.lm the caused an error with rank-deficient models.
+  o Fixed a bug in brief.lm the caused an error with rank-deficient models.
   
-  o fixed a bug in deltaMethod() when a variable in the model is named "g" (reported by Chris Andrews.)
+  o Fixed a bug in deltaMethod() when a variable in the model is named "g" (reported by Chris Andrews.)
   
-  o added a title argument to mcPlots
+  o Added a title argument to mcPlots
   
   o influence.merMod() and influence.lme() now support parallel computations.
 
@@ -16,9 +16,13 @@ Changes to Version 3.0-3
   
   o New lmerMod method for influencePlot(), infIndexPlot(), and outlierTest().
   
-  o Make scatterplot.formula() more robust.
+  o Made scatterplot.formula() more robust.
   
-  o Fix qqPlot() to respect order of factor levels when plotting by groups (suggestion of Vilmantas Gegzna).
+  o Fixed qqPlot() to respect order of factor levels when plotting by groups (suggestion of Vilmantas Gegzna).
+  
+  o Fixed bug in S.multinom() that exponentiated coefficients twice (reported by Thamron Keowmani).
+  
+  o Made several S() methods tolerant of models with just one coefficient (problem reported for S.polr() by Thamron Keowmani).
   
   o Added carHexsticker().
   
