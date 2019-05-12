@@ -25,7 +25,7 @@ outlierTest(model, ...)
 
 \arguments{
   \item{model}{an \code{lm}, \code{glm}, or \code{lmerMod} model object; the \code{"lmerMod"} method calls the \code{"lm"} method and can take the same arguments.}
-  \item{cutoff}{observations with Bonferonni p-values exceeding
+  \item{cutoff}{observations with Bonferroni p-values exceeding
   	\code{cutoff} are not reported, unless no observations are
   	nominated, in which case the one with the largest Studentized
   	residual is reported.}
