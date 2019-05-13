@@ -42,7 +42,8 @@
 # 2018-02-07,08,12:  J. Fox removed leading blank lines in formatCall() and elsewhere.
 # 2018-10-23: J. Fox made coefs2use() work with models without an intercept even if intercept arg is TRUE.
 # 2019-05-02: J. Fox fixed bug in Confint.polr() that exponentiated coefficients twice (reported by Thamron Keowmani).
-# 2019-05-02: J. Fox made several S() methods tolerant of model with 1 coefficient (reported by Thamron Keowmani).
+# 2019-05-02,13: J. Fox made several S() methods tolerant of model with 1 coefficient or
+#             in the case of multinom models, 2 response levels(reported by Thamron Keowmani).
 
 formatCall <- function(call){
   call <- if (is.character(call)){
@@ -525,7 +526,8 @@ print.S.multinom <- function (x, digits = max(3, getOption("digits") - 3),
     exponentiated <- x$exponentiated
     if (!is.null(exponentiated)){
         cat("\nExponentiated Coefficients:\n")
-        for (response in dimnames(table)[[3]]){
+      if (length(dim(table)) == 2) print(exponentiated, digits=digits, ...)
+      else  for (response in dimnames(table)[[3]]){
             cat("\n ", response, "\n")
             print(exponentiated[, , response], digits=digits, ...)
         }

@@ -22,7 +22,7 @@ Changes to Version 3.0-3
   
   o Fixed bug in S.multinom() that exponentiated coefficients twice (reported by Thamron Keowmani).
   
-  o Made several S() methods tolerant of models with just one coefficient (problem reported for S.polr() by Thamron Keowmani).
+  o Made several S() methods tolerant of models with just one coefficient or, for multinom model, 2 response levels (problem reported for S.polr() by Thamron Keowmani).
   
   o Added carHexsticker().
   
