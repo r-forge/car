@@ -22,6 +22,7 @@
 # 2017-10-29: Changed default color palette from palette() to carPalette()
 # 2019-05-17: in mmp.glm, default horizontal variable when fitted=TRUE is now the
 #             fitted values for lm and the linear predictor for glm
+# 2019-05-17: added ylab arg to mmp() methods. J. Fox
 #############################################
 
 marginalModelPlot <- function(...){
@@ -40,7 +41,7 @@ mmp.lm <- function (model, variable, sd = FALSE,
 }
 
 mmp.default <- function (model, variable, sd = FALSE,
-                         xlab = deparse(substitute(variable)), smooth=TRUE, key=TRUE, pch, groups=NULL,
+                         xlab = deparse(substitute(variable)), ylab, smooth=TRUE, key=TRUE, pch, groups=NULL,
                          col.line = carPalette()[c(2, 8)], col=carPalette()[1],
                          id=FALSE, grid=TRUE, ...){
     id <- applyDefaults(id, defaults=list(method="y", n=2, cex=1, col=carPalette()[1], location="lr"), type="id")
@@ -88,8 +89,9 @@ mmp.default <- function (model, variable, sd = FALSE,
     } else {
         u <- variable}
     resp <- model.response(model.frame(model))
+    if (missing(ylab)) ylab <- colnames(model$model[1])
     plot(u, resp,
-         xlab = xlab, ylab = colnames(model$model[1]), type="n", ...)
+         xlab = xlab, ylab = ylab, type="n", ...)
     if(grid){
         grid(lty=1, equilogs=FALSE)
         box()}
@@ -138,7 +140,7 @@ mmp.default <- function (model, variable, sd = FALSE,
 }
 
 mmp.glm <- function (model, variable, sd = FALSE,
-                     xlab = deparse(substitute(variable)),
+                     xlab = deparse(substitute(variable)), ylab,
                      smooth=TRUE, key=TRUE, pch, groups=NULL,
                      col.line = carPalette()[c(2, 8)], col=carPalette()[1],
                      id=FALSE, grid=TRUE, ...){
@@ -196,7 +198,8 @@ mmp.glm <- function (model, variable, sd = FALSE,
         if (is.factor(response)) {response <- as.numeric(response) - 1}
         if (is.matrix(response)){response <- response[, 1]/pw}
     }
-    plot(u, response, type="n", xlab = xlab, ylab = colnames(model$model[1]))
+    if (missing(ylab)) ylab <- colnames(model$model[1])
+    plot(u, response, type="n", xlab = xlab, ylab = ylab)
     if(grid){
         grid(lty=1, equilogs=FALSE)
         box()}

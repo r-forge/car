@@ -24,17 +24,17 @@ mmps(model, terms= ~ ., fitted=TRUE, layout=NULL, ask,
 marginalModelPlot(...)
 
 \method{mmp}{lm}(model, variable, sd = FALSE,
-    xlab = deparse(substitute(variable)),
+    xlab = deparse(substitute(variable)), 
     smooth=TRUE, key=TRUE, pch, groups=NULL, ...)
 
 \method{mmp}{default}(model, variable, sd = FALSE,
-    xlab = deparse(substitute(variable)), smooth=TRUE,
+    xlab = deparse(substitute(variable)), ylab, smooth=TRUE,
     key=TRUE, pch, groups=NULL,
     col.line = carPalette()[c(2, 8)], col=carPalette()[1],
     id=FALSE, grid=TRUE, ...)
 
 \method{mmp}{glm}(model, variable, sd = FALSE,
-    xlab = deparse(substitute(variable)),
+    xlab = deparse(substitute(variable)), ylab,
     smooth=TRUE, key=TRUE, pch, groups=NULL,
     col.line = carPalette()[c(2, 8)], col=carPalette()[1],
     id=FALSE, grid=TRUE, ...)
@@ -87,7 +87,8 @@ then to \code{plot}.  Users should generally use \code{mmps}, or equivalently
 \item{sd}{ If \code{TRUE}, display sd smooths.  For a binomial regression with all
 sample sizes equal to one, this argument is ignored as the SD bounds don't
 make any sense. }
-\item{xlab}{ label for horizontal axis }
+\item{xlab}{ label for horizontal axis.}
+\item{ylab}{ label for vertical axis, defaults to name of response.}
 \item{smooth}{specifies the smoother to be used along with its arguments; if \code{FALSE}, no smoother is shown;
 can be a list giving the smoother function and its named arguments; \code{TRUE}, the default, is equivalent to
 \code{list(smoother=loessLine, span=2/3)} for linear models and \code{list(smoother=gamLine, k=3)} for generalized linear models.
