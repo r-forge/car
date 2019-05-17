@@ -49,9 +49,9 @@ marginalModelPlot(...)
   \code{formula(object)} will be used.  If a conditioning argument is given,
   eg \code{terms = ~. | a}, then separate colors and smoothers are used for
   each unique non-missing value of \code{a}.  See examples below.}
-\item{fitted}{If the default \code{TRUE}, then a marginal model plot in the direction
-  of the fitted values or linear predictor of a generalized linear model will
-  be drawn.}
+\item{fitted}{If \code{TRUE}, the default, then a marginal model plot in the direction
+  of the fitted values for a linear model or the linear predictor of a 
+  generalized linear model will be drawn.}
 \item{layout}{
   If set to a value like \code{c(1, 1)} or \code{c(4, 3)}, the layout
 of the graph will have this many rows and columns.  If not set, the program
@@ -71,8 +71,12 @@ Additional arguments passed from \code{mmps} to \code{mmp} and
 then to \code{plot}.  Users should generally use \code{mmps}, or equivalently
 \code{marginalModelPlots}.
 }
-\item{variable}{ The quantity to be plotted on the horizontal axis.  The
-  default is the predicted values \code{predict(object)}.  It can be any other
+\item{variable}{ The quantity to be plotted on the horizontal axis.  If this argument
+  is missing, the horizontal variable is the linear predictor, returned by 
+  \code{predict(object)} for models of class
+  \code{lm}, with default label \code{"Fitted values"},  or returned by 
+  \code{predict(object, type="link")} for models of class \code{glm}, with default 
+  label \code{"Linear predictor"}. It can be any other
   vector of length equal to the number of observations in the object. Thus the
   \code{mmp} function can be used to get a marginal model plot versus any
   regressor or predictor while the \code{mmps} function can be used only to get

@@ -1,5 +1,7 @@
 Changes to Version 3.0-3
 
+  o Fixed a bug in mmp.glm, so the horizontal axis for the default plot is the linear predictor, not the fitted values.  
+
   o Fixed a bug in estimatePower.bncPowerlmer when the shift parameter is too close to the lower bound, thanks to Wouter van der Bijl <wouter@zoology.ubc.ca>
   
   o Fixed a bug in brief.lm the caused an error with rank-deficient models.

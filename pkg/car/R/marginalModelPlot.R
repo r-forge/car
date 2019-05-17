@@ -1,8 +1,5 @@
 #############################################
 # marginal model plots    Rev 12/30/09
-# To do:
-# Allow a Groups arg that will draw the plot for the specified group
-# BUG:  sd's are WRONG with weights; see cards data
 # 15 March 2010 changed to make
 #   mmps(lm(longley)) work without specifying data or response
 #   fixed bug  when only one plot is requested --- suppress call to par()
@@ -23,6 +20,8 @@
 # 2017-02-13: consolidated smooth and id arguments. J. Fox
 # 2017-10-29: Changed line type of smooth of the data to 1 as advertised
 # 2017-10-29: Changed default color palette from palette() to carPalette()
+# 2019-05-17: in mmp.glm, default horizontal variable when fitted=TRUE is now the
+#             fitted values for lm and the linear predictor for glm
 #############################################
 
 marginalModelPlot <- function(...){
@@ -183,7 +182,8 @@ mmp.glm <- function (model, variable, sd = FALSE,
     }
     if (missing(variable)) {
         xlab <- "Linear Predictor"
-        u <- fitted(update(model, na.action=na.omit))
+        u <- predict(update(model, na.action=na.omit), type="link")
+#        u <- fitted(update(model, na.action=na.omit)) #deleted 5/17/2019
     }  else {
         u <- variable }
     response <- model.response(model.frame(model))
