@@ -23,6 +23,8 @@ mmps(model, terms= ~ ., fitted=TRUE, layout=NULL, ask,
 
 marginalModelPlot(...)
 
+mmp(model, ...)
+
 \method{mmp}{lm}(model, variable, sd = FALSE,
     xlab = deparse(substitute(variable)), 
     smooth=TRUE, key=TRUE, pch, groups=NULL, ...)
