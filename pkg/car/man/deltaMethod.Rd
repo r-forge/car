@@ -23,25 +23,26 @@ with known or estimated covariance matrix.
 \usage{
 deltaMethod(object, ...)
 
-\method{deltaMethod}{default}(object, g., vcov., func=g., constants, level=0.95, ...)
+\method{deltaMethod}{default}(object, g., vcov., func=g., constants, level=0.95, 
+  rhs, ..., envir=parent.frame())
 \method{deltaMethod}{lm} (object, g., vcov.=vcov(object, complete=FALSE), 
-           parameterNames=names(coef(object)), ...)
-\method{deltaMethod}{nls}(object, g., vcov.=vcov(object, complete=FALSE), ...)
+           parameterNames=names(coef(object)), ..., envir=parent.frame())
+\method{deltaMethod}{nls}(object, g., vcov.=vcov(object, complete=FALSE), ..., envir=parent.frame())
 \method{deltaMethod}{multinom} (object, g., vcov. = vcov(object, complete=FALSE), 
            parameterNames = if (is.matrix(coef(object))) 
-           colnames(coef(object)) else names(coef(object)), ...) 
-\method{deltaMethod}{polr} (object, g., vcov.=vcov(object, complete=FALSE), ...)
+           colnames(coef(object)) else names(coef(object)), ..., envir=parent.frame()) 
+\method{deltaMethod}{polr} (object, g., vcov.=vcov(object, complete=FALSE), ..., envir=parent.frame())
 \method{deltaMethod}{survreg} (object, g., vcov. = vcov(object, complete=FALSE), 
-           parameterNames = names(coef(object)), ...)
+           parameterNames = names(coef(object)), ..., envir=parent.frame())
 \method{deltaMethod}{coxph} (object, g., vcov. = vcov(object, complete=FALSE), 
-           parameterNames = names(coef(object)), ...)
+           parameterNames = names(coef(object)), ..., envir=parent.frame())
 \method{deltaMethod}{mer} (object, g., vcov. = vcov(object, complete=FALSE),
-           parameterNames = names(fixef(object)), ...)
+           parameterNames = names(fixef(object)), ..., envir=parent.frame())
 \method{deltaMethod}{merMod} (object, g., vcov. = vcov(object, complete=FALSE),
-           parameterNames = names(fixef(object)), ...)
+           parameterNames = names(fixef(object)), ..., envir=parent.frame())
 \method{deltaMethod}{lme} (object, g., vcov. = vcov(object, complete=FALSE),
-           parameterNames = names(fixef(object)), ...)
-\method{deltaMethod}{lmList} (object, g.,  ...)
+           parameterNames = names(fixef(object)), ..., envir=parent.frame())
+\method{deltaMethod}{lmList} (object, g.,  ..., envir=parent.frame())
 
 }
 \arguments{
@@ -75,7 +76,10 @@ deltaMethod(object, ...)
   called from within another function to comply to R scoping rules.  See an
   example below.}
   \item{level}{level for confidence interval, default \code{0.95}.}
+  \item{rhs}{hypothesized value for the specified function of parameters; if absent
+  no hypothesis test is performed.}
   \item{...}{Used to pass arguments to the generic method.}
+  \item{envir}{Environment in which \code{g.} is evaluated; not normally specified by the user.}
 }
 
 \details{
@@ -126,7 +130,7 @@ example, the ratio of the
 \code{deltaMethod(m2, "b1/b3", parameterNames=c("b0", "b1", "b2", "b3"))}.
 The name \dQuote{\code{(Intercept)}} used for the intercept in linear and generalized
 linear models is an exception, and it will be correctly interpreted by
-\code{deltaMethod}. The name \code{"g."} also may not be among the coefficient names.
+\code{deltaMethod}.
 
 For \code{multinom} objects, the \code{coef} function returns a matrix of
 coefficients, with each row giving the estimates for comparisons of one category
@@ -180,13 +184,12 @@ by the function \code{\link{D}}.}
   Linear Regression}, Fourth Edition, Wiley, Section 6.1.2.
 }
 
-\author{Sanford Weisberg, \email{sandy@umn.edu},
-and John Fox \email{jfox@mcmaster.ca}}
+\author{Sanford Weisberg, \email{sandy@umn.edu}, John Fox \email{jfox@mcmaster.ca}, and Pavel Krivitsky.}
 
 \examples{
 m1 <- lm(time ~ t1 + t2, data = Transact) 
 deltaMethod(m1, "b1/b2", parameterNames= paste("b", 0:2, sep="")) 
-deltaMethod(m1, "t1/t2") # use names of preds. rather than coefs.
+deltaMethod(m1, "t1/t2", rhs=1) # use names of preds. rather than coefs.
 deltaMethod(m1, "t1/t2", vcov=hccm) # use hccm function to est. vars.
 # to get the SE of 1/intercept, rename coefficients
 deltaMethod(m1, "1/b0", parameterNames= paste("b", 0:2, sep=""))
@@ -196,16 +199,16 @@ deltaMethod(coef(m1), "t1/t2", vcov.=vcov(m1))
 # the following works:
 a <- 5
 deltaMethod(m1, "(t1 + a)/t2")
-# ...but embedded in a function this will fail
+# as does the following:
 f1 <- function(mod, ...) {
  z <- 3
- deltaMethod(m1, "(t1+z)/t2", ...)
+ deltaMethod(mod, "(t1+z)/t2", ...)
  }
-\dontrun{f1(m1)}
+f1(m1)
 # if z is defined globally f1 could even return the wrong answer.
 # the following function works
 f2 <- function(mod, ...) {
- deltaMethod(m1, "(t1+z)/t2", ...)
+ deltaMethod(mod, "(t1+z)/t2", ...)
  }
 f2(m1, constants=c(z=3))
 # as does
