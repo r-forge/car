@@ -70,11 +70,11 @@ deltaMethod.default <- function (object, g., vcov., func = g., constants, level=
 	    p <- 2*(pnorm(z, lower.tail=FALSE))
 	    result <- cbind(result, "Hypothesis"=rhs, "z value"=z, "Pr(>|z|)"=p)
 	}
-	class(result) <- c("deltaMethodTest", class(result))
+	class(result) <- c("deltaMethod", class(result))
 	result
 }
 
-print.deltaMethodTest <- function(x, ...){
+print.deltaMethod <- function(x, ...){
     if (ncol(x) == 3) print(x, ...) else printCoefmat(x, ...)
     invisible(x)
 }

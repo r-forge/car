@@ -381,4 +381,4 @@ S3method(print, summary.boot)
 S3method(print, confint.boot)
 S3method(vcov, boot)
 
-S3method(print, deltaMethodTest)
+S3method(print, deltaMethod)
