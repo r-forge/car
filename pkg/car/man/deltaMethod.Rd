@@ -128,7 +128,7 @@ example, the ratio of the
 \code{deltaMethod(m2, "b1/b3", parameterNames=c("b0", "b1", "b2", "b3"))}.
 The name \dQuote{\code{(Intercept)}} used for the intercept in linear and generalized
 linear models is an exception, and it will be correctly interpreted by
-\code{deltaMethod}.
+\code{deltaMethod}. Another option is to use back-ticks to quote nonstandard R names, as in \code{deltaMethod(m2,"X1/`X1:X2`")}.
 
 For \code{multinom} objects, the \code{coef} function returns a matrix of
 coefficients, with each row giving the estimates for comparisons of one category

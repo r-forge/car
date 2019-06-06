@@ -23,6 +23,7 @@
 # 2019-01-16: changed g arg to g. to allow variable named "g". J. Fox
 # 2019-06-03: introduction of environment to hold coefficients and constants. Pavel Krivitsky
 # 2019-06-05: option for hypothesis test. J. Fox
+# 2019-06-06: move handling intercepts to default method, suggestion of Pavel Krivitsky. J. Fox 
 #-------------------------------------------------------------------------------
 
 deltaMethod <- function (object, ...) {
@@ -30,16 +31,17 @@ deltaMethod <- function (object, ...) {
 }
 
 deltaMethod.default <- function (object, g., vcov., func = g., constants, level=0.95, rhs=NULL, ..., envir=parent.frame()) {
-	if (!is.character(g.)) 
-		stop("The argument 'g.' must be a character string")
-	if ((exists.method("coef", object, default=FALSE) ||
-				(!is.atomic(object) && !is.null(object$coefficients))) 
-			&& exists.method("vcov", object, default=FALSE)){
-		if (missing(vcov.)) vcov. <- vcov(object, complete=FALSE)
-		object <- coef(object)
-	}
+  if (!is.character(g.)) 
+    stop("The argument 'g.' must be a character string")
+  if ((exists.method("coef", object, default=FALSE) ||
+       (!is.atomic(object) && !is.null(object$coefficients))) 
+      && exists.method("vcov", object, default=FALSE)){
+    if (missing(vcov.)) vcov. <- vcov(object, complete=FALSE)
+    object <- coef(object)
+  }
 	para <- object         
 	para.names <- names(para)
+	para.names[1] <- gsub("\\(Intercept\\)", "Intercept", para.names[1])
 	g. <- parse(text = g.)
 	q <- length(para)
 
@@ -83,7 +85,7 @@ deltaMethod.lm <- function (object, g., vcov. = vcov(object, complete=FALSE),
            parameterNames = names(coef(object)), ..., envir=parent.frame()) {
 	para <- coef(object)
 	para.names <- parameterNames
-	para.names[1] <- gsub("\\(Intercept\\)", "Intercept", para.names[1])
+	# para.names[1] <- gsub("\\(Intercept\\)", "Intercept", para.names[1])
 	names(para) <- para.names
 	vcov. <- if (is.function(vcov.)) 
 			vcov.(object)
