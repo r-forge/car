@@ -23,7 +23,7 @@
 # 2019-01-16: changed g arg to g. to allow variable named "g". J. Fox
 # 2019-06-03: introduction of environment to hold coefficients and constants. Pavel Krivitsky
 # 2019-06-05: option for hypothesis test. J. Fox
-# 2019-06-06: move handling intercepts to default method, suggestion of Pavel Krivitsky. J. Fox 
+# 2019-06-07: move handling intercepts to default method, suggestion of Pavel Krivitsky. J. Fox 
 #-------------------------------------------------------------------------------
 
 deltaMethod <- function (object, ...) {
@@ -47,7 +47,6 @@ deltaMethod.default <- function (object, g., vcov., func = g., constants, level=
 
 	envir <- new.env(parent=envir)
 	for (i in 1:q) {
-#		assign(names(para)[i], para[i], envir)
 	    assign(para.names[i], para[i], envir)
 	}
 	if(!missing(constants)){
@@ -69,7 +68,7 @@ deltaMethod.default <- function (object, g., vcov., func = g., constants, level=
 	names(result)[3:4] <- pct
 	if (!is.null(rhs)){
 	    z <- (est - rhs)/se.est
-	    p <- 2*(pnorm(z, lower.tail=FALSE))
+	    p <- 2*(pnorm(abs(z), lower.tail=FALSE))
 	    result <- cbind(result, "Hypothesis"=rhs, "z value"=z, "Pr(>|z|)"=p)
 	}
 	class(result) <- c("deltaMethod", class(result))
@@ -85,7 +84,6 @@ deltaMethod.lm <- function (object, g., vcov. = vcov(object, complete=FALSE),
            parameterNames = names(coef(object)), ..., envir=parent.frame()) {
 	para <- coef(object)
 	para.names <- parameterNames
-	# para.names[1] <- gsub("\\(Intercept\\)", "Intercept", para.names[1])
 	names(para) <- para.names
 	vcov. <- if (is.function(vcov.)) 
 			vcov.(object)
