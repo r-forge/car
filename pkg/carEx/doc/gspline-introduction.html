@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Georges Monette and John Fox" />
+
+<meta name="date" content="2019-04-19" />
+
+<title>An Introduction to Generalized Regression Splines</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">An Introduction to Generalized Regression Splines</h1>
+<h4 class="author">Georges Monette and John Fox</h4>
+<h4 class="date">2019-04-19</h4>
+
+
+
+<div id="introduction" class="section level2">
+<h2>1. Introduction</h2>
+<p><em>Regression splines</em> are piecewise polynomials that are constrained to join smoothly at boundaries called <em>knots</em>. Regression splines are traditionally introduced as an alternative to other methods for modeling nonlinear relationships, such as data transformations, polynomial regression, and nonparametric regression. Unlike power and related transformations, regression splines can handle relationships that are nonmonotone or complex; unlike polynomial regression, which is highly nonlocal, in the sense that <span class="math inline">\(x\)</span>-values in one region of the predictor space can strongly affect the fit of the model in another region, regression splines provide fits that are sensitive to local characteristics of the data; and unlike nonparametric regression, regression splines are fully parametric and are implemented by introducing regressors (a <em>regression-spline basis</em>) into the model matrix for a linear or similar parametric regression model with a linear predictor, such as a generalized linear model or a linear or generalized linear mixed-effects model.</p>
+<p>It is, however, also usual <em>not</em> to focus on the estimated parameters for a regression spline and instead to represent the fit of the model graphically. Indeed, traditional regression-spline bases, such as B-splines, are selected for numerical stability rather than for interpretability. Although the emphasis on graphical interpretation makes sense, it also represents a missed opportunity.</p>
+<p>In this vignette, we introduce what we term <em>generalized regresson splines</em> and the <code>gspline()</code> function in the <strong>carEx</strong> package, which implements them.</p>
+</div>
+<div id="piecewise-polynomials-and-regresson-splines" class="section level2">
+<h2>2. Piecewise Polynomials and Regresson Splines</h2>
+<p>This section presents a succession of increasingly complex segmented polynomial regression models, culminating in traditional cubic regression splines. We show how the models can be fit by manually coding the regressors in the model (i.e., the model matrix). Later on, we’ll explain how to fit these models using the <code>gspline()</code> (“generalized spline”) function, and, where appropriate, the <code>bs()</code> (“B-spline”) and <code>ns()</code> (“natural spline”) functions in the <strong>splines</strong> package, which is part of the standard R distribution. For simplicity, we work in this section with a single numeric predictor, <span class="math inline">\(x\)</span>, but everything that we do generalizes straightforwardly to numeric predictors in more complex regression models. The exposition here borrows heavily from, but also extends, Fox (2016, Sec. 17.2). A complementary vignette explains the theory underlying our implementation of regression splines.</p>
+<p>Let’s start by randomly generating some nonlinear data:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">set.seed</span>(<span class="dv">12345</span>) <span class="co"># for reproducibility</span></a>
+<a class="sourceLine" id="cb1-2" title="2">x &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">200</span>, <span class="dv">0</span>, <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb1-3" title="3">x &lt;-<span class="st"> </span><span class="kw">sort</span>(x)</a>
+<a class="sourceLine" id="cb1-4" title="4">y &lt;-<span class="st"> </span><span class="kw">cos</span>(<span class="fl">1.25</span><span class="op">*</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span>x<span class="op">/</span><span class="dv">5</span>  <span class="op">+</span><span class="st"> </span><span class="fl">0.5</span><span class="op">*</span><span class="kw">rnorm</span>(<span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb1-5" title="5">Ey &lt;-<span class="st"> </span><span class="kw">cos</span>(<span class="fl">1.25</span><span class="op">*</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span>x<span class="op">/</span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="kw">plot</span>(x, y)</a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="kw">curve</span>(<span class="kw">cos</span>(<span class="fl">1.25</span><span class="op">*</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span>x<span class="op">/</span><span class="dv">5</span>, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>) <span class="co"># population regression</span></a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The line on the graph represents the “true” population regression curve.</p>
+<p><em>Piecewise polynomials</em> begin by dividing the range of <span class="math inline">\(x\)</span> into non-overlapping intervals at <span class="math inline">\(k\)</span> ordered <span class="math inline">\(x\)</span>-values <span class="math inline">\(t_j\)</span> called <em>knots</em>: <span class="math inline">\((-\inf, t_1], (t_1, t_2], \ldots, (t_k, \inf)\)</span>. Then a degree-<span class="math inline">\(p\)</span> polynomial is fit by least-squares regression to the data in each interval. The simplest case is an degree-0 polynomial, which generates a <em>piecewise-constant</em> fit by computing the mean <span class="math inline">\(y\)</span>-value in each interval. For the example, we set <span class="math inline">\(k = 2\)</span> knots at <span class="math inline">\(t_1 = 10/3\)</span> and <span class="math inline">\(t_2 = 2\times10/3\)</span>, which are the 1/3 and 2/3 quantiles of the uniform[0, 10] distribution from which the <span class="math inline">\(x\)</span>-values were generated. For real data, we can pick knots using sample <span class="math inline">\(x\)</span>-quantiles or (as we discuss in another vignette) theoretically interesting transitional points in the data.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">plot</span>(x, y, <span class="dt">main=</span><span class="st">&quot;Piecewise Constant Fit&quot;</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">curve</span>(<span class="kw">cos</span>(<span class="fl">1.25</span><span class="op">*</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span>x<span class="op">/</span><span class="dv">5</span>, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb2-3" title="3">t &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">20</span><span class="op">/</span><span class="dv">3</span>) <span class="co"># knots</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="kw">abline</span>(<span class="dt">v=</span>t, <span class="dt">lty=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="kw">mtext</span>(<span class="kw">c</span>(<span class="kw">expression</span>(t[<span class="dv">1</span>]), <span class="kw">expression</span>(t[<span class="dv">2</span>])), <span class="dt">side=</span><span class="dv">1</span>, <span class="dt">line=</span><span class="fl">0.5</span>, <span class="dt">at=</span>t) </a>
+<a class="sourceLine" id="cb2-6" title="6">group &lt;-<span class="st"> </span><span class="kw">cut</span>(x, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="op">-</span><span class="ot">Inf</span>, t, <span class="ot">Inf</span>))</a>
+<a class="sourceLine" id="cb2-7" title="7">means &lt;-<span class="st"> </span><span class="kw">tapply</span>(y, group, mean) <span class="co"># within-interval means</span></a>
+<a class="sourceLine" id="cb2-8" title="8">x0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, t, <span class="dv">10</span>) <span class="co"># knots augmented with boundaries</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) <span class="kw">lines</span>(x0[<span class="kw">c</span>(i, i<span class="op">+</span><span class="dv">1</span>)], <span class="kw">rep</span>(means[i],<span class="dv">2</span>), <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">yhat1 &lt;-<span class="st"> </span>means[group] <span class="co"># fitted values</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">mean</span>((Ey <span class="op">-</span><span class="st"> </span>yhat1)<span class="op">^</span><span class="dv">2</span>) <span class="co"># RMSE</span></a></code></pre></div>
+<pre><code>## [1] 0.4853018</code></pre>
+<p>RMSE is the root-mean-squared error of estimating <span class="math inline">\(E(y)\)</span> for the cases in the data. It provides a rough guide to how well the model recovers the population regression curve, with the caveats that (1) it is an <em>estimate</em> because we have only <span class="math inline">\(n = 200\)</span> sampled cases, and (2) we haven’t penalized the RMSE for the number of parameters in the model.</p>
+<p>A next step is to generalize the model to a <em>piecewise-linear</em> fit (that is, a piecewise degree-1 polynomial):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">mods2 &lt;-<span class="st"> </span><span class="kw">by</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y, <span class="dt">group=</span>group), group, </a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="cf">function</span>(df) <span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>df)) <span class="co"># within-group linear regressions</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">plot</span>(x, y, <span class="dt">main=</span><span class="st">&quot;Piecewise Linear Fit&quot;</span>)</a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="kw">curve</span>(<span class="kw">cos</span>(<span class="fl">1.25</span><span class="op">*</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span>x<span class="op">/</span><span class="dv">5</span>, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="kw">abline</span>(<span class="dt">v=</span>t, <span class="dt">lty=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="kw">mtext</span>(<span class="kw">c</span>(<span class="kw">expression</span>(t[<span class="dv">1</span>]), <span class="kw">expression</span>(t[<span class="dv">2</span>])), <span class="dt">side=</span><span class="dv">1</span>, <span class="dt">line=</span><span class="fl">0.5</span>, <span class="dt">at=</span>t) </a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>){</a>
+<a class="sourceLine" id="cb5-8" title="8">    x1 &lt;-<span class="st"> </span>x0[<span class="kw">c</span>(j, j <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)]</a>
+<a class="sourceLine" id="cb5-9" title="9">    y1 &lt;-<span class="st"> </span><span class="kw">predict</span>(mods2[[j]], <span class="kw">list</span>(<span class="dt">x=</span>x1))</a>
+<a class="sourceLine" id="cb5-10" title="10">    <span class="kw">lines</span>(x1, y1, <span class="dt">lwd=</span><span class="dv">2</span>) <span class="co"># draw within-group regression lines</span></a>
+<a class="sourceLine" id="cb5-11" title="11">}</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">yhat2 &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(mods2, fitted))</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">mean</span>((Ey <span class="op">-</span><span class="st"> </span>yhat2)<span class="op">^</span><span class="dv">2</span>) <span class="co"># RMSE</span></a></code></pre></div>
+<pre><code>## [1] 0.1336994</code></pre>
+<p>We convert the piecewise-linear fit into a <em>linear regression spline</em> by constraining the regression lines on the two sides of each knot to be equal at the knot. We can do this by fitting the linear model <span class="math display">\[
+y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \beta_3 x_{i3} + \varepsilon_i
+\]</span> where <span class="math inline">\(x_{i1} = x_i\)</span>, <span class="math display">\[
+x_{i2} = \left\{  {\begin{array}{ll}
+   0 &amp; \mathrm{for} \: x_i \le t_1 \\
+   x_i - t_1 &amp; \mathrm{for} \: x_i &gt; t_1 \\
+  \end{array} } \right.
+\]</span> and <span class="math display">\[
+x_{i3} = \left\{  {\begin{array}{ll}
+   0 &amp; \mathrm{for} \: x_i \le t_2 \\
+   x_i - t_2 &amp; \mathrm{for} \: x_i &gt; t_2 \\
+  \end{array} } \right.
+\]</span> Notice that the regression-spline coefficients each have a straightforward interpretation: <span class="math inline">\(\beta_0\)</span> is the expectation of the response <span class="math inline">\(y\)</span> when <span class="math inline">\(x = 0\)</span>; <span class="math inline">\(\beta_1\)</span> is the slope of the regression line in the first interval; <span class="math inline">\(\beta_2\)</span> is the <em>change</em> in slope between the first and second interval; and <span class="math inline">\(\beta_3\)</span> is the change in slope between the second and third interval.</p>
+<p>Fitting the linear regression spline to our artificial data produces the following result:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">x1 &lt;-<span class="st"> </span>x <span class="co"># define spline regressors</span></a>
+<a class="sourceLine" id="cb8-2" title="2">x2 &lt;-<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span>t[<span class="dv">1</span>]) <span class="op">*</span><span class="st"> </span>(x <span class="op">&gt;</span><span class="st"> </span>t[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb8-3" title="3">x3 &lt;-<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span>t[<span class="dv">2</span>]) <span class="op">*</span><span class="st"> </span>(x <span class="op">&gt;</span><span class="st"> </span>t[<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb8-4" title="4">mod3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span>x2 <span class="op">+</span><span class="st"> </span>x3) <span class="co"># linear regression spline model</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="kw">plot</span>(x, y, <span class="dt">main=</span><span class="st">&quot;Linear Regression Spline&quot;</span>)</a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="kw">curve</span>(<span class="kw">cos</span>(<span class="fl">1.25</span><span class="op">*</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span>x<span class="op">/</span><span class="dv">5</span>, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="kw">abline</span>(<span class="dt">v=</span>t, <span class="dt">lty=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="kw">mtext</span>(<span class="kw">c</span>(<span class="kw">expression</span>(t[<span class="dv">1</span>]), <span class="kw">expression</span>(t[<span class="dv">2</span>])), <span class="dt">side=</span><span class="dv">1</span>, <span class="dt">line=</span><span class="fl">0.5</span>, <span class="dt">at=</span>t)</a>
+<a class="sourceLine" id="cb8-9" title="9">x01 &lt;-<span class="st"> </span>x0</a>
+<a class="sourceLine" id="cb8-10" title="10">x02 &lt;-<span class="st"> </span>(x0 <span class="op">-</span><span class="st"> </span>t[<span class="dv">1</span>]) <span class="op">*</span><span class="st"> </span>(x0 <span class="op">&gt;</span><span class="st"> </span>t[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb8-11" title="11">x03 &lt;-<span class="st"> </span>(x0 <span class="op">-</span><span class="st"> </span>t[<span class="dv">2</span>]) <span class="op">*</span><span class="st"> </span>(x0 <span class="op">&gt;</span><span class="st"> </span>t[<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="kw">lines</span>(x0, <span class="kw">predict</span>(mod3, <span class="kw">list</span>(<span class="dt">x1=</span>x01, <span class="dt">x2=</span>x02, <span class="dt">x3=</span>x03)), <span class="dt">lwd=</span><span class="dv">2</span>) <span class="co"># draw fitted lines</span></a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">yhat3 &lt;-<span class="st"> </span><span class="kw">fitted</span>(mod3)</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="kw">mean</span>((Ey <span class="op">-</span><span class="st"> </span>yhat3)<span class="op">^</span><span class="dv">2</span>) <span class="co"># RMSE</span></a></code></pre></div>
+<pre><code>## [1] 0.2292751</code></pre>
+<p>Because of the 2 constraints that the regression lines join at the 2 knots, the linear regression spline uses 2 fewer parameters than the unconstrained within-interval linear regressions: 4 parameters for the linear regression spline, <span class="math inline">\(3 \times 2 = 6\)</span> parameters for the unconstrained linear regressions.</p>
+<p>This approach generalizes readily to higher-degree polyomials, the most common of which is the third-degree or <em>cubic regression spline</em>. Consider first unconstrained within-interval cubic regressions:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">mods4 &lt;-<span class="st"> </span><span class="kw">by</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y, <span class="dt">group=</span>group), group, <span class="co"># within-interval cubic regressions</span></a>
+<a class="sourceLine" id="cb11-2" title="2">    <span class="cf">function</span>(df) <span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(x, <span class="dt">degree=</span><span class="dv">3</span>, <span class="dt">raw=</span><span class="ot">TRUE</span>), <span class="dt">data=</span>df))</a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">plot</span>(x, y, <span class="dt">main=</span><span class="st">&quot;Piecewise Cubic Fit&quot;</span>)</a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="kw">curve</span>(<span class="kw">cos</span>(<span class="fl">1.25</span><span class="op">*</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span>x<span class="op">/</span><span class="dv">5</span>, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="kw">abline</span>(<span class="dt">v=</span>t, <span class="dt">lty=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="kw">mtext</span>(<span class="kw">c</span>(<span class="kw">expression</span>(t[<span class="dv">1</span>]), <span class="kw">expression</span>(t[<span class="dv">2</span>])), <span class="dt">side=</span><span class="dv">1</span>, <span class="dt">line=</span><span class="fl">0.5</span>, <span class="dt">at=</span>t)</a>
+<a class="sourceLine" id="cb11-7" title="7">xx &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dt">length=</span><span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>){</a>
+<a class="sourceLine" id="cb11-9" title="9">    xj &lt;-<span class="st"> </span>xx[xx <span class="op">&gt;=</span><span class="st"> </span>x0[j] <span class="op">&amp;</span><span class="st"> </span>xx <span class="op">&lt;</span><span class="st"> </span>x0[j <span class="op">+</span><span class="st"> </span><span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb11-10" title="10">    yj &lt;-<span class="st"> </span><span class="kw">predict</span>(mods4[[j]], <span class="kw">list</span>(<span class="dt">x=</span>xj))</a>
+<a class="sourceLine" id="cb11-11" title="11">    <span class="kw">lines</span>(xj, yj, <span class="dt">lwd=</span><span class="dv">2</span>)  <span class="co"># draw within-interval cubics</span></a>
+<a class="sourceLine" id="cb11-12" title="12">}</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">yhat4 &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(mods4, fitted))</a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">mean</span>((Ey <span class="op">-</span><span class="st"> </span>yhat4)<span class="op">^</span><span class="dv">2</span>) <span class="co"># RMSE</span></a></code></pre></div>
+<pre><code>## [1] 0.0110144</code></pre>
+<p>This model uses <span class="math inline">\(4 \times 3 = 12\)</span> parameters.</p>
+<p>As before, we can constrain the cubic polynomials to join at the knots, generating the model <span class="math display">\[\begin{align*}
+y_i = \beta_0 &amp;+ \beta_{11} x_{i1} + \beta_{12} x_{i1}^2 + \beta_{13} x_{i1}^3 \\
+              &amp;+ \beta_{21} x_{i2} + \beta_{22} x_{i2}^2 + \beta_{23} x_{i2}^3 \\
+              &amp;+ \beta_{31} x_{i3} + \beta_{32} x_{i3}^2 + \beta_{33} x_{i2}^3 + \varepsilon_i
+\end{align*}\]</span></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">mod5 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(x1, <span class="dt">degree=</span><span class="dv">3</span>, <span class="dt">raw=</span><span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="st">               </span><span class="kw">poly</span>(x2, <span class="dt">degree=</span><span class="dv">3</span>, <span class="dt">raw=</span><span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="st">               </span><span class="kw">poly</span>(x3, <span class="dt">degree=</span><span class="dv">3</span>, <span class="dt">raw=</span><span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="kw">plot</span>(x, y, <span class="dt">main=</span><span class="st">&quot;Cubic Regression Spline with Order-0 Smoothness&quot;</span>)</a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="kw">curve</span>(<span class="kw">cos</span>(<span class="fl">1.25</span><span class="op">*</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span>x<span class="op">/</span><span class="dv">5</span>, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="kw">abline</span>(<span class="dt">v=</span>t, <span class="dt">lty=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="kw">mtext</span>(<span class="kw">c</span>(<span class="kw">expression</span>(t[<span class="dv">1</span>]), <span class="kw">expression</span>(t[<span class="dv">2</span>])), <span class="dt">side=</span><span class="dv">1</span>, <span class="dt">line=</span><span class="fl">0.5</span>, <span class="dt">at=</span>t)</a>
+<a class="sourceLine" id="cb14-8" title="8">x01 &lt;-<span class="st"> </span>xx</a>
+<a class="sourceLine" id="cb14-9" title="9">x02 &lt;-<span class="st"> </span>(xx <span class="op">-</span><span class="st"> </span>t[<span class="dv">1</span>]) <span class="op">*</span><span class="st"> </span>(xx <span class="op">&gt;</span><span class="st"> </span>t[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb14-10" title="10">x03 &lt;-<span class="st"> </span>(xx <span class="op">-</span><span class="st"> </span>t[<span class="dv">2</span>]) <span class="op">*</span><span class="st"> </span>(xx <span class="op">&gt;</span><span class="st"> </span>t[<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb14-11" title="11"><span class="kw">lines</span>(xx, <span class="kw">predict</span>(mod5, <span class="kw">list</span>(<span class="dt">x1=</span>x01, <span class="dt">x2=</span>x02, <span class="dt">x3=</span>x03)), <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">yhat5 &lt;-<span class="st"> </span><span class="kw">fitted</span>(mod5)</a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="kw">mean</span>((Ey <span class="op">-</span><span class="st"> </span>yhat5)<span class="op">^</span><span class="dv">2</span>) <span class="co"># RMSE</span></a></code></pre></div>
+<pre><code>## [1] 0.009149368</code></pre>
+<p>Because this model uses only 1 intercept, it has 2 fewer parameters than the unconstrained within-interval cubic regressions. The cubic spline is continuous but, as close inspection reveals, it isn’t smooth at the knots, where the slope of the fitted regression is free to change. We say that it has <em>order-0</em> smoothness.</p>
+<p>If we eliminate the linear terms <span class="math inline">\(\beta_{21} x_{i2}\)</span> and <span class="math inline">\(\beta_{31} x_{i3}\)</span> from the model we force the slope—that is, the first derivative—of the regression function to be equal on both sides of each knot, producing <em>order-1 smoothness</em>: <span class="math display">\[\begin{align*}
+y_i = \beta_0 + \beta_{11} x_{i1} &amp;+ \beta_{12} x_{i1}^2 + \beta_{13} x_{i1}^3 \\
+              &amp;+ \beta_{22} x_{i2}^2 + \beta_{23} x_{i2}^3 \\
+              &amp;+ \beta_{32} x_{i3}^2 + \beta_{33} x_{i2}^3 + \varepsilon_i
+\end{align*}\]</span></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">mod6 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(x1, <span class="dt">degree=</span><span class="dv">3</span>, <span class="dt">raw=</span><span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(x2<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(x3<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(x2<span class="op">^</span><span class="dv">3</span>) <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(x3<span class="op">^</span><span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="kw">plot</span>(x, y, <span class="dt">main=</span><span class="st">&quot;Cubic Regression Spline with Order-1 Smoothness&quot;</span>)</a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="kw">curve</span>(<span class="kw">cos</span>(<span class="fl">1.25</span><span class="op">*</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span>x<span class="op">/</span><span class="dv">5</span>, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="kw">abline</span>(<span class="dt">v=</span>t, <span class="dt">lty=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="kw">mtext</span>(<span class="kw">c</span>(<span class="kw">expression</span>(t[<span class="dv">1</span>]), <span class="kw">expression</span>(t[<span class="dv">2</span>])), <span class="dt">side=</span><span class="dv">1</span>, <span class="dt">line=</span><span class="fl">0.5</span>, <span class="dt">at=</span>t)</a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="kw">lines</span>(xx, <span class="kw">predict</span>(mod6, <span class="kw">list</span>(<span class="dt">x1=</span>x01, <span class="dt">x2=</span>x02, <span class="dt">x3=</span>x03)), <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">yhat6 &lt;-<span class="st"> </span><span class="kw">fitted</span>(mod6)</a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw">mean</span>((Ey <span class="op">-</span><span class="st"> </span>yhat6)<span class="op">^</span><span class="dv">2</span>) <span class="co"># RMSE</span></a></code></pre></div>
+<pre><code>## [1] 0.00902555</code></pre>
+<p>Finally, removing both the linear and the quadratic terms <span class="math inline">\(\beta_{22} x_{i2}^2\)</span> and <span class="math inline">\(\beta_{32} x_{i3}^2\)</span> forces the slope (first derivative) and curvature (second derivative) to be equal on both sides of each knot, producing <em>order-2 smoothess</em> and, except for parametrization (discussed below), a traditional cubic regression spline: <span class="math display">\[
+y_i = \beta_0 + \beta_{11} x_{i1} + \beta_{12} x_{i1}^2 + \beta_{13} x_{i1}^3 + \beta_{23} x_{i2}^3 + \beta_{33} x_{i3}^3 + \varepsilon_i
+\]</span> This model uses <span class="math inline">\(4 + 2 = 7\)</span>, or more generally <span class="math inline">\(4 + k\)</span>, parameters, considerably fewer than the <span class="math inline">\(4 \times 3 = 12\)</span>, or more generally <span class="math inline">\(4 \times (k + 1)\)</span> parameters used by the unconstained piecewise cubic model.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1">mod7 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(x1, <span class="dt">degree=</span><span class="dv">3</span>, <span class="dt">raw=</span><span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(x2<span class="op">^</span><span class="dv">3</span>) <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(x3<span class="op">^</span><span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="kw">plot</span>(x, y, <span class="dt">main=</span><span class="st">&quot;Cubic Regression Spline with Order-2 Smoothness&quot;</span>)</a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="kw">curve</span>(<span class="kw">cos</span>(<span class="fl">1.25</span><span class="op">*</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span>x<span class="op">/</span><span class="dv">5</span>, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb20-4" title="4"><span class="kw">abline</span>(<span class="dt">v=</span>t, <span class="dt">lty=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="kw">mtext</span>(<span class="kw">c</span>(<span class="kw">expression</span>(t[<span class="dv">1</span>]), <span class="kw">expression</span>(t[<span class="dv">2</span>])), <span class="dt">side=</span><span class="dv">1</span>, <span class="dt">line=</span><span class="fl">0.5</span>, <span class="dt">at=</span>t)</a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="kw">lines</span>(xx, <span class="kw">predict</span>(mod7, <span class="kw">list</span>(<span class="dt">x1=</span>x01, <span class="dt">x2=</span>x02, <span class="dt">x3=</span>x03)), <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">yhat7 &lt;-<span class="st"> </span><span class="kw">fitted</span>(mod7)</a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="kw">mean</span>((Ey <span class="op">-</span><span class="st"> </span>yhat7)<span class="op">^</span><span class="dv">2</span>) <span class="co"># RMSE</span></a></code></pre></div>
+<pre><code>## [1] 0.02948439</code></pre>
+</div>
+<div id="using-gspline-for-fitting-generalized-regression-spline-models" class="section level2">
+<h2>3. Using <code>gspline()</code> for Fitting Generalized Regression Spline Models</h2>
+<p>The <code>gspline()</code> (<em>generalized regression spline</em>) function in the <strong>carEx</strong> package can fit all of the piecewise polynomial and regression spline models in the preceding section, and has substantial flexibility beyond what we have thus far discussed. We’ll focus here on 3 arguments to <code>gspline()</code> that allow us to reproduce the results of the previous section:</p>
+<ul>
+<li><p><code>knots</code>: a vector giving the location(s) of the knots; this argument has no default value.</p></li>
+<li><p><code>degree</code>: the degree of the regression spline, defaulting to <code>3</code> (a cubic spline); <code>degree</code> is often a single number but it can also be a vector of length equal to the number of knots plus 1, corresponding to the intervals between the extremes and knots. Thus, for example, if we have 2 knots at <code>knots = c(3/10, 6/10)</code> generating 3 intervals, specifying <code>degree = c(2, 3, 2)</code> would fit (possibly constrained) quadratics in the first and last interval and a cubic in the middle interval (a model that <code>gspline()</code> can accommodate but for which it isn’t straightforward to code regressors).</p></li>
+<li><p><code>smooth</code>: the order of smoothness at the knots, specifying the number of derivatives to be matched on both sides of a knot. Thus <code>smooth = 2</code> implies that the fitted regression is continuous at a knot and has equal first (slope) and second (curvature) derivatives on both sides of the knot. The value <code>smooth = 0</code>, therefore, insures continuity but nothing more, and the special value <code>smooth = -1</code> permits discontinuity, as in a piecewise fit. The default for <code>smooth</code> is 1 less than <code>degree</code>; thus, for example, for a cubic regression spline the default is <code>smooth = 2</code>, matching first and second derivatives. If <code>degree</code> is a vector, then the default for <code>smooth</code> is 1 less than the minimum degree, but <code>smooth</code> may also be a vector of length equal to the number of knots, specifying the number of derivatives to be matched at each knot.</p></li>
+</ul>
+<p><code>gspline()</code> returns a function (or, more technically, a <em>closure</em>) that has several arguments, the first of which, <code>x</code>, is normally the predictor vector for which we wish to construct a regression spline, and the only argument that we’ll describe here. The function returned by <code>gspline()</code> can also be used to generate hypothesis matrices for testing characteristics of the resulting fitted model.</p>
+<p>Here are the examples from the preceding section, with checks to verify that we obtain identical results (within rounding error); to reduce redundancy, we’ve graphed the first example, but not the others:</p>
+<div id="piecewise-constant-fit-discontinuous" class="section level3">
+<h3>3.1 Piecewise Constant Fit (Discontinuous)</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">library</span>(carEx)</a></code></pre></div>
+<pre><code>## Loading required package: car</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1">sp_pc &lt;-<span class="st"> </span><span class="kw">gspline</span>(<span class="dt">knots=</span>t, <span class="dt">degree=</span><span class="dv">0</span>, <span class="dt">smoothness=</span><span class="op">-</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb26-2" title="2">sp_pc</a></code></pre></div>
+<pre><code>## Spline function created by gspline
+## $knots
+## [1] 3.333333 6.666667
+## 
+## $degree
+## [1] 0 0 0
+## 
+## $smoothness
+## $smoothness[[1]]
+## [1] -1
+## 
+## $smoothness[[2]]
+## [1] -1
+## 
+## 
+## $G
+##    C0|3.33 C0|6.67
+## X0       0       0
+## X0       1       0
+## X0       1       1
+## 
+## $constraint_mat
+##      X0 X0 X0
+## f(0)  1  0  0
+## 
+## $estimate_mat
+##         X0 X0 X0
+## C0|3.33 -1  1  0
+## C0|6.67  0 -1  1</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1">mod.gsp1 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">sp_pc</span>(x))</a>
+<a class="sourceLine" id="cb28-2" title="2"><span class="kw">all.equal</span>(<span class="kw">as.vector</span>(yhat1), <span class="kw">as.vector</span>(<span class="kw">fitted</span>(mod.gsp1)))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1"><span class="kw">plot</span>(x, y, <span class="dt">main=</span><span class="st">&quot;Piecewise Constant Fit Using gspline()&quot;</span>)</a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="kw">curve</span>(<span class="kw">cos</span>(<span class="fl">1.25</span><span class="op">*</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span>x<span class="op">/</span><span class="dv">5</span>, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb30-3" title="3"><span class="kw">abline</span>(<span class="dt">v=</span>t, <span class="dt">lty=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb30-4" title="4"><span class="kw">mtext</span>(<span class="kw">c</span>(<span class="kw">expression</span>(t[<span class="dv">1</span>]), <span class="kw">expression</span>(t[<span class="dv">2</span>])), <span class="dt">side=</span><span class="dv">1</span>, <span class="dt">line=</span><span class="fl">0.5</span>, <span class="dt">at=</span>t) </a>
+<a class="sourceLine" id="cb30-5" title="5"><span class="kw">lines</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dt">length=</span><span class="dv">1000</span>), </a>
+<a class="sourceLine" id="cb30-6" title="6">      <span class="kw">predict</span>(mod.gsp1, <span class="dt">newdata=</span><span class="kw">list</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dt">length=</span><span class="dv">1000</span>))),</a>
+<a class="sourceLine" id="cb30-7" title="7">      <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="piecewise-linear-fit-discontinuous" class="section level3">
+<h3>3.2 Piecewise Linear Fit (Discontinuous)</h3>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1">sp_pl &lt;-<span class="st"> </span><span class="kw">gspline</span>(<span class="dt">knots=</span>t, <span class="dt">degree=</span><span class="dv">1</span>, <span class="dt">smoothness=</span><span class="op">-</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb31-2" title="2">sp_pl</a></code></pre></div>
+<pre><code>## Spline function created by gspline
+## $knots
+## [1] 3.333333 6.666667
+## 
+## $degree
+## [1] 1 1 1
+## 
+## $smoothness
+## $smoothness[[1]]
+## [1] -1
+## 
+## $smoothness[[2]]
+## [1] -1
+## 
+## 
+## $G
+##    D1|0 C0|3.33   C1|3.33 C0|6.67   C1|6.67
+## X0    0       0  0.000000       0  0.000000
+## X1    1       0  0.000000       0  0.000000
+## X0    0       1 -3.333333       0  0.000000
+## X1    1       0  1.000000       0  0.000000
+## X0    0       1 -3.333333       1 -6.666667
+## X1    1       0  1.000000       0  1.000000
+## 
+## $constraint_mat
+##      X0 X1 X0 X1 X0 X1
+## f(0)  1  0  0  0  0  0
+## 
+## $estimate_mat
+##         X0        X1 X0        X1 X0       X1
+## D1|0     0  1.000000  0  0.000000  0 0.000000
+## C0|3.33 -1 -3.333333  1  3.333333  0 0.000000
+## C1|3.33  0 -1.000000  0  1.000000  0 0.000000
+## C0|6.67  0  0.000000 -1 -6.666667  1 6.666667
+## C1|6.67  0  0.000000  0 -1.000000  0 1.000000</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1">mod.gsp2 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">sp_pl</span>(x))</a>
+<a class="sourceLine" id="cb33-2" title="2"><span class="kw">all.equal</span>(<span class="kw">as.vector</span>(yhat2), <span class="kw">as.vector</span>(<span class="kw">fitted</span>(mod.gsp2)))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="linear-regression-spline-with-continuity-at-the-knots" class="section level3">
+<h3>3.3 Linear Regression Spline (With Continuity at the Knots)</h3>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1">sp_l &lt;-<span class="st"> </span><span class="kw">gspline</span>(<span class="dt">knots=</span>t, <span class="dt">degree=</span><span class="dv">1</span>, <span class="dt">smoothness=</span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb35-2" title="2">sp_l</a></code></pre></div>
+<pre><code>## Spline function created by gspline
+## $knots
+## [1] 3.333333 6.666667
+## 
+## $degree
+## [1] 1 1 1
+## 
+## $smoothness
+## $smoothness[[1]]
+## [1] 0
+## 
+## $smoothness[[2]]
+## [1] 0
+## 
+## 
+## $G
+##    D1|0   C1|3.33   C1|6.67
+## X0    0  0.000000  0.000000
+## X1    1  0.000000  0.000000
+## X0    0 -3.333333  0.000000
+## X1    1  1.000000  0.000000
+## X0    0 -3.333333 -6.666667
+## X1    1  1.000000  1.000000
+## 
+## $constraint_mat
+##         X0        X1 X0        X1 X0       X1
+## C0|3.33 -1 -3.333333  1  3.333333  0 0.000000
+## C0|6.67  0  0.000000 -1 -6.666667  1 6.666667
+## f(0)     1  0.000000  0  0.000000  0 0.000000
+## 
+## $estimate_mat
+##         X0 X1 X0 X1 X0 X1
+## D1|0     0  1  0  0  0  0
+## C1|3.33  0 -1  0  1  0  0
+## C1|6.67  0  0  0 -1  0  1</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1">mod.gsp3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">sp_l</span>(x))</a>
+<a class="sourceLine" id="cb37-2" title="2"><span class="kw">all.equal</span>(<span class="kw">as.vector</span>(yhat3), <span class="kw">as.vector</span>(<span class="kw">fitted</span>(mod.gsp3)))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="piecewise-cubic-fit-discontinuous" class="section level3">
+<h3>3.4 Piecewise Cubic Fit (Discontinuous)</h3>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1">sp_pc &lt;-<span class="st"> </span><span class="kw">gspline</span>(<span class="dt">knots=</span>t, <span class="dt">degree=</span><span class="dv">3</span>, <span class="dt">smoothness=</span><span class="op">-</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb39-2" title="2">sp_pc</a></code></pre></div>
+<pre><code>## Spline function created by gspline
+## $knots
+## [1] 3.333333 6.666667
+## 
+## $degree
+## [1] 3 3 3
+## 
+## $smoothness
+## $smoothness[[1]]
+## [1] -1
+## 
+## $smoothness[[2]]
+## [1] -1
+## 
+## 
+## $G
+##    D1|0 D2|0    D3|0 C0|3.33  C1|3.33  C2|3.33  C3|3.33 C0|6.67  C1|6.67
+## X0    0  0.0 0.00000       0  0.00000  0.00000  0.00000       0  0.00000
+## X1    1  0.0 0.00000       0  0.00000  0.00000  0.00000       0  0.00000
+## X2    0  0.5 0.00000       0  0.00000  0.00000  0.00000       0  0.00000
+## X3    0  0.0 0.16667       0  0.00000  0.00000  0.00000       0  0.00000
+## X0    0  0.0 0.00000       1 -3.33333  5.55556 -6.17284       0  0.00000
+## X1    1  0.0 0.00000       0  1.00000 -3.33333  5.55556       0  0.00000
+## X2    0  0.5 0.00000       0  0.00000  0.50000 -1.66667       0  0.00000
+## X3    0  0.0 0.16667       0  0.00000  0.00000  0.16667       0  0.00000
+## X0    0  0.0 0.00000       1 -3.33333  5.55556 -6.17284       1 -6.66667
+## X1    1  0.0 0.00000       0  1.00000 -3.33333  5.55556       0  1.00000
+## X2    0  0.5 0.00000       0  0.00000  0.50000 -1.66667       0  0.00000
+## X3    0  0.0 0.16667       0  0.00000  0.00000  0.16667       0  0.00000
+##     C2|6.67   C3|6.67
+## X0  0.00000   0.00000
+## X1  0.00000   0.00000
+## X2  0.00000   0.00000
+## X3  0.00000   0.00000
+## X0  0.00000   0.00000
+## X1  0.00000   0.00000
+## X2  0.00000   0.00000
+## X3  0.00000   0.00000
+## X0 22.22222 -49.38272
+## X1 -6.66667  22.22222
+## X2  0.50000  -3.33333
+## X3  0.00000   0.16667
+## 
+## $constraint_mat
+##      X0 X1 X2 X3 X0 X1 X2 X3 X0 X1 X2 X3
+## f(0)  1  0  0  0  0  0  0  0  0  0  0  0
+## 
+## $estimate_mat
+##         X0       X1        X2        X3 X0       X1        X2         X3
+## D1|0     0  1.00000   0.00000   0.00000  0  0.00000   0.00000    0.00000
+## D2|0     0  0.00000   2.00000   0.00000  0  0.00000   0.00000    0.00000
+## D3|0     0  0.00000   0.00000   6.00000  0  0.00000   0.00000    0.00000
+## C0|3.33 -1 -3.33333 -11.11111 -37.03704  1  3.33333  11.11111   37.03704
+## C1|3.33  0 -1.00000  -6.66667 -33.33333  0  1.00000   6.66667   33.33333
+## C2|3.33  0  0.00000  -2.00000 -20.00000  0  0.00000   2.00000   20.00000
+## C3|3.33  0  0.00000   0.00000  -6.00000  0  0.00000   0.00000    6.00000
+## C0|6.67  0  0.00000   0.00000   0.00000 -1 -6.66667 -44.44444 -296.29630
+## C1|6.67  0  0.00000   0.00000   0.00000  0 -1.00000 -13.33333 -133.33333
+## C2|6.67  0  0.00000   0.00000   0.00000  0  0.00000  -2.00000  -40.00000
+## C3|6.67  0  0.00000   0.00000   0.00000  0  0.00000   0.00000   -6.00000
+##         X0      X1       X2       X3
+## D1|0     0 0.00000  0.00000   0.0000
+## D2|0     0 0.00000  0.00000   0.0000
+## D3|0     0 0.00000  0.00000   0.0000
+## C0|3.33  0 0.00000  0.00000   0.0000
+## C1|3.33  0 0.00000  0.00000   0.0000
+## C2|3.33  0 0.00000  0.00000   0.0000
+## C3|3.33  0 0.00000  0.00000   0.0000
+## C0|6.67  1 6.66667 44.44444 296.2963
+## C1|6.67  0 1.00000 13.33333 133.3333
+## C2|6.67  0 0.00000  2.00000  40.0000
+## C3|6.67  0 0.00000  0.00000   6.0000</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">mod.gsp4 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">sp_pc</span>(x))</a>
+<a class="sourceLine" id="cb41-2" title="2"><span class="kw">all.equal</span>(<span class="kw">as.vector</span>(yhat4), <span class="kw">as.vector</span>(<span class="kw">fitted</span>(mod.gsp4)))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="cubic-regression-spline-with-smoothness-0-with-continuity-only" class="section level3">
+<h3>3.5 Cubic Regression Spline with Smoothness 0 (With Continuity Only)</h3>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1">sp_c0 &lt;-<span class="st"> </span><span class="kw">gspline</span>(<span class="dt">knots=</span>t, <span class="dt">degree=</span><span class="dv">3</span>, <span class="dt">smoothness=</span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb43-2" title="2">sp_c0</a></code></pre></div>
+<pre><code>## Spline function created by gspline
+## $knots
+## [1] 3.333333 6.666667
+## 
+## $degree
+## [1] 3 3 3
+## 
+## $smoothness
+## $smoothness[[1]]
+## [1] 0
+## 
+## $smoothness[[2]]
+## [1] 0
+## 
+## 
+## $G
+##    D1|0 D2|0    D3|0  C1|3.33  C2|3.33  C3|3.33  C1|6.67  C2|6.67
+## X0    0  0.0 0.00000  0.00000  0.00000  0.00000  0.00000  0.00000
+## X1    1  0.0 0.00000  0.00000  0.00000  0.00000  0.00000  0.00000
+## X2    0  0.5 0.00000  0.00000  0.00000  0.00000  0.00000  0.00000
+## X3    0  0.0 0.16667  0.00000  0.00000  0.00000  0.00000  0.00000
+## X0    0  0.0 0.00000 -3.33333  5.55556 -6.17284  0.00000  0.00000
+## X1    1  0.0 0.00000  1.00000 -3.33333  5.55556  0.00000  0.00000
+## X2    0  0.5 0.00000  0.00000  0.50000 -1.66667  0.00000  0.00000
+## X3    0  0.0 0.16667  0.00000  0.00000  0.16667  0.00000  0.00000
+## X0    0  0.0 0.00000 -3.33333  5.55556 -6.17284 -6.66667 22.22222
+## X1    1  0.0 0.00000  1.00000 -3.33333  5.55556  1.00000 -6.66667
+## X2    0  0.5 0.00000  0.00000  0.50000 -1.66667  0.00000  0.50000
+## X3    0  0.0 0.16667  0.00000  0.00000  0.16667  0.00000  0.00000
+##      C3|6.67
+## X0   0.00000
+## X1   0.00000
+## X2   0.00000
+## X3   0.00000
+## X0   0.00000
+## X1   0.00000
+## X2   0.00000
+## X3   0.00000
+## X0 -49.38272
+## X1  22.22222
+## X2  -3.33333
+## X3   0.16667
+## 
+## $constraint_mat
+##         X0       X1        X2        X3 X0       X1        X2         X3
+## C0|3.33 -1 -3.33333 -11.11111 -37.03704  1  3.33333  11.11111   37.03704
+## C0|6.67  0  0.00000   0.00000   0.00000 -1 -6.66667 -44.44444 -296.29630
+## f(0)     1  0.00000   0.00000   0.00000  0  0.00000   0.00000    0.00000
+##         X0      X1       X2       X3
+## C0|3.33  0 0.00000  0.00000   0.0000
+## C0|6.67  1 6.66667 44.44444 296.2963
+## f(0)     0 0.00000  0.00000   0.0000
+## 
+## $estimate_mat
+##         X0 X1       X2        X3 X0 X1        X2         X3 X0 X1       X2
+## D1|0     0  1  0.00000   0.00000  0  0   0.00000    0.00000  0  0  0.00000
+## D2|0     0  0  2.00000   0.00000  0  0   0.00000    0.00000  0  0  0.00000
+## D3|0     0  0  0.00000   6.00000  0  0   0.00000    0.00000  0  0  0.00000
+## C1|3.33  0 -1 -6.66667 -33.33333  0  1   6.66667   33.33333  0  0  0.00000
+## C2|3.33  0  0 -2.00000 -20.00000  0  0   2.00000   20.00000  0  0  0.00000
+## C3|3.33  0  0  0.00000  -6.00000  0  0   0.00000    6.00000  0  0  0.00000
+## C1|6.67  0  0  0.00000   0.00000  0 -1 -13.33333 -133.33333  0  1 13.33333
+## C2|6.67  0  0  0.00000   0.00000  0  0  -2.00000  -40.00000  0  0  2.00000
+## C3|6.67  0  0  0.00000   0.00000  0  0   0.00000   -6.00000  0  0  0.00000
+##               X3
+## D1|0      0.0000
+## D2|0      0.0000
+## D3|0      0.0000
+## C1|3.33   0.0000
+## C2|3.33   0.0000
+## C3|3.33   0.0000
+## C1|6.67 133.3333
+## C2|6.67  40.0000
+## C3|6.67   6.0000</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1">mod.gsp5 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">sp_c0</span>(x))</a>
+<a class="sourceLine" id="cb45-2" title="2"><span class="kw">all.equal</span>(<span class="kw">as.vector</span>(yhat5), <span class="kw">as.vector</span>(<span class="kw">fitted</span>(mod.gsp5)))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="cubic-regression-spline-with-smoothness-1-matching-slope" class="section level3">
+<h3>3.6 Cubic Regression Spline with Smoothness 1 (Matching Slope)</h3>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1">sp_c1 &lt;-<span class="st"> </span><span class="kw">gspline</span>(<span class="dt">knots=</span>t, <span class="dt">degree=</span><span class="dv">3</span>, <span class="dt">smoothness=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb47-2" title="2">sp_c1</a></code></pre></div>
+<pre><code>## Spline function created by gspline
+## $knots
+## [1] 3.333333 6.666667
+## 
+## $degree
+## [1] 3 3 3
+## 
+## $smoothness
+## $smoothness[[1]]
+## [1] 0 1
+## 
+## $smoothness[[2]]
+## [1] 0 1
+## 
+## 
+## $G
+##    D1|0 D2|0    D3|0  C2|3.33  C3|3.33  C2|6.67   C3|6.67
+## X0    0  0.0 0.00000  0.00000  0.00000  0.00000   0.00000
+## X1    1  0.0 0.00000  0.00000  0.00000  0.00000   0.00000
+## X2    0  0.5 0.00000  0.00000  0.00000  0.00000   0.00000
+## X3    0  0.0 0.16667  0.00000  0.00000  0.00000   0.00000
+## X0    0  0.0 0.00000  5.55556 -6.17284  0.00000   0.00000
+## X1    1  0.0 0.00000 -3.33333  5.55556  0.00000   0.00000
+## X2    0  0.5 0.00000  0.50000 -1.66667  0.00000   0.00000
+## X3    0  0.0 0.16667  0.00000  0.16667  0.00000   0.00000
+## X0    0  0.0 0.00000  5.55556 -6.17284 22.22222 -49.38272
+## X1    1  0.0 0.00000 -3.33333  5.55556 -6.66667  22.22222
+## X2    0  0.5 0.00000  0.50000 -1.66667  0.50000  -3.33333
+## X3    0  0.0 0.16667  0.00000  0.16667  0.00000   0.16667
+## 
+## $constraint_mat
+##         X0       X1        X2        X3 X0       X1        X2         X3
+## C0|3.33 -1 -3.33333 -11.11111 -37.03704  1  3.33333  11.11111   37.03704
+## C1|3.33  0 -1.00000  -6.66667 -33.33333  0  1.00000   6.66667   33.33333
+## C0|6.67  0  0.00000   0.00000   0.00000 -1 -6.66667 -44.44444 -296.29630
+## C1|6.67  0  0.00000   0.00000   0.00000  0 -1.00000 -13.33333 -133.33333
+## f(0)     1  0.00000   0.00000   0.00000  0  0.00000   0.00000    0.00000
+##         X0      X1       X2       X3
+## C0|3.33  0 0.00000  0.00000   0.0000
+## C1|3.33  0 0.00000  0.00000   0.0000
+## C0|6.67  1 6.66667 44.44444 296.2963
+## C1|6.67  0 1.00000 13.33333 133.3333
+## f(0)     0 0.00000  0.00000   0.0000
+## 
+## $estimate_mat
+##         X0 X1 X2  X3 X0 X1 X2  X3 X0 X1 X2 X3
+## D1|0     0  1  0   0  0  0  0   0  0  0  0  0
+## D2|0     0  0  2   0  0  0  0   0  0  0  0  0
+## D3|0     0  0  0   6  0  0  0   0  0  0  0  0
+## C2|3.33  0  0 -2 -20  0  0  2  20  0  0  0  0
+## C3|3.33  0  0  0  -6  0  0  0   6  0  0  0  0
+## C2|6.67  0  0  0   0  0  0 -2 -40  0  0  2 40
+## C3|6.67  0  0  0   0  0  0  0  -6  0  0  0  6</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1">mod.gsp6 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">sp_c1</span>(x))</a>
+<a class="sourceLine" id="cb49-2" title="2"><span class="kw">all.equal</span>(<span class="kw">as.vector</span>(yhat6), <span class="kw">as.vector</span>(<span class="kw">fitted</span>(mod.gsp6)))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="cubic-regression-spline-with-smoothness-2-matching-slope-and-curvature" class="section level3">
+<h3>3.7 Cubic Regression Spline with Smoothness 2 (Matching Slope and Curvature)</h3>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1">sp_c &lt;-<span class="st"> </span><span class="kw">gspline</span>(<span class="dt">knots=</span>t, <span class="dt">degree=</span><span class="dv">3</span>, <span class="dt">smoothness=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb51-2" title="2">sp_c</a></code></pre></div>
+<pre><code>## Spline function created by gspline
+## $knots
+## [1] 3.333333 6.666667
+## 
+## $degree
+## [1] 3 3 3
+## 
+## $smoothness
+## $smoothness[[1]]
+## [1] 0 1 2
+## 
+## $smoothness[[2]]
+## [1] 0 1 2
+## 
+## 
+## $G
+##    D1|0 D2|0    D3|0  C3|3.33   C3|6.67
+## X0    0  0.0 0.00000  0.00000   0.00000
+## X1    1  0.0 0.00000  0.00000   0.00000
+## X2    0  0.5 0.00000  0.00000   0.00000
+## X3    0  0.0 0.16667  0.00000   0.00000
+## X0    0  0.0 0.00000 -6.17284   0.00000
+## X1    1  0.0 0.00000  5.55556   0.00000
+## X2    0  0.5 0.00000 -1.66667   0.00000
+## X3    0  0.0 0.16667  0.16667   0.00000
+## X0    0  0.0 0.00000 -6.17284 -49.38272
+## X1    1  0.0 0.00000  5.55556  22.22222
+## X2    0  0.5 0.00000 -1.66667  -3.33333
+## X3    0  0.0 0.16667  0.16667   0.16667
+## 
+## $constraint_mat
+##         X0       X1        X2        X3 X0       X1        X2         X3
+## C0|3.33 -1 -3.33333 -11.11111 -37.03704  1  3.33333  11.11111   37.03704
+## C1|3.33  0 -1.00000  -6.66667 -33.33333  0  1.00000   6.66667   33.33333
+## C2|3.33  0  0.00000  -2.00000 -20.00000  0  0.00000   2.00000   20.00000
+## C0|6.67  0  0.00000   0.00000   0.00000 -1 -6.66667 -44.44444 -296.29630
+## C1|6.67  0  0.00000   0.00000   0.00000  0 -1.00000 -13.33333 -133.33333
+## C2|6.67  0  0.00000   0.00000   0.00000  0  0.00000  -2.00000  -40.00000
+## f(0)     1  0.00000   0.00000   0.00000  0  0.00000   0.00000    0.00000
+##         X0      X1       X2       X3
+## C0|3.33  0 0.00000  0.00000   0.0000
+## C1|3.33  0 0.00000  0.00000   0.0000
+## C2|3.33  0 0.00000  0.00000   0.0000
+## C0|6.67  1 6.66667 44.44444 296.2963
+## C1|6.67  0 1.00000 13.33333 133.3333
+## C2|6.67  0 0.00000  2.00000  40.0000
+## f(0)     0 0.00000  0.00000   0.0000
+## 
+## $estimate_mat
+##         X0 X1 X2 X3 X0 X1 X2 X3 X0 X1 X2 X3
+## D1|0     0  1  0  0  0  0  0  0  0  0  0  0
+## D2|0     0  0  2  0  0  0  0  0  0  0  0  0
+## D3|0     0  0  0  6  0  0  0  0  0  0  0  0
+## C3|3.33  0  0  0 -6  0  0  0  6  0  0  0  0
+## C3|6.67  0  0  0  0  0  0  0 -6  0  0  0  6</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1">mod.gsp7 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">sp_c</span>(x))</a>
+<a class="sourceLine" id="cb53-2" title="2"><span class="kw">all.equal</span>(<span class="kw">as.vector</span>(yhat7), <span class="kw">as.vector</span>(<span class="kw">fitted</span>(mod.gsp7)))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+</div>
+<div id="fitting-regression-splines-with-bs" class="section level2">
+<h2>4. Fitting Regression Splines With <code>bs()</code></h2>
+<p>The <code>bs()</code> function in the standard R <strong>splines</strong> package, for fitting B-splines, takes several arguments, some of which are redundant (in the sense of being alternatives). As for <code>gspline()</code> and the functions that it generates, we discuss here only the arguments used in the examples:</p>
+<ul>
+<li><p><code>x</code>: the predictor vector for which we wish to construct a regression spline, and the first argument to <code>bs()</code>.</p></li>
+<li><p><code>knots</code>: a vector giving the location(s) of the knots; if it is not specified (and if the <code>df</code> argument, for degrees of freedom and not discussed here, is also not specified), then a global polynomial regression is fit.</p></li>
+<li><p><code>degree</code>: the degree of the regression spline, defaulting to <code>3</code> (a cubic spline); unlike for <code>gspline()</code>, this is a single positive integer &gt; 0. Also unlike <code>gspline()</code>, the order of smoothness at the knots isn’t controllable and is always <code>degree</code> - 1.</p></li>
+</ul>
+<p>Only 2 of the models considered above can be fit as B-splines using <code>bs()</code>; for brevity, we graph only the first of these models but check in both cases that the fitted values are the same as computed by <code>gspline()</code>:</p>
+<div id="linear-regression-spline-with-continuity-at-the-knots-1" class="section level3">
+<h3>4.1 Linear Regression Spline (With Continuity at the Knots)</h3>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1"><span class="kw">library</span>(splines)</a>
+<a class="sourceLine" id="cb55-2" title="2">mod.bs3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">bs</span>(x, <span class="dt">knots=</span>t, <span class="dt">degree=</span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb55-3" title="3"><span class="kw">all.equal</span>( <span class="kw">as.vector</span>(<span class="kw">fitted</span>(mod.gsp3)), <span class="kw">as.vector</span>(<span class="kw">fitted</span>(mod.bs3)))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1"><span class="kw">plot</span>(x, y, <span class="dt">main=</span><span class="st">&quot;Linear Regression Spline Using bs()&quot;</span>)</a>
+<a class="sourceLine" id="cb57-2" title="2"><span class="kw">curve</span>(<span class="kw">cos</span>(<span class="fl">1.25</span><span class="op">*</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span>x<span class="op">/</span><span class="dv">5</span>, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb57-3" title="3"><span class="kw">abline</span>(<span class="dt">v=</span>t, <span class="dt">lty=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb57-4" title="4"><span class="kw">mtext</span>(<span class="kw">c</span>(<span class="kw">expression</span>(t[<span class="dv">1</span>]), <span class="kw">expression</span>(t[<span class="dv">2</span>])), <span class="dt">side=</span><span class="dv">1</span>, <span class="dt">line=</span><span class="fl">0.5</span>, <span class="dt">at=</span>t)</a>
+<a class="sourceLine" id="cb57-5" title="5"><span class="kw">lines</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dt">length=</span><span class="dv">1000</span>), </a>
+<a class="sourceLine" id="cb57-6" title="6">      <span class="kw">predict</span>(mod.bs3, <span class="dt">newdata=</span><span class="kw">list</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="kw">min</span>(x), <span class="kw">max</span>(x), <span class="dt">length=</span><span class="dv">1000</span>))),</a>
+<a class="sourceLine" id="cb57-7" title="7">      <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="cubic-regression-spline-with-smoothness-2-matching-slope-and-curvature-1" class="section level3">
+<h3>4.2 Cubic Regression Spline with Smoothness 2 (Matching Slope and Curvature)</h3>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" title="1">mod.bs7 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">bs</span>(x, <span class="dt">knots=</span>t, <span class="dt">degree=</span><span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb58-2" title="2"><span class="kw">all.equal</span>(<span class="kw">as.vector</span>(<span class="kw">fitted</span>(mod.gsp7)), <span class="kw">as.vector</span>(<span class="kw">fitted</span>(mod.bs7)))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+</div>
+<div id="how-gspline-and-bs-construct-bases-for-fitting-regression-splines" class="section level2">
+<h2>5. How <code>gspline()</code> and <code>bs()</code> Construct Bases for Fitting Regression Splines</h2>
+<p>We’ve demonstrated how (1) directly coding spline regressors, (2) using <code>gspline()</code>, and (3) using <code>bs()</code> construct equivalent regression-spline bases that produce, within rounding error, identical fits to the data for cases, such as a standard cubic regressions spline, to which all three apply. In this section, we look more closely at the spline bases constructed directly and by <code>gspline()</code> and <code>bs()</code>.</p>
+<p>We return to the cubic regression spline with two knots at <span class="math inline">\(t_1\)</span> and <span class="math inline">\(t_2\)</span> discussed in Section 2: <span class="math display">\[
+y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \beta_3 x_{i3} + \varepsilon_i
+\]</span> where <span class="math inline">\(x_{i1} = x_i\)</span>, <span class="math display">\[
+x_{i2} = \left\{  {\begin{array}{ll}
+   0 &amp; \mathrm{for} \: x_i \le t_1 \\
+   x_i - t_1 &amp; \mathrm{for} \: x_i &gt; t_1 \\
+  \end{array} } \right.
+\]</span> and <span class="math display">\[
+x_{i3} = \left\{  {\begin{array}{ll}
+   0 &amp; \mathrm{for} \: x_i \le t_2 \\
+   x_i - t_2 &amp; \mathrm{for} \: x_i &gt; t_2 \\
+  \end{array} } \right.
+\]</span></p>
+<p>Here are the bases constructed directly, by <code>gspline()</code>, and by <code>bs()</code>, respectively named <code>X</code>, <code>X.gsp</code>, and <code>X.bs</code>, for a simple <span class="math inline">\(x\)</span> vector with the integers from 0 to 10:</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" title="1">x &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb60-2" title="2">t &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">20</span><span class="op">/</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb60-3" title="3">x1 &lt;-<span class="st"> </span>x <span class="co"># define spline regressors</span></a>
+<a class="sourceLine" id="cb60-4" title="4">x2 &lt;-<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span>t[<span class="dv">1</span>]) <span class="op">*</span><span class="st"> </span>(x <span class="op">&gt;</span><span class="st"> </span>t[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb60-5" title="5">x3 &lt;-<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span>t[<span class="dv">2</span>]) <span class="op">*</span><span class="st"> </span>(x <span class="op">&gt;</span><span class="st"> </span>t[<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb60-6" title="6">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(x1, x1<span class="op">^</span><span class="dv">2</span>, x1<span class="op">^</span><span class="dv">3</span>, x2<span class="op">^</span><span class="dv">3</span>, x3<span class="op">^</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb60-7" title="7"><span class="kw">colnames</span>(X) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;x1&quot;</span>, <span class="st">&quot;x1^2&quot;</span>, <span class="st">&quot;x1^3&quot;</span>, <span class="st">&quot;x2^3&quot;</span>, <span class="st">&quot;x3^3&quot;</span>)</a>
+<a class="sourceLine" id="cb60-8" title="8"><span class="kw">round</span>(X, <span class="dv">5</span>)</a></code></pre></div>
+<pre><code>##       x1 x1^2 x1^3      x2^3     x3^3
+##  [1,]  0    0    0   0.00000  0.00000
+##  [2,]  1    1    1   0.00000  0.00000
+##  [3,]  2    4    8   0.00000  0.00000
+##  [4,]  3    9   27   0.00000  0.00000
+##  [5,]  4   16   64   0.29630  0.00000
+##  [6,]  5   25  125   4.62963  0.00000
+##  [7,]  6   36  216  18.96296  0.00000
+##  [8,]  7   49  343  49.29630  0.03704
+##  [9,]  8   64  512 101.62963  2.37037
+## [10,]  9   81  729 181.96296 12.70370
+## [11,] 10  100 1000 296.29630 37.03704</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" title="1">sp &lt;-<span class="st"> </span><span class="kw">gspline</span>(<span class="dt">knots=</span>t, <span class="dt">degree=</span><span class="dv">3</span>, <span class="dt">smoothness=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb62-2" title="2">sp</a></code></pre></div>
+<pre><code>## Spline function created by gspline
+## $knots
+## [1] 3.333333 6.666667
+## 
+## $degree
+## [1] 3 3 3
+## 
+## $smoothness
+## $smoothness[[1]]
+## [1] 0 1 2
+## 
+## $smoothness[[2]]
+## [1] 0 1 2
+## 
+## 
+## $G
+##    D1|0 D2|0    D3|0  C3|3.33   C3|6.67
+## X0    0  0.0 0.00000  0.00000   0.00000
+## X1    1  0.0 0.00000  0.00000   0.00000
+## X2    0  0.5 0.00000  0.00000   0.00000
+## X3    0  0.0 0.16667  0.00000   0.00000
+## X0    0  0.0 0.00000 -6.17284   0.00000
+## X1    1  0.0 0.00000  5.55556   0.00000
+## X2    0  0.5 0.00000 -1.66667   0.00000
+## X3    0  0.0 0.16667  0.16667   0.00000
+## X0    0  0.0 0.00000 -6.17284 -49.38272
+## X1    1  0.0 0.00000  5.55556  22.22222
+## X2    0  0.5 0.00000 -1.66667  -3.33333
+## X3    0  0.0 0.16667  0.16667   0.16667
+## 
+## $constraint_mat
+##         X0       X1        X2        X3 X0       X1        X2         X3
+## C0|3.33 -1 -3.33333 -11.11111 -37.03704  1  3.33333  11.11111   37.03704
+## C1|3.33  0 -1.00000  -6.66667 -33.33333  0  1.00000   6.66667   33.33333
+## C2|3.33  0  0.00000  -2.00000 -20.00000  0  0.00000   2.00000   20.00000
+## C0|6.67  0  0.00000   0.00000   0.00000 -1 -6.66667 -44.44444 -296.29630
+## C1|6.67  0  0.00000   0.00000   0.00000  0 -1.00000 -13.33333 -133.33333
+## C2|6.67  0  0.00000   0.00000   0.00000  0  0.00000  -2.00000  -40.00000
+## f(0)     1  0.00000   0.00000   0.00000  0  0.00000   0.00000    0.00000
+##         X0      X1       X2       X3
+## C0|3.33  0 0.00000  0.00000   0.0000
+## C1|3.33  0 0.00000  0.00000   0.0000
+## C2|3.33  0 0.00000  0.00000   0.0000
+## C0|6.67  1 6.66667 44.44444 296.2963
+## C1|6.67  0 1.00000 13.33333 133.3333
+## C2|6.67  0 0.00000  2.00000  40.0000
+## f(0)     0 0.00000  0.00000   0.0000
+## 
+## $estimate_mat
+##         X0 X1 X2 X3 X0 X1 X2 X3 X0 X1 X2 X3
+## D1|0     0  1  0  0  0  0  0  0  0  0  0  0
+## D2|0     0  0  2  0  0  0  0  0  0  0  0  0
+## D3|0     0  0  0  6  0  0  0  0  0  0  0  0
+## C3|3.33  0  0  0 -6  0  0  0  6  0  0  0  0
+## C3|6.67  0  0  0  0  0  0  0 -6  0  0  0  6</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" title="1">X.gsp &lt;-<span class="st"> </span><span class="kw">sp</span>(x)</a>
+<a class="sourceLine" id="cb64-2" title="2">X.gsp</a></code></pre></div>
+<pre><code>##       D1|0 D2|0      D3|0  C3|3.33 C3|6.67
+## f(0)     0  0.0   0.00000  0.00000 0.00000
+## f(1)     1  0.5   0.16667  0.00000 0.00000
+## f(2)     2  2.0   1.33333  0.00000 0.00000
+## f(3)     3  4.5   4.50000  0.00000 0.00000
+## f(4)     4  8.0  10.66667  0.04938 0.00000
+## f(5)     5 12.5  20.83333  0.77160 0.00000
+## f(6)     6 18.0  36.00000  3.16049 0.00000
+## f(7)     7 24.5  57.16667  8.21605 0.00617
+## f(8)     8 32.0  85.33333 16.93827 0.39506
+## f(9)     9 40.5 121.50000 30.32716 2.11728
+## f(10)   10 50.0 166.66667 49.38272 6.17284</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" title="1">X.bs &lt;-<span class="st"> </span><span class="kw">bs</span>(x, <span class="dt">knots=</span>t, <span class="dt">degree=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb66-2" title="2">X.bs</a></code></pre></div>
+<pre><code>##             1       2       3       4     5
+##  [1,] 0.00000 0.00000 0.00000 0.00000 0.000
+##  [2,] 0.54225 0.11025 0.00450 0.00000 0.000
+##  [3,] 0.55800 0.34200 0.03600 0.00000 0.000
+##  [4,] 0.33075 0.54675 0.12150 0.00000 0.000
+##  [5,] 0.12800 0.58800 0.28200 0.00200 0.000
+##  [6,] 0.03125 0.46875 0.46875 0.03125 0.000
+##  [7,] 0.00200 0.28200 0.58800 0.12800 0.000
+##  [8,] 0.00000 0.12150 0.54675 0.33075 0.001
+##  [9,] 0.00000 0.03600 0.34200 0.55800 0.064
+## [10,] 0.00000 0.00450 0.11025 0.54225 0.343
+## [11,] 0.00000 0.00000 0.00000 0.00000 1.000
+## attr(,&quot;degree&quot;)
+## [1] 3
+## attr(,&quot;knots&quot;)
+## [1] 3.333333 6.666667
+## attr(,&quot;Boundary.knots&quot;)
+## [1]  0 10
+## attr(,&quot;intercept&quot;)
+## [1] FALSE
+## attr(,&quot;class&quot;)
+## [1] &quot;bs&quot;     &quot;basis&quot;  &quot;matrix&quot;</code></pre>
+<p>We’ll discuss <em>boundary knots</em> in the next section when we take up natural splines. The other attributes associated with the matrix returned by <code>bs()</code> are self-explanatory; for further information see <code>?bs</code>.</p>
+<p>The coding in <code>X</code> is entirely straightforward, directly reflecting the definitions of the variables <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span>, and <span class="math inline">\(x_3\)</span> above. Comparison of <code>X</code> and <code>X.gsp</code> suggests that the columns of the latter are multiples of those of the former as we can easily verify:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1">X <span class="op">/</span><span class="st"> </span>X.gsp</a></code></pre></div>
+<pre><code>##       x1 x1^2 x1^3 x2^3 x3^3
+##  [1,]  0  NaN  NaN  NaN  NaN
+##  [2,]  1    2    6    0    0
+##  [3,]  1    2    6    0    0
+##  [4,]  1    2    6    0    0
+##  [5,]  1    2    6    6    0
+##  [6,]  1    2    6    6    0
+##  [7,]  1    2    6    6    0
+##  [8,]  1    2    6    6    6
+##  [9,]  1    2    6    6    6
+## [10,]  1    2    6    6    6
+## [11,]  1    2    6    6    6</code></pre>
+<p>The <code>NaN</code>s are produced by dividing 0 by 0 and so are innocuous here. We can produce <code>X.gsp</code> from <code>X</code> by post-multiplying the latter by the diagonal weight matrix <span class="math inline">\(\mathrm{diag}(1, 1/2, 1/6, 1/6, 1/6)\)</span>:</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" title="1"><span class="kw">round</span>(X <span class="op">%*%</span><span class="st"> </span><span class="kw">diag</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>)), <span class="dv">5</span>)</a></code></pre></div>
+<pre><code>##       [,1] [,2]      [,3]     [,4]    [,5]
+##  [1,]    0  0.0   0.00000  0.00000 0.00000
+##  [2,]    1  0.5   0.16667  0.00000 0.00000
+##  [3,]    2  2.0   1.33333  0.00000 0.00000
+##  [4,]    3  4.5   4.50000  0.00000 0.00000
+##  [5,]    4  8.0  10.66667  0.04938 0.00000
+##  [6,]    5 12.5  20.83333  0.77160 0.00000
+##  [7,]    6 18.0  36.00000  3.16049 0.00000
+##  [8,]    7 24.5  57.16667  8.21605 0.00617
+##  [9,]    8 32.0  85.33333 16.93827 0.39506
+## [10,]    9 40.5 121.50000 30.32716 2.11728
+## [11,]   10 50.0 166.66667 49.38272 6.17284</code></pre>
+<p>We explain below why <code>gspline()</code> uses this scaling of the columns.</p>
+<p>Demonstrating the equivalence of the bases produces by <code>bs()</code> and <code>gspline()</code> is a bit harder because the coefficients for the individual columns of the B-spline basis aren’t straightforwardly interpretable (which, by the way, is the essential advantage of using <code>gspline()</code>), but an indirect way to do this is to project the columns of <code>X.bs</code> onto the column space of <code>X.gsp</code>; if the two span the same subspace, then the projection should be equal to <code>X.bs</code>. We can easily perform the projection by least-squares regression, extracting the projected columns as the “fitted values”:</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" title="1"><span class="kw">all.equal</span>(<span class="kw">fitted</span>(<span class="kw">lm</span>(X.bs <span class="op">~</span><span class="st"> </span>X.gsp <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)), X.bs, <span class="dt">check.attributes=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>To understand the coding used by <code>gspline()</code> let’s rewrite the simple cubic-spline model with 2 knots in terms of <span class="math inline">\(x\)</span>, omitting the subscript <span class="math inline">\(i\)</span> for cases and taking the expectation <span class="math inline">\(\mu = E(y)\)</span> of the response: <span class="math display">\[
+\mu = \left\{  {\begin{array}{ll}
+    \beta_0 + \beta_{11}x + \beta_{12}x^2 + \beta_{13}x^3 &amp; \mathrm{for} \: x \le t_1 \\
+    \beta_0 + \beta_{11}x + \beta_{12}x^2 + \beta_{13}x^3 + \beta_{23}(x - t_1)^3 &amp; \mathrm{for} \: t_1 &lt; x \le t_2 \\
+    \beta_0 + \beta_{11}x + \beta_{12}x^2 + \beta_{13}x^3 + \beta_{23}(x - t_1)^3 + \beta_{33}(x - t_2)^3 &amp; \mathrm{for} \: x &gt; t_2 \\
+  \end{array} } \right.
+\]</span> Now differentiate <span class="math inline">\(\mu\)</span> repeatedly with respect to <span class="math inline">\(x\)</span> in each of the 3 intervals generated by the 2 knots: <span class="math display">\[
+\begin{array}{ll}
+\dfrac{d\mu}{dx} &amp;= \left\{  {\begin{array}{ll}
+    \beta_{11} + 2\beta_{12}x + 3\beta_{13}x^2 &amp; \mathrm{for} \: x \le t_1 \\
+    \beta_{11} + 2\beta_{12}x + 3\beta_{13}x^2 + 3\beta_{23}(x - t_1)^2 &amp; \mathrm{for} \: t_1 &lt; x \le t_2 \\
+    \beta_{11} + 2\beta_{12}x + 3\beta_{13}x^2 + 3\beta_{23}(x - t_1)^2 + 3\beta_{33}(x - t_2)^2 &amp; \mathrm{for} \: x &gt; t_2 \\
+  \end{array} } \right.\\
+  \\
+\dfrac{d^2\mu}{dx^2} &amp;= \left\{  {\begin{array}{ll}
+    2\beta_{12} + 6\beta_{13}x &amp; \mathrm{for} \: x \le t_1 \\
+    2\beta_{12} + 6\beta_{13}x + 6\beta_{23}(x - t_1) &amp; \mathrm{for} \: t_1 &lt; x \le t_2 \\
+    2\beta_{12} + 6\beta_{13}x + 6\beta_{23}(x - t_1) + 6\beta_{33}(x - t_2) &amp; \mathrm{for} \: x &gt; t_2 \\
+  \end{array} } \right.\\
+  \\
+\dfrac{d^3\mu}{dx^3} &amp;= \left\{  {\begin{array}{ll}
+    6\beta_{13} &amp; \mathrm{for} \: x \le t_1 \\
+    6\beta_{13} + 6\beta_{23} &amp; \mathrm{for} \: t_1 &lt; x \le t_2 \\
+    6\beta_{13} + 6\beta_{23} + 6\beta_{33} &amp; \mathrm{for} \: x &gt; t_2 \\
+  \end{array} } \right.\\
+\end{array}
+\]</span> The change in the third derivative at each knot is consequently 6 times the coefficient of the corresponding cubic regressor: <span class="math display">\[
+\begin{array}{ll}
+\dfrac{d^3\mu}{dx^3}\biggr\rvert_{x = t_{1+}} - \dfrac{d^3\mu}{dx^3}\biggr\rvert_{x = t_{1}} &amp;= 6\beta_{23}\\
+\dfrac{d^3\mu}{dx^3}\biggr\rvert_{x = t_{2+}} - \dfrac{d^3\mu}{dx^3}\biggr\rvert_{x = t_{1}} &amp;= 6\beta_{33}\\
+\end{array}
+\]</span> where <span class="math inline">\(\dfrac{d^3\mu}{dx^3}\biggr\rvert_{x = t_{j+}}\)</span> is the third derivative evaluated just to the right of knot <span class="math inline">\(t_j\)</span>.</p>
+<p>Moreover, had the spline been a <em>quadratic</em> rather than a cubic regression spline, then the differences in the <em>second</em> derivative at the knots would have been 2 times the corresponding coefficients of the quadratic spline regressors, <span class="math inline">\(2\beta_{22}\)</span> and <span class="math inline">\(2\beta_{23}\)</span>; and, finally, had the spline been a <em>linear</em> regression spline, then the differences in the <em>first</em> derivative at the knots would simply have been equal to the corresponding coefficients of the linear spline regressors, <span class="math inline">\(\beta_{12}\)</span> and <span class="math inline">\(\beta_{13}\)</span>.</p>
+<p>These observations explain the coding used by <code>gspline()</code>, which therefore produces coefficients that directly give differences in the highest-order derivative at the knots (e.g., of the third derivative for a cubic regression spline). This result is reflected in the names of the columns of the model matrix generated by <code>gspline()</code>. In the example, <code>D1|0</code>, <code>D2|0</code>, and <code>D3|0</code> are respectively the first, second, and third derivatives at the left boundary (i.e., <span class="math inline">\(x = 0\)</span>); <code>C3|3.33</code> is the change in the third derivative (symbolized by “<code>3</code>”) at the first interior knot (<span class="math inline">\(t_1 = 10/3 \approx 3.33\)</span>), and <code>C3|6.67</code> is the change in the third derivative at the second interior knot (<span class="math inline">\(t_1 = 20/3 \approx 6.67\)</span>).</p>
+<div id="numerical-conditioning" class="section level3">
+<h3>5.1 Numerical Conditioning</h3>
+<p>Although the spline regression bases constructed directly, by <code>gspline()</code>, and by <code>bs()</code> are equivalent in the sense that they span the same subspace, these bases have different numerical properties. One way to see this is by computing the correlations among the regressors in each case:</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" title="1"><span class="kw">round</span>(<span class="kw">cor</span>(X), <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>##         x1  x1^2  x1^3  x2^3  x3^3
+## x1   1.000 0.963 0.909 0.813 0.645
+## x1^2 0.963 1.000 0.986 0.929 0.782
+## x1^3 0.909 0.986 1.000 0.977 0.862
+## x2^3 0.813 0.929 0.977 1.000 0.940
+## x3^3 0.645 0.782 0.862 0.940 1.000</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" title="1"><span class="kw">round</span>(<span class="kw">cor</span>(X.gsp), <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>##          D1|0  D2|0  D3|0 C3|3.33 C3|6.67
+## D1|0    1.000 0.963 0.909   0.813   0.645
+## D2|0    0.963 1.000 0.986   0.929   0.782
+## D3|0    0.909 0.986 1.000   0.977   0.862
+## C3|3.33 0.813 0.929 0.977   1.000   0.940
+## C3|6.67 0.645 0.782 0.862   0.940   1.000</code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" title="1"><span class="kw">round</span>(<span class="kw">cor</span>(X.bs), <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>##        1      2      3      4      5
+## 1  1.000  0.313 -0.484 -0.456 -0.297
+## 2  0.313  1.000  0.272 -0.484 -0.451
+## 3 -0.484  0.272  1.000  0.313 -0.371
+## 4 -0.456 -0.484  0.313  1.000  0.027
+## 5 -0.297 -0.451 -0.371  0.027  1.000</code></pre>
+<p>The correlations for the first two bases are the same because, as we just explained, the columns of <code>X.gsp</code> are multiples of those of <code>X</code>, and some are quite large, while the correlations among the columns of <code>X.bs</code> are much smaller.</p>
+<p>Even more directly, checking the condition numbers of the three basis matrices, each augmented with a column of 1s for the regression intercept, shows that both <code>X</code> and <code>X.gsp</code> are much more ill-conditioned than <code>X.bs</code>:</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" title="1"><span class="kw">kappa</span>(<span class="kw">cbind</span>(<span class="dv">1</span>, X))</a></code></pre></div>
+<pre><code>## [1] 4736.711</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" title="1"><span class="kw">kappa</span>(<span class="kw">cbind</span>(<span class="dv">1</span>, X.gsp))</a></code></pre></div>
+<pre><code>## [1] 1554.19</code></pre>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" title="1"><span class="kw">kappa</span>(<span class="kw">cbind</span>(<span class="dv">1</span>, X.bs))</a></code></pre></div>
+<pre><code>## [1] 10.42067</code></pre>
+<p>Notice that the condition numbers of the augmented <code>X</code> and <code>X.gsp</code> matrices are <em>not</em> identical because of the different scalings of the columns.</p>
+<p>These observations suggest that if we’re interested in regression splines simply for fitting smooth nonlinear regressions, and if the model is expressible as a B-spline, then there’s an advantage in using the B-spline basis in preference to the basis constructed by <code>gspline()</code>. As we mentioned, the advantages of <code>gspline()</code> are in supporting a wider variety of piecewise polynomial and regression spline models and, crucially, in producing interpretable coefficients and hypothesis tests. We illustrate uses of the latter in another vignette.</p>
+<p>Finally, modern least-squares algorithms, based for example on the QR and singular-value decompositions, decrease the numerical advantages of having relatively uncorrelated regressors. These methods effectively orthogonalize the model matrix in the process of the computating least-squares fits.</p>
+</div>
+</div>
+<div id="natural-splines" class="section level2">
+<h2>Natural Splines</h2>
+<p>Natural splines are B-splines with additional <em>boundary knots</em>, typically placed at the extremes of <span class="math inline">\(x\)</span>, and the additional constraints that the fitted regression is linear to the left of the lower boundary knot and to the right of the upper boundary knots. Derivatives up to order 1 less than the degree of the interior spline polynomials also match at the boundaries. Natural splines in effect place 2 additional constraints on the model and therefore are representable using 2 fewer parameters than corresponding B-splines: A cubic natural regression spline with <span class="math inline">\(k\)</span> knots uses <span class="math inline">\(1 + k\)</span> parameters (and regressors), excluding the intecept, 2 fewer than the corresponding B-spline.</p>
+<p>Because of the condition that the regression is linear beyond the boundaries, natural splines tend to produce less wild extrapolations than B-splines. Natural splines may also behave more reasonably in the interior near the boundaries, but are less flexible than B-splines. We can compensate for the lower flexibility of natural splines within the range of the data by introducing 1 or 2 additional interior knots, perhaps spending the degrees of freedom more wisely than for a B-spline with the same number of parameters. The <code>ns()</code> function in the standard R <strong>splines</strong> package only fits natural <em>cubic</em> regression splines.</p>
+<p>To illustrate, we continue the example from the preceding section, with <span class="math inline">\(x = (0, 1, 2, \ldots, 10)\)</span>, <span class="math inline">\(k = 2\)</span> interior knots at 10/3 and 20/3, and boundary knots at 0 and 10:</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" title="1">X.ns &lt;-<span class="st"> </span><span class="kw">ns</span>(x, <span class="dt">knots=</span><span class="kw">c</span>(<span class="dv">10</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">20</span><span class="op">/</span><span class="dv">3</span>), <span class="dt">Boundary.knots=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb86-2" title="2"><span class="kw">round</span>(X.ns, <span class="dv">5</span>)</a></code></pre></div>
+<pre><code>##              1       2        3
+##  [1,]  0.00000 0.00000  0.00000
+##  [2,] -0.06960 0.22231 -0.14821
+##  [3,] -0.10044 0.40933 -0.27289
+##  [4,] -0.05376 0.52578 -0.35052
+##  [5,]  0.10238 0.54085 -0.35923
+##  [6,]  0.32047 0.47608 -0.29655
+##  [7,]  0.50176 0.38672 -0.17248
+##  [8,]  0.54762 0.32813  0.00275
+##  [9,]  0.41887 0.32738  0.21774
+## [10,]  0.16843 0.36771  0.45936
+## [11,] -0.14286 0.42857  0.71429
+## attr(,&quot;degree&quot;)
+## [1] 3
+## attr(,&quot;knots&quot;)
+## [1] 3.333333 6.666667
+## attr(,&quot;Boundary.knots&quot;)
+## [1]  0 10
+## attr(,&quot;intercept&quot;)
+## [1] FALSE
+## attr(,&quot;class&quot;)
+## [1] &quot;ns&quot;     &quot;basis&quot;  &quot;matrix&quot;</code></pre>
+<p>The <code>Boundary.knots</code> argument to <code>ns()</code> defaults to the range of <code>x</code>, and so we didn’t have to specify it explicitly but have done so for clarity. The <code>knots</code> argument gives the interior knots.</p>
+<p>We can specify an equivalent basis using <code>gspline()</code> by specifying linear (i.e., degree-1) polynomials beyond the boundaries along with interior cubics, and by matching derivatives up to order-2:</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" title="1">sp_ns &lt;-<span class="st"> </span><span class="kw">gspline</span>(<span class="dt">knots=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">20</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">10</span>), </a>
+<a class="sourceLine" id="cb88-2" title="2">             <span class="dt">degree=</span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1</span>), </a>
+<a class="sourceLine" id="cb88-3" title="3">             <span class="dt">smoothness=</span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb88-4" title="4">sp_ns</a></code></pre></div>
+<pre><code>## Spline function created by gspline
+## $knots
+## [1]  0.000000  3.333333  6.666667 10.000000
+## 
+## $degree
+## [1] 1 3 3 3 1
+## 
+## $smoothness
+## $smoothness[[1]]
+## [1] 0 1 2
+## 
+## $smoothness[[2]]
+## [1] 0 1 2
+## 
+## $smoothness[[3]]
+## [1] 0 1 2
+## 
+## $smoothness[[4]]
+## [1] 0 1 2
+## 
+## 
+## $G
+##    D1|0       C3|0   C3|3.33
+## X0    0    0.00000   0.00000
+## X1    1    0.00000   0.00000
+## X2    0    0.00000   0.00000
+## X3    0    0.00000   0.00000
+## X0    0    0.00000   0.00000
+## X1    1    0.00000   0.00000
+## X2    0    0.00000   0.00000
+## X3    0    0.16667   0.00000
+## X0    0    0.00000  -6.17284
+## X1    1    0.00000   5.55556
+## X2    0    0.00000  -1.66667
+## X3    0    0.16667   0.16667
+## X0    0  148.14815  92.59259
+## X1    1  -66.66667 -38.88889
+## X2    0   10.00000   5.00000
+## X3    0   -0.33333  -0.16667
+## X0    0 -185.18519 -74.07407
+## X1    1   33.33333  11.11111
+## X2    0    0.00000   0.00000
+## X3    0    0.00000   0.00000
+## 
+## $constraint_mat
+##         X0 X1 X2 X3 X0      X1       X2       X3 X0      X1       X2
+## C0|0    -1  0  0  0  1  0.0000   0.0000   0.0000  0  0.0000   0.0000
+## C1|0     0 -1  0  0  0  1.0000   0.0000   0.0000  0  0.0000   0.0000
+## C2|0     0  0 -2  0  0  0.0000   2.0000   0.0000  0  0.0000   0.0000
+## C0|3.33  0  0  0  0 -1 -3.3333 -11.1111 -37.0370  1  3.3333  11.1111
+## C1|3.33  0  0  0  0  0 -1.0000  -6.6667 -33.3333  0  1.0000   6.6667
+## C2|3.33  0  0  0  0  0  0.0000  -2.0000 -20.0000  0  0.0000   2.0000
+## C0|6.67  0  0  0  0  0  0.0000   0.0000   0.0000 -1 -6.6667 -44.4444
+## C1|6.67  0  0  0  0  0  0.0000   0.0000   0.0000  0 -1.0000 -13.3333
+## C2|6.67  0  0  0  0  0  0.0000   0.0000   0.0000  0  0.0000  -2.0000
+## C0|10    0  0  0  0  0  0.0000   0.0000   0.0000  0  0.0000   0.0000
+## C1|10    0  0  0  0  0  0.0000   0.0000   0.0000  0  0.0000   0.0000
+## C2|10    0  0  0  0  0  0.0000   0.0000   0.0000  0  0.0000   0.0000
+## I.1.2    0  0  1  0  0  0.0000   0.0000   0.0000  0  0.0000   0.0000
+## I.1.3    0  0  0  1  0  0.0000   0.0000   0.0000  0  0.0000   0.0000
+## I.5.2    0  0  0  0  0  0.0000   0.0000   0.0000  0  0.0000   0.0000
+## I.5.3    0  0  0  0  0  0.0000   0.0000   0.0000  0  0.0000   0.0000
+## f(0)     1  0  0  0  0  0.0000   0.0000   0.0000  0  0.0000   0.0000
+##                X3 X0       X1        X2         X3 X0 X1  X2   X3
+## C0|0       0.0000  0   0.0000    0.0000     0.0000  0  0   0    0
+## C1|0       0.0000  0   0.0000    0.0000     0.0000  0  0   0    0
+## C2|0       0.0000  0   0.0000    0.0000     0.0000  0  0   0    0
+## C0|3.33   37.0370  0   0.0000    0.0000     0.0000  0  0   0    0
+## C1|3.33   33.3333  0   0.0000    0.0000     0.0000  0  0   0    0
+## C2|3.33   20.0000  0   0.0000    0.0000     0.0000  0  0   0    0
+## C0|6.67 -296.2963  1   6.6667   44.4444   296.2963  0  0   0    0
+## C1|6.67 -133.3333  0   1.0000   13.3333   133.3333  0  0   0    0
+## C2|6.67  -40.0000  0   0.0000    2.0000    40.0000  0  0   0    0
+## C0|10      0.0000 -1 -10.0000 -100.0000 -1000.0000  1 10 100 1000
+## C1|10      0.0000  0  -1.0000  -20.0000  -300.0000  0  1  20  300
+## C2|10      0.0000  0   0.0000   -2.0000   -60.0000  0  0   2   60
+## I.1.2      0.0000  0   0.0000    0.0000     0.0000  0  0   0    0
+## I.1.3      0.0000  0   0.0000    0.0000     0.0000  0  0   0    0
+## I.5.2      0.0000  0   0.0000    0.0000     0.0000  0  0   1    0
+## I.5.3      0.0000  0   0.0000    0.0000     0.0000  0  0   0    1
+## f(0)       0.0000  0   0.0000    0.0000     0.0000  0  0   0    0
+## 
+## $estimate_mat
+##         X0 X1 X2 X3 X0 X1 X2 X3 X0 X1 X2 X3 X0 X1 X2 X3 X0 X1 X2 X3
+## D1|0     0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+## C3|0     0  0  0 -6  0  0  0  6  0  0  0  0  0  0  0  0  0  0  0  0
+## C3|3.33  0  0  0  0  0  0  0 -6  0  0  0  6  0  0  0  0  0  0  0  0</code></pre>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" title="1">X.gsp.ns &lt;-<span class="st"> </span><span class="kw">sp_ns</span>(x)</a>
+<a class="sourceLine" id="cb90-2" title="2">X.gsp.ns</a></code></pre></div>
+<pre><code>##       D1|0      C3|0  C3|3.33
+## f(0)     0   0.00000  0.00000
+## f(1)     1   0.16667  0.00000
+## f(2)     2   1.33333  0.00000
+## f(3)     3   4.50000  0.00000
+## f(4)     4  10.66667  0.04938
+## f(5)     5  20.83333  0.77160
+## f(6)     6  36.00000  3.16049
+## f(7)     7  57.14815  8.20370
+## f(8)     8  84.14815 16.14815
+## f(9)     9 115.14815 26.09259
+## f(10)   10 148.14815 37.03704</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" title="1"><span class="kw">all.equal</span>(<span class="kw">fitted</span>(<span class="kw">lm</span>(X.ns <span class="op">~</span><span class="st"> </span>X.gsp <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)), X.ns, <span class="dt">check.attributes=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Notice that <code>gspline()</code> doesn’t distinguish between interior and boundary knots, and that the distinction is imposed implicitly by the distribution of the <span class="math inline">\(x\)</span>-values and the specification of the <code>degree</code> and <code>smoothness</code> arguments. Because all of the values of <code>smoothness</code> are equal to 2, we could have specified <code>smoothness=2</code>, but we entered the argument as a 4-element vector to emphasize the number of constraints placed on the derivatives.</p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
