@@ -130,15 +130,15 @@ w <- wald(fit, getX(fit,data=pred)) # attaches data to wald.object
 w <- wald(fit, pred = pred)
 w <- as.data.frame(w)
 head(w)
-# if(require("latticeExtra")){  # FIXME (need gpanel.fit from spida2)
-#     xyplot(coef ~ SES | Sector, w, groups = Sex,
-#            auto.key = T, type = 'l',
-#            fit = w$coef,
-#            upper = with(w,coef+2*se),
-#            lower = with(w,coef-2*se),
-#            subscript = T) +
-#         glayer( gpanel.fit(...))
-# }
+if(require("latticeExtra")){
+     xyplot(coef ~ SES | Sector, w, groups = Sex,
+            auto.key = TRUE, type = 'l',
+            fit = w$coef,
+            upper = with(w,coef+2*se),
+            lower = with(w,coef-2*se),
+            subscript = TRUE) +
+         glayer(panel.fit(...))
+}
 
 wald( fit, 'Sex')  # sig. overall effect of Sex
 wald( fit, ':Sex') # but no evidence of interaction with ses

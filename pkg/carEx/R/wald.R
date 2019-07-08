@@ -705,5 +705,10 @@ Lcall <- function( fit , factors = getFactorNames(fit), debug = F){ # not curren
     nams
 }
 
-disp <- function(x, ...) print(x, ...) # FIXME: this function was missing
-
+disp <- function (x, head = deparse(substitute(x))) 
+{
+    cat("::: ", head, " :::\n")
+    print(x)
+    cat("======================\n")
+    invisible(x)
+}

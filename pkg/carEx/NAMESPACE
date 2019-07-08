@@ -1,12 +1,15 @@
-# last modified 2019-06-24
+# last modified 2019-07-08
 
 importFrom("car", "Anova", "deltaMethod", "linearHypothesis", 
            "makeHypothesis", "printHypothesis")
 importFrom("stats", "terms", "coef", "df.residual", "vcov", "qt", "pf", "knots", "cov2cor", "formula", "model.frame",
            "model.matrix", "na.omit", "pt", "var", "asOneSidedFormula")
 importFrom("methods", "slot")
+importFrom("latticeExtra", "layer", "glayer")
+importFrom("lattice", "panel.lines", "panel.polygon")
 
-export("gspline", "wald", "getFix", "getX", "Lform")
+
+export("gspline", "wald", "getFix", "getX", "Lform", "panel.fit")
 
 S3method("Anova", "mira")
 S3method("linearHypothesis", "mira")

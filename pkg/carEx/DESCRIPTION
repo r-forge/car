@@ -2,7 +2,7 @@ Package: carEx
 Type: Package
 Title: Supplemental and Experimental Functions
 Version: 0.2-0
-Date: 2019-06-24
+Date: 2019-07-08
 Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaster.ca"),
 	person("Sanford", "Weisberg", role = "aut", email = "sandy@umn.edu"),
 	person("Brad", "Price", role = "aut", email = "brad.price@mail.wvu.edu"),
@@ -11,8 +11,8 @@ Maintainer: John Fox <jfox@mcmaster.ca>
 Description: Functions meant to supplement those in the car package
     and experimental functions that may eventually be included in the car package.
 Depends: R (>= 3.5.0), car (>= 3.0-0)
-Imports: stats, lme4, nlme, methods
-Suggests: mice, lattice, latticeExtra, knitr, rmarkdown
+Imports: stats, lme4, nlme, methods, lattice, latticeExtra
+Suggests: mice, knitr, rmarkdown
 License: GPL (>= 2)
 LazyLoad: yes
 LazyData: yes

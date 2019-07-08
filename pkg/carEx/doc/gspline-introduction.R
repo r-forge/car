@@ -1,36 +1,36 @@
 ## ----setup, include=FALSE------------------------------------------------
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.width=6.5, fig.height=6.5)
 
-print.gspline <- function(x, show.function=FALSE, verbose=FALSE, ...){
-    periodic <- get("periodic", environment(x))
-    knots <- get("knots", environment(x))
-    degree <- get("degree", environment(x))
-    smooth <- get("smoothness", environment(x))
-    smooth <- sapply(smooth, max)
-    cat("\n", if (periodic) "Periodic spline with" else "Spline with")
-    cat("\n  knots at ", knots)
-    if (length(unique(degree)) == 1) cat("\n  degree", degree[1]) else cat("\n  degrees:", degree)
-    if (length(unique(smooth)) == 1) cat("\n  order of smoothness", smooth[1]) else cat("\n  orders of smoothness:", smooth)
-    if(show.function) {
-        cat("\n  Spline-generating function:\n")
-        NextMethod()
-    }
-    if (verbose){
-        objects <- ls(envir=environment(x))
-        for (object in objects){
-            cat("\n  ", object, "\n")
-            print(get(object, environment(x)))
-        }
-    }
-    invisible(x)
-}
-
-print.gspline_matrix <- function(x, ...) {
-    xx <- x
-    class(xx) <- "matrix"
-    print(xx, ...)
-    invisible(x)
-}
+# print.gspline <- function(x, show.function=FALSE, verbose=FALSE, ...){
+#     periodic <- get("periodic", environment(x))
+#     knots <- get("knots", environment(x))
+#     degree <- get("degree", environment(x))
+#     smooth <- get("smoothness", environment(x))
+#     smooth <- sapply(smooth, max)
+#     cat("\n", if (periodic) "Periodic spline with" else "Spline with")
+#     cat("\n  knots at ", knots)
+#     if (length(unique(degree)) == 1) cat("\n  degree", degree[1]) else cat("\n  degrees:", degree)
+#     if (length(unique(smooth)) == 1) cat("\n  order of smoothness", smooth[1]) else cat("\n  orders of smoothness:", smooth)
+#     if(show.function) {
+#         cat("\n  Spline-generating function:\n")
+#         NextMethod()
+#     }
+#     if (verbose){
+#         objects <- ls(envir=environment(x))
+#         for (object in objects){
+#             cat("\n  ", object, "\n")
+#             print(get(object, environment(x)))
+#         }
+#     }
+#     invisible(x)
+# }
+# 
+# print.gspline_matrix <- function(x, ...) {
+#     xx <- x
+#     class(xx) <- "matrix"
+#     print(xx, ...)
+#     invisible(x)
+# }
 
 # print.gsp <- function(x, strip.attributes=TRUE, ...){
 #     nms <- colnames(x)

@@ -4,4 +4,4 @@ Version 0.1-0
  
 Version 0.2-0
 
- o Added gspline(), wald(), and some associated functions.
+ o Added gspline(), wald(), panel.fit(), and some associated functions.
