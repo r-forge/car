@@ -2,6 +2,8 @@ Changes to Version 3.0-4
 
   o Scoping improvements to deltaMethod(), which now also takes an optional hypothesized value; contribution and suggestion by Pavel Krivitsky.
   
+  o Make Anova() work for coxph() models with strata (following problem reported by Susan Galloway Hilsenbeck).
+  
   o Small improvements.
 
 
