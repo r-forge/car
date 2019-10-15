@@ -1530,6 +1530,7 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
     for (cl in clusters) assign[assign > cl] <- assign[assign > cl] - 1
     for (st in strata) assign[assign > st] <- assign[assign > st] - 1
     if (length(clusters) > 0 || length(strata) > 0) {
+      message("skipping term ", paste(names[c(clusters, strata)], collapse=", "))
       names <- names[-c(clusters, strata)]
       df <- df[-c(clusters, strata)]
       n.terms <- n.terms - length(clusters) - length(strata)
@@ -1577,6 +1578,7 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
     for (cl in clusters) assign[assign > cl] <- assign[assign > cl] - 1
     for (st in strata) assign[assign > st] <- assign[assign > st] - 1
     if (length(clusters) > 0 || length(strata) > 0) {
+      message("skipping term ", paste(names[c(clusters, strata)], collapse=", "))
       names <- names[-c(clusters, strata)]
       df <- df[-c(clusters, strata)]
       n.terms <- n.terms - length(clusters) - length(strata)
