@@ -52,7 +52,7 @@
 # 2018-01-15: Anova.multinom() now works with response matrix. JF
 # 2018-02-11: If there are aliased coefs in lm object, treat as GLM. JF
 # 2018-04-04: pass ... arguments through print() methods. Follows comments by Egor Katkov. JF
-# 2019-10-15: modify Anova.*.coxph() and Anova.*.default()  for coxph() models with strata 
+# 2019-10-16: modify Anova.coxph() and Anova.default()  for coxph() models with strata (or clusters)
 #             (following problem reported by Susan Galloway Hilsenbeck). JF
 #-------------------------------------------------------------------------------
 
@@ -1232,7 +1232,14 @@ Anova.coxph <- function(mod, type=c("II","III", 2, 3), test.statistic=c("LR", "W
   type <- match.arg(type)
   test.statistic <- match.arg(test.statistic)
   if (length((mod$rscore) > 0) && (test.statistic == "LR")){ 
-    warning("LR tests unavailable with robust variances\nWald tests substituted")
+    warning("LR tests unavailable with robust variances\n  Wald tests substituted")
+    test.statistic <- "Wald"
+  }
+  names <- term.names(mod)
+  clusters <- grepl("cluster\\(", names)
+  strata <- grepl("strata\\(", names)
+  if ((any(clusters) || any(strata)) && test.statistic == "LR"){
+    warning("LR tests not supported for models with clusters or strata\n Wald tests substituted")
     test.statistic <- "Wald"
   }
   switch(type,
