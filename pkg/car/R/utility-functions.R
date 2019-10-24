@@ -25,6 +25,7 @@
 # 2018-05-23: make model.matrix.lme() more bullet proof, following report by Peter Grossmann. JF
 # 2018-11-07: added combineLists(). JF
 # 2019-01-02: added na.action.merMod(), removed df.residual.merMod(). JF
+# 2019-10-24: include colorblind palette in carPalette(). JF
 
 #if (getRversion() >= "2.15.1") globalVariables(c(".boot.sample", ".boot.indices"))
 
