@@ -4,6 +4,8 @@ Changes to Version 3.0-4
   
   o Make Anova() work for coxph() models with strata (following problem reported by Susan Galloway Hilsenbeck).
   
+  o Modify carPalette() to provide a colorblind-friendly palette as an option (suggestion of Sercan Kahveci).
+  
   o Small improvements.
 
 
