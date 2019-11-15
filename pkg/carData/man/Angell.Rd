@@ -41,9 +41,9 @@ The observations are 43 U. S. cities around 1950.
 }
 
 \references{
-  Fox, J. (2008)
+  Fox, J. (2016)
   \emph{Applied Regression Analysis and Generalized Linear Models},
-  Second Edition. Sage.  
+  Third Edition. Sage.  
 }
 
 \usage{

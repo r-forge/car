@@ -55,8 +55,8 @@ of signals per mile of roadway, adjusted to have no zero values.
 \code{alr4} package only by addition of transformation of some of the columns.}
 
 \references{
-Fox, J. and Weisberg, S. (2011) \emph{An R Companion to Applied
-Regression}, Second Edition, Sage.
+Fox, J. and Weisberg, S. (2019) 
+\emph{An R Companion to Applied Regression}, Third Edition, Sage.
 
 Weisberg, S. (2014) \emph{Applied Linear Regression}, Fourth Edition,  Wiley, Section 7.2.
 }

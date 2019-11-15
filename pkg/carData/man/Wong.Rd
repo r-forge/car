@@ -37,7 +37,9 @@ Wong, P. P., Monette, G., and Weiner, N. I. (2001) Mathematical models of cognit
 }
 
 \references{
-Fox, J. (2016) \emph{Applied Regression Analysis and Generalized Linear Models}, Third Edition. Sage.
+Fox, J. (2016) 
+\emph{Applied Regression Analysis and Generalized Linear Models}, 
+Third Edition. Sage.
 }
 
 \examples{

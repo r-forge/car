@@ -24,8 +24,8 @@ Cunningham, R. and Heathcote, C.
 (1989), Estimating a non-Gaussian regression model with multicollinearity.
 Australian Journal of Statistics, 31,12-17.}
 \references{
-Fox, J. and Weisberg, S. (2011) 
-\emph{An R Companion to Applied Regression}, Second Edition, Sage.
+Fox, J. and Weisberg, S. (2019) 
+\emph{An R Companion to Applied Regression}, Third Edition, Sage.
 
 Weisberg, S. (2014) \emph{Applied Linear Regression}, Fourth Edition,  Wiley, Section 4.6.1.
 }

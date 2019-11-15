@@ -60,9 +60,9 @@ some missing data.
   \emph{Canadian Review of Sociology and Anthroplogy}, 
   \bold{16}, 96--104.
   
-  Fox, J. (2008)
+  Fox, J. (2016)
   \emph{Applied Regression Analysis and Generalized Linear Models},
-  Second Edition. Sage.  
+  Third Edition. Sage.  
 }
 
 \usage{

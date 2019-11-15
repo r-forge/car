@@ -20,8 +20,8 @@ Wolf depredations of livestock on Minnesota farms, 1976-1998.
 }
 
 \references{
-Fox, J. and Weisberg, S. (2011) 
-\emph{An R Companion to Applied Regression}, Second Edition, Sage.
+Fox, J. and Weisberg, S. (2019) 
+\emph{An R Companion to Applied Regression}, Third Edition, Sage.
   
 Harper, Elizabeth K. and Paul, William J. and Mech, L. David and Weisberg, Sanford (2008),
 Effectiveness of Lethal, Directed Wolf-Depredation Control in Minnesota,

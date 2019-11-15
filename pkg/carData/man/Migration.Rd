@@ -92,9 +92,9 @@ provinces.
 }
 
 \references{
- Fox, J. (2008)
+ Fox, J. (2016)
   \emph{Applied Regression Analysis and Generalized Linear Models},
-  Second Edition. Sage.  
+  Third Edition. Sage.  
 }
 
 \usage{

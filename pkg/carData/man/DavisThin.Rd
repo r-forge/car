@@ -31,8 +31,8 @@ scale, to be formed by summing the items.
 }
 
 \references{
-  Fox, J. and Weisberg, S. (2011) 
-  \emph{An R Companion to Applied Regression}, Second Edition, Sage.
+  Fox, J. and Weisberg, S. (2019) 
+  \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 
 

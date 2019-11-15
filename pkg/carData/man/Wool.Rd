@@ -29,8 +29,8 @@ goal is to understand how cycles to failure depends on the factors.
 Box, G. E. P. and Cox, D. R. (1964).  An analysis of transformations (with
 discussion).  \emph{J. Royal Statist. Soc.}, B26, 211-46.}
 \references{
-Fox, J. and Weisberg, S. (2011) 
-\emph{An R Companion to Applied Regression}, Second Edition, Sage.
+Fox, J. and Weisberg, S. (2019) 
+\emph{An R Companion to Applied Regression}, Third Edition, Sage.
   
 Weisberg, S. (2014) \emph{Applied Linear Regression}, Fourth Edition,  Wiley, Section 6.3.
 }
