@@ -4,7 +4,7 @@
 \title{
 2011 Canadian National Election Study, With Attitude Toward Abortion}
 \description{
-Data are drawn from the 2011 Canadian National Election Study, including a question on banning abortion and variables relelated to the sampling design.}
+Data are drawn from the 2011 Canadian National Election Study, including a question on banning abortion and variables related to the sampling design.}
 \usage{data("CES11")}
 \format{
   A data frame with 2231 observations on the following 9 variables.
@@ -16,7 +16,7 @@ Data are drawn from the 2011 Canadian National Election Study, including a quest
     \item{\code{gender}}{a factor with levels \code{Female}, \code{Male}.}
     \item{\code{abortion}}{attitude toward abortion, a factor with levels \code{No}, \code{Yes}; answer to the question "Should abortion be banned?"}
     \item{\code{importance}}{importance of religion, a factor with (alphabetical) levels \code{not}, \code{notvery}, \code{somewhat}, \code{very}; answer to the question, "In your life, would you say that religion is very important, somewhat important, not very important, or not important at all?"}
-    \item{\code{education}}{a factor with (alphabetical) levels \code{bachelors} (Bachelors degree), \code{college} (community college or technical school), \code{higher} (graduate degree), \code{HS} (high-school graduate), \code{lessHS} (less than high-school graduate), \code{somePS}} (some post-secondary).
+    \item{\code{education}}{a factor with (alphabetical) levels \code{bachelors} (Bachelors degree), \code{college} (community college or technical school), \code{higher} (graduate degree), \code{HS} (high-school graduate), \code{lessHS} (less than high-school graduate), \code{somePS} (some post-secondary).}
     \item{\code{urban}}{place of residence, a factor with levels \code{rural}, \code{urban}.}
   }
 }
