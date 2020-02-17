@@ -2,6 +2,7 @@
 # 2016-05-02:  Moved (working) cosde for bncPower family to bcnPower.R
 # 2017-12-19:  Modified estimateTransform to handle gamma \approx 0 gracefully.
 # 2017-12-19:  added error for 'I' terms in formulas
+# 2020-02-17:  replaced match.fun by matchFun in utility-functions.R
 
 # generic functions in powerTransform.R
 
@@ -21,7 +22,7 @@ estimateTransform.lmerMod <- function(object, family="bcPower", lambda=c(-3, 3),
     "powerTransform for lmer models don't work with the 'I' function; rewrite your formula"
   )
   y <- (object@resp)$y
-  fam <- match.fun(family)
+  fam <- matachFun(family)
   llik <- function(lambda){
     data$y.lambda <- fam(y, lambda, jacobian.adjusted=TRUE)
     m.lambda <- update(object, y.lambda ~ ., data=data)
@@ -58,7 +59,7 @@ estimateTransform.lmerMod <- function(object, family="bcPower", lambda=c(-3, 3),
 
 # lmerMod
 testTransform.lmerModpowerTransform <- function(object, lambda=1){
-  fam <- match.fun(object$family)
+  fam <- matachFun(object$family)
   model <- object$model
   y <- (model@resp)$y
   local.data <- model.frame(model)
