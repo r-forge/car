@@ -1,3 +1,7 @@
+Changes to Version 3.0-7
+
+  o Fix Anova() to work with "lme" models without an intercept (to fix bug reported by Benjamin Tyner).
+
 Changes to Version 3.0-6
 
   o Explicitly import utils::globalVariables() (suggestion of Vince Carey).
