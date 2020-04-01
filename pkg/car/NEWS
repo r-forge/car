@@ -1,5 +1,9 @@
 Changes to Version 3.0-7
 
+  o Fixed Anova.coxph() to handle weights properly (problem reported by Daniel Morillo Cuadrado).
+
+Changes to Version 3.0-7
+
   o Fixed boxCox(), powerTransform() to work when 'car' package is not attached
   
   o Fix Anova() to work with "lme" models without an intercept (to fix bug reported by Benjamin Tyner).
