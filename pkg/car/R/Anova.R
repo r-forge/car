@@ -55,6 +55,7 @@
 # 2019-10-16: modify Anova.coxph() and Anova.default()  for coxph() models with strata (or clusters)
 #             (following problem reported by Susan Galloway Hilsenbeck). JF
 # 2019-02-17: fix Anova.lme() to work with models without intercepts (to fix bug reported by Benjamin Tyner). JF
+# 2020-04-01: fix Anova.coxph() to work with weights (to fix bug reported by Daniel Morillo Cuadrado)
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
