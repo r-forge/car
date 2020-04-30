@@ -9,9 +9,10 @@
 #             These arguments are read only if format %in% c("txt", "csv", "xls", "xlsx", "ods").
 # 4/2/2017:  S. Weisberg changed and simplified arguments.
 # 5/22/2017: S. Weisberg, fixed bug reading files with one character column (added drop=FALSE)
+# 40/30/2020: S. Weisberg, removed depreciaated default.stringsAsFactors
 
 Import <- function(file, format, ..., row.names=TRUE,
-                   stringsAsFactors = default.stringsAsFactors()){
+                   stringsAsFactors = getOption("stringsAsFactors")){
   d <- rio::import(file, format, ...)
   fmt <- if(!missing(format)) format else{
     pos <- regexpr("\\.([[:alnum:]]+)$", file)

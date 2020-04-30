@@ -1,5 +1,7 @@
 Changes to Version 3.0-8
 
+  o Fixed Import to reflect the change in the default for options("stringsAsFactors") as of R 4.0,0,
+  
   o Fixed a big in estimateTransform.lm that returned the correct answer with a unneeded warning.
   
   o Fixed Anova.coxph() to handle weights properly (problem reported by Daniel Morillo Cuadrado).
