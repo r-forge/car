@@ -7,7 +7,7 @@ Import data from many file formats
 Uses the \code{import} function from the \pkg{rio} package to read a data.frame from a variety of file types.  The \code{Import} function includes 2 additional arguments adding row names and for converting character and logical variables to factors for some file types.}
 \usage{
 Import(file, format, ..., row.names=TRUE,
-       stringsAsFactors = getOption("stringAsFactors"))
+       stringsAsFactors = getOption("stringsAsFactors"))
 }
 \arguments{
   \item{file}{
