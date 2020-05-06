@@ -1,13 +1,11 @@
 Changes to Version 3.0-8
 
-  o Fixed Import() to reflect the change in the default for options("stringsAsFactors") as of R 4.0,0,
+  o Import now defaults to stringsAsFactors=FALSE to match the default behavior of read.table as of R 4.0.0
   
-  o Fixed a bug in estimateTransform.lm() that returned the correct answer with an unneeded warning.
+  o Fixed a big in estimateTransform.lm that returned the correct answer with a unneeded warning.
   
   o Fixed Anova.coxph() to handle weights properly (problem reported by Daniel Morillo Cuadrado).
-  
-  o The marginal boxplots in scatterplot() are now correct when xlim and/or ylim are specified (fixing a bug reported by Yousri Fanous).
-  
+
 Changes to Version 3.0-7
 
   o Fixed boxCox(), powerTransform() to work when 'car' package is not attached
