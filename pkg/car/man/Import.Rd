@@ -7,11 +7,11 @@ Import data from many file formats
 Uses the \code{import} function from the \pkg{rio} package to read a data.frame from a variety of file types.  The \code{Import} function includes 2 additional arguments adding row names and for converting character and logical variables to factors for some file types.}
 \usage{
 Import(file, format, ..., row.names=TRUE,
-       stringsAsFactors = getOption("stringsAsFactors"))
+       stringsAsFactors = FALSE)
 }
 \arguments{
   \item{file}{
-A character string naming a file, URL, or single-file .zip or .tar archive.  See the details below.  If the file name has an extension like \code{.xlsx} or \code{.csv} then the type of file is inferred from the extension.
+A character string naming a file, URL, or .zip or .tar archive.  See the details below.  If the file name has an extension like \code{.xlsx} or \code{.csv} then the type of file is inferred from the extension.
 }
   \item{format}{
 If an extension is not present in the file name or it is wrong, the file format can be set with this argument; see \code{\link[rio]{import}}.
@@ -23,7 +23,7 @@ Additional arguments passed to \code{\link[rio]{import}}.
 If \code{TRUE}, the default, the left-most character variable that has all unique elements is removed from the data frame and set to be \code{row.names}.  To match \code{import}, set \code{row.names=FALSE}.
 }
   \item{stringsAsFactors}{
-If \code{TRUE}, then character variables that do not have all unique elements are converted to factors. The default is determined by the value of \code{getOption("stringsAsFactors")} whose "factory fresh" default for R versions >= 4.0.0 is equal to \code{FALSE} and is \code{TRUE} for earlier versions of R. }
+If \code{TRUE}, then character variables that do not have all unique elements are converted to factors. The default is FALSE. Prior to May 2020 the default was determined option("stringsAsFactors"), which then defaulted to TRUE.  This option is expected to be depricated in the future.}
 }
 \details{
 This function calls the \code{\link[rio]{import}} function to read a data frame from a file.  Many file types are supported.  For files of type \code{"txt", "csv", "xlsx", "xls"} or \code{ "ods"} the arguments \code{row.names} and \code{stringsAsFactors} can be used to add row names and convert character variables to factors, respectively.   Many more details are given on the man page for \code{import}.
