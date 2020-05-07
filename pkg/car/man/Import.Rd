@@ -23,7 +23,7 @@ Additional arguments passed to \code{\link[rio]{import}}.
 If \code{TRUE}, the default, the left-most character variable that has all unique elements is removed from the data frame and set to be \code{row.names}.  To match \code{import}, set \code{row.names=FALSE}.
 }
   \item{stringsAsFactors}{
-If \code{TRUE}, then character variables that do not have all unique elements are converted to factors. The default is FALSE. Prior to May 2020 the default was determined option("stringsAsFactors"), which then defaulted to TRUE.  This option is expected to be depricated in the future.}
+If \code{TRUE}, then character variables that do not have all unique elements are converted to factors. The default is \code{FALSE}. Prior to May 2020 the default was determined by \code{getOption("stringsAsFactors")}, which then defaulted to \code{TRUE}.  This option is \code{FALSE} in R 4.0.0 and has been deprecated.}
 }
 \details{
 This function calls the \code{\link[rio]{import}} function to read a data frame from a file.  Many file types are supported.  For files of type \code{"txt", "csv", "xlsx", "xls"} or \code{ "ods"} the arguments \code{row.names} and \code{stringsAsFactors} can be used to add row names and convert character variables to factors, respectively.   Many more details are given on the man page for \code{import}.
@@ -35,8 +35,9 @@ A data frame.  See \code{\link[rio]{import}} for more details
 \author{Sanford Weisberg \email{sandy@umn.edu}}
 
 \seealso{
-\code{\link[rio]{import}}, \code{\link{Export}}
+\code{\link[rio]{import}}, \code{\link{Export}}, \code{\link{strings2factors}}
 }
+
 \examples{
 head(Duncan, 3) # first three rows
 Export(Duncan, "Duncan.csv", keep.row.names="occupation")
@@ -49,7 +50,6 @@ identical(Duncan, Duncan3) # TRUE type is of same class
 # cleanup
 unlink("Duncan.csv")
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ utilities }% use one of  RShowDoc("KEYWORDS")
-\keyword{ connections }% __ONLY ONE__ keyword per line
+
+\keyword{ utilities }
+\keyword{ connections }

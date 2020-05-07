@@ -1,6 +1,8 @@
 Changes to Version 3.0-8
 
-  o Import now defaults to stringsAsFactors=FALSE to match the default behavior of read.table as of R 4.0.0
+  o Import() now defaults to stringsAsFactors=FALSE to match the default behavior of read.table() as of R 4.0.0.
+  
+  o New strings2factors() function to convert character variables in a data frame to factors.
   
   o Fixed a big in estimateTransform.lm that returned the correct answer with a unneeded warning.
   
@@ -10,7 +12,7 @@ Changes to Version 3.0-7
 
   o Fixed boxCox(), powerTransform() to work when 'car' package is not attached
   
-  o Fix Anova() to work with "lme" models without an intercept (to fix bug reported by Benjamin Tyner).
+  o Fixed Anova() to work with "lme" models without an intercept (to fix bug reported by Benjamin Tyner).
 
 Changes to Version 3.0-6
 
