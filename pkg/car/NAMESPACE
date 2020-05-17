@@ -1,4 +1,4 @@
-# last modified 2020-05-06 by J. Fox
+# last modified 2020-05-17 by J. Fox
 
 # additions for car >= 3.0-0, started 2016-12-27
 
@@ -23,6 +23,7 @@ S3method(S, lme)
 S3method(S, lmerMod)
 S3method(S, glmerMod)
 S3method(S, default)
+S3method(S, data.frame)
 S3method(print, S.lm)
 S3method(print, S.glm)
 S3method(print, S.multinom)
