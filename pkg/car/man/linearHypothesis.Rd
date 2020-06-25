@@ -310,9 +310,9 @@ matchCoefs(model, pattern, ...)
 
 \author{Achim Zeileis and John Fox \email{jfox@mcmaster.ca}}
 
-\seealso{\code{\link[stats]{anova}}, \code{\link{Anova}}, \code{\link[lmtest]{waldtest}},
+\seealso{\code{\link{anova}}, \code{\link{Anova}}, \code{\link[lmtest]{waldtest}},
   \code{\link{hccm}}, \code{\link[sandwich]{vcovHC}}, \code{\link[sandwich]{vcovHAC}}, 
-  \code{\link[stats]{coef}}, \code{\link[stats]{vcov}}
+  \code{\link{coef}}, \code{\link{vcov}}
 
 }
 

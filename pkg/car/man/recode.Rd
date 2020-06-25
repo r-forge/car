@@ -62,7 +62,7 @@ Recode(...)
   \emph{An R Companion to Applied Regression}, Third Edition, Sage.
 }
 
-\seealso{\code{\link[base]{cut}}, \code{\link[base]{factor}}}
+\seealso{\code{\link{cut}}, \code{\link{factor}}}
 
 \examples{
 x<-rep(1:3,3)

@@ -51,7 +51,7 @@ of the graph will have this many rows and columns.  If not set, behavior depends
   ellipses in the marginal and conditional plots, respectively.  The defaults are determined by the \code{\link{carPalette}} function.}
   \item{col.arrows}{color for the arrows with \code{overlaid=TRUE}}
   \item{pch}{Plotting character for marginal and conditional plots, respectively.}
-  \item{lwd}{line width; default is \code{2} (see \code{\link[graphics]{par}}).}
+  \item{lwd}{line width; default is \code{2} (see \code{\link{par}}).}
   \item{grid}{If \code{TRUE}, the default, a light-gray background grid is put on the graph.}
   \item{ellipse}{Arguments to pass to the \code{\link{dataEllipse}} function, in the form of a list
     with named elements; e.g., \code{ellipse.args=list(robust=TRUE))} will cause the ellipse to be plotted using

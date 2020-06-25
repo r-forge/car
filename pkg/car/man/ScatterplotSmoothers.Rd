@@ -14,9 +14,9 @@ the \code{\link{scatterplot}}, \code{\link{scatterplotMatrix}} and several other
 The functions are not meant to
 be called directly by the user, although the user can supply options via the \code{smoother.args} argument,
 the contents of which vary by the smoother (see \emph{Details} below). The \code{gamLine} smoother uses the
-\code{\link[mgcv]{gam}} function in the \pkg{mgcv} package, the \code{loessLine} smoother uses the
-\code{\link[stats]{loess}} function in the \pkg{stats} package, and the \code{quantregLine} smoother uses the
-\code{\link[quantreg]{rqss}} function in the \pkg{quantreg} package.
+\code{\link{gam}} function in the \pkg{mgcv} package, the \code{loessLine} smoother uses the
+\code{\link{loess}} function in the \pkg{stats} package, and the \code{quantregLine} smoother uses the
+\code{\link{rqss}} function in the \pkg{quantreg} package.
 }
 
 \usage{
@@ -87,15 +87,15 @@ For \code{quantregLine} the default is
 \code{smoother.args=list(lty.smooth=1, lwd.smooth=2, lty.spread=4, lwd.spread=2,
 lambda=IQR(x))}.  The first four
 arguments are as for \code{loessLine}.  The last argument is passed to the
-\code{\link[quantreg]{qss}} function in \code{quantreg}.  It is a smoothing
+\code{\link{qss}} function in \code{quantreg}.  It is a smoothing
 parameter, here a robust estimate of the scale of the horizontal axis variable.
 This is an arbitrary choice, and may not work well in all circumstances.
 }
 
 \author{John Fox \email{jfox@mcmaster.ca} and Sanford Weisberg \email{sandy@umn.edu}.}
 
-\seealso{\code{\link{scatterplot}}, \code{\link{scatterplotMatrix}}, \code{\link[mgcv]{gam}},
-    \code{\link[stats]{loess}}, and \code{\link[quantreg]{rqss}}.}
+\seealso{\code{\link{scatterplot}}, \code{\link{scatterplotMatrix}}, \code{\link{gam}},
+    \code{\link{loess}}, and \code{\link{rqss}}.}
 
 \examples{
 scatterplot(prestige ~ income, data=Prestige)
