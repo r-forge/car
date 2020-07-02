@@ -4,6 +4,8 @@ Changes to Version 3.0-9
   
   o Fix bug in hccm() when model matrix includes just one column (reported by Justin Yap).
   
+  o Fix buglet in scatterplotMatrix.formula() when groups specified.
+  
   o Small changes to docs.
 
 Changes to Version 3.0-8
