@@ -6,6 +6,8 @@ Changes to Version 3.0-9
   
   o Fix buglet in scatterplotMatrix.formula() when groups specified.
   
+  o Several functions are now generic: avPlots(), ceresPlots(), crPlots(), mcPlots().
+  
   o Small changes to docs.
 
 Changes to Version 3.0-8

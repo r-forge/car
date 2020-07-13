@@ -17,12 +17,17 @@
 # 20 Aug 2013 replace residuals.glm() with residuals(). John
 # 2017-02-11: consolidated id and smooth arguments. John
 # 2017-11-30: substitute carPalette() for palette(). J. Fox
+# 2018-07-13: made crPlots() generic. J. Fox
 
 # these functions to be rewritten; simply renamed for now
 
 crp<-function(...) crPlots(...)
 
-crPlots<-function(model, terms= ~ ., layout=NULL, ask, main, ...){
+crPlots <- function(model, ...){
+    UseMethod("crPlots")
+}
+
+crPlots.default <- function(model, terms= ~ ., layout=NULL, ask, main, ...){
     terms <- if(is.character(terms)) paste("~", terms) else terms
     vform <- update(formula(model), terms)
     if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))

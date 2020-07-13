@@ -1,5 +1,6 @@
 \name{avPlots}
 \alias{avPlots}
+\alias{avPlots.default}
 \alias{avp}
 \alias{avPlot}
 \alias{avPlot.lm}
@@ -13,7 +14,10 @@
 }
 
 \usage{
-avPlots(model, terms=~., intercept=FALSE, layout=NULL, ask, main, ...)
+avPlots(model, ...)
+
+\method{avPlots}{default}(model, terms=~., intercept=FALSE, 
+  layout=NULL, ask, main, ...)
 
 avp(...)
 

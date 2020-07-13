@@ -1,4 +1,5 @@
 \name{crPlots}
+\alias{crPlots.default}
 \alias{crPlots}
 \alias{crp}
 \alias{crPlot}
@@ -10,7 +11,9 @@
   partial-residual plots, for linear and generalized linear models.
 }
 \usage{
-crPlots(model, terms = ~., layout = NULL, ask, main, 
+crPlots(model, ...)
+
+\method{crPlots}{default}(model, terms = ~., layout = NULL, ask, main, 
     ...)
 
 crp(...)

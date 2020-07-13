@@ -1,5 +1,6 @@
 \name{ceresPlots}
 \alias{ceresPlots}
+\alias{ceresPlots.default}
 \alias{ceresPlot}
 \alias{ceresPlot.lm}
 \alias{ceresPlot.glm}
@@ -10,7 +11,9 @@
   linear models.
 }
 \usage{
-ceresPlots(model, terms = ~., layout = NULL, ask, main,
+ceresPlots(model, ...)
+
+\method{ceresPlots}{default}(model, terms = ~., layout = NULL, ask, main,
     ...)
 
 ceresPlot(model, ...)

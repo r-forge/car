@@ -1,5 +1,6 @@
 \name{mcPlots}
 \alias{mcPlots}
+\alias{mcPlots.default}
 \alias{mcPlot}
 \alias{mcPlot.lm}
 
@@ -10,7 +11,9 @@ the \code{mcPlot} function draws two graphs or overlays the two graphs.  For a r
 }
 
 \usage{
-mcPlots(model, terms=~., layout=NULL, ask, overlaid=TRUE, ...)
+mcPlots(model, ...)
+
+\method{mcPlots}{default}(model, terms=~., layout=NULL, ask, overlaid=TRUE, ...)
 
 mcPlot(model, ...)
 

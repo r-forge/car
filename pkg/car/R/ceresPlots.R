@@ -19,8 +19,13 @@
 # 2017-02-11: consolidated id and smooth arguments. John
 # 2017-11-30: substitute carPalette() for palette(). J. Fox
 # 2019-11-14: change class(x) == "y" to inherits(x, "y")
+# 2018-07-13: made ceresPlots() generic. J. Fox
 
-ceresPlots<-function(model, terms= ~ ., layout=NULL, ask, main, ...){
+ceresPlots <- function(model, ...){
+  UseMethod("ceresPlots")
+}
+
+ceresPlots.default<-function(model, terms= ~ ., layout=NULL, ask, main, ...){
   terms <- if(is.character(terms)) paste("~", terms) else terms
   vform <- update(formula(model), terms)
   if(any(is.na(match(all.vars(vform), all.vars(formula(model))))))
