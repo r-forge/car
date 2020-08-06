@@ -20,6 +20,7 @@
 # 2017-11-30: substitute carPalette() for palette(). J. Fox
 # 2019-11-14: change class(x) == "y" to inherits(x, "y")
 # 2018-07-13: made ceresPlots() generic. J. Fox
+# 2018-08-06: enabled spread and var for smoothers. J. Fox
 
 ceresPlots <- function(model, ...){
   UseMethod("ceresPlots")
@@ -88,10 +89,11 @@ ceresPlot.lm<-function(model, variable, id=FALSE,
         id.col <- id$col
         id.location <- id$location
     }
-    smoother.args <- applyDefaults(smooth, defaults=list(smoother=loessLine), type="smooth")
+    smoother.args <- applyDefaults(smooth, defaults=list(smoother=loessLine, var=FALSE), type="smooth")
     if (!isFALSE(smoother.args)) {
-        smoother <- smoother.args$smoother 
-        smoother.args$smoother <- NULL
+      smoother <- smoother.args$smoother 
+      smoother.args$smoother <- NULL
+      if (is.null(smoother.args$spread)) smoother.args$spread <- smoother.args$var
     }
     else smoother <- "none"
 	expand.model.frame <- function (model, extras, envir = environment(formula(model)),
@@ -177,7 +179,7 @@ ceresPlot.lm<-function(model, variable, id=FALSE,
             col=col.lines[1])
 	if (is.function(smoother)) {
     smoother(mod.mat[, var], partial.res, col=col.lines[2], log.x=FALSE,
-       log.y=FALSE, spread=FALSE, smoother.args=smoother.args)
+       log.y=FALSE, spread=smoother.args$spread, smoother.args=smoother.args)
 	}
 }                    
 

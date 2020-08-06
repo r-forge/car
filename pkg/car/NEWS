@@ -8,6 +8,8 @@ Changes to Version 3.0-9
   
   o Several functions are now generic: avPlots(), ceresPlots(), crPlots(), mcPlots().
   
+  o Enable spread smoothers for crPlot(), ceresPlot(), and residualPlot() (suggestion of Dave Armstrong).
+  
   o Small changes to docs.
 
 Changes to Version 3.0-8
