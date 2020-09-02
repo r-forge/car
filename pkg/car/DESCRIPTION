@@ -1,5 +1,5 @@
 Package: car
-Version: 3.0-9
+Version: 3.0-10
 Date: 2020-09-02
 Title: Companion to Applied Regression
 Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaster.ca"),
