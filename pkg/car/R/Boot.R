@@ -211,14 +211,9 @@ then the argument data=complete.cases(d) is likely to work.")
       sv <- coef(object)
       if(object$call$algorithm == "plinear") sv <- sv[!grepl("\\.", names(sv))]
       # update the call to use the bootstrap sample determined by indices
-      # if the weights argument has been set then update it as well.  The 
-      # argument data to boot.f calls weights X.weights. regardless of their 
-      # original definition
-      newcall <- if(is.null(object$call$weights))
-        update(object, subset=get(".boot.indices", envir=.carEnv),
-               start=sv, evaluate=FALSE) else
-                 update(object, subset=get(".boot.indices", envir=.carEnv),
-                        weights=X.weights., start=sv, evaluate=FALSE) 
+      # if the weights argument has been set then update it as well.  
+      newcall <- update(object, subset=get(".boot.indices", envir=.carEnv),
+                        weights=object$weights, start=sv, evaluate=FALSE) 
       # try to evaluate the call
       mod <- try(eval(newcall), silent=TRUE)
       if(inherits(mod, "try-error")){
@@ -232,17 +227,18 @@ then the argument data=complete.cases(d) is likely to work.")
       res <- residuals(object) * sqrt(wts)  # Pearson residuals
       val <- fitted(object) + res[indices]/sqrt(wts)
       assign(".y.boot", val, envir=.carEnv)
+      assign(".wts", wts, envir=.carEnv)
       # When algorithm="plinear", remove all coefs with names starting with '.' 
       # from the starting values
       sv <- coef(object)
-      if(object$call$algorithm == "plinear") sv <- sv[!grepl("\\.", names(sv))]
+      if(object$call$algorithm == "plinear") sv <- sv[!grepl("^\\.", names(sv))]
       # generate an updated call with .y.boot as the response but do not evaluate
       newcall <- if(is.null(object$call$weights))
         update(object, get(".y.boot", envir=.carEnv) ~ .,
                start=sv, evaluate=FALSE)
       else
         update(object, get(".y.boot", envir=.carEnv) ~ .,
-               weights= X.weights.,
+               weights= get(".wts", envir=.carEnv),
                start=sv, evaluate=FALSE)
       # formula.update may have mangled the rhs of newcall$formula
       # copy it from the original call.  I consider this to be a kludge to work
@@ -266,7 +262,7 @@ then the argument data=complete.cases(d) is likely to work.")
     #if(.Platform$OS.type=="unix"){
     #    parallel_env="multicore"
   }else{
-    #warning("Multicore processing in Boot is not avaliable for Windows.  It is current under development")
+    #warning("Multicore processing in Boot is not available for Windows.  It is current under development")
     #ncores=1
     #parallel_env="no"
     #ncores=getOption("boot.ncpus",1L)
@@ -288,11 +284,15 @@ then the argument data=complete.cases(d) is likely to work.")
     remove(".y.boot", envir=.carEnv)
   if(exists(".boot.indices", envir=.carEnv))
     remove(".boot.indices", envir=.carEnv)
+  if(exists(".wts", envir=.carEnv))
+    remove(".wts", envir=.carEnv)
   d <- dim(na.omit(b$t))[1]
   if(d != R)
     cat( paste("\n","Number of bootstraps was", d, "out of", R, "attempted", "\n"))
   b
 }
+
+
 
 Confint.boot <- function(object, parm, level = 0.95,
   type = c("bca", "norm", "basic", "perc"), ...){
