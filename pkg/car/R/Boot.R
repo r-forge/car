@@ -211,8 +211,11 @@ then the argument data=complete.cases(d) is likely to work.")
       sv <- coef(object)
       if(object$call$algorithm == "plinear") sv <- sv[!grepl("\\.", names(sv))]
       # update the call to use the bootstrap sample determined by indices
-      # if the weights argument has been set then update it as well.  
-      newcall <- update(object, subset=get(".boot.indices", envir=.carEnv),
+      # if the weights argument has been set then update it as well.
+      newcall <- if(is.null(object$weights))
+                    update(object, subset=get(".boot.indices", envir=.carEnv),
+                           start=sv, evaluate=FALSE)  
+                else  update(object, subset=get(".boot.indices", envir=.carEnv),
                         weights=object$weights, start=sv, evaluate=FALSE) 
       # try to evaluate the call
       mod <- try(eval(newcall), silent=TRUE)
