@@ -1,6 +1,7 @@
 \name{brief}
 \alias{brief}
 \alias{brief.data.frame}
+\alias{brief.tbl}
 \alias{brief.matrix}
 \alias{brief.numeric}
 \alias{brief.integer}
@@ -26,6 +27,7 @@ brief(object, ...)
 \method{brief}{data.frame}(object, rows = if (nr <= 10) c(nr, 0) else c(3, 2),
     cols, head=FALSE, tail=FALSE, elided = TRUE,
     classes = inherits(object, "data.frame"), ...)
+\method{brief}{tbl}(object, ...)
 \method{brief}{matrix}(object, rows = if (nr <= 10) c(nr, 0) else c(3, 2), ...)
 
 \method{brief}{numeric}(object, rows = c(2, 1), elided = TRUE, ...)
@@ -117,7 +119,7 @@ Invisibly returns \code{object} for a data object, or summary for a model object
 }
 
 \note{
-The method \code{brief.matrix} calls \code{brief.data.frame}.
+The method \code{brief.matrix} calls \code{brief.data.frame}, and \code{brief.tbl} (for tibbles) calls \code{print}.
 }
 
 \references{

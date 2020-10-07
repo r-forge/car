@@ -7,6 +7,7 @@
 # 2018-02-10: tweak brief.glm() output formatting
 # 2018-12-26: Changed the argument for brief.lm from vcov.=vcov to just vcov. If arge is
 #             missing set vcov. = vcov(orject, complete=FALSE) to match brief.glm
+# 2020-10-07: added brief.tbl() to cope with changes to tibbles.
 
 brief <- function(object, ...){
     g <- options("max.print"=.Machine$integer.max)
@@ -365,3 +366,6 @@ brief.multinom <- function(object, terms = ~ ., intercept=missing(terms), pvalue
   invisible(sumry)
 }
 
+brief.tbl <- function(object, ...){
+  print(object, ...)
+}

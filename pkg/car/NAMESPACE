@@ -1,4 +1,4 @@
-# last modified 2020-07-13 by J. Fox
+# last modified 2020-10-07 by J. Fox
 
 # additions for car >= 3.0-0, started 2016-12-27
 
@@ -49,6 +49,7 @@ S3method(brief, factor)
 S3method(brief, list)
 S3method(brief, "function")
 S3method(brief, default)
+S3method(brief, tbl)
 S3method(influence, merMod)
 S3method(influence, lme)
 S3method(cooks.distance, influence.merMod)
