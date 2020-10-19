@@ -1,6 +1,8 @@
 Changes to Version 3.0-11
 
   o Introducted brief.tbl(), which simply calls print(), to cope with changes to tibbles.
+  
+  o qqPlot() fills (shades) confidence envelopes by default (suggestion of Michael Friendly).
 
 Changes to Version 3.0-10
 

@@ -28,6 +28,7 @@
 # 2019-10-24: include colorblind palette in carPalette(). JF
 # 2019-11-14: change class(x) == "y" to inherits(x, "y")
 # 2020-02-17: added matchFun() as a replacement for match.fun
+# 2020-10-19: added envelope() for plotting confidence/variance envelopes. JF
 
 #if (getRversion() >= "2.15.1") globalVariables(c(".boot.sample", ".boot.indices"))
 
@@ -547,3 +548,12 @@ matchFun <- function(name){
   if (!is.function(object)) stop("'", name, "' is not a function")
   object
 }
+
+envelope <- function(x, lower, upper, col=1, lty=1, lwd=1, alpha=0.15){
+  color <- as.vector(col2rgb(col))/255
+  polygon(c(x, rev(x)), c(upper, rev(lower)), 
+          col=rgb(red=color[1], green=color[2], blue=color[3], alpha=alpha),
+          border=rgb(red=color[1], green=color[2], blue=color[3]),
+          lty=lty, lwd=lwd)
+}
+
