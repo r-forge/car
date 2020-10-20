@@ -115,7 +115,7 @@ qqPlot.default <- function(x, distribution="norm", groups, layout,
     upper <- fit.value + zz*SE
     lower <- fit.value - zz*SE
     if (style == "filled"){
-      envelope(z, lower, upper, col=col.envelope, alpha=alpha)
+      envelope(z, z, lower, upper, col=col.envelope, alpha=alpha)
     } else {
       lines(z, upper, lty=2, lwd=lwd, col=col.lines)
       lines(z, lower, lty=2, lwd=lwd, col=col.lines)
@@ -241,7 +241,7 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
       lower <- apply(rstud, 1, quantile, prob=(1 - conf)/2)
       upper <- apply(rstud, 1, quantile, prob=(1 + conf)/2)
       if (style == "filled"){
-        envelope(z, lower, upper, col=col.envelope, alpha=alpha)
+        envelope(z, z, lower, upper, col=col.envelope, alpha=alpha)
       } else {
         lines(z, upper, lty=2, lwd=lwd, col=col.lines)
         lines(z, lower, lty=2, lwd=lwd, col=col.lines)
