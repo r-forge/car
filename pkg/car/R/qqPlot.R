@@ -29,7 +29,7 @@ qqPlot.default <- function(x, distribution="norm", groups, layout,
                            ylim=range(x, na.rm=TRUE), ylab=deparse(substitute(x)),
                            xlab=paste(distribution, "quantiles"), glab=deparse(substitute(groups)),
                            main=NULL, las=par("las"),
-                           envelope=TRUE,
+                           envelope=TRUE, 
                            col=carPalette()[1], col.lines=carPalette()[2], lwd=2, pch=1, cex=par("cex"),
                            line=c("quartiles", "robust", "none"), id=TRUE, grid=TRUE, ...){
   if (!missing(groups)){
@@ -54,11 +54,12 @@ qqPlot.default <- function(x, distribution="norm", groups, layout,
   }
   if (!isFALSE(envelope)){
     envelope <- applyDefaults(envelope, 
-                              defaults=list(level=0.95, style="filled", col=col.lines, alpha=0.15))
+                              defaults=list(level=0.95, style="filled", col=col.lines, alpha=0.15, border=TRUE))
     style <- match.arg(envelope$style, c("filled", "lines", "none"))
     col.envelope <- envelope$col
     conf <- envelope$level
     alpha <- envelope$alpha
+    border <- envelope$border
     if (style == "none") envelope <- FALSE
   }
   id <- applyDefaults(id, defaults=list(method="y", n=2, cex=1, col=carPalette()[1], location="lr"), type="id")
@@ -115,7 +116,7 @@ qqPlot.default <- function(x, distribution="norm", groups, layout,
     upper <- fit.value + zz*SE
     lower <- fit.value - zz*SE
     if (style == "filled"){
-      envelope(z, z, lower, upper, col=col.envelope, alpha=alpha)
+      envelope(z, z, lower, upper, col=col.envelope, alpha=alpha, border=border)
     } else {
       lines(z, upper, lty=2, lwd=lwd, col=col.lines)
       lines(z, lower, lty=2, lwd=lwd, col=col.lines)
@@ -182,11 +183,12 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
   }
   if (!isFALSE(envelope)){
     envelope <- applyDefaults(envelope, 
-                              defaults=list(level=0.95, style="filled", col=col.lines, alpha=0.15))
+                              defaults=list(level=0.95, style="filled", col=col.lines, alpha=0.15, border=TRUE))
     style <- match.arg(envelope$style, c("filled", "lines", "none"))
     col.envelope <- envelope$col
     conf <- envelope$level
     alpha <- envelope$alpha
+    border <- envelope$border
     if (style == "none") envelope <- FALSE
   }
   id <- applyDefaults(id, defaults=list(method="y", n=2, cex=1, col=carPalette()[1], location="lr"), type="id")
@@ -241,7 +243,7 @@ qqPlot.lm <- function(x, xlab=paste(distribution, "Quantiles"),
       lower <- apply(rstud, 1, quantile, prob=(1 - conf)/2)
       upper <- apply(rstud, 1, quantile, prob=(1 + conf)/2)
       if (style == "filled"){
-        envelope(z, z, lower, upper, col=col.envelope, alpha=alpha)
+        envelope(z, z, lower, upper, col=col.envelope, alpha=alpha, border=border)
       } else {
         lines(z, upper, lty=2, lwd=lwd, col=col.lines)
         lines(z, lower, lty=2, lwd=lwd, col=col.lines)

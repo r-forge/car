@@ -21,7 +21,7 @@
 #             Similarly, col.var, lty.var, lwd.var override col.spread, lty.spread, lwd.spread
 # 2018-08-23: gamLine tried to graph in linear predictor scale, not the response scale for glms.
 # 2020-09-23: fixed quantregLine() to work with development version 5.69 of the quantreg package. John
-# 2020-10-20: added style and alpha smoother.args and shaded envelope. John
+# 2020-10-20: added style, alpha, border, and vertical smoother.args and shaded envelope. John
 
 default.arg <- function(args.list, arg, default){
   if (is.null(args.list[[arg]])) default else args.list[[arg]]
@@ -50,6 +50,8 @@ loessLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE,
                      c("filled", "lines", "none"))
   if (style == "none") spread <- FALSE
   alpha <- default.arg(smoother.args, "alpha", 0.15)
+  border <- default.arg(smoother.args, "border", TRUE)
+  vertical <- default.arg(smoother.args, "vertical", TRUE)
   if (log.x){ x <- log(x) }
   if (log.y){ y <- log(y) }
   valid <- complete.cases(x, y)
@@ -117,11 +119,20 @@ loessLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE,
       warning("could not fit negative part of the spread") 
     }
     if (draw && style == "filled"){
-      with(out, {
-        good <- complete.cases(x.neg, x.pos, y.neg, y.pos)
-        envelope(x.neg[good], x.pos[good], y.neg[good], y.pos[good], 
-                 col=col.spread, alpha=alpha)
-      })
+      if (vertical){
+        with(out, {
+          good <- complete.cases(x.neg, x.pos, y.neg, y.pos)
+          envelope(x.neg[good], x.pos[good], y.neg[good], y.pos[good], 
+                   col=col.spread, alpha=alpha, border=border)
+        })
+      } else {
+        with(out, {
+          good.neg <- !is.na(y.neg)
+          good.pos <- !is.na(y.pos)
+          envelope(x.neg[good.neg], x.pos[good.pos], y.neg[good.neg], y.pos[good.pos], 
+                   col=col.spread, alpha=alpha, border=border)
+        })
+      }
     }
   }
   if(!draw) return(out)
@@ -149,10 +160,10 @@ gamLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE,
                      c("filled", "lines", "none"))
   if (style == "none") spread <- FALSE  
   alpha <- default.arg(smoother.args, "alpha", 0.15)
-  # June 18, 2014
+  border <- default.arg(smoother.args, "border", TRUE)
+  vertical <- default.arg(smoother.args, "vertical", TRUE)
   fam <- if(is.character(fam)) eval(parse(text=fam)) else fam
   link <- if(is.character(link)) make.link(link) else link
-  # end
   k <- default.arg(smoother.args, "k", -1)
   bs <- default.arg(smoother.args, "bs", "tp")
   if (is.character(family)) family <- eval(parse(text=family))
@@ -220,11 +231,20 @@ gamLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE,
       warning("could not fit negative part of the spread") 
     }
     if (draw && style == "filled"){
-      with(out, {
-        good <- complete.cases(x.neg, x.pos, y.neg, y.pos)
-        envelope(x.neg[good], x.pos[good], y.neg[good], y.pos[good], 
-                 col=col.spread, alpha=alpha)
-      })
+      if (vertical){
+        with(out, {
+          good <- complete.cases(x.neg, x.pos, y.neg, y.pos)
+          envelope(x.neg[good], x.pos[good], y.neg[good], y.pos[good], 
+                   col=col.spread, alpha=alpha, border=border)
+        })
+      } else {
+        with(out, {
+          good.neg <- !is.na(y.neg)
+          good.pos <- !is.na(y.pos)
+          envelope(x.neg[good.neg], x.pos[good.pos], y.neg[good.neg], y.pos[good.pos], 
+                   col=col.spread, alpha=alpha, border=border)
+        })
+      }
     }
   }
   if(!draw) return(out)
@@ -251,6 +271,8 @@ quantregLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE,
                      c("filled", "lines", "none"))
   if (style == "none") spread <- FALSE  
   alpha <- default.arg(smoother.args, "alpha", 0.15)
+  border <- default.arg(smoother.args, "border", TRUE)
+  vertical <- default.arg(smoother.args, "vertical", TRUE)
   evaluation <- default.arg(smoother.args, "evaluation", 50)
   if (log.x) x <- log(x)
   if (log.y) y <- log(y)
@@ -302,11 +324,20 @@ quantregLine <- function(x, y, col=carPalette()[1], log.x=FALSE, log.y=FALSE,
       out$y.pos <- y.eval.q3
     }
     if (draw && style == "filled"){
-      with(out, {
-        good <- complete.cases(x.neg, x.pos, y.neg, y.pos)
-        envelope(x.neg[good], x.pos[good], y.neg[good], y.pos[good], 
-                 col=col.spread, alpha=alpha)
-      })
+      if (vertical){
+        with(out, {
+          good <- complete.cases(x.neg, x.pos, y.neg, y.pos)
+          envelope(x.neg[good], x.pos[good], y.neg[good], y.pos[good], 
+                   col=col.spread, alpha=alpha, border=border)
+        })
+      } else {
+        with(out, {
+          good.neg <- !is.na(y.neg)
+          good.pos <- !is.na(y.pos)
+          envelope(x.neg[good.neg], x.pos[good.pos], y.neg[good.neg], y.pos[good.pos], 
+                   col=col.spread, alpha=alpha, border=border)
+        })
+      }
     }
   }
   if(!draw) return(out)

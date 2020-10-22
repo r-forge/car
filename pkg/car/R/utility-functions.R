@@ -549,11 +549,12 @@ matchFun <- function(name){
   object
 }
 
-envelope <- function(x.low, x.up=x.low, lower, upper, col=1, lty=1, lwd=1, alpha=0.15){
+envelope <- function(x.low, x.up=x.low, lower, upper, col=1, lty=1, lwd=1, 
+                     alpha=0.15, border=TRUE){
   color <- as.vector(col2rgb(col))/255
   polygon(c(x.up, rev(x.low)), c(upper, rev(lower)), 
           col=rgb(red=color[1], green=color[2], blue=color[3], alpha=alpha),
-          border=rgb(red=color[1], green=color[2], blue=color[3]),
+          border=if (border) rgb(red=color[1], green=color[2], blue=color[3]) else NA,
           lty=lty, lwd=lwd)
 }
 
