@@ -113,7 +113,9 @@ graph}
   
   \item{\code{col}}{color (default is the value of \code{col.lines}).}
   
-  \item{\code{alpha}}{transparency/opacity, a number between 0 and 1 (default \code{0.15}).}
+  \item{\code{alpha}}{transparency/opacity of a filled confidence envelope, a number between 0 and 1 (default \code{0.15}).}
+  
+  \item{\code{border}}{controls whether a border is drawn around a filled confidence envelope (default \code{TRUE}).}
     }
 }
 \value{
