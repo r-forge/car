@@ -6,6 +6,8 @@
 # 2018-06-07: skip plot of "sigma^2" in GLMM if dispersion fixed to 1; improved labelling for covariance components
 # 2018-11-04: tweak to dfbetas.influence.merMod() suggested by Ben Bolker.
 # 2018-11-09: parallel version of influence.merMod()
+# 2020-12-04: make influence.lme() label rows of deleted fixed effects matrix so infIndexPlot() works 
+#             (fixing problem reported by Francis L. Huang).
 
 # influence diagnostics for mixed models
 
@@ -268,9 +270,9 @@ influence.lme <- function(model, groups, data, ncores=1, ...){
     unique.del <- unique(data[, groups])
     data$.groups <- data[, groups]
     fixed <- fixef(model)
-    fixed.1 <- matrix(0, length(unique.del), length(fixed))
-    rownames(fixed.1) <- unique.del
-    colnames(fixed.1) <- names(fixed)
+    # fixed.1 <- matrix(0, length(unique.del), length(fixed))
+    # rownames(fixed.1) <- unique.del
+    # colnames(fixed.1) <- names(fixed)
     vc <- attr(model$apVar, "Pars")
     vc.1 <- matrix(0, length(unique.del), length(vc))
     rownames(vc.1) <- unique.del
@@ -302,6 +304,8 @@ influence.lme <- function(model, groups, data, ncores=1, ...){
     if (groups == ".case") {
         groups <- "case"
     }
+    rownames(result$fixed.1) <- unique.del
+    colnames(result$fixed.1) <- names(fixed)
     nms <- c("fixed.effects", paste0("fixed.effects", left, groups, right),
              "var.cov.comps", paste0("var.cov.comps", left, groups, right),
              "vcov", paste0("vcov", left, groups, right),
