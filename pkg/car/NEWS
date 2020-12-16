@@ -1,5 +1,7 @@
 Changes to Version 3.0-11
 
+  o Added error checking with vcov. argument.  Changed vcov.boot to print a warning of bootstrap replicates that returned NA
+  
   o Introduced brief.tbl(), which simply calls print(), to cope with changes to tibbles.
   
   o qqPlot() fills (shades) confidence envelopes by default, and smoothers for scatterplots fill variance (spread) envelopes by default (suggestions of Michael Friendly).

@@ -57,6 +57,7 @@
 # 2019-02-17: fix Anova.lme() to work with models without intercepts (to fix bug reported by Benjamin Tyner). JF
 # 2020-04-01: fix Anova.coxph() to work with weights (to fix bug reported by Daniel Morillo Cuadrado)
 # 2020-05-27: tweak to handling of Anova.coxph Wald tests. JF
+# 2020-12-07: Standardize handling of vcov. arg
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -105,7 +106,7 @@ Anova.lm <- function(mod, error, type=c("II","III", 2, 3),
                      vcov.=NULL, singular.ok, ...){
   if (!is.null(vcov.)) message("Coefficient covariances computed by ", deparse(substitute(vcov.)))
   if (!missing(white.adjust)) message("Coefficient covariances computed by hccm()")
-  if (is.function(vcov.)) vcov. <- vcov.(mod)
+  vcov. <- getVcov(vcov., mod)
   if (df.residual(mod) == 0) stop("residual df = 0")
   if (deviance(mod) < sqrt(.Machine$double.eps)) stop("residual sum of squares is 0 (within rounding error)")
   type <- as.character(type)
@@ -1479,7 +1480,7 @@ Anova.III.Wald.survreg <- function(mod){
 
 Anova.default <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq", "F"), 
                           vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
-  if (is.function(vcov.)) vcov. <- vcov.(mod)
+  vcov. <- getVcov(vcov., mod)
   type <- as.character(type)
   type <- match.arg(type)
   test.statistic <- match.arg(test.statistic)
@@ -1660,7 +1661,7 @@ fixef <- function (object){
 Anova.merMod <- function(mod, type=c("II","III", 2, 3), 
                          test.statistic=c("Chisq", "F"),
                          vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
-  if (is.function(vcov.)) vcov. <- vcov.(mod)
+  vcov. <- getVcov(vcov., mod)
   type <- as.character(type)
   type <- match.arg(type)
   test.statistic <- match.arg(test.statistic)
@@ -1672,7 +1673,7 @@ Anova.merMod <- function(mod, type=c("II","III", 2, 3),
 
 Anova.mer <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq", "F"),
                       vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
-  if (is.function(vcov.)) vcov. <- vcov.(mod)
+  vcov. <- getVcov(vcov., mod)
   type <- as.character(type)
   type <- match.arg(type)
   test.statistic <- match.arg(test.statistic)
@@ -1826,7 +1827,7 @@ has.intercept.lme <- function(model, ...){
 
 Anova.lme <- function(mod, type=c("II","III", 2, 3),
                       vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
-  if (is.function(vcov.)) vcov. <- vcov.(mod)
+  vcov. <- getVcov(vcov., mod)
   type <- as.character(type)
   type <- match.arg(type)
   if (missing(singular.ok))

@@ -60,6 +60,7 @@
 ## 2020-09=02: Removed unneeded code using missing values in Boot.nls
 ## 2020-09-02: Boot.nls failed if nls algorithm="plinear".  This is fixed
 ## 2020-09-02: Correctly use weights in lm, nls
+## 2020-12-03: changed vcov.boot to use="complete.obs" by default, added a warning if any bootstrap samples are NA
 
 Boot <- function(object, f=coef, labels=names(f(object)), R=999, 
             method=c("case", "residual"), ncores=1, ...){UseMethod("Boot")}
@@ -482,7 +483,14 @@ hist.boot <- function(x, parm, layout=NULL, ask, main="", freq=FALSE,
   invisible(NULL)
   }
 
-vcov.boot <- function(object, ...){cov(object$t, ...)}
-
+vcov.boot <- function(object, use="complete.obs", ...){
+  if(use == "complete.obs"){
+    num <- nrow(object$t) - nrow(na.omit(object$t))
+    if(num == 1L) warning(
+      "one bootstrap sample returned NA and was omitted")
+    if(num > 1L) warning(
+      paste(num, " bootstrap samples returned NA and were omitted", sep=""))}
+  cov(object$t, use=use)
+}
 
 

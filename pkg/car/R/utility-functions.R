@@ -29,6 +29,7 @@
 # 2019-11-14: change class(x) == "y" to inherits(x, "y")
 # 2020-02-17: added matchFun() as a replacement for match.fun
 # 2020-10-19: added envelope() for plotting confidence/variance envelopes. JF
+# 2020-12-03: added getVcov to interpret vcov. argument as matrix or function and return an error otherwise
 
 #if (getRversion() >= "2.15.1") globalVariables(c(".boot.sample", ".boot.indices"))
 
@@ -558,3 +559,13 @@ envelope <- function(x.low, x.up=x.low, lower, upper, col=1, lty=1, lwd=1,
           lty=lty, lwd=lwd)
 }
 
+getVcov <- function(v, mod, ...){
+  dimCheck <- FALSE
+  if(missing(v)) return(vcov(mod, ...)) 
+  if(inherits(v, "matrix")){
+#   if(!all(dim(v) == dim(vcov(mod, ...)))) stop("vcov. has wrong dimensions")
+    return(v)}
+  if(is.function(v)) return(v(mod, ...)) 
+  if(is.null(v)) return(vcov(mod, ...))
+  stop("vcov. must be a matrix or a function")
+}

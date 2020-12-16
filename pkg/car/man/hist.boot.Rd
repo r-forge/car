@@ -30,7 +30,7 @@ or residual bootstrap for many regression objects.  These are method functions f
 \method{Confint}{boot}(object, parm, level = 0.95, type = c("bca", "norm",
     "basic", "perc"), ...)
 
-\method{vcov}{boot}(object, ...)
+\method{vcov}{boot}(object, use="complete.obs", ...)
 }
 
 \arguments{
@@ -119,6 +119,7 @@ limit specified, the default \code{bca} which uses the bias-corrected and accele
 method presented by Efron and Tibshirani (1993, Chapter 14).  For the
 other types, see the documentation for \code{\link{boot}}.
 }
+  \item{use}{The default \code{use="complete.obs"} for \code{vcov} computes a bootstrap covariance matrix by deleting bootstraps that returned NAs.  Setting \code{use} to anything else will result in a matrix of NAs.}
 }
 \value{
 \code{hist} is used for the side-effect of drawing an array of historgams of
@@ -126,7 +127,7 @@ each column of the first argument.   \code{summary} returns a matrix of
 summary statistics for each of the columns in the bootstrap object.  The
 \code{confint} method returns confidence intervals.  \code{Confint} appends the estimates based on the original fitted model to the left of the confidence intervals.
 
-The \code{vcov} returns the sample covariance of the bootstrap sample estimates.  If any of the bootstrap replications returned an \code{NA} value, then \code{vcov} will return a matrix of \code{NA}s.  You can compute the covariance of the complete cases by adding the argument  \code{use="complete.obs"} to the call to \code{vcov}; see \code{\link{cov}}.
+The function \code{vcov} returns the sample covariance of the bootstrap sample estimates, by default skipping any bootstrap samples that returned NA.
 }
 \references{
 
