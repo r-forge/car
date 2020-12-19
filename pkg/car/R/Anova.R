@@ -58,6 +58,7 @@
 # 2020-04-01: fix Anova.coxph() to work with weights (to fix bug reported by Daniel Morillo Cuadrado)
 # 2020-05-27: tweak to handling of Anova.coxph Wald tests. JF
 # 2020-12-07: Standardize handling of vcov. arg
+# 2020-12-18: fix Anova.lme() so that it handles missing factor levels. JF
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1868,8 +1869,19 @@ Anova.II.lme <- function(mod, vcov., singular.ok=TRUE, ...){
   intercept <- has.intercept(mod)
   p <- length(fixef(mod))
   I.p <- diag(p)
-  assign <- attr(model.matrix(mod), "assign")
+#  assign <- attr(model.matrix(mod), "assign")
+  attribs.mm <- attributes(model.matrix(mod))
+  assign <- attribs.mm$assign
+  nms.coef <- names(coef(mod))
+  nms.mm <- attribs.mm$dimnames[[2]]
   assign[!not.aliased] <- NA
+  valid.coefs <- nms.mm %in% nms.coef
+  if (any(!valid.coefs)){
+    warning("The following coefficients are not in the model due to missing levels:\n",
+            paste(nms.mm[!valid.coefs], collapse=", "))
+  }
+  assign <- assign[valid.coefs]
+#  assign[!not.aliased] <- NA
   names <- term.names(mod)
   if (intercept) names <- names[-1]
   n.terms <- length(names)
@@ -1895,13 +1907,27 @@ Anova.III.lme <- function(mod, vcov., singular.ok=FALSE, ...){
   I.p <- diag(p)
   names <- term.names(mod)
   n.terms <- length(names)
-  assign <- attr(model.matrix(mod), "assign")
-  df <- rep(0, n.terms)
-  if (intercept) df[1] <- 1
-  p <- teststat <-rep(0, n.terms)
+  #  assign <- attr(model.matrix(mod), "assign")
+  attribs.mm <- attributes(model.matrix(mod))
+  assign <- attribs.mm$assign
+  nms.coef <- names(coef(mod))
+  nms.mm <- attribs.mm$dimnames[[2]]
   not.aliased <- !is.na(fixef(mod))
   if (!singular.ok && !all(not.aliased))
     stop("there are aliased coefficients in the model")
+  assign[!not.aliased] <- NA
+  valid.coefs <- nms.mm %in% nms.coef
+  if (any(!valid.coefs)){
+    warning("The following coefficients are not in the model due to missing levels:\n",
+            paste(nms.mm[!valid.coefs], collapse=", "))
+  }
+  assign <- assign[valid.coefs]
+  df <- rep(0, n.terms)
+  if (intercept) df[1] <- 1
+  p <- teststat <-rep(0, n.terms)
+  # not.aliased <- !is.na(fixef(mod))
+  # if (!singular.ok && !all(not.aliased))
+  #   stop("there are aliased coefficients in the model")
   for (term in 1:n.terms){
     subs <- which(assign == term - intercept)        
     hyp.matrix <- I.p[subs,,drop=FALSE]

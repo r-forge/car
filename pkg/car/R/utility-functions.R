@@ -30,6 +30,7 @@
 # 2020-02-17: added matchFun() as a replacement for match.fun
 # 2020-10-19: added envelope() for plotting confidence/variance envelopes. JF
 # 2020-12-03: added getVcov to interpret vcov. argument as matrix or function and return an error otherwise
+# 2020-12-18: getVcov() also able to return objects coercible to a matrix such as Matrix objects. JF
 
 #if (getRversion() >= "2.15.1") globalVariables(c(".boot.sample", ".boot.indices"))
 
@@ -560,12 +561,11 @@ envelope <- function(x.low, x.up=x.low, lower, upper, col=1, lty=1, lwd=1,
 }
 
 getVcov <- function(v, mod, ...){
-  dimCheck <- FALSE
   if(missing(v)) return(vcov(mod, ...)) 
-  if(inherits(v, "matrix")){
-#   if(!all(dim(v) == dim(vcov(mod, ...)))) stop("vcov. has wrong dimensions")
-    return(v)}
+  if(inherits(v, "matrix")) return(v)
   if(is.function(v)) return(v(mod, ...)) 
   if(is.null(v)) return(vcov(mod, ...))
+  v <- try(as.matrix(v), silent=TRUE)
+  if (is.matrix(v)) return(v)
   stop("vcov. must be a matrix or a function")
 }
