@@ -7,6 +7,8 @@ Changes to Version 3.0-11
   o qqPlot() fills (shades) confidence envelopes by default, and smoothers for scatterplots fill variance (spread) envelopes by default (suggestions of Michael Friendly).
   
   o Fixed problem in infIndexPlot.influence.lme() (reported by Francis L. Huang).
+  
+  o New "polr" and "svyolr" methods for vif() (following report by Abra Jeffers).
 
 Changes to Version 3.0-10
 
