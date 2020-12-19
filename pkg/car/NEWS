@@ -9,6 +9,8 @@ Changes to Version 3.0-11
   o Fixed problem in infIndexPlot.influence.lme() (reported by Francis L. Huang).
   
   o New "polr" and "svyolr" methods for vif() (following report by Abra Jeffers).
+  
+  o Make linearHypothesis() and Anova() work with "svyolr" objects via their default methods.
 
 Changes to Version 3.0-10
 

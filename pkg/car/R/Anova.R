@@ -59,6 +59,9 @@
 # 2020-05-27: tweak to handling of Anova.coxph Wald tests. JF
 # 2020-12-07: Standardize handling of vcov. arg
 # 2020-12-18: fix Anova.lme() so that it handles missing factor levels. JF
+# 2020-12-18: make assignVector() generic; add default and svyolr methods;
+#             add unexported svyolr methods for coef() and vcov();
+#             all this to make Anova() and linearHypothesis() work with svyolr. JF
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1494,7 +1497,9 @@ Anova.default <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq
          "3"=Anova.III.default(mod, vcov., test.statistic, singular.ok=singular.ok))
 }
 
-assignVector <- function(model){
+assignVector <- function(model, ...) UseMethod("assignVector")
+
+assignVector.default <- function(model, ...){
   m <- model.matrix(model)
   assign <- attr(m, "assign")
   if (!is.null(assign)) return (assign)
@@ -2015,3 +2020,17 @@ Anova.II.LR.coxme <- function(mod, ...){
   result
 }
 
+# the following unexported methods make Anova.default() and linearHypotheis.default() work with "svyolr" objects
+
+assignVector.svyolr <- function(model, ...){
+  m <- model.matrix(model)
+  assign <- attr(m, "assign")
+  assign[assign != 0]
+}
+
+coef.svyolr <- function(object, ...) NextMethod()
+
+vcov.svyolr <- function(object, ...){
+  nms <- names(coef(object))
+  (object$var)[nms, nms]
+}
