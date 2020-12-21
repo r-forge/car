@@ -11,6 +11,8 @@ Changes to Version 3.0-11
   o New "polr" and "svyolr" methods for vif() (following report by Abra Jeffers).
   
   o Make linearHypothesis() and Anova() work with "svyolr" objects via their default methods.
+  
+  o Regularize handling of vcov. argument in Anova() and linearHypothesis()
 
 Changes to Version 3.0-10
 
