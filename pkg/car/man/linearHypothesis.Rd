@@ -19,7 +19,7 @@
 %   2016-06-29 noted addition of "value" and "vcov" attributes, added example. J. Fox
 %   2018-04-11 rhs suppressed using pbkrtest for lmer model. J.Fox
 %   2020-05-27 added documentation for survreg method. J. Fox
-%   2020-12-21 small edits. J. Fox
+%   2020-12-21 added linearHypothesis.lmList(), and small edits. J. Fox
 %------------------------------------------------------------------------------------
 
 \name{linearHypothesis}
@@ -36,6 +36,7 @@
 \alias{linearHypothesis.svyglm}
 \alias{linearHypothesis.rlm}
 \alias{linearHypothesis.survreg}
+\alias{linearHypothesis.lmList}
 \alias{linearHypothesis.nlsList}
 \alias{matchCoefs}
 \alias{matchCoefs.default}
@@ -75,6 +76,8 @@ lht(model, ...)
 	singular.ok=FALSE, ...)
 
 \method{linearHypothesis}{glm}(model,  ...)
+
+\method{linearHypothesis}{lmList}(model,  ..., vcov.=vcov, coef.=coef)
 
 \method{linearHypothesis}{nlsList}(model,  ..., vcov.=vcov, coef.=coef)
 
@@ -177,11 +180,13 @@ matchCoefs(model, pattern, ...)
     it is computed from the model.}
   \item{vcov.}{a function for estimating the covariance matrix of the regression
     coefficients, e.g., \code{\link{hccm}}, or an estimated covariance matrix
-    for \code{model}. See also \code{white.adjust}. For the \code{"nlsList"} method, \code{vcov.}
+    for \code{model}. See also \code{white.adjust}. 
+    For the \code{"lmList"} and \code{"nlsList"} methods, \code{vcov.}
     must be a function (defaulting to \code{vcov}) to be applied to each model in the list.}
   \item{coef.}{a vector of coefficient estimates.  The default is to get the
     coefficient estimates from the \code{model} argument, but the user can input
-    any vector of the correct length. For the \code{"nlsList"} method, \code{coef.}
+    any vector of the correct length. 
+    For the \code{"lmList"} and \code{"nlsList"} methods, \code{coef.}
     must be a function (defaulting to \code{coef}) to be applied to each model in the list.}       
   \item{white.adjust}{logical or character. Convenience interface to \code{hccm}
     (instead of using the argument \code{vcov.}). Can be set either to a character value

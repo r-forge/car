@@ -39,6 +39,7 @@
 #   2020-05-27: tweak to linearHypothesis.survreg(). John
 #   2020-12-21: regularize handling of vcov. arg. Sandy and John
 #   2020-12-21: new matchCoefs.lmList() method, which covers nlsList objects. John
+#   2020-12-21: added linearHypothesis.lmList(). John
 #----------------------------------------------------------------------------------------------------
 
 # vcov.default <- function(object, ...){
@@ -172,8 +173,8 @@ linearHypothesis <- function (model, ...)
 lht <- function (model, ...)
 	UseMethod("linearHypothesis")
 	
-linearHypothesis.nlsList <- function(model,  ..., vcov.=vcov, coef.=coef){
-   vcov.nlsList <- function(object, ...) {
+linearHypothesis.lmList <- function(model,  ..., vcov.=vcov, coef.=coef){
+   vcov.List <- function(object, ...) {
        vlist <- lapply(object, vcov)
        ng <- length(vlist)
        nv <- dim(vlist[[1]])[1]
@@ -187,9 +188,13 @@ linearHypothesis.nlsList <- function(model,  ..., vcov.=vcov, coef.=coef){
    suppress.vcov.msg <- missing(vcov.)
    if (!is.function(vcov.)) stop("vcov. must be a function")
    if (!is.function(coef.)) stop("coef. must be a function")
-   linearHypothesis.default(model, vcov.=vcov.nlsList(model), 
-       coef.=unlist(lapply(model, coef.)), suppress.vcov.msg = suppress.vcov.msg, ...)}
+   linearHypothesis.default(model, vcov.=vcov.List(model), 
+       coef.=unlist(lapply(model, coef.)), suppress.vcov.msg = suppress.vcov.msg, ...)
+   }
 
+linearHypothesis.nlsList <- function(model,  ..., vcov.=vcov, coef.=coef){
+  NextMethod()
+}
 
 linearHypothesis.default <- function(model, hypothesis.matrix, rhs=NULL,
 		test=c("Chisq", "F"), vcov.=NULL, singular.ok=FALSE, verbose=FALSE, 
