@@ -62,6 +62,7 @@
 # 2020-12-18: make assignVector() generic; add default and svyolr methods;
 #             add unexported svyolr methods for coef() and vcov();
 #             all this to make Anova() and linearHypothesis() work with svyolr. JF
+# 2021-04-07: fix Anova.lm() so that SSs are computed when vcov. not specified. JF
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -110,7 +111,7 @@ Anova.lm <- function(mod, error, type=c("II","III", 2, 3),
                      vcov.=NULL, singular.ok, ...){
   if (!is.null(vcov.)) message("Coefficient covariances computed by ", deparse(substitute(vcov.)))
   if (!missing(white.adjust)) message("Coefficient covariances computed by hccm()")
-  vcov. <- getVcov(vcov., mod)
+#  vcov. <- getVcov(vcov., mod)
   if (df.residual(mod) == 0) stop("residual df = 0")
   if (deviance(mod) < sqrt(.Machine$double.eps)) stop("residual sum of squares is 0 (within rounding error)")
   type <- as.character(type)
