@@ -16,6 +16,8 @@ Changes to Version 3.0-11
   
   o New linearHypothesis.lmList() method.
   
+  o New "lm" method for symbox().
+  
   o Small fixes and improvements.
 
 Changes to Version 3.0-10

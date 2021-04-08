@@ -31,6 +31,7 @@
 # 2020-10-19: added envelope() for plotting confidence/variance envelopes. JF
 # 2020-12-03: added getVcov to interpret vcov. argument as matrix or function and return an error otherwise
 # 2020-12-18: getVcov() also able to return objects coercible to a matrix such as Matrix objects. JF
+# 2021-04-08: added getModelData(), not explorted. JF
 
 #if (getRversion() >= "2.15.1") globalVariables(c(".boot.sample", ".boot.indices"))
 
@@ -568,4 +569,28 @@ getVcov <- function(v, mod, ...){
   v <- try(as.matrix(v), silent=TRUE)
   if (is.matrix(v)) return(v)
   stop("vcov. must be a matrix or a function")
+}
+
+getModelData <- function(model) {
+  # returns a data frame with the data to which the model was fit
+  # model: a statistical model object that responds to model.frame() and formula() 
+  data1 <- data <- model.frame(model)
+  vars <- all.vars(formula(model))
+  if ("pi" %in% vars) {
+    vars <- setdiff(vars, "pi")
+    message("the symbol 'pi' is treated as a numeric constant in the model formula")
+  }
+  cols <- colnames(data)
+  check <- vars %in% cols
+  if (!(all(check))) {
+    missing.cols <- !check
+    data1 <- expand.model.frame(model, vars[missing.cols])
+  }
+  missing.cols <- !cols %in% colnames(data1)
+  if (any(missing.cols)) {
+    data1 <- cbind(data1, data[missing.cols])
+  }
+  cols <- colnames(data1)
+  valid <- make.names(cols) == cols | grepl("^\\(.*\\)$", cols)
+  data1[valid]
 }

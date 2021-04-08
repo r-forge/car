@@ -1,4 +1,4 @@
-# last modified 2020-12-19 by J. Fox
+# last modified 2021-04-08 by J. Fox
 
 # additions for car >= 3.0-0, started 2016-12-27
 
@@ -68,7 +68,7 @@ import("carData")
 importFrom("abind", "abind")
 importFrom("stats", "naprint", "symnum", ".checkMFClasses",
            "delete.response", "napredict", "influence", "dfbetas",
-            "AIC", "BIC")
+            "AIC", "BIC", "expand.model.frame")
 importFrom("utils", "download.file", "capture.output", "askYesNo", "browseURL", "globalVariables", "getFromNamespace")
 
 
@@ -378,9 +378,8 @@ S3method(vif, merMod)
 S3method(vif, polr)
 S3method(vif, svyolr)
 S3method(symbox, formula)
-S3method(symbox, default)
-# added with bcnPower
-
+S3method(symbox, default) # added with bcnPower
+S3method(symbox, lm)
 
 # methods related to Boot
 S3method(Boot, default)
