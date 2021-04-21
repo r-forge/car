@@ -1,5 +1,7 @@
 Changes to Version 3.0-11
 
+  o car::Boot(, method="residual") will now work even if the car namespace has need be previously attached
+  
   o Added error checking with vcov. argument.  Changed vcov.boot to print a warning of bootstrap replicates that returned NA
   
   o Introduced brief.tbl(), which simply calls print(), to cope with changes to tibbles.

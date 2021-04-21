@@ -61,6 +61,7 @@
 ## 2020-09-02: Boot.nls failed if nls algorithm="plinear".  This is fixed
 ## 2020-09-02: Correctly use weights in lm, nls
 ## 2020-12-03: changed vcov.boot to use="complete.obs" by default, added a warning if any bootstrap samples are NA
+## 2021-04-21: Residual bootstrap failed if namespace not attached; this is now fixed.
 
 Boot <- function(object, f=coef, labels=names(f(object)), R=999, 
             method=c("case", "residual"), ncores=1, ...){UseMethod("Boot")}
@@ -107,10 +108,12 @@ Boot.default <- function(object, f=coef, labels=names(f(object)),
         val <- naresid(pad, val)
       }
       assign(".y.boot", val, envir=.carEnv)
+      attach(.carEnv)
+      on.exit(detach(.carEnv))
       mod <- if(identical(start, FALSE)) {
-        update(object, get(".y.boot", envir=.carEnv) ~ .)
+        update(object, .y.boot  ~ .) #, data=Data)
       } else {
-        update(object, get(".y.boot", envir=.carEnv) ~ ., start=start)
+        update(object, .y.boot  ~ ., start=start) #, data=Data, start=start)
       }
       out <- if(!is.null(object$qr) && (mod$qr$rank != object$qr$rank)) 
         f0 * NA else .fn(mod)
@@ -231,19 +234,24 @@ then the argument data=complete.cases(d) is likely to work.")
       res <- residuals(object) * sqrt(wts)  # Pearson residuals
       val <- fitted(object) + res[indices]/sqrt(wts)
       assign(".y.boot", val, envir=.carEnv)
-      assign(".wts", wts, envir=.carEnv)
+      assign(".wts", wts, envir=.carEnv)  # both .y.boot and .wts must be assigned before the attach!
+      attach(.carEnv)          # 4/20/2021
+      on.exit(detach(.carEnv)) # 4/20/2021
       # When algorithm="plinear", remove all coefs with names starting with '.' 
       # from the starting values
       sv <- coef(object)
       if(object$call$algorithm == "plinear") sv <- sv[!grepl("^\\.", names(sv))]
       # generate an updated call with .y.boot as the response but do not evaluate
       newcall <- if(is.null(object$call$weights))
-        update(object, get(".y.boot", envir=.carEnv) ~ .,
-               start=sv, evaluate=FALSE)
+#        update(object, get(".y.boot", envir=.carEnv) ~ ., start=sv, evaluate=FALSE) #fails
+         update(object, .y.boot ~ ., start=sv, evaluate=FALSE) # WORKS
       else
-        update(object, get(".y.boot", envir=.carEnv) ~ .,
-               weights= get(".wts", envir=.carEnv),
-               start=sv, evaluate=FALSE)
+#        update(object, get(".y.boot", envir=.carEnv) ~ ., #fails
+#               weights= get(".wts", envir=.carEnv),
+#               start=sv, evaluate=FALSE)
+        update(object, .y.boot ~ .,   # works
+             weights= .wts,
+             start=sv, evaluate=FALSE)
       # formula.update may have mangled the rhs of newcall$formula
       # copy it from the original call.  I consider this to be a kludge to work
       # around a bug in formula.update
