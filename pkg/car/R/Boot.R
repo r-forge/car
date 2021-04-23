@@ -61,7 +61,7 @@
 ## 2020-09-02: Boot.nls failed if nls algorithm="plinear".  This is fixed
 ## 2020-09-02: Correctly use weights in lm, nls
 ## 2020-12-03: changed vcov.boot to use="complete.obs" by default, added a warning if any bootstrap samples are NA
-## 2021-04-21: Residual bootstrap failed if namespace not attached; this is now fixed.
+## 2021-04-21: Residual bootstrap fails if namespace not attached; was tentatively fixed, but the fix has been commented out with #ns
 
 Boot <- function(object, f=coef, labels=names(f(object)), R=999, 
             method=c("case", "residual"), ncores=1, ...){UseMethod("Boot")}
@@ -108,12 +108,15 @@ Boot.default <- function(object, f=coef, labels=names(f(object)),
         val <- naresid(pad, val)
       }
       assign(".y.boot", val, envir=.carEnv)
-      attach(.carEnv)
-      on.exit(detach(.carEnv))
+#ns      attach(.carEnv) # namespace fix deleted
+#ns      on.exit(detach(.carEnv)) # namespace fix deleted
       mod <- if(identical(start, FALSE)) {
-        update(object, .y.boot  ~ .) #, data=Data)
+        update(object, get(".y.boot", envir=.carEnv) ~ .)
       } else {
-        update(object, .y.boot  ~ ., start=start) #, data=Data, start=start)
+        update(object, get(".y.boot", envir=.carEnv) ~ ., start=start)
+#ns        update(object, .y.boot  ~ .) #, data=Data)
+#ns      } else {
+#ns        update(object, .y.boot  ~ ., start=start) #, data=Data, start=start)
       }
       out <- if(!is.null(object$qr) && (mod$qr$rank != object$qr$rank)) 
         f0 * NA else .fn(mod)
@@ -218,7 +221,7 @@ then the argument data=complete.cases(d) is likely to work.")
       # if the weights argument has been set then update it as well.
       newcall <- if(is.null(object$weights))
                     update(object, subset=get(".boot.indices", envir=.carEnv),
-                           start=sv, evaluate=FALSE)  
+                        start=sv, evaluate=FALSE)  
                 else  update(object, subset=get(".boot.indices", envir=.carEnv),
                         weights=object$weights, start=sv, evaluate=FALSE) 
       # try to evaluate the call
@@ -234,24 +237,24 @@ then the argument data=complete.cases(d) is likely to work.")
       res <- residuals(object) * sqrt(wts)  # Pearson residuals
       val <- fitted(object) + res[indices]/sqrt(wts)
       assign(".y.boot", val, envir=.carEnv)
-      assign(".wts", wts, envir=.carEnv)  # both .y.boot and .wts must be assigned before the attach!
-      attach(.carEnv)          # 4/20/2021
-      on.exit(detach(.carEnv)) # 4/20/2021
+      assign(".wts", wts, envir=.carEnv)
+#ns      attach(.carEnv)          
+#ns      on.exit(detach(.carEnv)) 
       # When algorithm="plinear", remove all coefs with names starting with '.' 
       # from the starting values
       sv <- coef(object)
       if(object$call$algorithm == "plinear") sv <- sv[!grepl("^\\.", names(sv))]
       # generate an updated call with .y.boot as the response but do not evaluate
       newcall <- if(is.null(object$call$weights))
-#        update(object, get(".y.boot", envir=.carEnv) ~ ., start=sv, evaluate=FALSE) #fails
-         update(object, .y.boot ~ ., start=sv, evaluate=FALSE) # WORKS
+        update(object, get(".y.boot", envir=.carEnv) ~ ., start=sv, evaluate=FALSE)
+#ns         update(object, .y.boot ~ ., start=sv, evaluate=FALSE) 
       else
-#        update(object, get(".y.boot", envir=.carEnv) ~ ., #fails
-#               weights= get(".wts", envir=.carEnv),
-#               start=sv, evaluate=FALSE)
-        update(object, .y.boot ~ .,   # works
-             weights= .wts,
-             start=sv, evaluate=FALSE)
+        update(object, get(".y.boot", envir=.carEnv) ~ .,
+               weights= get(".wts", envir=.carEnv),
+               start=sv, evaluate=FALSE)
+#ns       update(object, .y.boot ~ .,   # works
+#ns            weights= .wts,
+#ns            start=sv, evaluate=FALSE)
       # formula.update may have mangled the rhs of newcall$formula
       # copy it from the original call.  I consider this to be a kludge to work
       # around a bug in formula.update
