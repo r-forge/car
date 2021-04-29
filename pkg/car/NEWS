@@ -20,7 +20,7 @@ Changes to Version 3.0-11
   
   o New "lm" method for symbox().
   
-  o New cex and pt.wts arguments for avPlot() "lm" and "glm" methods.
+  o New cex and pt.wts arguments for avPlot() "lm" and "glm" methods, and for mcPlot.lm().
   
   o Small fixes and improvements.
 

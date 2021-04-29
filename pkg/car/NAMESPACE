@@ -1,4 +1,4 @@
-# last modified 2021-04-08 by J. Fox
+# last modified 2021-04-28 by J. Fox
 
 # additions for car >= 3.0-0, started 2016-12-27
 
@@ -333,6 +333,7 @@ S3method(matchCoefs, mlm)
 S3method(matchCoefs, lmList)
 S3method(mcPlots, default)
 S3method(mcPlot, lm)
+S3method(mcPlot, glm)
 S3method(mmp, default)
 S3method(mmp, lm)
 S3method(mmp, glm)
