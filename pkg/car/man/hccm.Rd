@@ -67,7 +67,7 @@ hccm(model, ...)
   
   Freedman, D. (2006)
   On the so-called "Huber sandwich estimator" and "robust standard errors",
-  \emph{American Statistician}, 60(4), 299-302.  \url{http://dx.doi.org/10.1198/000313006X152207}
+  \emph{American Statistician}, \bold{60}, 299--302.
 
   Long, J. S. and Ervin, L. H. (2000)
   Using heteroscedasity consistent standard errors in the linear regression model. 
