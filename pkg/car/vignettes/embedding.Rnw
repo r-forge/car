@@ -73,8 +73,9 @@ The functions \code{effects::Effect} and \code{effects::predictorEffect} may fai
 The following function will fail:
 <<eval=FALSE>>=
 fc <- function(dta, formula, terms) {
+ if (!require("effects")) stop("effects package unavailable")
  print(m1 <- lm(formula, dta))
- effects::Effect(terms, m1)
+ Effect(terms, m1)
  }
 form <- prestige ~ income*type + education
 terms <- c("income", "type")
@@ -88,9 +89,10 @@ Error in is.data.frame(data) : object 'dta' not found
 Assigning \code{.dta} to the global environment solves the problem:
 <<>>=
 fc.working <- function(dta, formula, terms) {
+ if (!require("effects")) stop("effects package unavailable")
  assign(".dta", dta, env=.GlobalEnv)
  print(m1 <- lm(formula, .dta))
- e1 <- effects::Effect(terms, m1)
+ e1 <- Effect(terms, m1)
  remove(".dta", envir=.GlobalEnv)
  e1
 }

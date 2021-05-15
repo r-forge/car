@@ -22,6 +22,8 @@ Changes to Version 3.0-11
   
   o New cex and pt.wts arguments for avPlot() "lm" and "glm" methods, and for mcPlot.lm().
   
+  o Rewrite "embedding" vignette.
+  
   o Small fixes and improvements.
 
 Changes to Version 3.0-10
