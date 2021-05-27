@@ -62,6 +62,7 @@
 ## 2020-09-02: Correctly use weights in lm, nls
 ## 2020-12-03: changed vcov.boot to use="complete.obs" by default, added a warning if any bootstrap samples are NA
 ## 2021-04-21: Residual bootstrap fails if namespace not attached; was tentatively fixed, but the fix has been commented out with #ns
+## 2021-05-27: Legend in hist.boot slightly improved.
 
 Boot <- function(object, f=coef, labels=names(f(object)), R=999, 
             method=c("case", "residual"), ncores=1, ...){UseMethod("Boot")}
@@ -429,7 +430,7 @@ hist.boot <- function(x, parm, layout=NULL, ask, main="", freq=FALSE,
                              c(3, 2), c(3, 2), c(3, 3), c(3, 3), c(3, 3))
     }
     ask <- if(missing(ask) || is.null(ask)) prod(layout) < nt else ask
-    oma3 <- if(legend == "top") 0.5 + estPoint + estDensity + estNormal
+    oma3 <- if(legend == "top") 1.0 + estPoint + estDensity + estNormal
               else 1.5
     op <- par(mfrow=layout, ask=ask, no.readonly=TRUE,
             oma=c(0, 0, oma3, 0), mar=c(5, 4, 1, 2) + .1)
@@ -464,7 +465,7 @@ hist.boot <- function(x, parm, layout=NULL, ask, main="", freq=FALSE,
        if(box) box()
        if( j == parm[1] & legend == "top" ) { # add legend
 		        usr <- par("usr")
-		        legend.coords <- list(x=usr[1], y=usr[4] + 1.3 * (1 + sum(what)) *strheight("N"))
+		        legend.coords <- list(x=usr[1], y=usr[4] * 1.05 + 1.3 * (1 + sum(what)) *strheight("N"))
             legend( legend.coords,
              c("Normal Density", "Kernel Density",
              paste(ci, " ", round(100*level), "% CI", sep=""),
@@ -481,14 +482,14 @@ hist.boot <- function(x, parm, layout=NULL, ask, main="", freq=FALSE,
   if(legend == "separate") {
     plot(0:1, 0:1, xaxt="n", yaxt="n", xlab="", ylab="", type="n")
     use <- (1:4)[c( estNormal, estDensity, TRUE, ci != "none")]
-    curves <- c("fitted normal density", "Kernel density est",
-              paste(100*level, "% ", ci, " confidence interval", sep=""),
-              "Observed value of statistic")
+    curves <- c("Normal Density", "Kernel Density",
+              paste(ci, " ", 100*level, "% CI", sep=""),
+              "Obs. Value")
     colors <- c(nor.col, den.col, "black", point.col)
     lines <- c(nor.lty, den.lty, 1, point.lty)
     widths<- c(nor.lwd, den.lwd, 2, point.lty)
     legend("center", curves[use], lty=lines[use], lwd=widths[use],
-          col=colors[use], box.col=par()$bg,
+          col=colors[use], bty="n", #box.col=par()$bg,
           title="Bootstrap histograms")
   }
   invisible(NULL)

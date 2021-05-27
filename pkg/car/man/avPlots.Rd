@@ -73,7 +73,7 @@ avPlot(model, ...)
   \item{pch}{plotting character for points; default is \code{1} 
     (a circle, see \code{\link{par}}).}
   \item{lwd}{line width; default is \code{2} (see \code{\link{par}}).}
-  \item{cex}{size of plotted points; default is taken from \code{par("cex")}}.
+  \item{cex}{size of plotted points; default is taken from \code{par("cex")}.}
   \item{pt.wts}{if \code{TRUE} (the default is \code{FALSE}), for a weighted
   least squares fit or a generalized linear model, the areas of plotted points
   are made proportional to the weights, with the average size taken from the

@@ -89,8 +89,8 @@ using the BCa method if \code{ci="bca"} the percentile method if
 by a thick horizontal line at \code{y=0}.  For some bootstraps the BCa method is unavailable, in which case a warning is issued and \code{ci="perc"} is substituted.  If you wish to see all the options at once, see \code{\link{boot.ci}}.  The normal method is computed as the (estimate from the original data) minus the bootstrap bias plus or minus the standard deviation of the bootstrap replicates times the appropriate quantile of the standard normal distribution.
 }
   \item{legend}{
-A legend can be added to the (array of) histograms.  The value \dQuote{"top"}
-puts at the top-left of the plots.  The value \dQuote{"separate"} puts the legend in its own graph following all the histograms.  The value \dQuote{"none"}
+A legend can be added to the (array of) histograms.  The value \dQuote{top}
+puts at the top-left of the plots.  The value \dQuote{separate} puts the legend in its own graph following all the histograms.  The value \dQuote{none}
 suppresses the legend.
 }
   \item{box}{

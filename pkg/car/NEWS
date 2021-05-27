@@ -1,5 +1,7 @@
 Changes to Version 3.0-11
 
+  o boxCox() function now allows the use of any of the usual graphics parameters in the plot() function.  If particuar boxCox(model, main="my title") will add a title to the plot, and boxCox(model, main="") will suppress it.
+  
   o car::Boot(object, method="residual") will work for method="residual" only if the car package has been previously attached via either library(car) or require(car).  
   
   o Added error checking with vcov. argument.  Changed vcov.boot to print a warning of bootstrap replicates that returned NA
