@@ -63,6 +63,7 @@
 #             add unexported svyolr methods for coef() and vcov();
 #             all this to make Anova() and linearHypothesis() work with svyolr. JF
 # 2021-04-07: fix Anova.lm() so that SSs are computed when vcov. not specified. JF
+# 2021-06-12: vcov. arg. now works for mer models.
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1694,7 +1695,7 @@ Anova.mer <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq", "
 }
 
 Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, test=c("Chisq", "F"), ...){
-  hyp.term <- function(term){
+  hyp.term <- function(term){ 
     which.term <- which(term==names)
     subs.term <- which(assign==which.term)
     relatives <- relatives(term, names, fac)
@@ -1729,7 +1730,7 @@ Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, test=c("Chisq", "F"), ...
       #					if (!require("pbkrtest")) stop("pbkrtest package required for F-tests on linear mixed model")
       as.matrix(pbkrtest::vcovAdj(mod, details=0))
     }
-    else vcov(mod, complete=FALSE)
+    else vcov. #removed:  vcov(mod, complete=FALSE)
   }
   assign <- attr(model.matrix(mod), "assign")
   assign[!not.aliased] <- NA
@@ -1781,7 +1782,7 @@ Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, test=c("Chisq", "F"), .
       #					if (!require("pbkrtest")) stop("pbkrtest package required for F-tests on linear mixed model")
       as.matrix(pbkrtest::vcovAdj(mod, details=0))
     }
-    else vcov(mod, complete=FALSE)
+    else vcov. # removed: vcov(mod, complete=FALSE)
   }
   for (term in 1:n.terms){
     subs <- which(assign == term - intercept)        
