@@ -28,6 +28,8 @@ Changes to Version 3.0-11
   
   o Rewrite "embedding" vignette.
   
+  o remove influence() "merMod" method, and cooks.distance(), dbeta(), and dfbetas() "influence.merMod" methods, now redundant with the lme4 package.
+  
   o Small fixes and improvements.
 
 Changes to Version 3.0-10
