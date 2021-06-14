@@ -69,13 +69,6 @@ of diagnostic quantities.
   \code{\link{outlierTest}}, \code{\link{hatvalues}}, \code{\link{influence.mixed.models}}. }
 \examples{
 influenceIndexPlot(lm(prestige ~ income + education + type, Duncan))
-
-if (require("lme4")){
-    print(fm1 <- lmer(Reaction ~ Days + (Days | Subject),
-        data=sleepstudy)) # example from ?lmer
-    infIndexPlot(influence(fm1, "Subject"))
-    }
-}
 }
 
 \keyword{ hplot }% at least one, from doc/KEYWORDS
