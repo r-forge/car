@@ -64,6 +64,8 @@
 #             all this to make Anova() and linearHypothesis() work with svyolr. JF
 # 2021-04-07: fix Anova.lm() so that SSs are computed when vcov. not specified. JF
 # 2021-06-12: vcov. arg. now works for mer models.
+# 2021-06-14: further fixes to vcov. arg for Anova.mer(). JF
+#             introduced vcov. arg to Anova.glm(). JF
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -273,10 +275,22 @@ Anova.III.lm <- function(mod, error, singular.ok=FALSE, ...){
 
 # generalized linear models
 
-Anova.glm <- function(mod, type=c("II","III", 2, 3), test.statistic=c("LR", "Wald", "F"), 
-                      error, error.estimate=c("pearson", "dispersion", "deviance"), singular.ok, ...){
+Anova.glm <- function(mod, type=c("II","III", 2, 3), test.statistic=c("LR", "Wald", "F"),
+                      error, error.estimate=c("pearson", "dispersion", "deviance"), 
+                      vcov.=vcov(mod, complete=TRUE), singular.ok, ...){
   type <- as.character(type)
   type <- match.arg(type)
+  test.statistic <- match.arg(test.statistic)
+  error.estimate <- match.arg(error.estimate)
+  if (!missing(vcov.)) {
+    if (test.statistic != "Wald"){
+      warning(paste0('test.statistic="', test.statistic,
+                     '"; vcov. argument ignored'))
+    } else {
+      message("Coefficient covariances computed by ", deparse(substitute(vcov.)))
+    }
+  }
+  vcov. <- getVcov(vcov., mod)
   if (has.intercept(mod) && length(coef(mod)) == 1 
       && (type == "2" || type == "II")) {
     type <- "III"
@@ -285,24 +299,22 @@ Anova.glm <- function(mod, type=c("II","III", 2, 3), test.statistic=c("LR", "Wal
   if (missing(singular.ok)){
     singular.ok <- type == "2" || type == "II"
   }
-  test.statistic <- match.arg(test.statistic)
-  error.estimate <- match.arg(error.estimate)
   switch(type,
          II=switch(test.statistic,
                    LR=Anova.II.LR.glm(mod, singular.ok=singular.ok),
-                   Wald=Anova.default(mod, type="II", singular.ok=singular.ok),
+                   Wald=Anova.default(mod, type="II", singular.ok=singular.ok, vcov.=vcov.),
                    F=Anova.II.F.glm(mod, error, error.estimate, singular.ok=singular.ok)),
          III=switch(test.statistic,
                     LR=Anova.III.LR.glm(mod, singular.ok=singular.ok),
-                    Wald=Anova.default(mod, type="III", singular.ok=singular.ok),
+                    Wald=Anova.default(mod, type="III", singular.ok=singular.ok, vcov.=vcov.),
                     F=Anova.III.F.glm(mod, error, error.estimate, singular.ok=singular.ok)),
          "2"=switch(test.statistic,
                     LR=Anova.II.LR.glm(mod, singular.ok=singular.ok),
-                    Wald=Anova.default(mod, type="II", singular.ok=singular.ok),
+                    Wald=Anova.default(mod, type="II", singular.ok=singular.ok, vcov.=vcov.),
                     F=Anova.II.F.glm(mod, error, error.estimate, singular.ok=singular.ok)),
          "3"=switch(test.statistic,
                     LR=Anova.III.LR.glm(mod, singular.ok=singular.ok),
-                    Wald=Anova.default(mod, type="III", singular.ok=singular.ok),
+                    Wald=Anova.default(mod, type="III", singular.ok=singular.ok, vcov.=vcov.),
                     F=Anova.III.F.glm(mod, error, error.estimate, singular.ok=singular.ok)))
 }
 
@@ -1669,10 +1681,17 @@ fixef <- function (object){
 Anova.merMod <- function(mod, type=c("II","III", 2, 3), 
                          test.statistic=c("Chisq", "F"),
                          vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
-  vcov. <- getVcov(vcov., mod)
   type <- as.character(type)
   type <- match.arg(type)
   test.statistic <- match.arg(test.statistic)
+  if (!missing(vcov.)) {
+    if (test.statistic != "F"){
+      message("Coefficient covariances computed by ", deparse(substitute(vcov.)))
+    } else {
+      warning('test.statistic="F"; vcov. argument ignored')
+    }
+  }
+  vcov. <- getVcov(vcov., mod)
   if (missing(singular.ok))
     singular.ok <- type == "2" || type == "II"
   Anova.mer(mod=mod, type=type, test.statistic=test.statistic, vcov.=vcov.,
@@ -1725,12 +1744,8 @@ Anova.II.mer <- function(mod, vcov., singular.ok=TRUE, test=c("Chisq", "F"), ...
   intercept <- has.intercept(mod)
   p <- length(fixef(mod))
   I.p <- diag(p)
-  if (!missing(vcov.)){
-    vcov. <- if (test == "F"){
-      #					if (!require("pbkrtest")) stop("pbkrtest package required for F-tests on linear mixed model")
-      as.matrix(pbkrtest::vcovAdj(mod, details=0))
-    }
-    else vcov. #removed:  vcov(mod, complete=FALSE)
+  if (test == "F"){
+    vcov. <- as.matrix(pbkrtest::vcovAdj(mod, details=0))
   }
   assign <- attr(model.matrix(mod), "assign")
   assign[!not.aliased] <- NA
@@ -1777,12 +1792,8 @@ Anova.III.mer <- function(mod, vcov., singular.ok=FALSE, test=c("Chisq", "F"), .
   not.aliased <- !is.na(fixef(mod))
   if (!singular.ok && !all(not.aliased))
     stop("there are aliased coefficients in the model")
-  if (!missing(vcov.)){
-    vcov. <- if (test == "F"){
-      #					if (!require("pbkrtest")) stop("pbkrtest package required for F-tests on linear mixed model")
-      as.matrix(pbkrtest::vcovAdj(mod, details=0))
-    }
-    else vcov. # removed: vcov(mod, complete=FALSE)
+  if (test == "F"){
+    vcov. <- as.matrix(pbkrtest::vcovAdj(mod, details=0))
   }
   for (term in 1:n.terms){
     subs <- which(assign == term - intercept)        
@@ -1835,6 +1846,7 @@ has.intercept.lme <- function(model, ...){
 
 Anova.lme <- function(mod, type=c("II","III", 2, 3),
                       vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
+  if (!missing(vcov.)) message("Coefficient covariances computed by ", deparse(substitute(vcov.)))
   vcov. <- getVcov(vcov., mod)
   type <- as.character(type)
   type <- match.arg(type)
