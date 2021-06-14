@@ -97,14 +97,15 @@ J. Fox \email{jfox@mcmaster.ca}
 }
 
 \examples{
-if (require("lme4")){
-    print(fm1 <- lmer(Reaction ~ Days + (Days | Subject),
+# for these examples to work properly, because of a bug in lme4::influence.merMod(),
+#   the car package must be loaded *after* the lme4 package
+\dontrun{
+    print(fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject),
         sleepstudy)) # from ?lmer
     infIndexPlot(influence(fm1, "Subject"))
-    }
-if (require("lme4")){
-    gm1 <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),
-        data = cbpp, family = binomial)
+    
+    gm1 <- lme4::glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),
+        data = cbpp, family = binomial) # from ?glmer
     infIndexPlot(influence(gm1, "herd", maxfun=100))
     gm1.11 <- update(gm1, subset = herd != 11) # check deleting herd 11
     compareCoefs(gm1, gm1.11)
