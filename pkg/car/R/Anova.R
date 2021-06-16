@@ -66,6 +66,7 @@
 # 2021-06-12: vcov. arg. now works for mer models.
 # 2021-06-14: further fixes to vcov. arg for Anova.mer(). JF
 #             introduced vcov. arg to Anova.glm(). JF
+# 2021-06-16: Fix imatrix arg to Anova.mlm() (contribution of Benedikt Langenberg). JF
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -793,7 +794,8 @@ Anova.III.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatr
       cols <- mapply(seq, from=start, to=end)
       iterms <- names(end)
       names(cols) <- iterms
-      check.imatrix(X.design, iterms)
+      itrms <- unlist(sapply(1:length(imatrix), function(x) replicate(ncol(imatrix[[x]]), x-1)))
+      check.imatrix(X.design, itrms)
     }
     else {
       if (is.null(idesign)) stop("idesign (intra-subject design) missing.")
@@ -898,7 +900,8 @@ Anova.II.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatri
       cols <- mapply(seq, from=start, to=end)
       iterms <- names(end)
       names(cols) <- iterms
-      check.imatrix(X.design, iterms)     
+      itrms <- unlist(sapply(1:length(imatrix), function(x) replicate(ncol(imatrix[[x]]), x-1)))
+      check.imatrix(X.design, itrms)     
     }
     else {
       if (is.null(idesign)) stop("idesign (intra-subject design) missing.")
