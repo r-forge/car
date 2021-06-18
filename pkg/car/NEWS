@@ -28,6 +28,8 @@ Changes to Version 3.0-11
   
   o Fix handling of imatrix argument to Anova.mlm() (suggestion of Benedikt Langenberg).
   
+  o Remove influence.merMod() and related methods in favor of versions of these methods in the lme4 package.
+  
   o Rewrite "embedding" vignette.
   
   o Small fixes and improvements.
