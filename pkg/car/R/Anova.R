@@ -66,7 +66,8 @@
 # 2021-06-12: vcov. arg. now works for mer models.
 # 2021-06-14: further fixes to vcov. arg for Anova.mer(). JF
 #             introduced vcov. arg to Anova.glm(). JF
-# 2021-06-16: Fix imatrix arg to Anova.mlm() (contribution of Benedikt Langenberg). JF
+# 2021-06-16: Fix imatrix arg to Anova.mlm() (contribution of Benedikt Langenberg).JF
+# 2021-06-19: make sure that calls to anova() for survival::survreg() models return "anova" objects. JF
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1289,7 +1290,9 @@ Anova.II.LR.coxph <- function(mod, ...){
   names <- term.names(mod)
   n.terms <- length(names)
   df <- df.terms(mod)
-  if (sum(df > 0) < 2) return(anova(mod, test="Chisq"))
+  if (sum(df > 0) < 2) {
+    return(anova(mod, test="Chisq"))
+  }
   method <- mod$method
   weights <- mod$weights
   X <- model.matrix(mod)
@@ -1330,7 +1333,9 @@ Anova.III.LR.coxph <- function(mod, ...){
   names <- term.names(mod)
   n.terms <- length(names)
   df <- df.terms(mod)
-  if (sum(df > 0) < 2) return(anova(mod, test="Chisq"))
+  if (sum(df > 0) < 2) {
+    return(anova(mod, test="Chisq"))
+  }
   method <- mod$method
   weights <- mod$weights
   X <- model.matrix(mod)
@@ -1407,7 +1412,11 @@ Anova.II.LR.survreg <- function(mod, ...){
     names <- names[-int]
   }
   n.terms <- length(names)
-  if (n.terms < 2) return(anova(mod))
+  if (n.terms < 2) {
+    result <- anova(mod)
+    if (!inherits(result, "anova")) class(result) <- c("anova", class(result))
+    return(result)
+  }
   p <- LR <- rep(0, n.terms)
   df <- df.terms(mod)
   y <- model.frame(mod)[,1]
@@ -1457,7 +1466,11 @@ Anova.III.LR.survreg <- function(mod, ...){
     names <- names[-int]
   }
   n.terms <- length(names)
-  if (n.terms < 2) return(anova(mod))
+  if (n.terms < 2){
+    result <- anova(mod)
+    if (!inherits(result, "anova")) class(result) <- c("anova", class(result))
+    return(result)
+  }
   p <- LR <- rep(0, n.terms)
   df <- df.terms(mod)
   y <- model.frame(mod)[,1]
@@ -2006,7 +2019,9 @@ Anova.II.LR.coxme <- function(mod, ...){
   fac <-attr(terms(mod), "factors")
   names <- term.names(mod)
   n.terms <- length(names)
-  if (n.terms < 2) return(anova(mod, test="Chisq"))
+  if (n.terms < 2){
+    return(anova(mod, test="Chisq"))
+  }
   X <- model.matrix(mod)
   asgn <- attr(X, 'assign')
   p <- LR <- rep(0, n.terms)
