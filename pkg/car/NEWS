@@ -1,6 +1,8 @@
 Changes to Version 3.0-12
 
   o hccm() now reports an interpretable error, except for type = "hc0" or "hc1", when there are cases with hatvalues = 1 (following problem reported by Peng Ding).
+  
+  o Fix bug in rownames in dfbetasPlots.lm() (reported by Shu Fai Cheun).
 
 Changes to Version 3.0-11
   
