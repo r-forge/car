@@ -1,5 +1,7 @@
 Changes to Version 3.0-12
 
+  o The 'rio` package is now suggested, not required.  To use the Import() and Export() functions users may need to install rio using install.packages("rio")
+  
   o hccm() now reports an interpretable error, except for type = "hc0" or "hc1", when there are cases with hatvalues = 1 (following problem reported by Peng Ding).
   
   o Fix bug in rownames in dfbetasPlots.lm() (reported by Shu Fai Cheun).
