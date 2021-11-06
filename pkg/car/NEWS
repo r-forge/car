@@ -1,3 +1,7 @@
+Changes to Version 3.0-13
+
+  o
+
 Changes to Version 3.0-12
 
   o The 'rio` package is now suggested, not required.  To use the Import() and Export() functions users may need to install rio using install.packages("rio")
