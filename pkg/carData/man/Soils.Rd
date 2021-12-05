@@ -52,7 +52,7 @@ polynomial contrasts are useful).
   Data ellipses, HE plots and reduced-rank displays for
   multivariate linear models: SAS software and examples.
   \emph{Journal of Statistical Software}, 17(6),
-  \url{http://www.jstatsoft.org/v17/i06}.  
+  \doi{10.18637/jss.v017.i06}.  
 
 }
 

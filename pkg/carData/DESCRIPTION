@@ -1,6 +1,6 @@
 Package: carData
-Version: 3.0-4
-Date: 2020-04-11
+Version: 3.0-5
+Date: 2021-12-05
 Title: Companion to Applied Regression Data Sets
 Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaster.ca"),
 	person("Sanford", "Weisberg", role = "aut", email = "sandy@umn.edu"),
@@ -12,4 +12,4 @@ Description:
   Datasets to Accompany J. Fox and S. Weisberg, 
   An R Companion to Applied Regression, Third Edition, Sage (2019).
 License: GPL (>= 2)
-URL: https://r-forge.r-project.org/projects/car/, https://CRAN.R-project.org/package=carData, http://socserv.socsci.mcmaster.ca/jfox/Books/Companion/index.html
+URL: https://r-forge.r-project.org/projects/car/, https://CRAN.R-project.org/package=carData, https://socialsciences.mcmaster.ca/jfox/Books/Companion/index.html

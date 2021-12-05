@@ -26,12 +26,12 @@
 }
 
 \source{
-  Data set \code{titanic3} from 
-  \url{http://biostat.mc.vanderbilt.edu/twiki/bin/view/Main/DataSets}.
+  Data set \code{titanic3} from the now defunct
+  http://biostat.mc.vanderbilt.edu/twiki/bin/view/Main/DataSets.
 }
 
 \references{
-  \url{http://www.encyclopedia-titanica.org/}
+  \url{https://www.encyclopedia-titanica.org/}
   
   F. E. Harrell, Jr. (2001)
   \emph{Regression Modeling Strategies}

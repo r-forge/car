@@ -22,7 +22,7 @@
   }
 
 \source{
-U.S.~Census Bureau: \url{http://www.census-charts.com/Population/pop-us-1790-2000.html}, downloaded 1 May 2008.
+U.S.~Census Bureau: \url{https://www.census-charts.com/Population/pop-us-1790-2000.html}, downloaded 1 May 2008.
 }
 
 \references{

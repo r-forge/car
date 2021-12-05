@@ -29,8 +29,8 @@ Decennial time-series of Canadian population, 1851--2001.
  Canada (1994)
  \emph{Canada Year Book}. Statistics Canada, Table 3.2.
 
- Statistics Canada:
- \url{http://www12.statcan.ca/english/census01/products/standard/popdwell/Table-PR.cfm}.
+ Statistics Canada: from the now defunct
+ http://www12.statcan.ca/english/census01/products/standard/popdwell/Table-PR.cfm.
 }
 
 \references{

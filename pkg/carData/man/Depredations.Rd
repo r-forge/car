@@ -26,7 +26,7 @@ Fox, J. and Weisberg, S. (2019)
 Harper, Elizabeth K. and Paul, William J. and Mech, L. David and Weisberg, Sanford (2008),
 Effectiveness of Lethal, Directed Wolf-Depredation Control in Minnesota,
 \emph{Journal of Wildlife Management}, 72, 3, 778-784.
-\url{http://dx.doi.org/10.2193/2007-273}
+\doi{10.2193/2007-273}
 }
 
 \keyword{datasets}
