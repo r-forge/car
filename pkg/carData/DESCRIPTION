@@ -1,11 +1,12 @@
 Package: carData
 Version: 3.0-5
-Date: 2021-12-05
+Date: 2022-01-05
 Title: Companion to Applied Regression Data Sets
 Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaster.ca"),
 	person("Sanford", "Weisberg", role = "aut", email = "sandy@umn.edu"),
     person("Brad", "Price", role = "aut", email = "brad.price@mail.wvu.edu"))
 Depends: R (>= 3.5.0)
+Suggests: car (>= 3.0-0)
 LazyLoad: yes
 LazyData: yes
 Description:

@@ -43,8 +43,8 @@ of the data set refer to measurements made using different instruments I
 and reagent lots L.
 }
 \source{
-Used as an illustrative example for Box-Cox type transformations with
-negative readings in Hawkins and Weisberg (2015).
+Used as an illustrative application for Box-Cox type transformations with
+negative values in Hawkins and Weisberg (2015).
 For examples of its use, see \code{\link[car]{bcnPower}}.
 }
 \references{
