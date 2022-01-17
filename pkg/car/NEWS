@@ -1,6 +1,6 @@
 Changes to Version 3.0-13
 
-  o
+  o Handle singularities better in Anova.mlm() (suggestion of Marius Barth).
 
 Changes to Version 3.0-12
 

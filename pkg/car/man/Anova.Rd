@@ -144,7 +144,7 @@ Manova(mod, ...)
   \item{singular.ok}{defaults to \code{TRUE} for type-II tests, and \code{FALSE}
     for type-III tests where the tests for models with aliased coefficients
     will not be straightforwardly interpretable;
-    if \code{FALSE}, a model with aliased coefficients produces an error.}
+    if \code{FALSE}, a model with aliased coefficients produces an error. This argument is available only for some \code{Anova} methods.}
   \item{test.statistic}{for a generalized linear model, whether to calculate
     \code{"LR"} (likelihood-ratio), \code{"Wald"}, or \code{"F"} tests; for a Cox
     or Cox mixed-effects model, whether to calculate \code{"LR"} (partial-likelihood ratio) or
