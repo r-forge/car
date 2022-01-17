@@ -739,6 +739,8 @@ has.intercept.mlm <- function (model, ...)
 Anova.mlm <- function(mod, type=c("II","III", 2, 3), SSPE, error.df, idata, 
                       idesign, icontrasts=c("contr.sum", "contr.poly"), imatrix,
                       test.statistic=c("Pillai", "Wilks", "Hotelling-Lawley", "Roy"),...){
+  if (any(is.na(coef(mod)))) 
+    stop(if(!missing(idata)) "between-subjects ", "model is singular")
   wts <- if (!is.null(mod$weights)) mod$weights else rep(1, nrow(model.matrix(mod)))
   type <- as.character(type)
   type <- match.arg(type)
@@ -760,13 +762,8 @@ Anova.mlm <- function(mod, type=c("II","III", 2, 3), SSPE, error.df, idata,
 
 Anova.III.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatrix, test, ...){
   intercept <- has.intercept(mod)
-#  V <- solve(crossprod(model.matrix(mod)))
-  wts <- if (!is.null(mod$weights)) mod$weights else rep(1, nrow(model.matrix(mod)))
-  V <- wcrossprod(model.matrix(mod), w=wts)
-  if (min(eigen(V, only.values=TRUE)$values) < sqrt(.Machine$double.eps))
-    stop("numerically singular ", if (!is.null(mod$weights)) "weighted ", 
-         "sum of squares and products matrix\n  between-subjects model matrix is not of full rank")
-  V <- solve(V)
+  # wts <- if (!is.null(mod$weights)) mod$weights else rep(1, nrow(model.matrix(mod)))
+  # V <- solve(wcrossprod(model.matrix(mod), w=wts))
   p <- nrow(coefficients(mod))
   I.p <- diag(p)
   terms <- term.names(mod)
@@ -855,11 +852,7 @@ Anova.III.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatr
 
 Anova.II.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatrix, test, ...){
   wts <- if (!is.null(mod$weights)) mod$weights else rep(1, nrow(model.matrix(mod)))
-  V <- wcrossprod(model.matrix(mod), w=wts)
-  if (min(eigen(V, only.values=TRUE)$values) < sqrt(.Machine$double.eps))
-    stop("numerically singular ", if (!is.null(mod$weights)) "weighted ", 
-         "sum of squares and products matrix\n  between-subjects model matrix is not of full rank")
-  V <- solve(V)  
+  V <- solve(wcrossprod(model.matrix(mod), w=wts))
   SSP.term <- function(term, iterm){
     which.term <- which(term == terms)
     subs.term <- which(assign == which.term)
