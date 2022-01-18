@@ -68,7 +68,7 @@
 #             introduced vcov. arg to Anova.glm(). JF
 # 2021-06-16: Fix imatrix arg to Anova.mlm() (contribution of Benedikt Langenberg).JF
 # 2021-06-19: make sure that calls to anova() for survival::survreg() models return "anova" objects. JF
-# 2022-01-27: handle singularities better in Anova.mlm() (suggestion of Marius Barth)
+# 2022-01-17,18: handle singularities better in Anova.mlm() (suggestion of Marius Barth)
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -840,7 +840,7 @@ Anova.III.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatr
         singular[i] <- Test$singular
       }
     }
-    names(df) <- names(SSP) <- names(SSPEH) <- names(P) <- hnames
+    names(singular) <- names(df) <- names(SSP) <- names(SSPEH) <- names(P) <- hnames
     result <- list(SSP=SSP, SSPE=SSPEH, P=P, df=df, error.df=error.df,
                    terms=hnames, repeated=TRUE, type="III", test=test, 
                    idata=idata, idesign=idesign, icontrasts=icontrasts, imatrix=imatrix,
@@ -961,7 +961,7 @@ Anova.II.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatri
         else paste(terms[term], ":", iterm, sep="")
       }
     }
-    names(df) <- names(P) <- names(SSP) <- names(SSPEH) <- hnames
+    names(singular) <- names(df) <- names(P) <- names(SSP) <- names(SSPEH) <- hnames
     result <- list(SSP=SSP, SSPE=SSPEH, P=P, df=df, error.df=error.df,
                    terms=hnames, repeated=TRUE, type="II", test=test,
                    idata=idata, idesign=idesign, icontrasts=icontrasts, imatrix=imatrix,
@@ -1390,6 +1390,13 @@ Anova.survreg <- function(mod, type=c("II","III", 2, 3), test.statistic=c("LR", 
     warning("LR tests unavailable with robust variances\nWald tests substituted")
     test.statistic <- "Wald"
   }
+  names <- term.names(mod)
+  clusters <- grepl("cluster\\(", names)
+  strata <- grepl("strata\\(", names)
+  if ((any(clusters) || any(strata)) && test.statistic == "LR"){
+    warning("LR tests not supported for models with clusters or strata\n Wald tests substituted")
+    test.statistic <- "Wald"
+  }
   switch(type,
          II=switch(test.statistic,
                    LR=Anova.II.LR.survreg(mod),
@@ -1507,7 +1514,8 @@ Anova.II.Wald.survreg <- function(mod){
   V <- vcov(mod, complete=FALSE)
   b <- coef(mod)
   if (length(b) != nrow(V)){
-    p <- which(rownames(V) == "Log(scale)")
+    # p <- which(rownames(V) == "Log(scale)")
+    p <- which(grepl("^Log\\(scale", rownames(V)))
     if (length(p) > 0) V <- V[-p, -p]
   }
   Anova.II.default(mod, V, test="Chisq")
@@ -1517,7 +1525,8 @@ Anova.III.Wald.survreg <- function(mod){
   V <- vcov(mod, complete=FALSE)
   b <- coef(mod)
   if (length(b) != nrow(V)){
-    p <- which(rownames(V) == "Log(scale)")
+    # p <- which(rownames(V) == "Log(scale)")
+    p <- which(grepl("^Log\\(scale", rownames(V)))
     if (length(p) > 0) V <- V[-p, -p]
   }
   Anova.III.default(mod, V, test="Chisq")
@@ -1591,8 +1600,8 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
   if (intercept) names <- names[-1]
   n.terms <- length(names)
   df <- c(rep(0, n.terms), df.residual(mod))
-  if (inherits(mod, "coxph")){
-    assign <- assign[assign != 0]
+  if (inherits(mod, "coxph") || inherits(mod, "survreg")){
+    if (inherits(mod, "coxph")) assign <- assign[assign != 0]
     clusters <- grep("^cluster\\(", names)
     strata <- grep("^strata\\(.*\\)$", names)
     for (cl in clusters) assign[assign > cl] <- assign[assign > cl] - 1
