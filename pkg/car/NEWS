@@ -2,7 +2,7 @@ Changes to Version 3.0-13
 
   o Handle singularities better in Anova.mlm() (suggestion of Marius Barth).
   
-  o Small bug fixes.
+  o Fixed error reporting in logit() (bug reported by Collin Erickson).
 
 Changes to Version 3.0-12
 
