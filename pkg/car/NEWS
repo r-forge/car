@@ -3,6 +3,8 @@ Changes to Version 3.0-13
   o Handle singularities better in Anova.mlm() (suggestion of Marius Barth).
   
   o Fixed error reporting in logit() (bug reported by Collin Erickson).
+  
+  o Added pt.cex and cex sub-arguments to legend argument of scatterplotMatrix() (implicit suggestion of Duncan Mackay).
 
 Changes to Version 3.0-12
 
