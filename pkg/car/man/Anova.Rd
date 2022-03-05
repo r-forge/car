@@ -362,13 +362,13 @@ Anova(wl.mod, imatrix=imatrix, test="Roy")
 
 ## mixed-effects models examples:
 
-\dontrun{
+\dontrun{ # loads nlme package
 	library(nlme)
 	example(lme)
 	Anova(fm2)
 }
 
-\dontrun{
+\dontrun{ # loads lme4 package
 	library(lme4)
 	example(glmer)
 	Anova(gm1)

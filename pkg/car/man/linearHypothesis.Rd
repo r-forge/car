@@ -398,13 +398,13 @@ linearHypothesis(mod.ok, c("treatment1:gender1", "treatment2:gender1"),
 
 ## mixed-effects models examples:
 
-\dontrun{
+\dontrun{ # loads nlme package
 	library(nlme)
 	example(lme)
 	linearHypothesis(fm2, "age = 0")
 }
 
-\dontrun{
+\dontrun{ # loads lme4 package
 	library(lme4)
 	example(glmer)
 	linearHypothesis(gm1, matchCoefs(gm1, "period"))
