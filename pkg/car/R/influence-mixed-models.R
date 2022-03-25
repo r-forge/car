@@ -33,10 +33,9 @@ cooks.distance.influence.lme <- function(model, ...){
     n <- nrow(db)
     p <- ncol(db)
     d <- numeric(n)
-    fac <- (n - p)/(n*p)
-    vcov.inv <- solve(model$vcov)
+    vcov.inv <- (n - p)/(n*p)*solve(model$vcov)
     for (i in 1:n){
-        d[i] <- fac*(db[i, ] %*% vcov.inv %*% db[i, ])
+        d[i] <- db[i, ] %*% vcov.inv %*% db[i, ]
     }
     d
 }
