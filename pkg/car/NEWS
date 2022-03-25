@@ -5,6 +5,10 @@ Changes to Version 3.0-13
   o Fixed error reporting in logit() (bug reported by Collin Erickson).
   
   o Added pt.cex and cex sub-arguments to legend argument of scatterplotMatrix() (implicit suggestion of Duncan Mackay).
+  
+  o New vif.lm() method with options for handling linear models with interactions.
+  
+  o Fixed bug in cooks.distance.influence.lme() (in effect, incorrect division by the error variance twice rather than once), and a sign error in dfbeta.influence.lme() and dfbetas.influence.lme() (following report by Ben Bolker).
 
 Changes to Version 3.0-12
 
