@@ -69,6 +69,8 @@
 # 2021-06-16: Fix imatrix arg to Anova.mlm() (contribution of Benedikt Langenberg).JF
 # 2021-06-19: make sure that calls to anova() for survival::survreg() models return "anova" objects. JF
 # 2022-01-17,18: handle singularities better in Anova.mlm() (suggestion of Marius Barth)
+# 2922-04-24: introduce new error.df argument for linearHypothesis.default(). JF
+
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1535,18 +1537,29 @@ Anova.III.Wald.survreg <- function(mod){
 # Default Anova() method: requires methods for vcov() (if vcov. argument not specified) and coef().
 
 Anova.default <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq", "F"), 
-                          vcov.=vcov(mod, complete=FALSE), singular.ok, ...){
+                          vcov.=vcov(mod, complete=FALSE), singular.ok, error.df, ...){
+  if (missing(error.df)){
+    error.df <- df.residual(mod)
+    test.statistic <- match.arg(test.statistic)
+    if (test.statistic == "F" && (is.null(error.df) || is.na(error.df))){
+      test.statistic <- "Chisq"
+      message("residual df unavailable, test.statistic set to 'Chisq'")
+    }
+  }
   vcov. <- getVcov(vcov., mod)
   type <- as.character(type)
   type <- match.arg(type)
-  test.statistic <- match.arg(test.statistic)
   if (missing(singular.ok))
     singular.ok <- type == "2" || type == "II"
   switch(type,
-         II=Anova.II.default(mod, vcov., test.statistic, singular.ok=singular.ok),
-         III=Anova.III.default(mod, vcov., test.statistic, singular.ok=singular.ok),
-         "2"=Anova.II.default(mod, vcov., test.statistic, singular.ok=singular.ok),
-         "3"=Anova.III.default(mod, vcov., test.statistic, singular.ok=singular.ok))
+         II=Anova.II.default(mod, vcov., test.statistic, singular.ok=singular.ok, 
+                             error.df=error.df),
+         III=Anova.III.default(mod, vcov., test.statistic, singular.ok=singular.ok,
+                               error.df=error.df),
+         "2"=Anova.II.default(mod, vcov., test.statistic, singular.ok=singular.ok,
+                              error.df=error.df),
+         "3"=Anova.III.default(mod, vcov., test.statistic, singular.ok=singular.ok,
+                               error.df=error.df))
 }
 
 assignVector <- function(model, ...) UseMethod("assignVector")
@@ -1561,7 +1574,7 @@ assignVector.default <- function(model, ...){
   assign
 }
 
-Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
+Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, error.df,...){
   hyp.term <- function(term){
     which.term <- which(term==names)
     subs.term <- if (is.list(assign)) assign[[which.term]] else which(assign == which.term)
@@ -1582,7 +1595,8 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
     if (nrow(hyp.matrix.term) == 0)
       return(c(statistic=NA, df=0))            
     hyp <- linearHypothesis.default(mod, hyp.matrix.term, 
-                                    vcov.=vcov., test=test, singular.ok=singular.ok, ...)
+                                    vcov.=vcov., test=test, error.df=error.df,
+                                    singular.ok=singular.ok, ...)
     if (test=="Chisq") c(statistic=hyp$Chisq[2], df=hyp$Df[2])
     else c(statistic=hyp$F[2], df=hyp$Df[2])
   }
@@ -1599,7 +1613,7 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
   names <- term.names(mod)
   if (intercept) names <- names[-1]
   n.terms <- length(names)
-  df <- c(rep(0, n.terms), df.residual(mod))
+  df <- c(rep(0, n.terms), error.df)
   if (inherits(mod, "coxph") || inherits(mod, "survreg")){
     if (inherits(mod, "coxph")) assign <- assign[assign != 0]
     clusters <- grep("^cluster\\(", names)
@@ -1639,14 +1653,14 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, ...){
   result
 }
 
-Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
+Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, error.df, ...){
   intercept <- has.intercept(mod)
   p <- length(coefficients(mod))
   I.p <- diag(p)
   names <- term.names(mod)
   n.terms <- length(names)
   assign <- assignVector(mod) # attr(model.matrix(mod), "assign")
-  df <- c(rep(0, n.terms), df.residual(mod))
+  df <- c(rep(0, n.terms), error.df)
   if (inherits(mod, "coxph")){
     if (intercept) names <- names[-1]
     assign <- assign[assign != 0]
@@ -1681,7 +1695,8 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, ...){
     }
     else {
       hyp <- linearHypothesis.default(mod, hyp.matrix, 
-                                      vcov.=vcov., test=test, singular.ok=singular.ok, ...)
+                                      vcov.=vcov., test=test, error.df=error.df,
+                                      singular.ok=singular.ok, ...)
       teststat[term] <- if (test=="Chisq") hyp$Chisq[2] else hyp$F[2]
       df[term] <- abs(hyp$Df[2])
       p[term] <- if (test == "Chisq") 

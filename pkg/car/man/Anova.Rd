@@ -18,6 +18,7 @@
 %   2017-11-02: added warning about KR F-tests
 %   2017-11-07: make compatible with vcov() in re-devel. J. Fox
 %   2021-06-14: updates for vcov. arg. J. Fox
+%   2022-04-24: added error.df argument to Anova.default(). J. Fox
 %-------------------------------------------------------------------------------------
 
 \name{Anova}
@@ -128,7 +129,7 @@ Manova(mod, ...)
 
 \method{Anova}{default}(mod, type=c("II", "III", 2, 3),
 	test.statistic=c("Chisq", "F"), vcov.=vcov(mod, complete=FALSE),
-	singular.ok, ...)
+	singular.ok, error.df, ...)
 }
 
 \arguments{
@@ -175,7 +176,9 @@ Manova(mod, ...)
     whether or not to print the error SSP matrix (defaults to \code{TRUE}).}
   \item{SSP}{if \code{TRUE} (the default), print the sum-of-squares and
     cross-products matrix for the hypothesis and the response-transformation matrix.}
-  \item{error.df}{The degrees of freedom for error; if missing, will be taken from the model.}
+  \item{error.df}{The degrees of freedom for error; if \code{error.df} missing for a multivariate linear model (object of class \code{"mlm"}), the error degrees of freedom will be taken from the model.
+  
+For the \code{default} \code{Anova} method, if an F-test is requested and if \code{error.df} is missing, the error degrees of freedom will be computed by applying the \code{df.residual} function to the model; if \code{df.residual} returns \code{NULL} or \code{NA}, then a chi-square test will be substituted for the F-test (with a message to that effect.}
   \item{idata}{an optional data frame giving a factor or factors defining the
     intra-subject model for multivariate repeated-measures data. See
     \emph{Details} for an explanation of the intra-subject design and for
