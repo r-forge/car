@@ -1,3 +1,7 @@
+Changes to Version 3.1-0
+
+  o New 3D added-variable and component+residual plots, avPlot3d() and crPlot3d().
+
 Changes to Version 3.0-13
 
   o Handle singularities better in Anova.mlm() (suggestion of Marius Barth).
