@@ -86,7 +86,7 @@ crPlot3d.lm <- function (model,
   else {
     labels <- rownames(eff$data)
     id.method <- id$method
-    id.n <- if ("identify" %in% id.method) Inf else id$n
+    id.n <- if ("identify" == id.method) Inf else id$n
     offset <- id$offset
   }
   
@@ -246,7 +246,11 @@ crPlot3d.lm <- function (model,
       )
   }
   
-  if (id.method != "none") {
+  if (id.method == "identify"){
+    Identify3d(x, y, z, axis.scales=axis.scales, labels=labels, 
+               col=surface.col[1], offset=offset)
+  }
+  else if (id.method != "none") {
     showLabels3d(
       x,
       y,
@@ -254,7 +258,8 @@ crPlot3d.lm <- function (model,
       labels,
       id.method = id.method,
       id.n = id.n,
-      col = surface.col[1]
+      col = surface.col[1],
+      offset = offset
     )
   }
   
