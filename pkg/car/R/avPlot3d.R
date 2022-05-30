@@ -4,7 +4,8 @@ avPlot3d <- function(model, coef1, coef2, id=TRUE, ...) {
   UseMethod("avPlot3d")
 }
 
-avPlot3d.lm <- function(model, coef1, coef2, id=TRUE, ...){
+avPlot3d.lm <- function(model, coef1, coef2, id=TRUE, fit="linear", ...){
+  fit <- match.arg(fit, c("linear", "robust"), several.ok=TRUE)
   coefs <- names(coef(model))
   which1 <- which(coef1 == coefs)
   if (length(which1) == 0) stop(coef1, " is not in the model")
@@ -18,11 +19,13 @@ avPlot3d.lm <- function(model, coef1, coef2, id=TRUE, ...){
     y1 = residuals(lm(model.response(model.frame(model)) ~ X[, -c(which1, which2)] - 1))
   )
   scatter3d(y1 ~ x1 + x2, data=D, xlab=paste0(coef1, " | others"), 
-            zlab=paste0(coef2, " | others"), ylab=paste0(y, " | others"), id=id, ...)
+            zlab=paste0(coef2, " | others"), ylab=paste0(y, " | others"), id=id, fit=fit, ...)
 }
 
-avPlot3d.glm <- function(model, coef1, coef2, id=TRUE, type=c("Wang", "Weisberg"), ...){
+avPlot3d.glm <- function(model, coef1, coef2, id=TRUE, type=c("Wang", "Weisberg"), 
+                         fit="linear", ...){
   type <- match.arg(type)
+  fit <- match.arg(fit, c("linear", "robust"), several.ok=TRUE)
   coefs <- names(coef(model))
   which1 <- which(coef1 == coefs)
   if (length(which1) == 0) stop(coef1, " is not in the model")
@@ -40,5 +43,5 @@ avPlot3d.glm <- function(model, coef1, coef2, id=TRUE, type=c("Wang", "Weisberg"
     x2 = residuals(lm(X[, which2] ~ X[, -c(which1, which2)] - 1, weights=wt2))
   )
   scatter3d(y1 ~ x1 + x2, data=D, xlab=paste0(coef1, " | others"), 
-            zlab=paste0(coef2, " | others"), ylab=paste0(y, " | others"), id=id, ...)
+            zlab=paste0(coef2, " | others"), ylab=paste0(y, " | others"), id=id, fit=fit, ...)
 }

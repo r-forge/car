@@ -44,9 +44,10 @@ avPlot(model, ...)
 	
 avPlot3d(model, coef1, coef2, id=TRUE, ...)
 
-\method{avPlot3d}{lm}(model, coef1, coef2, id=TRUE, ...)
+\method{avPlot3d}{lm}(model, coef1, coef2, id=TRUE, fit="linear", ...)
 
-\method{avPlot3d}{glm}(model, coef1, coef2, id=TRUE, type=c("Wang", "Weisberg"), ...)
+\method{avPlot3d}{glm}(model, coef1, coef2, id=TRUE, type=c("Wang", "Weisberg"), 
+  fit="linear", ...)
 }
 
 \arguments{
@@ -99,6 +100,7 @@ avPlot3d(model, coef1, coef2, id=TRUE, ...)
     plot the ellipses; and \code{robust}, a logical value determing whether to use the \code{\link{cov.trob}} function in the \pkg{MASS} package
     to calculate the center and covariance matrix for the data ellipses. \code{TRUE} is equivalent to \code{list(levels=c(.5, .95), robust=TRUE)}.}  
   \item{marginal.scale}{Consider an added-variable plot of Y versus X given Z.  If this argument is \code{FALSE} then the limits on the horizontal axis are determined by the range of the residuals from the regression of X on Z and the limits on the vertical axis are determined by the range of the residuals from the regressnio of Y on Z.  If the argument is \code{TRUE}, then the limits on the horizontal axis are determined by the range of X minus it mean, and on the vertical axis by the range of Y minus its means; adjustment is made if necessary to include outliers.  This scaling allows visualization of the correlations between Y and Z and between X and Z.  For example, if the X and Z are highly correlated, then the points will be concentrated on the middle of the plot.} 
+    \item{fit}{one or both of \code{"linear"} (linear least-squares, the default) and \code{"robust"} (robust regression) surfaces to be fit to the 3D added-variable plot; see \code{\link{scatter3d}} for details.}
     \item{\dots}{\code{avPlots} passes these arguments to \code{avPlot} and \code{avPlot} passes them to \code{plot}; for \code{avPlot3d}, 
   additional optional arguments to be passed to \code{\link{scatter3d}}.}
 }
