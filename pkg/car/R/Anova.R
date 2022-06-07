@@ -2112,5 +2112,5 @@ Anova.svycoxph <- function(mod, type=c("II", "III", 2, 3),
   test.statistic <- match.arg(test.statistic)
   type <- as.character(type)
   type <- match.arg(type)
-  NextMethod()
+  NextMethod(test.statistic=test.statistic, type=type, ...)
 }
