@@ -4,6 +4,8 @@ Changes to Version 3.1-0
 
   o More flexible recode()/Recode().
   
+  o Added Anova.svycoxph() to prevent seledtion of test.statistic="LR".
+  
 Changes to Version 3.0-13
 
   o Handle singularities better in Anova.mlm() (suggestion of Marius Barth).
