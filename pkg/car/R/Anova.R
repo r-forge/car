@@ -73,6 +73,7 @@
 # 2022-06-07: Added Anova.svycoxph(). JF
 # 2022-07-22: Fix bug in Anova.survreg() for Wald tests (reported by Megan Taylor Jones). JF
 # 2022-07-22: Make Anova.lm() more robust when there are aliased coefficients (following report by Taiwo Fagbohungbe). JF
+# 2022-07-27:  Tweaked the last fix so the tolerance for deciding rank is the same for the lm model and the temporary glm model. SW
 
 #-------------------------------------------------------------------------------
 
@@ -113,7 +114,8 @@ lm2glm <- function(mod){
   wts <- weights(mod)
   Data$..wts.. <- if (is.null(wts)) rep(1, nrow(Data)) else wts
   form <- formula(mod)
-  glm(form, weights=..wts.., data=Data)
+  eps <- 1000 * (if(is.null(mod$call$tol)) 1e-7 else mod$call$tol)
+  glm(form, weights=..wts.., data=Data, control=list(epsilon=eps))
 }
 
 globalVariables("..wts..")
