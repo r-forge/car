@@ -1,10 +1,16 @@
+Changes to Version 3.1-1
+
+  o Fixed bug in Anova.survreg() for Wald tests (reported by Megan Taylor Jones), which failed with a spurious "missing residual df" error.
+  
+  o Made Anova.lm() more robust when there are aliased coefficients (following report of cryptic output by Taiwo Fagbohungbe).
+
 Changes to Version 3.1-0
 
   o New 3D added-variable and component+residual plots, avPlot3d() and crPlot3d().
 
   o More flexible recode()/Recode().
   
-  o Added Anova.svycoxph() to prevent seledtion of test.statistic="LR".
+  o Added Anova.svycoxph() to prevent selection of test.statistic="LR".
   
   o New take on vif.lm().
   
