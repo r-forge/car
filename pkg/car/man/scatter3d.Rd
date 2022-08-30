@@ -42,7 +42,10 @@ scatter3d(x, ...)
 	  fit="linear", groups=NULL, parallel=TRUE,
 	  ellipsoid=FALSE, level=0.5, ellipsoid.alpha=0.1, id=FALSE,
 	  model.summary=FALSE, 
-	  reg.function, reg.function.col=surface.col[length(surface.col)], ...)
+	  reg.function, reg.function.col=surface.col[length(surface.col)], 
+	  mouseMode=c(none="none", left="polar", right="zoom", middle="fov", 
+	               wheel="pull"),
+	  ...)
 
 Identify3d(x, y, z, axis.scales=TRUE, groups = NULL, labels = 1:length(x),
 	col = c("blue", "green", "orange", "magenta", "cyan", "red", "yellow", "gray"),
@@ -138,6 +141,7 @@ You have to install the \code{rgl} package to produce 3D plots.  On a Macintosh 
   \item{offset}{vertical displacement for point labels (to avoid overplotting the points).}
   \item{reg.function}{an arithmetic expression that is a function of \code{x} and \code{z} (respectively, the horizontal and out-of-screen explanatory variables), representing an arbitrary regression function to plot.}
   \item{reg.function.col}{color to use for the surface produced by \code{reg.function}; defaults to the \emph{last} color in \code{surface.col}.}
+  \item{mouseMode}{defines what the mouse buttons, etc., do; passed to \code{\link[rgl]{par3d}} in the \pkg{rgl} package; the default in \code{scatter3d} is the same as in the \pkg{rgl} package, except for the left mouse button.}
   \item{\dots}{arguments to be passed down.}
 }
 

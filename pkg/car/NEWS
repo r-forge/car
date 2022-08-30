@@ -4,7 +4,7 @@ Changes to Version 3.1-1
   
   o Made Anova.lm() more robust when there are aliased coefficients (following report of cryptic output by Taiwo Fagbohungbe).
   
-  o Added reg.function argument to scatter3d().
+  o Added reg.function, reg.function.col, and mouseMode arguments to scatter3d().
 
 Changes to Version 3.1-0
 

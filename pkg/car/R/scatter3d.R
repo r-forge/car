@@ -17,7 +17,8 @@
 # 2017-06-27: introduced id argument replacing several arguments. J. Fox
 # 2017-11-30: use carPalette(), avoid red and green. J. Fox
 # 2022-05-30: add "robust" as a fit option.
-# 2022-08-20: introduce reg.function argument. J. Fox
+# 2022-08-20: introduce reg.function and reg.function.col arguments. J. Fox
+# 2022-08-29: introduce mouseMode argument. J. Fox
 
 scatter3d <- function(x, ...){
     if (!requireNamespace("rgl")) stop("rgl package missing")
@@ -76,10 +77,12 @@ scatter3d.default <- function(x, y, z,
     # id.n=if (id.method == "identify") Inf else 0,
     # labels=as.character(seq(along=x)), offset = ((100/length(x))^(1/3)) * 0.02,
     id=FALSE, model.summary=FALSE, 
-    reg.function, reg.function.col=surface.col[length(surface.col)], ...){
+    reg.function, reg.function.col=surface.col[length(surface.col)], 
+    mouseMode=c(none="none", left="polar", right="zoom", middle="fov", wheel="pull"), ...){
     if (!requireNamespace("rgl")) stop("rgl package missing")
     if (!requireNamespace("mgcv")) stop("mgcv package missing")
     if (!requireNamespace("MASS")) stop("MASS package missing")
+    rgl::par3d(mouseMode=mouseMode)
     id <- applyDefaults(id, defaults=list(method="mahal", n=2,
         labels=as.character(seq(along=x)), offset = ((100/length(x))^(1/3))*0.02), type="id")
     if (isFALSE(id)){
