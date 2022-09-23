@@ -173,6 +173,8 @@ confidenceEllipse(lm(prestige ~ income + education, data=Duncan),
 	
 confidenceEllipses(lm(prestige ~ income + education + type, data=Duncan),
   fill=TRUE)
+cov2cor(vcov(lm(prestige ~ income + education + type, 
+  data=Duncan))) # correlations among coefficients
 
 wts <- rep(1, nrow(Duncan))
 wts[c(6, 16)] <- 0 # delete Minister, Conductor
