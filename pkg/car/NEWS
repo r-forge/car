@@ -6,6 +6,10 @@ Changes to Version 3.1-1
   
   o Added reg.function, reg.function.col, and mouseMode arguments to scatter3d(), and mouseMode to crPlot3d().
 
+  o Added fill and associated arguments to influencePlot() (initial implementation of Michael Friendly).
+  
+  o Added confidenceEllipses() function to create matrix of all pairwise confidence ellipses for a regression model (suggestion of Michael Friendly).
+  
 Changes to Version 3.1-0
 
   o New 3D added-variable and component+residual plots, avPlot3d() and crPlot3d().
