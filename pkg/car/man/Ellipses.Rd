@@ -171,7 +171,8 @@ confidenceEllipse(lm(prestige ~ income + education, data=Duncan), vcov.=hccm)
 confidenceEllipse(lm(prestige ~ income + education, data=Duncan), 
 	L=c("income + education", "income - education"))
 	
-confidenceEllipses(lm(prestige ~ income + education + type, data=Duncan))
+confidenceEllipses(lm(prestige ~ income + education + type, data=Duncan),
+  fill=TRUE)
 
 wts <- rep(1, nrow(Duncan))
 wts[c(6, 16)] <- 0 # delete Minister, Conductor
