@@ -17,6 +17,19 @@
 
 # moved from Rcmdr 5 December 2006
 
+colscale <- function(x, y, colors, min, max){
+  n <- length(colors)
+  polygon(x=c(x[1], x[2], x[2], x[1]), y=c(y[1], y[1], y[2], y[2]), xpd=TRUE)
+  xincrement <- (x[2] - x[1])/n
+  for (i in 1:n){
+    xx <- c(x[1] + (i - 1)*xincrement, x[1] + i*xincrement)
+    polygon(x=c(xx[1], xx[2], xx[2], xx[1]), y=c(y[1], y[1], y[2], y[2]),
+            border=NA, col=colors[i], xpd=TRUE)
+  }
+  text(x[1], mean(y), labels=min, pos=2, xpd=TRUE)
+  text(x[2], mean(y), labels=max, pos=4, xpd=TRUE)
+}
+
 influencePlot <- function(model, ...){
     UseMethod("influencePlot")
 }
@@ -54,8 +67,15 @@ influencePlot.lm <- function(model, scale=10,
     abline(h=c(-2, 0, 2), lty=2)
     points(hatval, rstud, cex=scale*cook, ...) 
     if (fill) {
-      cols <- scales::alpha(fill.col, alpha=fill.alpha*(cook/max(cook)))
+      cols <- scales::alpha(fill.col, alpha=fill.alpha*(cook^2/max(cook)^2))
       points(hatval, rstud, cex=scale*cook, col=cols, pch=16)  
+      usr <- par("usr")
+      left <- usr[1] + 0.2*(usr[2] - usr[1])
+      right <- usr[1] + 0.8*(usr[2] - usr[1])
+      bot <- usr[4] + strheight("a")
+      top <- bot + 2*strheight("A")
+      colors <- scales::alpha(fill.col, alpha=seq(0, 1, length=100))
+      colscale(c(left, right), c(bot, top), colors, "Cook's D: 0", signif(max(cook)^2, 3))
       }
     if(id.method == "noteworthy"){
         which.rstud <- order(abs(rstud), decreasing=TRUE)[1:id.n]
