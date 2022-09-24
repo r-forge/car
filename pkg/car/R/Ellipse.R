@@ -341,8 +341,8 @@ confidenceEllipses.default <- function(model, coefnames,  main, grid=TRUE, ...) 
     save <-
       par(
         mfrow = c(p, p),
-        mar = c(2, 2, 0, 0),
-        oma = c(0, 0, 2, 0)
+        mar = c(2, 2, 0, 0) + 0.1,
+        oma = c(0, 0, 2, 0) + 0.2
       )
     on.exit(par(save))
     ylab <- coefnames[1]
