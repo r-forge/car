@@ -1,6 +1,6 @@
 Package: car
 Version: 3.1-1
-Date: 2022-08-30
+Date: 2022-10-04
 Title: Companion to Applied Regression
 Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaster.ca"),
 	person("Sanford", "Weisberg", role = "aut", email = "sandy@umn.edu"),
@@ -23,13 +23,14 @@ Authors@R: c(person("John", "Fox", role = c("aut", "cre"), email = "jfox@mcmaste
     person("Henric", "Nilsson", role = "ctb"),
     person("Derek", "Ogle", role = "ctb"),
     person("Brian", "Ripley", role = "ctb"),
+    person("Tom", "Short", role="ctb"),
     person("William", "Venables", role = "ctb"),
     person("Steve", "Walker", role="ctb"),
     person("David", "Winsemius", role="ctb"),
     person("Achim", "Zeileis", role = "ctb"),
     person("R-Core", role="ctb"))
 Depends: R (>= 3.5.0), carData (>= 3.0-0)
-Imports: abind, MASS, mgcv, nnet, pbkrtest (>= 0.4-4), quantreg, grDevices, utils, stats, graphics, maptools, lme4 (>= 1.1-27.1), nlme, scales
+Imports: abind, MASS, mgcv, nnet, pbkrtest (>= 0.4-4), quantreg, grDevices, utils, stats, graphics, lme4 (>= 1.1-27.1), nlme, scales
 Suggests: alr4, boot, coxme, effects, knitr, leaps, lmtest, Matrix, MatrixModels, mvtnorm, rgl (>= 0.93.960), rio, sandwich, SparseM, survival, survey
 ByteCompile: yes
 LazyLoad: yes

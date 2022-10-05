@@ -1,4 +1,4 @@
-# last modified 2022-09-23 by J. Fox
+# last modified 2022-10-04 by J. Fox
 
 # additions for car >= 3.0-0, started 2016-12-27
 
@@ -6,6 +6,7 @@ export(Import, Export, Predict, bcnPowerAxis)
 export(Confint, S, carPalette, poTest, brief)
 export(avPlot3d, crPlot3d)
 export(strings2factors)
+export(pointLabel)
 S3method(Confint, lm)
 S3method(Confint, glm)
 S3method(Confint, multinom)
@@ -74,6 +75,8 @@ importFrom("stats", "naprint", "symnum", ".checkMFClasses",
             "AIC", "BIC", "expand.model.frame")
 importFrom("utils", "download.file", "capture.output", "askYesNo", "browseURL", "globalVariables", "getFromNamespace")
 
+importFrom("grDevices", "as.graphicsAnnot", "xy.coords")
+importFrom("stats", "runif")
 
 #  from earlier versions car package
 
