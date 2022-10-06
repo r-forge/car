@@ -10,7 +10,7 @@ Changes to Version 3.1-1
   
   o Added confidenceEllipses() function to create matrix of all pairwise confidence ellipses for a regression model (suggestion of Michael Friendly).
   
-  o Moved the pointLabel() function from the maptools package in anticipation of the retirement of that package, and with the permission of the function author.
+  o Moved the pointLabel() function from the maptools package in anticipation of the retirement of that package, and with the permission of the function author, Tom Short.
   
 Changes to Version 3.1-0
 
