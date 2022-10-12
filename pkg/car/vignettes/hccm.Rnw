@@ -1,0 +1,229 @@
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{hccm with outliers}
+%% vignette index specifications need to be *after* \documentclass{}
+%%\VignettePackage{car}
+
+\documentclass[12pt]{article}
+
+
+\usepackage[left=1.25in, right=1.25in, top=1in, bottom=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[american]{babel}
+\newcommand{\R}{{\sf R}}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+\usepackage{alltt}
+\usepackage{fancyvrb}
+\usepackage{natbib}
+\usepackage{amsmath}
+\VerbatimFootnotes
+\bibliographystyle{chicago}
+%\usepackage{amsmath,amsfonts,amssymb}
+%\usepackage{natbib}
+%\bibliographystyle{abbrvnat}
+%\usepackage[margin=1in]{geometry}
+
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\code}[1]{\normalfont\texttt{\hyphenchar\font45\relax #1}}
+\newcommand{\lcode}[1]{\mbox{$\log($}\normalfont\texttt{\hyphenchar\font45\relax #1}\mbox{$)$}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\link}[1]{#1}
+\newcommand{\tild}{\symbol{126}}
+\newcommand{\Rtilde}{\,\raisebox{-.5ex}{\code{\tild{}}}\,}
+\newcommand{\captilde}{\mbox{\protect\Rtilde}} % use in figure captions.
+\newcommand{\Rmod}[2]{\code{#1 \raisebox{-.5ex}{\tild{}} #2}}
+\newcommand{\Rmoda}[2]{\code{#1} &\code{\raisebox{-.5ex}{\tild{}} #2}}
+\newcommand{\Rmodb}[2]{\code{#1 &\raisebox{-.5ex}{\tild{}}& #2}}
+\newcommand{\aab}[2]{\code{#1}\mbox{$*$}\code{#2}}
+\newcommand{\acb}[2]{\code{#1}\mbox{$:$}\code{#2}}
+\newcommand{\C}{\mathbf{C}}
+\newcommand{\betahat}{\widehat{\beta}}
+\newcommand{\bbetahat}{\widehat{\boldsymbol{\beta}}}
+\newcommand{\bgamma}{\boldsymbol{\gamma}}
+\newcommand{\bgammahat}{\widehat{\boldsymbol{\gamma}}}
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\xbf}{\x_{\backslash{}f}}
+\newcommand{\hbf}{h_{\backslash{}f}}
+\newcommand{\xtb}{\x_{2\backslash{}f}}
+\newcommand{\xbfi}{\x_{\backslash{}f,i}}
+\newcommand{\inter}[2]{\mbox{$#1$:$#2$}}
+\newcommand{\cross}[2]{\mbox{$#1$\code{*}$#2$}}
+\newcommand{\N}{\mathrm{N}}
+\newcommand{\fn}{\texttt}
+\newcommand{\ar}{\texttt}
+\newcommand{\pkg}[1]{\code{#1}}
+\newcommand{\proglang}[1]{\code{#1}}
+\newcommand{\yx}{\widehat{y}(\x)}
+\newcommand{\lvn}[1]{\mbox{$\log(\mbox{\texttt{#1}})$}}
+\newcommand{\vn}[1]{\mbox{\texttt{#1}}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\I}{\mathbf{I}}
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\bzero}{\mathbf{0}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\varhat}{\widehat{\mathrm{var}}}
+\newcommand{\diag}{\mathrm{diag}}
+
+
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\title{Don't Use Heteroscedastic Corrected Covariance Estimates When Predicting or Testing for Outliers}
+
+\author{John Fox and Sanford Weisberg}
+
+\date{\today}
+
+\maketitle
+
+
+
+\begin{abstract}
+When an assumption of constant residual variance in a linear regression model is in doubt, a heteroscedastic adjusted covariance matrix (sandwich estimator) is commonly used to adjust for possibly failed assumption of constant variance. We show that this adjustment is inappropriate when testing for outliers.
+\end{abstract}
+
+<<setopts,echo=FALSE>>=
+library("knitr")
+opts_chunk$set(fig.width=5,fig.height=5,
+               out.width="0.8\\textwidth",echo=TRUE)
+#options(prompt=" ")
+options(continue="+    ", prompt="R> ", width=76)
+options(show.signif.stars=FALSE, scipen=3)
+@
+
+<<setup, include=FALSE, cache=FALSE,  echo=FALSE, results=hide>>=
+render_sweave()
+options(width=80, digits=5, str=list(strict.width="cut"))
+strOptions(strict.width="cut")
+@
+
+Suppose we fit a linear model for which we have a full rank $n \times p$ matrix $\X$ of predictors \citep{w14}, and $n \times 1$ vector $\Y$ of corresponding responses, and assume
+\begin{align}
+\E(\Y|\X) &= \X\bbeta \label{eq1}\\
+\var(\Y|\X) &= \sigma^2 \I \label{eq2}
+\end{align}
+Standard methodology is to fit via ordinary least squares, ols, which produces the ols estimates
+\begin{align}
+\bbetahat &= (\X'\X)^{-1}\X'\Y \\
+\hat{\Y} &= \X\bbetahat \\
+\hat{\sigma}^2 &= (\Y = \hat{\Y})'(\Y = \hat{\Y})/(n-p)\label{eq3}
+\end{align}
+Inferences concerning $\bbeta$ and other aspects of the regression problem are generally based on normality (asymptotic, approximate or exact, depending on assumptions) of $\bbetahat$.
+
+
+Suppose the variance given by (\ref{eq2}) is misspecified, and the true population covariance matrix is given by $\sigma^2\W$ for some diagonal matrix $\W$ of unspecified positive numbers.  It is easy to show  that the variance of the least squares estimate is then \citep[Sec.~7.2.1]{w14}
+\begin{align}
+\var(\bbetahat|\X) &= \hat{\sigma}^2 (\X'\X)^{-1}[\X'\W\X ](\X'\X)^{-1}\label{wmod}
+\end{align}
+of an interesting ``sandwich" form.  The work of \cite{white80} and others suggested estimating $\W$ by a diagonal matrix with entries $\hat{w}_i = k_ie_i^2$, where the $k_i$ are a set of known constants and the $e_i^2$ are the squared ols residuals. Then
+\begin{align}
+\varhat(\bbetahat|\X) &= \hat{\sigma}^2 (\X'\X)^{-1}[\X'\widehat{\W}\X ](\X'\X)^{-1}\label{wmodhat}
+\end{align} 
+could be used in place of (\ref{eq3}) in inference about coefficient estimates.  Several choices of $k_i$ have been proposed \citep{LongErvin00}, including setting $k_i = n/(n-p)$, often called HC1, or setting $k_i = 1/(1-h_i)^2$, where $h_i$ is the leverage \citep[Sec.~8.3.2]{fw19} for the $i$th observation,  often called HC3.  HC1 is available in Stata linear regression routines simply by adding a keyword to the call to the regression procedure.  Since using the sandwich estimator loses very little efficiency in the homoscedastic case, this choice may be used as a matter of course.  In R, there are at least two functions that compute these sandwich estimators, \code{sandwich::vcovHC} and \code{car::hccm}. Both of these functions use HC3 by default but permit use of other choices as options.
+
+While the use of the corrected covariance matrices is benign for most aspects of inference in regression, there are two related areas where this method can lead to incorrect inferences:  testing for outliers, and predicting the response for new units.  
+
+For example, suppose we have a population of $n$ stores whose sales receipts are a mixture of cash sales and credit card sales.  Suppose it is suspected that in $m$ particular stores cash sales are under-reported.  We can model the response reported cash sales, or a transformation of it, with regressors derived from relevant predictors, such as reported credit card sales and demographic and income data on the customers served by each store. Imagine adding $m$ additional regressors to the regression model (\ref{eq1}) that are indicators for the $m$ focal stores at issue.  Assuming the data on these stores are the last $m$ rows of data, the revised model is
+\begin{align}
+\E(\Y|(\X, \Z) &= (\X, \Z)\left(
+   \begin{array}{c}\bbeta \\ 
+                   \bgamma
+   \end{array}\right)  
+   \nonumber \\
+   &= \left(\begin{array}{ll} 
+              \X_1 & \bzero \\
+              \X_2 & \I_m \end{array}\right)
+    \left(\begin{array}{c}\bbeta \\ 
+                   \bgamma
+   \end{array}\right) \label{eq1b}  
+\end{align}
+Both $\X$ and $\Z$ have been partitioned into the first $n-m$ and last $m$ rows; partition $\Y' = (\Y_1', \Y_2')$ similarly. This fits one parameter for each of the $m$ suspect stores.  The coefficients $\bgamma$ correspond to the mean-shift outlier model \citep[Sec.~2.2.2]{CookWeisberg82}, and provide the basis for testing if stores require an additional parameter to model their mean.  Any problem with $m$ cases each with leverage equal to 1 can be shown to be equivalent to this example by a reparameterization.
+
+The ols estimator for the expanded model is 
+\[
+\left(\begin{array}{c}\bbetahat \\ 
+                   \widehat{\bgamma}
+   \end{array}\right)  = [(\X, \Z)'(\X, \Z)]^{-1}(\X, \Z)'\Y
+\]
+Substituting the partitioned forms into this last equation,
+\[
+[(\X, \Z)'(\X, \Z)]^{-1} =
+\left(\begin{array}{cc}
+   \X_1'\X_1 + \X_2'\X_2 & \X_2' \\
+   \X_2 & \I_m \end{array} \right)^{-1}
+\]
+From \cite[Theorem~7.1]{schott97}, 
+\begin{align}
+\left((\X, \Z)'(\X, \Z)\right)^{-1} &=
+\left(\begin{array}{cc}
+   (\X_1\X_1)^{-1}  & -(\X_1\X_1)^{-1}\X_2' \\
+   -\X_2(\X_1\X_1)^{-1} & \I_m + \X_2'(\X_1\X_1)^{-1}\X_2 \end{array} \right)
+\label{eq3c}
+\end{align}
+and the ols estimator is
+\begin{align}
+\left(\begin{array}{c}\bbetahat \\ 
+                   \widehat{\bgamma}
+   \end{array}\right) =
+   \left(\begin{array}{c}
+   (\X_1\X_1)^{-1}\X_1'\Y_1 \\ \Y_2 - \X_2\bbetahat 
+   \end{array}\right) \label{eq2a}
+\end{align}
+We recognize that $\hat{\bgamma}$ is equal the observed values of the response minus the prediction for them from the non-focal cases, sometimes called predicted residuals.  Individual tests concerning each of the $m$ focal cases are obtained using $t$ tests with  estimated $\hat{\gamma}$ divided by $\hat{\sigma}$ times the square root of the corresponding diagonal entry in (\ref{eq3c}). Unlike the standard errors for the $\hat{\beta}$s, the standard errors for the $\gamma$s have an term that does not decrease with sample size. 
+
+\section{Can We Use Hetroscadasticity with Outlier Testing?}
+Consider using a hetroscedasticity corrected standard error.  For the model with the potential outliers, the matrix $\widehat{\W}$ is given by
+\begin{align}
+\widehat{\W} &= \diag([k_i(\Y_1 - \X_1\hat{\bbeta})^2]', \bzero')
+\end{align}
+The last $m$ elements correspond to the focal cases and are exact zeros because observed and fitted values are identical.  Letting $\widehat{\W}_1$ be the first $n-m$ rows and columns of $\widehat{\W}$,
+\begin{equation}
+\X'\widehat{\W}\X 
+= \left(\begin{array}{cc}
+   \X_1'\widehat{\W}_1\X_1 & \bzero \\ \bzero & \bzero \end{array}
+   \right) \label{eq88}
+\end{equation}
+This matrix is of rank $n-m$, as the last $m$ rows and columns are all zeros, and so  the rank of the sandwich estimator is no greater than $n-m$ \cite[Theorem~6.2]{g14} and it is not consistent as an estimate of the covariance of the regression coefficients.  Thus the sandwich estimator should not be used in this setting.
+
+It is instructive to write out the sandwich estimator.
+\begin{align}
+\varhat\left(\left(\begin{array}{c}\bbetahat \\ 
+                   \widehat{\bgamma}
+   \end{array}\right)|\X\right) &= \hat{\sigma}^2 (\X'\X)^{-1}
+[\X'\widehat{\W}\X ](\X'\X)^{-1} \nonumber \\
+&= \hat{\sigma}^2 \left(\begin{array}{cc}
+  (\X_1'\X_1)^{-1}[\X'\widehat{\W}_1\X_1 ](\X_1'\X_1)^{-1} &
+  (\X_1'\X_1)^{-1}\X_2'  \\
+  \X_2(\X_1'\X_1)^{-1} & 
+  \X_2(\X_1'\X_1)^{-1}\X_2' \label{eq9}
+  \end{array}\right)
+\end{align}
+\begin{enumerate}
+\item As previously shown, the sandwich estimator has rank of at most $n-m$.
+\item The sandwich estimator for $\bbeta$, the upper left element of (\ref{eq9}) is correct, in the sense that it is the same estimate that would have been obtained by fitting only to the first $n-m$ cases.
+\item The covariance matrix for the $\hat{\gamma}$s is wrong, as it is just the covariance of the estimated fitted values from the regression ignoring the last $m$ observations.  This covariance matrix will tend to zero as sample size increases, even though each of the $\hat{\gamma}$s is determined by a single observation.  Any inference based on these covariance will be incorrect.
+\item The heteroscedastic model that the true variances are $\sigma^2\W$ for an unknown $\W$ actually precludes any outlier testing because elements of $\W$ for the focal units are unknown, so no meaningful variance can be computed for the predictions.
+\end{enumerate}
+
+\section{Moral}
+Don't use the sandwich type estimates in prediction problems or to identify outliers. Do the work to find a get a model like (\ref{eq1}-\ref{eq2}) that fulfills assumptions.
+
+\bibliography{hccm.bib}
+
+\end{document}
+
+
+
+
+
