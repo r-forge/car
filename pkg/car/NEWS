@@ -1,6 +1,6 @@
 Changes to Version 3.1-1
 
-  o Fixed bug in hccm: when some cases are fit exactly all versions of the hccm estimate are singular and inconsistent.  A error message is now returned.
+  o Fixed bug in hccm(): when some cases are fit exactly all versions of the hccm estimate are singular and inconsistent.  A error message is now returned.
   
   o Fixed bug in Anova.survreg() for Wald tests (reported by Megan Taylor Jones), which failed with a spurious "missing residual df" error.
   
