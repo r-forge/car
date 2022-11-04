@@ -25,6 +25,7 @@
 # 2017-11-30: substitute carPalette() for palette(). J. Fox
 # 2019-11-14: change class(x) == "y" to inherits(x, "y")
 # 2018-08-06: enabled spread and var for smoothers. J. Fox
+# 2022-11-03: convert one-column matrix regressor to vector. J. Fox
 
 residualPlots <- function(model, ...){UseMethod("residualPlots")}
 
@@ -164,6 +165,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
             "Linear Predictor" else "Fitted values"} else variable
     lab <- if(!missing(xlab)) xlab else lab
     if(class(horiz)[1] == "ordered") horiz <- factor(horiz, ordered=FALSE)
+    if (is.matrix(horiz) && ncol(horiz) == 1) horiz <- as.vector(horiz)
     ans <-
         if(inherits(horiz, "poly")) {
             horiz <- horiz[ , 1]
