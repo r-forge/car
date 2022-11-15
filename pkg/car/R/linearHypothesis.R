@@ -40,7 +40,8 @@
 #   2020-12-21: regularize handling of vcov. arg. Sandy and John
 #   2020-12-21: new matchCoefs.lmList() method, which covers nlsList objects. John
 #   2020-12-21: added linearHypothesis.lmList(). John
-#   2922-04-24: introduce new error.df argument for linearHypothesis.default(). John
+#   2022-04-24: introduce new error.df argument for linearHypothesis.default(). John
+#   2022-11-14: make printHypothesis() more tolerant of coefficient names. John
 #----------------------------------------------------------------------------------------------------
 
 # vcov.default <- function(object, ...){
@@ -139,12 +140,20 @@ makeHypothesis <- function(cnames, hypothesis, rhs = NULL){
 }
 
 printHypothesis <- function(L, rhs, cnames){
+  hyps <- rownames(L)
 	hyp <- rep("", nrow(L))
 	for (i in 1:nrow(L)){
 		sel <- L[i,] != 0
 		h <- L[i, sel]
 		h <- ifelse(h < 0, as.character(h), paste("+", h, sep=""))
 		nms <- cnames[sel]
+		if (any(grepl("[-+*/]", nms))) {
+		  if (!is.null(hyps)) {
+		    h <- hyps[i]
+		    hyp[i] <- if (grepl("=[^ ]", h)) sub("=", " = ", h) else h
+		  }
+		  next
+		}
 		h <- paste(h, nms)
 		h <- gsub("-", " - ", h)
 		h <- gsub("+", "  + ", h, fixed=TRUE)
@@ -165,6 +174,7 @@ printHypothesis <- function(L, rhs, cnames){
 		h <- sub("^ *", "", h)
 		hyp[i] <- h
 	}
+	if (any(hyp == "")) hyp <- ""
 	hyp
 }
 

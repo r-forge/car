@@ -3,6 +3,8 @@ Changes to Version 3.1-2
   o Use t-distribution for score tests in boxTidwell() and add omnibus score test (suggestions of Peter Dalgaard).
   
   o residualPlots() is no longer confused by a one-column matrix regressor, produced, e.g., by scale() (issue reported by Tom Wenseleers).
+  
+  o Make the printed formating of hypotheses in linearHypothesis() more tolerant of coefficients with certain non-standard names (after issue reported by Matthieu Stigler).
 
 Changes to Version 3.1-1
 
