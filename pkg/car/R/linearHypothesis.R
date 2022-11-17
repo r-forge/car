@@ -142,15 +142,23 @@ makeHypothesis <- function(cnames, hypothesis, rhs = NULL){
 printHypothesis <- function(L, rhs, cnames){
   hyps <- rownames(L)
 	hyp <- rep("", nrow(L))
+	warning.flag <- FALSE
 	for (i in 1:nrow(L)){
 		sel <- L[i,] != 0
 		h <- L[i, sel]
 		h <- ifelse(h < 0, as.character(h), paste("+", h, sep=""))
 		nms <- cnames[sel]
-		if (any(grepl("[-+*/]", nms))) {
+		if (any(which.bad <- grepl("[-+*/]", nms))) {
 		  if (!is.null(hyps)) {
 		    h <- hyps[i]
 		    hyp[i] <- if (grepl("=[^ ]", h)) sub("=", " = ", h) else h
+		  } else {
+		    if (!warning.flag){
+		      warning.flag <- TRUE
+		      warning("one or more coefficients in the hypothesis include\n",
+		              "     arithmetic operators in their names;\n",
+		              "  the printed representation of the hypothesis will be omitted")
+		    }
 		  }
 		  next
 		}
@@ -178,11 +186,13 @@ printHypothesis <- function(L, rhs, cnames){
 	hyp
 }
 
-linearHypothesis <- function (model, ...)
-	UseMethod("linearHypothesis")
+linearHypothesis <- function (model, ...){
+  UseMethod("linearHypothesis")
+}
+
 
 lht <- function (model, ...)
-	UseMethod("linearHypothesis")
+	linearHypothesis(model, ...)
 	
 linearHypothesis.lmList <- function(model,  ..., vcov.=vcov, coef.=coef){
    vcov.List <- function(object, ...) {
