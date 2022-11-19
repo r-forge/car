@@ -40,12 +40,12 @@ hccm.lm <-function (model, type = c("hc3", "hc0", "hc1", "hc2", "hc4"),
 	bad <- which(h > 1 - sqrt(.Machine$double.eps))
 	if(length(bad) > 0){
 	  nms <- names(residuals(model))
-	  stop("hatvalues (leverages) close to 1 for the following cases:\n", 
+	  stop("hatvalues (leverages) equal to or very close to 1 for the following cases:\n", 
 	       if(length(bad) <=  10) paste(nms[bad], collapse=", ") else
 	         paste0(paste(nms[bad[1:10]], collapse=", "), ", ..."),"\n",
-	       "For type equal to hc1, hc2 or hc3 the hccm is undefined.\n",
-	       "For type equal to hc0 or hc1 the hccm is singular and therefore\n",
-	       "not a consistent estimate of the covariance matrix.  ")
+	       "For type = 'hc1', 'hc2', or 'hc3' the hccm is undefined.\n",
+	       "For type = 'hc0' or 'hc4' the hccm is singular and therefore\n",
+	       "not a consistent estimator of the coefficient covariance matrix.")
 	}
 # end error checking 1
 	X <- model.matrix(model)[, !aliased, drop=FALSE]
@@ -58,7 +58,9 @@ hccm.lm <-function (model, type = c("hc3", "hc0", "hc1", "hc2", "hc4"),
 	V <- V %*% t(X) %*% apply(X, 2, "*", (e^2)/factor) %*% V
 # error checking 2:  Is V singular?
 	if (qr(V)$rank < p)
-	  stop("hccm estimator is singular with rank ", qr(V)$rank, ".  It is inconsistent as an estimate of the covariance matrix of the estimates which has rank ", p, ". This is caused by hatvalues (leverages) equal to 1 or ill-conditioning of the model matrix.")
+	  stop("hccm estimator is singular with rank ", qr(V)$rank, 
+	       ".\nIt is inconsistent as an estimate of the covariance matrix\nof the regression coefficients, which has rank ", p, 
+	       ".\nThis is caused by ill-conditioning of the model matrix.")
 	V
 }
 

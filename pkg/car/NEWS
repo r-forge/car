@@ -1,6 +1,6 @@
 Changes to Version 3.1-2
  
-  o Fixed hccm to return correct error message when regressors are ill-conditioned.
+  o Fixed hccm() to return a correct error message when regressors are ill-conditioned.
   
   o Use t-distribution for score tests in boxTidwell() and add omnibus score test (suggestions of Peter Dalgaard).
   
