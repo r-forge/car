@@ -42,6 +42,7 @@
 #   2020-12-21: added linearHypothesis.lmList(). John
 #   2022-04-24: introduce new error.df argument for linearHypothesis.default(). John
 #   2022-11-14: make printHypothesis() more tolerant of coefficient names. John
+#   2022-12-11: unexported coef.multinom() now uses . rather than : as coef-name separator. John
 #----------------------------------------------------------------------------------------------------
 
 # vcov.default <- function(object, ...){
@@ -604,7 +605,7 @@ coef.multinom <- function(object, ...){
 	cn <- colnames(b)
 	rn <- rownames(b)
 	b <- as.vector(t(b))
-	names(b) <- as.vector(outer(cn, rn, function(c, r) paste(r, c, sep=":")))
+	names(b) <- as.vector(outer(cn, rn, function(c, r) paste(r, c, sep=".")))
 	b
 }
 
