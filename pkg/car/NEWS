@@ -9,6 +9,8 @@ Changes to Version 3.1-2
   o Make the printed formating of hypotheses in linearHypothesis() more tolerant of coefficients with certain non-standard names (after issue reported by Matthieu Stigler).
   
   o Tweak linearHypothesis() for multinom models and add example.
+  
+  o Update scatter3d() and crPlot3d() to use rgl::*3d() functions; requires rgl (>= 0.111.3) (patch courtesy of Duncan Murdoch).
 
 Changes to Version 3.1-1
 
