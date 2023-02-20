@@ -13,10 +13,9 @@
 \alias{tukeyNonaddTest}
 \title{Residual Plots for Linear and Generalized Linear Models}
 \description{
-Plots the residuals versus each term in a mean function and versus
-fitted values.  Also computes a curvature test for each of the plots
-by adding a quadratic term and testing the quadratic to be zero.  For linear models, this
-is Tukey's test for nonadditivity when plotting against fitted values.
+Draws a plot or plots of residuals versus one or more term in a mean function and/or versus
+fitted values.  For linear models curvature tests are computed for each of the plots
+by adding a quadratic term to the regression function and testing the quadratic to be zero.  This is Tukey's test for nonadditivity when plotting against fitted values.
 }
 \usage{
 ### This is a generic function with only one required argument:
@@ -55,13 +54,13 @@ A regression object.
 }
   \item{terms}{
 A one-sided formula that specifies a subset of the factors and the regressors that appear in the formula that defined the model. The default
-\code{~ .} is to plot against all first-order terms, both regressors and factors.  Higher order terms are skipped.  For example, the
-specification \code{terms = ~ . - X3} would plot against all regressors
+\code{~ .} is to plot against all first-order terms, both regressors and factors.  Interactions between first-order terms are skipped.  For example, the
+specification \code{terms = ~ . - X3} would plot against all terms
 except for \code{X3}.  To get a plot against fitted values only, use the
-arguments \code{terms = ~ 1}.  Interactions are skipped.
-For polynomial terms, the
-plot is against the first-order variable (which may be centered and scaled
-depending on how the \code{poly} function is used).  Plots against factors
+arguments \code{terms = ~ 1}.  
+For polynomial terms generated using the \code{poly} function, the
+plot is against the first-order variable, which may be centered and scaled
+depending on how the arguments to the \code{poly} function.  Plots against factors
 are boxplots.  Plots against other matrix terms, like splines, use the
 result of \code{predict(model), type="terms")[, variable])} as the
 horizontal axis; if the \code{predict} method doesn't permit this type,
@@ -74,7 +73,7 @@ also be done separately for each level of group.
 }
   \item{layout}{
 If set to a value like \code{c(1, 1)} or \code{c(4, 3)}, the layout
-of the graph will have this many rows and columns.  If not set, the program
+of the graph will have this many rows and columns per "page" with a prompt given the in console to change to the next page.  If not set, the program
 will select an appropriate layout.  If the number of graphs exceed nine, you
 must select the layout yourself, or you will get a maximum of nine per page.
 If \code{layout=NA}, the function does not set the layout and the user can
@@ -111,16 +110,11 @@ Quoted variable name for the factor or regressor to be put on the horizontal axi
 the default \code{"fitted"} to plot versus fitted values.
 }
   \item{type}{
-Type of residuals to be used.  Pearson residuals are
-appropriate for \code{lm} objects since these are equivalent to ordinary residuals
-with ols and correctly weighted residuals with wls.  Any quoted string that
-is an appropriate value of the \code{type} argument to
-\code{\link{residuals.lm}} or \code{"rstudent"} or \code{"rstandard"} for
-Studentized or standardized residuals.
+Specifies the type of residual to be plotted.  Any of \code{c("working", "response", "deviance", "pearson", "partial", "rstudent", "rstandard")} may be specified.  The default \code{type = "pearson"} is usually appropriate, since it is equal to ordinary residuals observed minus fit with ols, and correctly weighted residuals with wls or for a glm.  The last two options use the \code{\link{rstudent}} and \code{\link{rstandard}} functions and use studentized or standardized residuals.
 }
   \item{groups}{A grouping indicator.  Points in different
 groups will be plotted with different colors and symbols. If missing, no grouping is used.  In \code{residualPlots}, the grouping variable can also be set in the \code{terms}
-argument, as described above.  The default is no grouping.  If used, the \code{groups} argument shoud be a vector of values of the same length as the vector of residuals, for example \code{groups = subject} where \code{subject} indicates the grouping.
+argument, as described above.  The default is no grouping.  If used, the \code{groups} argument ? be a vector of values of the same length as the vector of residuals, for example \code{groups = subject} where \code{subject} indicates the grouping.
 }
   \item{linear}{If \code{TRUE}, adds a horizontal line at zero if no groups.
 With groups, display the within level of groups ols regression of the residuals
@@ -181,7 +175,7 @@ skipped.  In addition terms that use the \dQuote{as-is} function, e.g., \code{I(
 will also be skipped unless you set the argument \code{AsIs=TRUE}.  A plot of
 residuals versus fitted values is also included unless \code{fitted=FALSE}.
 
-In addition to plots, a table of curvature tests is displayed. For plots
+A table of curvature tests is displayed for linear models. For plots
 against a term in the model formula, say \code{X1}, the test displayed is
 the t-test for for \code{I(X1^2)} in the fit of \code{update, model, ~. + I(X1^2))}.
 Econometricians call this a specification test.  For factors, the displayed
