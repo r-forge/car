@@ -125,7 +125,7 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
                                  smooth=FALSE, id=FALSE,
                                  col = carPalette()[1], col.quad = carPalette()[2],
                                  pch=1,
-                                 xlab, ylab, lwd=1, lty=1,
+                                 xlab, ylab, lwd=1, 
                                  grid=TRUE, key=!missing(groups), ...) {
     id <- applyDefaults(id, defaults=list(method="r", n=2, cex=1, col=carPalette()[1], location="lr"), type="id")
     if (isFALSE(id)){
@@ -235,14 +235,14 @@ residualPlot.default <- function(model, variable = "fitted", type = "pearson",
                     if(missing(groups)){
                         if(length(unique(horiz)) > 2){
                             lm2 <- lm(theResiduals ~ poly(horiz, 2))
-                            lines(new, predict(lm2, list(horiz=new)), lty=lty, lwd=lwd, col=col.quad)
+                            lines(new, predict(lm2, list(horiz=new)), lty=1, lwd=lwd, col=col.quad)
                         }} else {
                             for (g in 1:length(levels(groups))){
                                 if(length(unique(horiz)) > 2){
                                     lm2 <- lm(theResiduals~poly(horiz, 2),
                                               subset=groups==levels(groups)[g])
                                     lines(new, predict(lm2, list(horiz=new)), 
-                                          lty=lty, lwd=lwd, col=colors[g])
+                                          lty=1, lwd=lwd, col=colors[g])
                                 }}}}
                 if(is.function(smoother))
                     if(missing(groups)){

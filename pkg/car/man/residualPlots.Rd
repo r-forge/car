@@ -22,9 +22,9 @@ by adding a quadratic term to the regression function and testing the quadratic 
 
 residualPlots (model, ...)
 
-\S3method{residualPlots}{default}(model, terms = ~., layout = NULL, ask,
-                 main = "", fitted=TRUE, AsIs=TRUE, plot=TRUE,
-                 tests = TRUE, groups, ...)
+\S3method{residualPlots}{default}(model, terms= ~ . , 
+            layout=NULL, ask, main="", 
+            fitted=TRUE, AsIs=TRUE, plot=TRUE, tests=TRUE, groups, ...)
 
 \S3method{residualPlots}{lm}(model, ...)
 
@@ -36,12 +36,11 @@ residualPlots (model, ...)
 residualPlot(model, ...)
 
 \S3method{residualPlot}{default}(model, variable = "fitted", type = "pearson",
-     groups, plot = TRUE, linear = TRUE,
-     quadratic = if(missing(groups)) TRUE else FALSE,
+     groups, plot = TRUE, linear = TRUE,     
+     quadratic = if(missing(groups)) TRUE else FALSE, 
      smooth=FALSE, id=FALSE,
      col = carPalette()[1], col.quad = carPalette()[2], pch=1,
-     xlab, ylab, lwd=1, 
-     grid=TRUE, key=!missing(groups), ...)
+     xlab, ylab, lwd=1, grid=TRUE, key=!missing(groups), ...)
 
 \S3method{residualPlot}{lm}(model, ...)
 
@@ -93,7 +92,7 @@ Main title for the graphs.  The default is \code{main=""} for no title.
 If \code{TRUE}, the default, include the plot against fitted values.
 }
   \item{AsIs}{
-Some terms in a model formula use the as-is or identity function, for example a term like \code{I(X^2)} to include a quadratic.  These terms will be skipped in plotting if \code{AsIs} is \code{FALSE}.  The default is \code{TRUE}
+Some terms in a model formula use the as-is or identity function, for example a term like \code{I(X^2)} to include a quadratic.  These terms will be skipped in plotting if \code{AsIs} is \code{FALSE}.  The default is \code{TRUE}.
 }
   \item{plot}{
 If \code{TRUE}, draw the plot(s).
@@ -209,7 +208,7 @@ Linear Regression}, Fourth Edition, Wiley, Chapter 8}
 
 
 \examples{
-m1 <- lm(prestige ~ income, data=Prestige)
+m1 <- lm(prestige ~ income + type, data=Prestige)
 residualPlots(m1)
 residualPlots(m1, terms= ~ 1 | type) # plot vs. yhat grouping by type
 }
