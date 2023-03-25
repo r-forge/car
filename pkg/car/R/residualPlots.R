@@ -59,9 +59,11 @@ residualPlots.default <- function(model, terms= ~ . ,
 # End addition
 # construct list of names of horizontal terms
   model.terms <- names(update(model, method="model.frame"))[-1] # remove response
-  offsets <- which(substr(model.terms, 1, 7) == "offset(") 
-  if(any(offsets)) model.terms <- model.terms[-offsets] # remove offsets
   use.terms <- names(update(model, terms, method="model.frame"))[-1] # remove response
+  offsets <- which(substr(use.terms, 1, 7) == "offset(") 
+  if(any(offsets)) use.terms <- use.terms[-offsets] # remove offsets
+  wts <- which(use.terms == "(weights)")
+  if(any(wts)) use.terms <- use.terms[-wts] # remove weights
   AsIss <- which(substr(use.terms, 1, 2) == "I(" ) #)
   if(any(AsIss) & !AsIs) use.terms <- use.terms[-AsIss] # remove I() is AsIs=FALSE
   if( !all(use.terms %in% model.terms))
