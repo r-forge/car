@@ -1,4 +1,8 @@
 Changes to Version 3.1-2
+
+  o Clarify docs to explain that ... argument is not passed to .vcov when it's a function in calls to Anova(), confidence Elliipse(), Confint(), deltaMethod(), linearHypothesis(), and S() (suggestion of Joe Ritter).
+
+Changes to Version 3.1-2
  
   o Fixed bugs in interface for residualPlots() and residualPlot()
   

@@ -62,7 +62,11 @@ deltaMethod(object, ...)
   other methods, this argument must either provide the estimated covariance
   matrix or a function that when applied
   to \code{object} returns a covariance matrix.  The default is 
-  to use the function \code{vcov}.}
+  to use the function \code{vcov}.
+  
+  Note that arguments supplied to \code{...} are \emph{not} passed to \code{vcov.} when it's a function; in this case either use an anonymous function in which the 
+    additional arguments are set, or supply the coefficient covariance matrix directly.
+  }
   \item{func}{A quoted string used to annotate output.  The default of
   \code{func = g.} is usually appropriate.}
   \item{parameterNames}{A character vector of length \code{p} that gives the 

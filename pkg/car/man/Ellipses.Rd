@@ -88,7 +88,11 @@ confidenceEllipses(model, ...)
     will be selected.}
   \item{vcov.}{a coefficient-covariance matrix or a function (such as \code{\link{hccm}}) to 
     compute the coefficent-covariance
-    matrix from \code{model}; the default is the \code{vcov} function.}
+    matrix from \code{model}; the default is the \code{vcov} function.
+    
+    Note that arguments supplied to \code{...} are \emph{not} passed to \code{vcov.} when it's a function; in this case either use an anonymous function in which the 
+    additional arguments are set, or supply the coefficient covariance matrix directly.
+    }
   \item{L}{As an alternative to selecting coefficients to plot, a transformation matrix can be specified to compute two
     linear combinations of the coefficients; if the \code{L} matrix is given, it takes precedence over the \code{which.coef}
     argument. \code{L} should have two rows and as many columns as there are coefficients. It can be given directly as a

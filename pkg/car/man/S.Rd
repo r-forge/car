@@ -122,7 +122,12 @@ a model or other object, e.g., of class \code{"lm"} as produced by a call to \co
    when called with \code{object} as an argument returns an estimated covariance matrix of the estimates.
    The default of \code{vcov. = vcov} uses the usual estimated covariance matrix.  Other choices include
    the functions documented at \code{\link{hccm}}.  See example below for using a bootstrap to estimate  the
-   covariance matrix.  For the \code{glm} methods of \code{Confint} and \code{S}, if the \code{vcov.} or
+   covariance matrix.  
+   
+   Note that arguments supplied to \code{...} are \emph{not} passed to \code{vcov.} when it's a function; in this case either use an anonymous function in which the 
+    additional arguments are set, or supply the coefficient covariance matrix directly.
+   
+   For the \code{glm} methods of \code{Confint} and \code{S}, if the \code{vcov.} or
    \code{dispersion} argument is specified, then Wald-based confidence limits are computed;
    otherwise the reported confidence limits are computed by profiling the likelihood.
    NOTE:  The \code{dispersion} and \code{vcov.} arguments may not \emph{both} be specified.
