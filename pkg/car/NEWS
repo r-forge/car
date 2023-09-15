@@ -1,6 +1,10 @@
-Changes to Version 3.1-2
+Changes to Version 3.1-3
 
   o Clarify docs to explain that ... argument is not passed to .vcov when it's a function in calls to Anova(), confidence Elliipse(), Confint(), deltaMethod(), linearHypothesis(), and S() (suggestion of Joe Ritter).
+  
+  o make dataEllipse() generic and add default and formula methods (with help of Michael Friendly).
+  
+  o Small changes to docs.
 
 Changes to Version 3.1-2
  

@@ -83,7 +83,7 @@ spm(x, ...)
   \item{col}{colors for points; the default is \code{\link{carPalette}} starting at the second color. The color of
     the \code{regLine} and \code{smooth} are the same as for points but can be changed using the the
     \code{regLine} and \code{smooth} arguments.}
-  \item{cex}{relative size of plotted points}
+  \item{cex}{relative size of plotted points. You can use \code{cex = 0.001} to suppress the plotting of points if all you want to show are other graphical features, such as data ellipses, regression lines, smooths, etc. }
   \item{cex.axis}{relative size of axis labels}
   \item{cex.labels}{relative size of labels on the diagonal}
   \item{cex.main}{relative size of the main title, if any}

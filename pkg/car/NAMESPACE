@@ -1,6 +1,7 @@
 # last modified 2022-10-04 by J. Fox
-
 # additions for car >= 3.0-0, started 2016-12-27
+# 2023-08-28 MF: import grDevices::adjustcolor
+# 2023-08-30 MF: make dataEllipse generic, adding .default and .formula methods
 
 export(Import, Export, Predict, bcnPowerAxis)
 export(Confint, S, carPalette, poTest, brief)
@@ -77,13 +78,14 @@ importFrom("utils", "download.file", "capture.output", "askYesNo", "browseURL", 
 
 importFrom("grDevices", "as.graphicsAnnot", "xy.coords")
 importFrom("stats", "runif")
+#importFrom("heplots", "label.ellipse")  errors with 'cyclic dependency detected'
 
 #  from earlier versions car package
 
 importFrom(graphics, abline, arrows, axis, box, boxplot, contour, hist, identify,
     layout, legend, lines, locator, mtext, pairs, par, plot, points, polygon,
     rug, segments, strheight, strwidth, text, title)
-importFrom(grDevices, boxplot.stats, col2rgb, gray, palette, rgb)
+importFrom(grDevices, boxplot.stats, col2rgb, gray, palette, rgb, adjustcolor)              # MF
 importFrom(stats, D, IQR, alias, anova, as.formula, binomial, bw.nrd0, coef, coefficients,
     complete.cases, confint, contrasts, "contrasts<-", cooks.distance, cor,
     cov, cov.wt, cov2cor, density, deviance, df.residual, dfbeta, dnorm,
@@ -97,6 +99,7 @@ importFrom(stats, D, IQR, alias, anova, as.formula, binomial, bw.nrd0, coef, coe
     optimHess)
 importFrom(utils, browseURL, head, methods)
 # importFrom(VGAM, vcovvlm, coefvlm, formulavlm, model.matrixvlm)
+importFrom(Formula, as.Formula)
 
 export(
     .carEnv,
@@ -393,6 +396,10 @@ S3method(vif, svyolr)
 S3method(symbox, formula)
 S3method(symbox, default) # added with bcnPower
 S3method(symbox, lm)
+
+S3method(dataEllipse, default)     # MF
+S3method(dataEllipse, formula)     # MF
+
 
 # methods related to Boot
 S3method(Boot, default)

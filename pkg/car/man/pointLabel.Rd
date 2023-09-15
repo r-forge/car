@@ -71,7 +71,7 @@ pointLabel(x, y = NULL, labels = seq(along = x), cex = 1,
 
 \url{https://en.wikipedia.org/wiki/Automatic_label_placement}
 
-\url{https://i11www.iti.uni-karlsruhe.de/map-labeling/bibliography/}
+Old URL: \code{https://i11www.iti.uni-karlsruhe.de/map-labeling/bibliography/}
 
 \url{http://www.eecs.harvard.edu/~shieber/Projects/Carto/carto.html}
 

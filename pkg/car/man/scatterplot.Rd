@@ -109,7 +109,7 @@ sp(x, ...)
     value returned by \code{\link{carPalette}[-1]}.}
   \item{pch}{plotting characters for points; default is the plotting characters in
     order (see \code{\link{par}}).}
-  \item{cex}{sets the size of plotting characters, with \code{cex=1} the standard size.  You can also
+  \item{cex}{sets the size of plotting characters, with \code{cex=1} the standard size. You can use \code{cex = 0} to suppress the plotting of points if all you want to show are other graphical features, such as data ellipses, regression lines, smooths, etc.  You can also
     set the sizes of other elements with the arguments \code{cex.axis}, \code{cex.lab}, \code{cex.main},
     and \code{cex.sub}.  See \code{\link{par}}.}
   \item{reset.par}{if \code{TRUE} (the default) then plotting parameters are reset to their previous values
