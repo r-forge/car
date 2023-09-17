@@ -30,23 +30,11 @@
 # 2023-08-31: make dataEllipse generic; add formula method. MF
 # 2023-09-03: fix formula method using Formula::as.Formula. JF
 # 2023-09-03: test formula method & label.pos. MF
+# 2023-09-16: tweak code, add label.xpd arg. JF
 
 ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5, segments=51, draw=TRUE, add=draw, 
 		xlab="", ylab="", col=carPalette()[2], lwd=2, fill=FALSE, fill.alpha=0.3,
 		grid=TRUE, ...) {
-#	trans.colors <- function(col, alpha=0.5, names=NULL) {
-#		# this function by Michael Friendly
-#		nc <- length(col)
-#		na <- length(alpha)
-#		# make lengths conform, filling out to the longest
-#		if (nc != na) {
-#			col <- rep(col, length.out=max(nc,na))
-#			alpha <- rep(alpha, length.out=max(nc,na))
-#		}
-#		clr <-rbind(col2rgb(col)/255, alpha=alpha)
-#		col <- rgb(clr[1,], clr[2,], clr[3,], clr[4,], names=names)
-#		col
-#	}
 	logged <- function(axis=c("x", "y")){
 		axis <- match.arg(axis)
 		0 != length(grep(axis, log))
@@ -98,13 +86,12 @@ dataEllipse.default <- function(x, y, groups,
     col=if (missing(groups)) carPalette()[1:2] else carPalette()[1:length(group.levels)],
     pch=if (missing(groups)) 1 else seq(group.levels),
     lwd=2, fill=FALSE, fill.alpha=0.3, grid=TRUE, id=FALSE,
-    label.pos=NULL,    # MF added
-    label.cex = 1.25,  # MF added
+    label.pos=NULL, label.cex = 1.25, label.xpd=FALSE,
     ...) {
  
 #   copied from heplots::label.ellipse
     label.ellipse <- function(ellipse, label, col="black", 
-                            label.pos=NULL, xpd=TRUE, 
+                            label.pos=NULL, xpd=FALSE, 
                             tweak=0.5*c(strwidth("M"), strheight("M")), ...){
     
     ellipse <- as.matrix(ellipse)
@@ -234,7 +221,7 @@ dataEllipse.default <- function(x, y, groups,
             lpos <- if(!is.null(label.pos) & length(label.pos)==1) label.pos else label.pos[lev]                                                      # MF
             #cat("Level: ", level, " label.pos: ", lpos, "\n")
             result[[lev]] <- dataEllipse(x[sel], y[sel],
-                label.pos = lpos, label.cex = label.cex,                                # MF
+                label.pos = lpos, label.cex = label.cex, label.xpd = label.xpd,                               # MF
                 weights=weights[sel], log=log, levels=levels, center.pch=center.pch,
                 center.cex=center.cex, draw=draw, plot.points=plot.points, add=TRUE, segments=segments,
                 robust=robust, col=rep(col[lev], 2), pch=pch[lev], lwd=lwd, fill=fill, fill.alpha=fill.alpha,
@@ -279,7 +266,8 @@ dataEllipse.default <- function(x, y, groups,
 
         if (!missing(ellipse.label)) {
             lab <- if (length(ellipse.label) < i) ellipse.label[1] else ellipse.label[i]
-            label.ellipse(result[[i]], lab, col[2], label.pos = label.pos, cex = label.cex, ...)      # MF
+            label.ellipse(result[[i]], lab, col[2], label.pos = label.pos, cex = label.cex, 
+                          xpd=label.xpd, ...)      # MF
         }
     }
     if (missing(labels)) labels <- seq(length(x))

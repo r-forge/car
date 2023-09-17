@@ -36,7 +36,7 @@ dataEllipse(x, ...)
   col=if (missing(groups)) carPalette()[1:2] else carPalette()[1:length(group.levels)],
   pch=if (missing(groups)) 1 else seq(group.levels),
   lwd=2, fill=FALSE, fill.alpha=0.3, grid=TRUE, id=FALSE, 
-  label.pos = NULL, label.cex = 1.25, ...)
+  label.pos=NULL, label.cex=1.25, label.xpd=FALSE, ...)
 
 confidenceEllipse(model, ...)
 
@@ -91,7 +91,8 @@ confidenceEllipses(model, ...)
   \item{ellipse.label}{a label for the ellipse(s) or a vector of labels; if several ellipses are drawn and just one label is given,
     then that label will be repeated. The default is not to label the ellipses.}
   \item{label.pos}{position(s) of labels for the ellipses, a vector of integers (in 0:4) or character strings (in c("center", "bottom", "left", "top", "right"), or in c("C", "S", "W", "N", "E") used in labeling ellipses, recycled as necessary. Values of 1, 2, 3 and 4, respectively indicate positions below, to the left of, above and to the right of the max/min coordinates of the ellipse; the value 0 specifies the centroid of the ellipse object. The default, \code{label.pos=NULL} uses the correlation of the ellipse to determine "top" (r>=0) or "bottom" (r<0)}.
-  \item{label.cex}{Character size for ellipse labels.}
+  \item{label.cex}{character size for ellipse labels.}
+  \item{label.xpd}{allow labels to be drawn outside of plotting region (default \code{FALSE}).}
   \item{weights}{a numeric vector of weights, of the same length as \code{x} and \code{y} to be used  by \code{\link{cov.wt}}
     or \code{\link{cov.trob}} in computing a weighted covariance matrix; if absent, weights of \code{1} are used.}
   \item{plot.points}{if \code{FALSE} data ellipses are drawn,
@@ -188,6 +189,9 @@ dataEllipse(Duncan$income, Duncan$education, levels=0.1*1:9,
 # formula method
 dataEllipse(education ~ income | type, data=Duncan,
             levels = 0.68)
+
+dataEllipse(education ~ income | type, data=Duncan, 
+            levels=0.68, label.xpd=TRUE)
 
 # vary label positions
 dataEllipse(education ~ income | type, data=Duncan,
