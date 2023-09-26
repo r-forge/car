@@ -6,6 +6,8 @@ Changes to Version 3.1-3
   
   o linearHypothesis() no longer issues a warning when a hypothesis matrix is supplied for coefficients whose names include arithmetic operators (following report by Robert Baer about unnecessary warnings printed by Anova(), which calls linearHypothesis()).
   
+  o deltaMethod() now allows models with aliased coefficients when argument singular.ok=TRUE.
+  
   o Small changes to docs.
 
 Changes to Version 3.1-2

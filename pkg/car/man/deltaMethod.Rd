@@ -24,7 +24,7 @@ with known or estimated covariance matrix.
 deltaMethod(object, ...)
 
 \method{deltaMethod}{default}(object, g., vcov., func=g., constants, level=0.95, 
-  rhs, ..., envir=parent.frame())
+  rhs, singular.ok=FALSE, ..., envir=parent.frame())
 \method{deltaMethod}{lm} (object, g., vcov.=vcov(object, complete=FALSE), 
            parameterNames=names(coef(object)), ..., envir=parent.frame())
 \method{deltaMethod}{nls}(object, g., vcov.=vcov(object, complete=FALSE), ..., envir=parent.frame())
@@ -80,6 +80,7 @@ deltaMethod(object, ...)
   \item{level}{level for confidence interval, default \code{0.95}.}
   \item{rhs}{hypothesized value for the specified function of parameters; if absent
   no hypothesis test is performed.}
+  \item{singular.ok}{if \code{TRUE} (the default is \code{FALSE}), aliased coefficients are eliminated from the coefficient vector and covariance matrix; otherwise, aliased coefficients produce an error.}
   \item{...}{Used to pass arguments to the generic method.}
   \item{envir}{Environment in which \code{g.} is evaluated; not normally specified by the user.}
 }
