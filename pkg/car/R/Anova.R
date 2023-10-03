@@ -1290,7 +1290,7 @@ Anova.coxph <- function(mod, type=c("II","III", 2, 3), test.statistic=c("LR", "W
     test.statistic <- "Wald"
   }
   rhs <- as.character(formula(mod))[[3]]
-  if (grepl("tt\\(", rhs)){
+  if (test.statistic == "LR" && grepl("tt\\(", rhs)){
     warning("LR tests unavailable for models using the tt argument\n  Wald tests substituted")
     test.statistic <- "Wald"
   }
