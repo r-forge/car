@@ -20,6 +20,7 @@
 %   2021-06-14: updates for vcov. arg. J. Fox
 %   2022-04-24: added error.df argument to Anova.default(). J. Fox
 %   2022-06-07: added Anova.svycoxph(). J. Fox
+%.  2023-10-03: added qualification about tt arg for Cox models. J. Fox
 %-------------------------------------------------------------------------------------
 
 \name{Anova}
@@ -154,7 +155,7 @@ Manova(mod, ...)
   \item{test.statistic}{for a generalized linear model, whether to calculate
     \code{"LR"} (likelihood-ratio), \code{"Wald"}, or \code{"F"} tests; for a Cox
     or Cox mixed-effects model, whether to calculate \code{"LR"} (partial-likelihood ratio) or
-    \code{"Wald"} tests; in the default case or for linear mixed models fit by
+    \code{"Wald"} tests (with \code{"LR"} tests unavailable for Cox models using the \code{tt} argument); in the default case or for linear mixed models fit by
     \code{lmer}, whether to calculate Wald \code{"Chisq"} or Kenward-Roger
     \code{"F"} tests with Satterthwaite degrees of freedom (\emph{warning:} the KR F-tests
     can be very time-consuming).

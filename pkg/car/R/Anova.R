@@ -73,7 +73,8 @@
 # 2022-06-07: Added Anova.svycoxph(). JF
 # 2022-07-22: Fix bug in Anova.survreg() for Wald tests (reported by Megan Taylor Jones). JF
 # 2022-07-22: Make Anova.lm() more robust when there are aliased coefficients (following report by Taiwo Fagbohungbe). JF
-# 2022-07-27:  Tweaked the last fix so the tolerance for deciding rank is the same for the lm model and the temporary glm model. SW
+# 2022-07-27: Tweaked the last fix so the tolerance for deciding rank is the same for the lm model and the temporary glm model. SW
+# 2023-10-03: Suppress LR tests for "coxph" models using the tt argument (following bug report by Ken Beath). JF
 
 #-------------------------------------------------------------------------------
 
@@ -1286,6 +1287,11 @@ Anova.coxph <- function(mod, type=c("II","III", 2, 3), test.statistic=c("LR", "W
   test.statistic <- match.arg(test.statistic)
   if (length((mod$rscore) > 0) && (test.statistic == "LR")){ 
     warning("LR tests unavailable with robust variances\n  Wald tests substituted")
+    test.statistic <- "Wald"
+  }
+  rhs <- as.character(formula(mod))[[3]]
+  if (grepl("tt\\(", rhs)){
+    warning("LR tests unavailable for models using the tt argument\n  Wald tests substituted")
     test.statistic <- "Wald"
   }
   names <- term.names(mod)
