@@ -10,7 +10,6 @@ poTest.polr <- function(model, ...){
   X <- model.matrix(model)
   y <- model.frame(model)[, 1]
   wt <- model.weights(model.frame(model))
-  if (is.null(wt)) wt <- rep(1, length(y))
   levels <- levels(y)
   k <- length(levels)
   p <- ncol(X) - 1
