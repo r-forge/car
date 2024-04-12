@@ -1,5 +1,5 @@
 # added by J. Fox on 2017-10-14
-# 2024-04-11: support polr models with weights (suggestion of Ken Beath), J. Fox
+# 2024-04-12: support polr models with weights (suggestion of Ken Beath), J. Fox
 
 poTest <- function(model, ...){
     UseMethod("poTest")
@@ -8,7 +8,7 @@ poTest <- function(model, ...){
 poTest.polr <- function(model, ...){
   if (model$method != "logistic") stop("test for proportional odds is only for the logistic model")
   X <- model.matrix(model)
-  y <- model.frame(model)[, 1]
+  y <- model.response(model.frame(model))
   wt <- model.weights(model.frame(model))
   levels <- levels(y)
   k <- length(levels)
@@ -16,7 +16,7 @@ poTest.polr <- function(model, ...){
   y <- as.numeric(y)
   models <- vector(k - 1, mode="list")
   for (j in 1:(k - 1)){
-    models[[j]] <- glm(y > j ~ X - 1, weights=wt, family=binomial)
+    models[[j]] <- glm.fit(X, y > j, weights=wt, family=binomial())
   }
   vcov <- matrix(0, (k - 1)*p, (k - 1)*p)
   for (el in 1:(k - 1)){
