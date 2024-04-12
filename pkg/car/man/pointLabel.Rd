@@ -75,8 +75,6 @@ Old URL: \code{https://i11www.iti.uni-karlsruhe.de/map-labeling/bibliography/}
 
 \url{http://www.eecs.harvard.edu/~shieber/Projects/Carto/carto.html}
 
-\url{http://www.szoraster.com/Cartography/PracticalExperience.htm}
-
 The genetic algorithm code was adapted from the python code at 
 
 \url{https://meta.wikimedia.org/wiki/Map_generator}.

@@ -134,7 +134,7 @@ For \code{loessLine} and \code{gamLine} the variance smooth is estimated by sepa
 
 The default depection of the variance functions is via a shaded envelope between the upper and lower estimate of variability.  setting the subarguement \code{style="lines"} will display only the boundaries of this region, and \code{style="none"} suppresses variance smoothing.
   
-For  \code{style="filled"} several subarguments modify the appearance of the region:  code{alpha} is a number between 0 and 1 that specifies opacity with defualt 0.15, \code{border}, \code{TRUE} or \code{FALSE} specifies a border for the envelope, and \code{vertical} either \code{TRUE} or \code{FALSE}, modifies the behavior of the envelope at the edges of the graph.
+For  \code{style="filled"} several subarguments modify the appearance of the region: \code{alpha} is a number between 0 and 1 that specifies opacity with defualt 0.15, \code{border}, \code{TRUE} or \code{FALSE} specifies a border for the envelope, and \code{vertical} either \code{TRUE} or \code{FALSE}, modifies the behavior of the envelope at the edges of the graph.
 
 The sub-arguments \code{spread}, \code{lty.spread} and \code{col.spread} of the \code{smooth} argument are equivalent to the newer \code{var}, \code{col.var} and \code{lty.var}, respectively, recognizing that the spread is a measuure of conditional variability.
 }

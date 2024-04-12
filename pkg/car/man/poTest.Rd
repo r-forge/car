@@ -32,7 +32,7 @@ poTest(model, ...)
     Biometrics 46: 1171--1178, 1990.
 }
 \author{
-John Fox \email{jfox@mcmaster.ca}
+John Fox \email{jfox@mcmaster.ca} and Ken Beath.
 }
 
 \examples{

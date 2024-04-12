@@ -111,7 +111,7 @@ avPlot3d(model, coef1, coef2, id=TRUE, ...)
 }
 
 \value{
-  These functions are used for their side effect id producing
+  These functions are used for their side effect of producing
   plots, but also invisibly return the coordinates of the plotted points.
 }
 
