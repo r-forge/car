@@ -6,7 +6,8 @@ poTest <- function(model, ...){
 }
 
 poTest.polr <- function(model, ...){
-  if (model$method != "logistic") stop("test for proportional odds is only for the logistic model")
+  if (model$method != "logistic") 
+    stop("test for proportional odds is only for the logistic model")
   X <- model.matrix(model)
   y <- model.response(model.frame(model))
   wt <- model.weights(model.frame(model))
@@ -21,10 +22,14 @@ poTest.polr <- function(model, ...){
   vcov <- matrix(0, (k - 1)*p, (k - 1)*p)
   for (el in 1:(k - 1)){
     for (j in 1:el){
-      W.j.el <- fitted(models[[el]]) - fitted(models[[j]])*fitted(models[[el]])
-      W.el.el <- fitted(models[[el]]) - fitted(models[[el]])^2
-      W.j.j <- fitted(models[[j]]) - fitted(models[[j]])^2
-      V <- solve(t(X * W.j.j) %*% X) %*% (t(X * W.j.el) %*% X) %*% solve(t(X * W.el.el) %*% X)
+      fit.j <- fitted(models[[j]])
+      fit.el <- fitted(models[[el]])
+      if (is.null(wt)) wt <- 1
+      W.j.el <- (fit.el - fit.j*fit.el)*wt
+      W.el.el <- (fit.el - fit.el^2)*wt
+      W.j.j <- (fit.j - fit.j^2)*wt
+      V <- solve(t(X * W.j.j) %*% X) %*% (t(X * W.j.el) %*% X) %*% 
+        solve(t(X * W.el.el) %*% X)
       subs.j <- (j - 1)*p + 1:p
       subs.el <- (el - 1)*p + 1:p
       vcov[subs.j, subs.el] <- vcov[subs.el, subs.j] <- V[-1, -1]
