@@ -1,5 +1,5 @@
 # added by J. Fox on 2017-10-14
-# 2024-04-12: support polr models with weights (suggestion of Ken Beath), J. Fox
+# 2024-04-24: support polr models with weights (suggestion of Ken Beath), J. Fox
 
 poTest <- function(model, ...){
     UseMethod("poTest")
@@ -15,19 +15,20 @@ poTest.polr <- function(model, ...){
   k <- length(levels)
   p <- ncol(X) - 1
   y <- as.numeric(y)
-  models <- vector(k - 1, mode="list")
+  Beta <- matrix(0, p, k - 1)
+  Fitted <- matrix(0, length(y), k - 1)
   for (j in 1:(k - 1)){
-    models[[j]] <- glm.fit(X, y > j, weights=wt, family=binomial())
+    model.j <- glm.fit(X, y > j, weights=wt, family=binomial())
+    Beta[, j] <- coef(model.j)[-1]
+    Fitted[, j] <- fitted(model.j)
   }
   vcov <- matrix(0, (k - 1)*p, (k - 1)*p)
   for (el in 1:(k - 1)){
     for (j in 1:el){
-      fit.j <- fitted(models[[j]])
-      fit.el <- fitted(models[[el]])
       if (is.null(wt)) wt <- 1
-      W.j.el <- (fit.el - fit.j*fit.el)*wt
-      W.el.el <- (fit.el - fit.el^2)*wt
-      W.j.j <- (fit.j - fit.j^2)*wt
+      W.j.el <- (Fitted[, el] - Fitted[, j]*Fitted[, el])*wt
+      W.el.el <- (Fitted[, el] - Fitted[, el]^2)*wt
+      W.j.j <- (Fitted[, j] - Fitted[, j]^2)*wt
       V <- solve(t(X * W.j.j) %*% X) %*% (t(X * W.j.el) %*% X) %*% 
         solve(t(X * W.el.el) %*% X)
       subs.j <- (j - 1)*p + 1:p
@@ -35,7 +36,7 @@ poTest.polr <- function(model, ...){
       vcov[subs.j, subs.el] <- vcov[subs.el, subs.j] <- V[-1, -1]
     }
   }
-  beta <- unlist(lapply(models, function(m) coef(m)[-1]))
+  beta <- as.vector(Beta) 
   D <- matrix(0, (k - 2)*p, (k - 1)*p)
   I <- diag(p)
   for (j in 1:(k - 2)){
@@ -54,14 +55,15 @@ poTest.polr <- function(model, ...){
     j <- 1:(k - 2)
     DD[j, i] <- 1
     DD[cbind(j, j*p + i)] <- -1
-    chisq.p[i] <- t(DD %*% beta) %*% solve(DD %*% vcov %*% t(DD)) %*% (DD %*% beta)
+    chisq.p[i] <- t(DD %*% beta) %*% solve(DD %*% vcov %*% t(DD)) %*% 
+      (DD %*% beta)
     D.p[[i]] <- DD
   }
   b <- coef(model)
   coef.names <- names(b)
-  b <- cbind(b, matrix(beta, ncol = k - 1))
+  b <- cbind(b, Beta)
   colnames(b) <- c("b[polr]", paste0("b[>", levels[1:(k - 1)], "]"))
-  result <- list(call=model$call, coef.names=coef.names, b=b,
+  result <- list(call=getCall(model), coef.names=coef.names, b=b,
                  vcov=vcov, D=D, chisq=as.vector(chisq), df=df,
                  D.p=D.p, chisq.p=chisq.p, df.p = k - 2)
   class(result) <- "poTest"
