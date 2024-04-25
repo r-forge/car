@@ -23,9 +23,9 @@ poTest.polr <- function(model, ...){
     Fitted[, j] <- fitted(model.j)
   }
   vcov <- matrix(0, (k - 1)*p, (k - 1)*p)
+  if (is.null(wt)) wt <- 1
   for (el in 1:(k - 1)){
     for (j in 1:el){
-      if (is.null(wt)) wt <- 1
       W.j.el <- (Fitted[, el] - Fitted[, j]*Fitted[, el])*wt
       W.el.el <- (Fitted[, el] - Fitted[, el]^2)*wt
       W.j.j <- (Fitted[, j] - Fitted[, j]^2)*wt
