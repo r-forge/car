@@ -75,7 +75,7 @@
 # 2022-07-22: Make Anova.lm() more robust when there are aliased coefficients (following report by Taiwo Fagbohungbe). JF
 # 2022-07-27: Tweaked the last fix so the tolerance for deciding rank is the same for the lm model and the temporary glm model. SW
 # 2023-10-03: Suppress LR tests for "coxph" models using the tt argument (following bug report by Ken Beath). JF
-
+# 2024-05-08: Added Anova.clm() and Anova.clmm() methods (and supporting functions) (following report by Karl Ove Hufthammer). JF
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)
@@ -1600,7 +1600,10 @@ assignVector <- function(model, ...) UseMethod("assignVector")
 assignVector.default <- function(model, ...){
   m <- model.matrix(model)
   assign <- attr(m, "assign")
-  if (!is.null(assign)) return (assign)
+  if (!is.null(assign)) {
+    if (!has.intercept(model)) assign <- assign[assign != 0]
+    return (assign)
+  }
   m <- model.matrix(formula(model), data=model.frame(model))
   assign <- attr(m, "assign")
   if (!has.intercept(model)) assign <- assign[assign != 0]
@@ -2145,4 +2148,41 @@ Anova.svycoxph <- function(mod, type=c("II", "III", 2, 3),
   type <- as.character(type)
   type <- match.arg(type)
   NextMethod(test.statistic=test.statistic, type=type, ...)
+}
+
+# Anova() methods for "clm" and "clmm" objects (ordinal package)
+
+Anova.clm <- function(mod, ...){
+  class(mod) <- c("clmAnova", class(mod))
+  Anova.default(mod, ...)
+}
+
+coef.clmAnova <- function(object, ...) object$beta
+
+vcov.clmAnova <- function(object, ...){
+  coef.names <- names(coef(object))
+  class(object) <- class(object)[-1]
+  V <- vcov(object)
+  V[coef.names, coef.names]
+}
+
+Anova.clmm <- function(mod, ...){
+  class(mod) <- c("clmmAnova", class(mod))
+  Anova.default(mod, ...)
+}
+
+
+coef.clmmAnova <- function(object, ...) {
+  names.thresholds <- colnames(object$Theta)
+  coefs <- object$coefficients
+  names.all <- names(coefs)
+  names.fixed <- names.all[!names.all %in% names.thresholds]
+  coefs[names.fixed]
+}
+
+vcov.clmmAnova <- function(object, ...){
+  coef.names <- names(coef(object))
+  class(object) <- class(object)[-1]
+  V <- vcov(object)
+  V[coef.names, coef.names]
 }

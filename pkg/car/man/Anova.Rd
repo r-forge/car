@@ -20,7 +20,8 @@
 %   2021-06-14: updates for vcov. arg. J. Fox
 %   2022-04-24: added error.df argument to Anova.default(). J. Fox
 %   2022-06-07: added Anova.svycoxph(). J. Fox
-%.  2023-10-03: added qualification about tt arg for Cox models. J. Fox
+%   2023-10-03: added qualification about tt arg for Cox models. J. Fox
+%   2024-05-08: added Anova.clm() and Anova.clmm(). J. Fox
 %-------------------------------------------------------------------------------------
 
 \name{Anova}
@@ -47,6 +48,8 @@
 \alias{Anova.svycoxph}
 \alias{Anova.rlm}
 \alias{Anova.coxme}
+\alias{Anova.clm}
+\alias{Anova.clmm}
 \alias{Anova.default}
 \title{Anova Tables for Various Statistical Models}
 \description{
@@ -56,8 +59,9 @@
   package), \code{coxph} (in the \pkg{survival} package),
   \code{coxme} (in the \pkg{coxme} pckage),
   \code{svyglm} and \code{svycoxph} (in the \pkg{survey} package), \code{rlm} (in the \pkg{MASS} package),
-  \code{lmer} in the \pkg{lme4} package,
-  \code{lme} in the \pkg{nlme} package, and (by the default method) for most
+  \code{lmer} (in the \pkg{lme4} package),
+  \code{lme} (in the \pkg{nlme} package), 
+  \code{clm} and \code{clmm} (in the \pkg{ordinal} package), and (by the default method) for most
   models with a linear predictor and asymptotically normal coefficients (see details below). For linear
   models, F-tests are calculated; for generalized linear models,
   likelihood-ratio chisquare, Wald chisquare, or F-tests are calculated;
@@ -133,6 +137,10 @@ Manova(mod, ...)
 
 \method{Anova}{rlm}(mod, ...)
 
+\method{Anova}{clm}(mod, ...)
+
+\method{Anova}{clmm}(mod, ...)
+
 \method{Anova}{default}(mod, type=c("II", "III", 2, 3),
 	test.statistic=c("Chisq", "F"), vcov.=vcov(mod, complete=FALSE),
 	singular.ok, error.df, ...)
@@ -141,7 +149,7 @@ Manova(mod, ...)
 \arguments{
   \item{mod}{\code{lm}, \code{aov}, \code{glm}, \code{multinom}, \code{polr}
     \code{mlm}, \code{coxph}, \code{coxme}, \code{lme}, \code{mer}, \code{merMod}, \code{svyglm}, \code{svycoxph},
-    \code{rlm}, or other suitable model object.}
+    \code{rlm}, \code{clm}, \code{clmm}, or other suitable model object.}
   \item{error}{for a linear model, an \code{lm} model object from which the
     error sum of squares and degrees of freedom are to be calculated. For
     F-tests for a generalized linear model, a \code{glm} object from which the

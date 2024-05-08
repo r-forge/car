@@ -14,6 +14,8 @@ Changes to Version 3.1-3
   
   o poTest() supports "polr" models with weights (suggestion of Ken Beath).
   
+  o Anova() now supports "clm" and "clmm" objects created by functions in the ordinal package (after report by Karl Ove Hufthammer that the default method doesn't work).
+  
   o Small changes to docs.
 
 Changes to Version 3.1-2

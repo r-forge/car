@@ -1,4 +1,4 @@
-# last modified 2022-10-04 by J. Fox
+# last modified 2024-05-08 by J. Fox
 # additions for car >= 3.0-0, started 2016-12-27
 # 2023-08-28 MF: import grDevices::adjustcolor
 # 2023-08-30 MF: make dataEllipse generic, adding .default and .formula methods
@@ -252,6 +252,8 @@ S3method(boxCox, default)
 S3method(boxCox, lm)
 S3method(boxCox, formula)
 S3method(Anova, aov)
+S3method(Anova, clm)
+S3method(Anova, clmm)
 S3method(Anova, coxph)
 S3method(Anova, coxme)
 S3method(Anova, default)
