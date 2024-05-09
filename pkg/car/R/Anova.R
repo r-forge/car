@@ -1580,6 +1580,19 @@ Anova.default <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq
     }
   }
   vcov. <- getVcov(vcov., mod)
+  X <- model.matrix(mod)
+  if (!is.matrix(X)) stop("result of model.matrix(mod) is not a matrix")
+  coef.names <- colnames(X)
+  if (any(bad <- !(names(coef(mod)) %in% coef.names)))
+    warning("there are coefficients in coef(mod)",
+            "\nthat are not in the model matrix:\n",
+            paste(names(coef(mod))[bad], collapse=", "),
+            "\ntests may be incorrect\n\n")
+  if (any(bad <- !(colnames(vcov.) %in% coef.names))) 
+    warning("there are rows/columns in vcov.",
+            "\nthat are not in the model matrix:\n",
+            paste(colnames(vcov.)[bad], collapse=", "),
+            "\ntests may be incorrect")
   type <- as.character(type)
   type <- match.arg(type)
   if (missing(singular.ok))
@@ -2161,9 +2174,13 @@ coef.clmAnova <- function(object, ...) object$beta
 
 vcov.clmAnova <- function(object, ...){
   coef.names <- names(coef(object))
-  class(object) <- class(object)[-1]
-  V <- vcov(object)
+  V <- NextMethod()
   V[coef.names, coef.names]
+}
+
+model.matrix.clmAnova <- function(object, ...){
+  X <- NextMethod()
+  X$X
 }
 
 Anova.clmm <- function(mod, ...){
@@ -2174,7 +2191,7 @@ Anova.clmm <- function(mod, ...){
 
 coef.clmmAnova <- function(object, ...) {
   names.thresholds <- colnames(object$Theta)
-  coefs <- object$coefficients
+  coefs <- NextMethod()
   names.all <- names(coefs)
   names.fixed <- names.all[!names.all %in% names.thresholds]
   coefs[names.fixed]
@@ -2182,7 +2199,6 @@ coef.clmmAnova <- function(object, ...) {
 
 vcov.clmmAnova <- function(object, ...){
   coef.names <- names(coef(object))
-  class(object) <- class(object)[-1]
-  V <- vcov(object)
+  V <- NextMethod() 
   V[coef.names, coef.names]
 }

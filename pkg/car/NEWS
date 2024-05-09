@@ -16,6 +16,8 @@ Changes to Version 3.1-3
   
   o Anova() now supports "clm" and "clmm" objects created by functions in the ordinal package (after report by Karl Ove Hufthammer that the default method doesn't work).
   
+  o Anova.default() does more checking for potential problems (after report by Karl Ove Hufthammer).
+  
   o Small changes to docs.
 
 Changes to Version 3.1-2
