@@ -102,15 +102,6 @@ relatives <- function(term, names, factors){
 }
 
 lm2glm <- function(mod){
-  # class(mod) <- c("glm", "lm")
-  # wts <- mod$weights
-  # mod$prior.weights <- if (is.null(wts)) rep(1, length(mod$residuals)) else wts
-  # mod$y <- model.response(model.frame(mod))
-  # mod$linear.predictors <- mod$fitted.values
-  # mod$control <- list(epsilon=1e-8, maxit=25, trace=FALSE)
-  # mod$family <- gaussian()
-  # mod$deviance <- sum(residuals(mod)^2, na.rm=TRUE)
-  # mod
   Data <- getModelData(mod)
   wts <- weights(mod)
   Data$..wts.. <- if (is.null(wts)) rep(1, nrow(Data)) else wts
@@ -132,7 +123,6 @@ Anova.lm <- function(mod, error, type=c("II","III", 2, 3),
                      vcov.=NULL, singular.ok, ...){
   if (!is.null(vcov.)) message("Coefficient covariances computed by ", deparse(substitute(vcov.)))
   if (!missing(white.adjust)) message("Coefficient covariances computed by hccm()")
-#  vcov. <- getVcov(vcov., mod)
   if (df.residual(mod) == 0) stop("residual df = 0")
   if (deviance(mod) < sqrt(.Machine$double.eps)) stop("residual sum of squares is 0 (within rounding error)")
   type <- as.character(type)
@@ -777,8 +767,6 @@ Anova.mlm <- function(mod, type=c("II","III", 2, 3), SSPE, error.df, idata,
 
 Anova.III.mlm <- function(mod, SSPE, error.df, idata, idesign, icontrasts, imatrix, test, ...){
   intercept <- has.intercept(mod)
-  # wts <- if (!is.null(mod$weights)) mod$weights else rep(1, nrow(model.matrix(mod)))
-  # V <- solve(wcrossprod(model.matrix(mod), w=wts))
   p <- nrow(coefficients(mod))
   I.p <- diag(p)
   terms <- term.names(mod)
@@ -1420,19 +1408,15 @@ Anova.survreg <- function(mod, type=c("II","III", 2, 3), test.statistic=c("LR", 
   switch(type,
          II=switch(test.statistic,
                    LR=Anova.II.LR.survreg(mod),
-               #    Wald=Anova.II.Wald.survreg(mod)
                    Wald=Anova.Wald.survreg(mod, type="2")),
          III=switch(test.statistic,
                     LR=Anova.III.LR.survreg(mod),
-               #     Wald=Anova.III.Wald.survreg(mod)
                     Wald=Anova.Wald.survreg(mod, type="3")),
          "2"=switch(test.statistic,
                     LR=Anova.II.LR.survreg(mod),
-                    #    Wald=Anova.II.Wald.survreg(mod)
                     Wald=Anova.Wald.survreg(mod, type="2")),
          "3"=switch(test.statistic,
                     LR=Anova.III.LR.survreg(mod),
-                    #     Wald=Anova.III.Wald.survreg(mod)
                     Wald=Anova.Wald.survreg(mod, type="3")))
 }
 
@@ -1469,14 +1453,12 @@ Anova.II.LR.survreg <- function(mod, ...){
     exclude.1 <- as.vector(unlist(sapply(c(names[term], rels), which.nms)))
     arg.list$formula <- y ~ X[, -exclude.1, drop = FALSE]
     mod.1 <- do.call(survival::survreg, arg.list)
-    #    mod.1 <- survival::survreg(y ~ X[, -exclude.1, drop = FALSE])
     loglik.1 <- logLik(mod.1)
     mod.2 <- if (length(rels) == 0) mod
     else {
       arg.list$formula <- y ~ X[, -exclude.2, drop = FALSE]
       exclude.2 <- as.vector(unlist(sapply(rels, which.nms)))
       do.call(survival::survreg, arg.list)     
-      #     survival::survreg(y ~ X[, -exclude.2, drop = FALSE])
     }
     loglik.2 <- logLik(mod.2)
     LR[term] <- -2*(loglik.1 - loglik.2)
@@ -1522,7 +1504,6 @@ Anova.III.LR.survreg <- function(mod, ...){
   for (term in 1:n.terms){
     arg.list$formula <- y ~ X[, -which.nms(names[term])]
     mod.0 <- do.call(survival::survreg, arg.list)
-    #    mod.0 <- survival::survreg(y ~ X[, -which.nms(names[term])])
     LR[term] <- -2*(logLik(mod.0) - loglik1)
     p[term] <- pchisq(LR[term], df[term], lower.tail=FALSE)
   }
@@ -1534,33 +1515,10 @@ Anova.III.LR.survreg <- function(mod, ...){
   result
 }
 
-# Anova.II.Wald.survreg <- function(mod){
-#   V <- vcov(mod, complete=FALSE)
-#   b <- coef(mod)
-#   if (length(b) != nrow(V)){
-#     # p <- which(rownames(V) == "Log(scale)")
-#     p <- which(grepl("^Log\\(scale", rownames(V)))
-#     if (length(p) > 0) V <- V[-p, -p]
-#   }
-#   Anova.II.default(mod, V, test="Chisq")
-# }
-# 
-# Anova.III.Wald.survreg <- function(mod){
-#   V <- vcov(mod, complete=FALSE)
-#   b <- coef(mod)
-#   if (length(b) != nrow(V)){
-#     # p <- which(rownames(V) == "Log(scale)")
-#     p <- which(grepl("^Log\\(scale", rownames(V)))
-#     if (length(p) > 0) V <- V[-p, -p]
-#   }
-#   Anova.III.default(mod, V, test="Chisq")
-# }
-
 Anova.Wald.survreg <- function(mod, type){
   V <- vcov(mod, complete=FALSE)
   b <- coef(mod)
   if (length(b) != nrow(V)){
-    # p <- which(rownames(V) == "Log(scale)")
     p <- which(grepl("^Log\\(scale", rownames(V)))
     if (length(p) > 0) V <- V[-p, -p]
   }
@@ -1581,18 +1539,22 @@ Anova.default <- function(mod, type=c("II","III", 2, 3), test.statistic=c("Chisq
   }
   vcov. <- getVcov(vcov., mod)
   X <- model.matrix(mod)
-  if (!is.matrix(X)) stop("result of model.matrix(mod) is not a matrix")
-  coef.names <- colnames(X)
-  if (any(bad <- !(names(coef(mod)) %in% coef.names)))
-    warning("there are coefficients in coef(mod)",
-            "\nthat are not in the model matrix:\n",
-            paste(names(coef(mod))[bad], collapse=", "),
-            "\ntests may be incorrect\n\n")
-  if (any(bad <- !(colnames(vcov.) %in% coef.names))) 
-    warning("there are rows/columns in vcov.",
-            "\nthat are not in the model matrix:\n",
-            paste(colnames(vcov.)[bad], collapse=", "),
-            "\ntests may be incorrect")
+  if (!is.matrix(X)) {
+    warning("result of model.matrix(mod) is not a matrix",
+            "\ntests may be incorrect\n")
+  } else {
+    coef.names <- colnames(X)
+    if (any(bad <- !(names(coef(mod)) %in% coef.names)))
+      warning("there are coefficients in coef(mod)",
+              "\nthat are not in the model matrix:\n",
+              paste(names(coef(mod))[bad], collapse=", "),
+              "\ntests may be incorrect\n\n")
+    if (any(bad <- !(colnames(vcov.) %in% coef.names))) 
+      warning("there are rows/columns in vcov.",
+              "\nthat are not in the model matrix:\n",
+              paste(colnames(vcov.)[bad], collapse=", "),
+              "\ntests may be incorrect")
+  }
   type <- as.character(type)
   type <- match.arg(type)
   if (missing(singular.ok))
@@ -1656,7 +1618,7 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, error.df,...){
   intercept <- has.intercept(mod)
   p <- length(coefficients(mod))
   I.p <- diag(p)
-  assign <- assignVector(mod) # attr(model.matrix(mod), "assign")
+  assign <- assignVector(mod) 
   if (!is.list(assign)) assign[!not.aliased] <- NA
   else if (intercept) assign <- assign[-1]
   names <- term.names(mod)
@@ -1676,7 +1638,6 @@ Anova.II.default <- function(mod, vcov., test, singular.ok=TRUE, error.df,...){
       n.terms <- n.terms - length(clusters) - length(strata)
     }
   }
-  #	if (inherits(mod, "plm")) assign <- assign[assign != 0]
   p <- teststat <- rep(0, n.terms + 1)
   teststat[n.terms + 1] <- p[n.terms + 1] <- NA
   for (i in 1:n.terms){
@@ -1708,7 +1669,7 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, error.df, ...
   I.p <- diag(p)
   names <- term.names(mod)
   n.terms <- length(names)
-  assign <- assignVector(mod) # attr(model.matrix(mod), "assign")
+  assign <- assignVector(mod) 
   df <- c(rep(0, n.terms), error.df)
   if (inherits(mod, "coxph")){
     if (intercept) names <- names[-1]
@@ -1724,7 +1685,6 @@ Anova.III.default <- function(mod, vcov., test, singular.ok=FALSE, error.df, ...
       n.terms <- n.terms - length(clusters) - length(strata)
     }
   }
-  #	if (inherits(mod, "plm")) assign <- assign[assign != 0]
   if (intercept) df[1] <- sum(grepl("^\\(Intercept\\)", names(coef(mod))))
   teststat <- rep(0, n.terms + 1)
   p <- rep(0, n.terms + 1)
@@ -1990,7 +1950,6 @@ Anova.II.lme <- function(mod, vcov., singular.ok=TRUE, ...){
   intercept <- has.intercept(mod)
   p <- length(fixef(mod))
   I.p <- diag(p)
-#  assign <- attr(model.matrix(mod), "assign")
   attribs.mm <- attributes(model.matrix(mod))
   assign <- attribs.mm$assign
   nms.coef <- names(coef(mod))
@@ -2002,7 +1961,6 @@ Anova.II.lme <- function(mod, vcov., singular.ok=TRUE, ...){
             paste(nms.mm[!valid.coefs], collapse=", "))
   }
   assign <- assign[valid.coefs]
-#  assign[!not.aliased] <- NA
   names <- term.names(mod)
   if (intercept) names <- names[-1]
   n.terms <- length(names)
@@ -2028,7 +1986,6 @@ Anova.III.lme <- function(mod, vcov., singular.ok=FALSE, ...){
   I.p <- diag(p)
   names <- term.names(mod)
   n.terms <- length(names)
-  #  assign <- attr(model.matrix(mod), "assign")
   attribs.mm <- attributes(model.matrix(mod))
   assign <- attribs.mm$assign
   nms.coef <- names(coef(mod))
@@ -2046,9 +2003,6 @@ Anova.III.lme <- function(mod, vcov., singular.ok=FALSE, ...){
   df <- rep(0, n.terms)
   if (intercept) df[1] <- 1
   p <- teststat <-rep(0, n.terms)
-  # not.aliased <- !is.na(fixef(mod))
-  # if (!singular.ok && !all(not.aliased))
-  #   stop("there are aliased coefficients in the model")
   for (term in 1:n.terms){
     subs <- which(assign == term - intercept)        
     hyp.matrix <- I.p[subs,,drop=FALSE]
@@ -2164,6 +2118,7 @@ Anova.svycoxph <- function(mod, type=c("II", "III", 2, 3),
 }
 
 # Anova() methods for "clm" and "clmm" objects (ordinal package)
+#   coef(), vcov(), and model.matrix() methods not exported
 
 Anova.clm <- function(mod, ...){
   class(mod) <- c("clmAnova", class(mod))
