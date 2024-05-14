@@ -517,7 +517,7 @@ constants of the form 1.* or -1.* were printed incorrectly (reported by Johannes
 
   o Boxplot() now properly handles at argument passed through via ... to boxplot() (contribution of Steve Ellison).
 
-  o Small fixes.
+  o Small fixes and changes to unexported functions (to replace .s with _s in function names).
 
 Changes to Version 2.0-15
 

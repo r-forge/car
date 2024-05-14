@@ -45,10 +45,11 @@
 #   2022-12-11: unexported coef.multinom() now uses . rather than : as coef-name separator. John
 #   2023-09-18: eliminate warning about arithmetic operators in coef
 #               names.
+# 2024-05-14: has.intercept() -> has_intercept(). John
 #----------------------------------------------------------------------------------------------------
 
 
-has.intercept.matrix <- function (model, ...) {
+has_intercept.matrix <- function (model, ...) {
 	"(Intercept)" %in% colnames(model)
 }
 
@@ -378,7 +379,7 @@ linearHypothesis.mlm <- function(model, hypothesis.matrix, rhs=NULL, SSPE, V,
 		if (is.null(idesign)) stop("idesign (intra-subject design) missing.")
 		X.design <- model.matrix(idesign, data=idata)
 		if (check.imatrix) check.imatrix(X.design)
-		intercept <- has.intercept(X.design)
+		intercept <- has_intercept(X.design)
 		term.names <- term.names(idesign)
 		if (intercept) term.names <- c("(Intercept)", term.names)
 		which.terms <- match(iterms, term.names)

@@ -31,6 +31,7 @@
 # 2023-09-03: fix formula method using Formula::as.Formula. JF
 # 2023-09-03: test formula method & label.pos. MF
 # 2023-09-16: tweak code, add label.xpd arg. JF
+# 2024-05-14: has.intercept() -> has_intercept(). JF
 
 ellipse <- function(center, shape, radius, log="", center.pch=19, center.cex=1.5, segments=51, draw=TRUE, add=draw, 
 		xlab="", ylab="", col=carPalette()[2], lwd=2, fill=FALSE, fill.alpha=0.3,
@@ -371,7 +372,7 @@ confidenceEllipse.lm <- function(model, which.coef, vcov.=vcov, L, levels=0.95, 
 		which.coef <- if(length(coefficients(model)) == 2) c(1, 2)
 				else{
 					if (missing(which.coef)){
-						if (has.intercept(model)) c(2,3) else c(1, 2)
+						if (has_intercept(model)) c(2,3) else c(1, 2)
 					} else which.coef
 				}
 		coef <- coefficients(model)[which.coef]
@@ -410,7 +411,7 @@ confidenceEllipse.default <- function(model, which.coef, vcov.=vcov, L, levels=0
 		which.coef <- if(length(coefficients(model)) == 2) c(1, 2)
 				else{
 					if (missing(which.coef)){
-						if (has.intercept(model)) c(2, 3) else c(1, 2)
+						if (has_intercept(model)) c(2, 3) else c(1, 2)
 					} else which.coef
 				}
 		coef <- coefficients(model)[which.coef]
