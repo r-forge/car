@@ -77,6 +77,7 @@
 # 2023-10-03: Suppress LR tests for "coxph" models using the tt argument (following bug report by Ken Beath). JF
 # 2024-05-08: Added Anova.clm() and Anova.clmm() methods (and supporting functions) (following report by Karl Ove Hufthammer). JF
 # 2024-05-14: Rename internal functions to replace .s with _s. JF
+# 2024-09-19: model.matrix.lme() now handles contrasts and xlev correctly, fixing a bug in Anova.lme() (reported by Ben Bolker). JF
 #-------------------------------------------------------------------------------
 
 # Type II and III tests for linear, generalized linear, and other models (J. Fox)

@@ -103,7 +103,7 @@ Applications}.  Oxford:  Oxford University Press.
 Fox, J. and Weisberg, S. (2019) \emph{Companion to Applied Regression}, Third Edition. Thousand Oaks:  Sage.
 
 Fox, J. and Weisberg, S. (2019) \emph{Bootstrapping Regression Models in R},
-\url{https://socialsciences.mcmaster.ca/jfox/Books/Companion/appendices/Appendix-Bootstrapping.pdf}.
+\url{https://www.john-fox.ca/Companion/appendices/Appendix-Bootstrapping.pdf}.
 
 Weisberg, S. (2014) \emph{Applied Linear Regression}, Fourth Edition, Wiley
 Wiley, Chapters 4 and 11.}

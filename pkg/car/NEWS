@@ -18,6 +18,8 @@ Changes to Version 3.1-3
   
   o Anova.default() does more checking for potential problems (after report by Karl Ove Hufthammer).
   
+  o Anova.lme() correctly handles models with contrasts different from the default contr.treatment (fixing a bug reported by Ben Bolker).
+  
   o Small changes to docs.
 
 Changes to Version 3.1-2
