@@ -32,7 +32,7 @@ Modified Functions for Summarizing Linear, Generalized Linear, and Some Other Mo
 }
 
 \description{
-\pkg{car} package replacements for the \code{\link{summary}} (\code{S}) and \code{\link{confint}} (\code{Confint}) functions for \code{\link{lm}}, \code{\link{glm}}, \code{\link{multinom}}, and \code{\link{polr}} objects, with additional arguments but the same defaults as the original functions. The \code{Confint} method for \code{"polr"} objects profiles the likelihood to get confidence intervals for the regression parameters but uses Wald intervals for the thresholds.
+\pkg{car} package replacements for the \code{\link{summary}} (\code{S}) and \code{\link{confint}} (\code{Confint}) functions for \code{\link{lm}}, \code{\link{glm}}, \code{\link[nnet]{multinom}}, and \code{\link[MASS]{polr}} objects, with additional arguments but the same defaults as the original functions. The \code{Confint} method for \code{"polr"} objects profiles the likelihood to get confidence intervals for the regression parameters but uses Wald intervals for the thresholds.
 Default methods that call the standard R \code{\link{summary}} and \code{\link{confint}} functions are provided for the \code{S} and \code{Confint} generics, so the \pkg{car} functions should be safe to use in general. The default method for \code{Confint} also assumes that there is an appropriate \code{\link{coef}} method. For briefer model summaries, see \code{\link{brief}}.
 }
 
@@ -168,7 +168,7 @@ The \code{Summary.glm} method for models fit with the log or logit link by defau
 }
 
 \value{
-The \code{S.lm} and \code{S.glm} functions return a list with all the elements shown at \code{\link{summary.lm}} and \code{\link{summary.glm}}. The \code{S.multinom} and \code{S.polr} functions return a list with all the elements shown at \code{\link{summary.multinom}} and \code{summary.polr} plus potentially a table of exponentiated coefficients and confidence bounds.
+The \code{S.lm} and \code{S.glm} functions return a list with all the elements shown at \code{\link{summary.lm}} and \code{\link{summary.glm}}. The \code{S.multinom} and \code{S.polr} functions return a list with all the elements shown at \code{\link[nnet]{summary.multinom}} and \code{summary.polr} plus potentially a table of exponentiated coefficients and confidence bounds.
 
 The \code{Confint.lm} function returns either the output from \code{\link{confint.lm}} if
 \code{vcov. = vcov} or Wald-type confidence intervals using the supplied covariance matrix for any other choice of \code{vcov.}.

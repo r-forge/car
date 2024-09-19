@@ -73,7 +73,7 @@ sp(x, ...)
       (the default), no ellipses are plotted.  Can be a list of named values giving
       \code{levels}, a vector of one or more bivariate-normal probability-contour levels at
       which to plot the ellipses; \code{robust}, a logical value determing whether to use
-      the \code{\link{cov.trob}} function in the \pkg{MASS} package to calculate the center
+      the \code{\link[MASS]{cov.trob}} function in the \pkg{MASS} package to calculate the center
       and covariance matrix for the data ellipses; and \code{fill} and \code{fill.alpha},
       which control whether the ellipse is filled and the transparency of the fill.
       \code{TRUE} is equivalent to
@@ -153,7 +153,7 @@ The sub-arguments \code{spread}, \code{lty.spread} and \code{col.spread} of the 
 \seealso{\code{\link{boxplot}},
   \code{\link{jitter}}, \code{\link{legend}},
   \code{\link{scatterplotMatrix}}, \code{\link{dataEllipse}}, \code{\link{Boxplot}},
-  \code{\link{cov.trob}},
+  \code{\link[MASS]{cov.trob}},
   \code{\link{showLabels}}, \code{\link{ScatterplotSmoothers}}.}
 
 \examples{

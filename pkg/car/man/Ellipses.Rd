@@ -94,7 +94,7 @@ confidenceEllipses(model, ...)
   \item{label.cex}{character size for ellipse labels.}
   \item{label.xpd}{allow labels to be drawn outside of plotting region (default \code{FALSE}).}
   \item{weights}{a numeric vector of weights, of the same length as \code{x} and \code{y} to be used  by \code{\link{cov.wt}}
-    or \code{\link{cov.trob}} in computing a weighted covariance matrix; if absent, weights of \code{1} are used.}
+    or \code{\link[MASS]{cov.trob}} in computing a weighted covariance matrix; if absent, weights of \code{1} are used.}
   \item{plot.points}{if \code{FALSE} data ellipses are drawn,
     but points are not plotted.}
   \item{levels}{draw elliptical contours at these (normal) probability or confidence levels.}
@@ -180,7 +180,7 @@ graph}
  
 \author{Georges Monette, John Fox \email{jfox@mcmaster.ca}, and Michael Friendly.}
 
-\seealso{\code{\link{cov.trob}}, \code{\link{cov.wt}}, \code{\link{linearHypothesis}}.}
+\seealso{\code{\link[MASS]{cov.trob}}, \code{\link{cov.wt}}, \code{\link{linearHypothesis}}.}
   
 \examples{
 dataEllipse(Duncan$income, Duncan$education, levels=0.1*1:9, 

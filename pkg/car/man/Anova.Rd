@@ -320,7 +320,7 @@ type-II tests are invariant with respect to (full-rank) contrast coding. If you 
 
 \seealso{ \code{\link{linearHypothesis}}, \code{\link{anova}}
 \code{\link{anova.lm}}, \code{\link{anova.glm}},
-\code{\link{anova.mlm}}, \code{\link{anova.coxph}}, \code{\link[survey]{svyglm}}.}
+\code{\link{anova.mlm}}, \code{\link[survival]{anova.coxph}}, \code{\link[survey]{svyglm}}.}
 
 \examples{
 
