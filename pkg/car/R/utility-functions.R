@@ -33,7 +33,7 @@
 # 2020-12-18: getVcov() also able to return objects coercible to a matrix such as Matrix objects. JF
 # 2021-04-08: added getModelData(), not explorted. JF
 # 2024-05-14: format.perc() -> format_perc(), has.intercept -> has_intercept(). J. Fox
-
+# 2024-09-20: added model.matrix.lme()
 
 #if (getRversion() >= "2.15.1") globalVariables(c(".boot.sample", ".boot.indices"))
 
@@ -304,28 +304,29 @@ has_intercept.merMod <- function(model, ...){
     any(names(fixef(model))=="(Intercept)")
 }
 
-get_xlev <- function(model){
-  contrasts <- model$contrasts
-  if (length(contrasts) == 0) return(NULL)
-  result <- vector(length(contrasts), mode="list")
-  names(result) <- names <- names(contrasts)
-  for (name in names){
-    result[[name]] <- rownames(contrasts[[name]])
-  }
-  result
-}
-
 model.matrix.lme <- function(object, ...){
+  
   data <- object$data
   contrasts <- object$contrasts
-  xlev <- get_xlev(object)
-  if (is.null(data)){
-    model.matrix(formula(object),  data=eval(object$call$data),
-                 contrasts.arg=contrasts, xlev=xlev, ...)
+  
+  if (length(contrasts) == 0) {
+    xlev <- NULL
+  } else {
+    xlev <- vector(length(contrasts), mode="list")
+    names(xlev) <- names <- names(contrasts)
+    for (name in names){
+      xlev[[name]] <- rownames(contrasts[[name]])
+    }
   }
-  else model.matrix(formula(object), data=data, 
-                    contrasts.arg=contrasts, xlev=xlev, ...)
-}
+  
+  if (is.null(data)){
+    NextMethod(formula(object),  data=eval(object$call$data),
+               contrasts.arg=contrasts, xlev=xlev, ...)
+  } else {
+    NextMethod(formula(object), data=data, 
+               contrasts.arg=contrasts, xlev=xlev, ...)
+  }
+} 
 
 
 # added by J. Fox 2019-01-02:
