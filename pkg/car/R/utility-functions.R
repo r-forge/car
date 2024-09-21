@@ -305,26 +305,13 @@ has_intercept.merMod <- function(model, ...){
 }
 
 model.matrix.lme <- function(object, ...){
-  
   data <- object$data
-  contrasts <- object$contrasts
-  
-  # if (length(contrasts) == 0) {
-  #   xlev <- NULL
-  # } else {
-  #   xlev <- vector(length(contrasts), mode="list")
-  #   names(xlev) <- names <- names(contrasts)
-  #   for (name in names){
-  #     xlev[[name]] <- rownames(contrasts[[name]])
-  #   }
-  # }
-
   if (is.null(data)){
     NextMethod(formula(object),  data=eval(object$call$data),
-               contrasts.arg=contrasts, ...) # , xlev=xlev, ...)
+               contrasts.arg=object$contrasts)
   } else {
     NextMethod(formula(object), data=data, 
-               contrasts.arg=contrasts, ...) #, xlev=xlev, ...)
+               contrasts.arg=object$contrasts)
   }
 } 
 
