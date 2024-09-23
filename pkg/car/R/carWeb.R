@@ -11,8 +11,7 @@
 # 2024-09-19: J. Fox. Update URLs.
 # 2024-09-23 Deprecated most of the carWeb features; updated .Rd page
 
-carWeb <-
-  function (..)
-  { browseURL(webpage <- "https://www.john-fox.ca/Companion/index.html")
+carWeb <- function (...){ 
+  browseURL(webpage <- "https://www.john-fox.ca/Companion/index.html")
   }
 

@@ -17,5 +17,4 @@ carWeb(...)
   Displays the web page for \emph{An R Companion to Applied Regression}, Third Edition, Sage 
 }
 
-}
 \keyword{ interface }
