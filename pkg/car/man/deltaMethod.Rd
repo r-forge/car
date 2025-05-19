@@ -204,15 +204,12 @@ mroz.mod1 <- glm(lfp ~ k5 + age, family=binomial, data=Mroz)
 S(mroz.mod1)
 # Exponentiated coefficient estimates can also be computed one at a time by deltaMethod
 deltaMethod(mroz.mod1, "exp(k5)")
-# The point estimate is the same as before but the confidence interval is different
-# because S() simply exponentiated the ends of the confidence interval before 
+# The point estimate is the same as in the S() output but the confidence interval is 
+# different because S() simply exponentiated the ends of the confidence interval before 
 # exponentiation.
 # A more complex case is to get the estimate and standard error for the inverse logit
 # of the coefficient estimate.
-deltaMethod(mroz.mod1, "exp(k5)/(1 + exp(k5))")
-# Alternatively define
-invLogit <- function(x) {exp(x) / (1 + exp(x)) }
-deltaMethod(mroz.mod1, "invLogit(b1)", parameterNames= paste("b", 0:2, sep=""))
+deltaMethod(mroz.mod1, "exp(b1)/(1 + exp(b1))", parameterNames= paste("b", 0:2, sep=""))
 # the parameterNames argument was used to change the name of the coefficient from
 # k5 to b1.
 }
